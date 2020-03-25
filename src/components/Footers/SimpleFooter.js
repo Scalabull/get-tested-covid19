@@ -17,6 +17,8 @@
 */
 /*eslint-disable*/
 import React from "react";
+import { Link } from "react-router-dom";
+
 // reactstrap components
 import {
   Button,
@@ -40,11 +42,11 @@ class SimpleFooter extends React.Component {
                 <h3 className=" text-primary font-weight-light mb-2">
                   This is a community effort.
                 </h3>
-                <NavLink
-                      href="/about"
-                    >
-                      To help or learn more, find us HERE.
-                </NavLink>
+                <Link to="/about">
+                  <span className="btn-inner--text">
+                      About Us
+                  </span>
+                </Link>
               </Col>
               
             </Row>
@@ -59,11 +61,11 @@ class SimpleFooter extends React.Component {
                 <Nav className=" nav-footer justify-content-end">
                   
                   <NavItem>
-                    <NavLink
-                      href="/about"
-                    >
-                      About Us
-                    </NavLink>
+                    <Link to="/about">
+                      <span className="btn-inner--text">
+                          About Us
+                      </span>
+                    </Link>
                   </NavItem>
                   
                   

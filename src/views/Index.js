@@ -18,6 +18,7 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classnames from "classnames";
+import { Link } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -80,11 +81,10 @@ class Landing extends React.Component {
                         As COVID-19 spreads rapidly, community testing centers are springing-up across the nation. Our goal is to provide accurate information to every community and make it easy to find the testing station closest to you. We ask that you follow the CDC's recommendations for determining whether you should be tested. If you think you need to be tested, use our resources to find a community test center near you. 
                       </p>
                       <div className="btn-wrapper">
-                        
+                      <Link to="/test-site-search">
                         <Button
                           className="btn-white btn-icon mb-3 mb-sm-0 ml-1"
                           color="default"
-                          href="/test-site-search"
                         >
                           <span className="btn-inner--icon mr-1">
                             <i className="ni ni-ambulance" />
@@ -93,6 +93,9 @@ class Landing extends React.Component {
                             Search Test Sites
                           </span>
                         </Button>
+                      </Link>
+                        
+                          
                       </div>
                     </Col>
                   </Row>
