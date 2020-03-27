@@ -157,6 +157,7 @@ a {
   text-decoration: none;
   background-color: transparent; }
   a:hover {
+    font-weight: bold;
     color: #233dd2;
     text-decoration: none; }
 
@@ -10299,7 +10300,7 @@ a.text-secondary:hover, a.text-secondary:focus {
   color: #2dce89 !important; }
 
 a.text-success:hover, a.text-success:focus {
-  color: #1f8f5f !important; }
+  font-weight: bold !important; }
 
 .text-info {
   color: #11cdef !important; }
@@ -12913,7 +12914,7 @@ textarea[resize="horizontal"] {
   font-size: .875rem;
   letter-spacing: .05px; }
   .navbar-brand img {
-    height: 30px; }
+    height: 60px; }
 
 .navbar-dark .navbar-brand {
   color: #fff; }

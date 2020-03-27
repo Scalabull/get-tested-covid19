@@ -20,6 +20,7 @@ import CardList from "components/CardList";
 import testSiteData from "assets/data/testSites"
 import zipLookups from "assets/data/zipLookups"
 import haversine from "haversine";
+import qs from "query-string";
 
 // reactstrap components
 import {
@@ -28,12 +29,51 @@ import {
   Col
 } from "reactstrap";
 
+// DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
+const DISTANCE_THRESH = 40;
+
+const setQueryStringWithoutPageReload = qsValue => { 
+    const newurl = window.location.protocol + 
+        window.location.host + 
+        window.location.pathname + 
+        qsValue;
+ 
+    window.history.pushState({ path: newurl }, "", newurl);
+};
+
+const setQueryStringValue = ( 
+    key, 
+    value, 
+    queryString = window.location.search
+ ) => { 
+     const values = qs.parse(queryString); 
+     const newQsValue = qs.stringify({ ...values, [key]: value }); 
+     setQueryStringWithoutPageReload(`?${newQsValue}`);
+};
+
+const getQueryStringValue = ( 
+    key, 
+    queryString = window.location.search
+) => { 
+    const values = qs.parse(queryString); 
+    return values[key];
+};
+
+
+function isNumeric(s) {
+    return !isNaN(s - parseFloat(s));
+}
+
 class TestSiteList extends React.Component {
     constructor(props){
         super(props);
+
+        let zip = getQueryStringValue('zip') || "";
+
         this.state = {
             initialItems: testSiteData.testSites,
-            items: testSiteData.testSites
+            items: testSiteData.testSites,
+            zip: zip
         }
 
         this.filterList = this.filterList.bind(this);
@@ -44,52 +84,68 @@ class TestSiteList extends React.Component {
         const zipRE = /^[0-9]{5}$/;
         const zipMatchFlag = zipRE.test(searchZipStr);
         
-        if(zipMatchFlag){
-            // Zip should be present in lookup table in 99% of cases.
-            let zipLatLng = zipLookups.zipLookups[searchZipStr];
-            let updatedList = this.state.initialItems;
+        // Only allow numeric inputs.
+        if(isNumeric(searchZipStr) || searchZipStr === ""){
+            if(zipMatchFlag){
 
-            if(zipLatLng === undefined){
-                // If no zip in lookup table, search by exact zip match (not lat, lng distance)
-                console.log('Zip lookup fail for code: ', searchZipStr);
-
-                updatedList = updatedList.filter(function(item){
-                    return item.zip === searchZipStr;
-                });
-                this.setState({items: updatedList});
-            } 
-            else{
-                // else zip code is present in lookup table. Use haversine distance w/ lat, lng
-                const start = {
-                    latitude: zipLatLng[0],
-                    longitude: zipLatLng[1]
-                };
-
-                updatedList = updatedList.filter(function(item){
-                    // return any sites within 40 miles.
-                    const end = {
-                        latitude: item.lat,
-                        longitude: item.lng
+                // Zip should be present in lookup table in 99% of cases.
+                let zipLatLng = zipLookups.zipLookups[searchZipStr];
+                let updatedList = this.state.initialItems;
+    
+                if(zipLatLng === undefined){
+                    // If no zip in lookup table, search by exact zip match (not lat, lng distance)   
+                    updatedList = updatedList.filter(function(item){
+                        return item.zip === searchZipStr;
+                    });
+                    this.setState({items: updatedList, zip: searchZipStr});
+                } 
+                else{
+                    // else zip code is present in lookup table. Use haversine distance w/ lat, lng
+                    const start = {
+                        latitude: zipLatLng[0],
+                        longitude: zipLatLng[1]
                     };
+    
+                    updatedList = updatedList.map(function(item){
+                        // return any sites within 40 miles.
+                        const end = {
+                            latitude: item.lat,
+                            longitude: item.lng
+                        };
+    
+                        const dist = haversine(start, end, {unit: 'mile'});
+                        // console.log('calculated distance: ', JSON.stringify(start), JSON.stringify(end), dist);
+                        
+                        let newItem = {...item};
+                        newItem.dist = dist;
+                        return newItem;
+                    });
 
-                    const dist = haversine(start, end, {unit: 'mile'});
-                    console.log('calculated distance: ', JSON.stringify(start), JSON.stringify(end), dist);
+                    updatedList = updatedList.filter((item) => {
+                        return item.dist < DISTANCE_THRESH;
+                    });
 
-                    return dist < 40;
-                });
-
-                this.setState({items: updatedList});
+                    updatedList.sort((item1, item2) => {
+                        return item1.dist - item2.dist;
+                    });
+    
+                    this.setState({items: updatedList, zip: searchZipStr});
+                }
+            } 
+            else if (searchZipStr === ''){
+                this.setState({items: this.state.initialItems, zip: searchZipStr});
+            } else {
+                this.setState({zip: searchZipStr});
             }
-        } 
-        else if (searchZipStr === ''){
-            this.setState({items: this.state.initialItems});
         }
     };
 
+    componentDidMount(){
+        this.filterList({target: {value: this.state.zip}});
+    }
+
     render() {
     
-
-
     return (
         <Container>
             <Row className="row-grid align-items-center">
@@ -111,7 +167,7 @@ class TestSiteList extends React.Component {
 
                 <form>
                     <fieldset className="form-group">
-                    <input type="text" pattern="[0-9]{5}" maxLength="5" title="Five digit zip code" placeholder="5 digit zip code" className="form-control form-control-lg" onChange={this.filterList}/>
+                    <input type="text" maxLength="5" title="Five digit zip code" placeholder="5 digit zip code" className="form-control form-control-lg" onChange={this.filterList} value={this.state.zip}/>
                     </fieldset>
                 </form>
 

@@ -16,21 +16,11 @@
 
 */
 import React from "react";
-// nodejs library that concatenates classes
-import classnames from "classnames";
 
 // reactstrap components
 import {
-  Badge,
   Button,
   Card,
-  CardBody,
-  CardImg,
-  FormGroup,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Container,
   Row,
   Col
@@ -40,9 +30,7 @@ import {
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 import TestSiteList from "components/TestSiteList.js";
-
-// index page sections
-import Download from "./IndexSections/Download.js";
+import DocumentMeta from 'react-document-meta';
 
 class Landing extends React.Component {
   state = {};
@@ -52,8 +40,19 @@ class Landing extends React.Component {
     this.refs.main.scrollTop = 0;
   }
   render() {
+    const meta = {
+      title: 'Search COVID-19 Test Center By Zipcode | Get Tested COVID-19',
+      description: 'Find the closest COVID-19 Test Center. Make sure to check requirements and double check that your symptoms match those listed by the CDC.',
+      meta: {
+        charset: 'utf-8',
+        name: {
+          keywords: 'COVID-19, testing centers, novel coronavirus'
+        }
+      }
+    };
+
     return (
-      <>
+      <DocumentMeta {...meta}>
         <DemoNavbar />
         <main ref="main">
           <div className="position-relative">
@@ -122,7 +121,7 @@ class Landing extends React.Component {
           
         </main>
         <SimpleFooter />
-      </>
+      </DocumentMeta>
     );
   }
 }

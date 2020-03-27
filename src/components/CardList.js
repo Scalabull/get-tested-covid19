@@ -84,6 +84,11 @@ class CardList extends React.Component {
                                 <h5 className="title text-success">
                                 {item.name}
                                 </h5>
+                                {item.dist !== null && item.dist !== undefined &&
+                                  <small className="text-black">
+                                    Est. Distance: {item.dist.toFixed(2)} miles
+                                  </small>
+                                }
                                 <p>
                                     {item.address}, {item.city} {item.state}, {item.zip}
                                 </p>

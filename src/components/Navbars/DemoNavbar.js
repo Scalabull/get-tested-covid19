@@ -72,8 +72,11 @@ class DemoNavbar extends React.Component {
             id="navbar-main"
           >
             <Container>
-              <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
-                <span className="nav-link-inner--text">GET-TESTED-COVID-19</span>
+            <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+                <img
+                  alt="..."
+                  src={require("assets/img/brand/GetTestedCovid19Finallogowhitebottom.png")}
+                />
               </NavbarBrand>
               <button className="navbar-toggler" id="navbar_global">
                 <span className="navbar-toggler-icon" />
@@ -91,7 +94,7 @@ class DemoNavbar extends React.Component {
                       <Link to="/">
                         <img
                           alt="..."
-                          src={require("assets/img/brand/argon-react.png")}
+                          src={require("assets/img/brand/GetTestedCovid19Finallogocolorfinal.png")}
                         />
                       </Link>
                     </Col>
@@ -103,38 +106,38 @@ class DemoNavbar extends React.Component {
                     </Col>
                   </Row>
                 </div>
-                <Nav className="navbar-nav-hover align-items-lg-center" navbar>
+
+                <Nav className="navbar-nav-hover align-items-lg-center ml-lg-auto mt-0 pt-0" navbar>
                   <NavItem>
                     <NavLink
-                      className="nav-link-icon"
-                      href="/"
+                      className="nav-link-icon mt-0 pt-0"
+                      href="/test-site-search"
                     >
                       <i className="ni ni-collection d-lg-none mr-1" />
-                      <span className="nav-link-inner--text">Home</span>
+                      <span className="nav-link-inner--text mt-0 pt-0">FIND TEST CENTER</span>
                     </NavLink>
                   </NavItem>
-                <UncontrolledDropdown nav>
-                    <DropdownToggle nav>
-                      <i className="ni ni-collection d-lg-none mr-1" />
-                      <span className="nav-link-inner--text">Test Centers</span>
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem to="/test-site-search" tag={Link}>
-                        Search by Zip Code
-                      </DropdownItem>
-                      
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
                   <NavItem>
                     <NavLink
-                      className=""
-                      href="/about"
+                      className="nav-link-icon mt-0 pt-0"
+                      href="/resources"
                     >
                       <i className="ni ni-collection d-lg-none mr-1" />
-                      <span className="nav-link-inner--text">About</span>
+                      <span className="nav-link-inner--text mt-0 pt-0">RESOURCES</span>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className="nav-link-icon mt-0 pt-0"
+                      href="/about"
+                    >
+                      <i className="ni ni-collection d-lg-none mr-1 pt-0 mt-0" />
+                      <span className="nav-link-inner--text">ABOUT</span>
                     </NavLink>
                   </NavItem>
                 </Nav>
+
+
                 
               </UncontrolledCollapse>
             </Container>

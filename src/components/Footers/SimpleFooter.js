@@ -25,6 +25,7 @@ import {
   NavItem,
   NavLink,
   Nav,
+  NavbarBrand,
   Container,
   Row,
   Col,
@@ -35,40 +36,46 @@ class SimpleFooter extends React.Component {
   render() {
     return (
       <>
-        <footer className=" footer">
+      <footer className=" footer">
           <Container>
-            <Row className=" row-grid align-items-center mb-5">
-              <Col lg="6">
-                <h3 className=" text-primary font-weight-light mb-2">
-                  This is a community effort.
-                </h3>
-                <Link to="/about">
-                  <span className="btn-inner--text">
-                      About Us
-                  </span>
-                </Link>
-              </Col>
-              
-            </Row>
-            <hr />
+
             <Row className=" align-items-center justify-content-md-between">
               <Col md="6">
+              <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+                  <img
+                    alt="..."
+                    src={require("assets/img/brand/GetTestedCovid19Finallogocolorfinal.png")}
+                  />
+                </NavbarBrand>
                 <div className=" copyright">
-                  
+                  © {new Date().getFullYear()}{" "}
+                  Get-Tested-COVID19
+                  .
                 </div>
               </Col>
               <Col md="6">
                 <Nav className=" nav-footer justify-content-end">
-                  
                   <NavItem>
-                    <Link to="/about">
-                      <span className="btn-inner--text">
-                          About Us
-                      </span>
-                    </Link>
+                    <NavLink
+                      href="/test-site-search"
+                    >
+                      FIND TEST CENTER
+                    </NavLink>
                   </NavItem>
-                  
-                  
+                  <NavItem>
+                    <NavLink
+                      href="/resources"
+                    >
+                      RESOURCES
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      href="/about"
+                    >
+                      ABOUT
+                    </NavLink>
+                  </NavItem>
                 </Nav>
               </Col>
             </Row>

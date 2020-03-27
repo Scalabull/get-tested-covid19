@@ -27,6 +27,7 @@ import Index from "views/Index.js";
 import TestSiteSearch from "views/TestSiteSearch.js";
 import TestSitesMap from "views/TestSitesMap.js";
 import About from "views/About.js";
+import Resources from "views/Resources.js";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -36,6 +37,11 @@ ReactDOM.render(
         path="/test-site-search"
         exact
         render={props => <TestSiteSearch {...props} />}
+      />
+      <Route
+        path="/resources"
+        exact
+        render={props => <Resources {...props} />}
       />
       <Route
         path="/test-sites-map"
