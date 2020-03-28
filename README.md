@@ -51,3 +51,42 @@ Mobile version of app is slightly disfunctional.
 ## Overall content
 
 A major potential value-add might be in helping new communities to set up test centers. We can provide these communities with resources. We can link them to other community test centers. We can provide transparency so that communities can share best practices with one another.
+
+
+# DEV OPS
+
+Deployment is on a Rackspace VM in the Dallas region. We have a VM server image that can be duplicated for multi-host deployment, if needed. This instance sits behind a load balancer which holds the SSL certificate and does SSL termination. The load balancer only accepts HTTPS(443) traffic and redirects HTTP to HTTPS.
+
+## VM Instance Configuration
+Configuration:
+
+CentOS7
+Node.js LTS install (Version 12.x)
+Install latest git
+Install CertBot
+
+npm install -g pm2
+
+## App Deployment
+
+git clone (this repository)
+npm install
+npm run build
+pm2 serve ./build 3000 --spa
+
+TODO: Still making adjustments to the infrastructure. May need to add iptables rules to these steps.
+
+## Deployment Notes
+
+- The load balancer points to port 3000 on the VM instance.
+- Adding additional instances is easy. Deploy a new VM thru Rackspace w/ the saved image, run app deployment steps, point load balancer to additional server.
+
+## testSites.json Serving
+
+The 'database' is a JSON file, served from GCP Cloud Storage. The file has the following properties:
+- Caching is set to 7200 second expiration
+- CORS for http://localhost:3000 and https://get-tested-covid19.org
+
+If the size of the file gets large, we have two options to speed up download:
+- gzip before uploading to GCP Cloud Storage, set the gzip headers properly. e.g. 70% compression feasible.
+- JSON minification/uglification is another option. Probably not needed / not as useful as gzip.
