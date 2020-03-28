@@ -1,6 +1,6 @@
 [
     {
-      "origin": ["http://localhost:3000", "get-tested-covid19.org"],
+      "origin": ["http://localhost:3000", "https://get-tested-covid19.org", "http://get-tested-covid19.org"],
       "responseHeader": ["Content-Type"],
       "method": ["GET"],
       "maxAgeSeconds": 3600
