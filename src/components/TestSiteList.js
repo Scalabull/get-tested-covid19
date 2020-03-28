@@ -71,8 +71,8 @@ class TestSiteList extends React.Component {
         let zip = getQueryStringValue('zip') || "";
 
         this.state = {
-            initialItems: testSiteData,
-            items: testSiteData,
+            initialItems: testSiteData.testSites,
+            items: testSiteData.testSites,
             zip: zip
         }
 
