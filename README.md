@@ -18,6 +18,7 @@ Once you are cleared to work on a feature, task, or bug, create a branch using t
 ## Thanks to all of the following contributors (as of March 27, 2020)!
 - Katherine Conaway
 - Tarryn Marcus
+- Amy Nguyen
 - Nathan Boldyga
 - Tiago Almeida 
 - Zach Boldyga
