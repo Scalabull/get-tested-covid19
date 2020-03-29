@@ -58,21 +58,45 @@ A major potential value-add might be in helping new communities to set up test c
 Deployment is on a Rackspace VM in the Dallas region. We have a VM server image that can be duplicated for multi-host deployment, if needed. This instance sits behind a load balancer which holds the SSL certificate and does SSL termination. The load balancer only accepts HTTPS(443) traffic and redirects HTTP to HTTPS.
 
 ## VM Instance Configuration
+```
 Configuration:
 
-CentOS7
-Node.js LTS install (Version 12.x)
-Install latest git
-Install CertBot
+Base operating system: CentOS8
 
-npm install -g pm2
+#skipping user account, security configuration, firewalld port rules
+
+#sudo firewall-cmd --add-port=3000/tcp --permanent
+#sudo service firewalld restart
+
+sudo yum install git
+
+curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
+
+sudo yum install node.js
+
+sudo npm install -g pm2
+```
+
+Notes on checking deployment
+
+```
+# NOTE: In production deployment, SSH chain and key files are stored in the load balancer, and SSH termination happens at the load balancer. Traffic served by the server(s) is HTTP traffic on port 3000.
+
+# Check if the service is running on local 3000 port:
+# lsof -i :3000
+# Check if service is externally exposed on a remote server:
+# nc -vz HOST 3000
+# (where HOST is host IP)
+```
 
 ## App Deployment
 
+```
 git clone (this repository)
 npm install
 npm run build
 pm2 serve ./build 3000 --spa
+```
 
 TODO: Still making adjustments to the infrastructure. May need to add iptables rules to these steps.
 
