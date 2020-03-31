@@ -17,7 +17,6 @@
 */
 import React from "react";
 import CardList from "components/CardList";
-import testSiteData from "assets/data/testSites"
 import zipLookups from "assets/data/zipLookups"
 import haversine from "haversine";
 import qs from "query-string";
@@ -71,8 +70,8 @@ class TestSiteList extends React.Component {
         let zip = getQueryStringValue('zip') || "";
 
         this.state = {
-            initialItems: testSiteData.testSites,
-            items: testSiteData.testSites,
+            initialItems: [],
+            items: [],
             zip: zip
         }
 
@@ -144,8 +143,9 @@ class TestSiteList extends React.Component {
         fetch("https://storage.googleapis.com/covid19-resources/testSites.json")
         .then(res => res.json())
         .then(
-            () => {
+            (res) => {
                 console.log('external test site directory loaded successfully, CORS success.');
+                this.setState({initialItems: res.testSites, items: res.testSites})
             },
             (error) => {
                 console.log(error);
