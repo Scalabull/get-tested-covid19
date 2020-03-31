@@ -1,5 +1,5 @@
 {
-  "name": "covid19-test-centers",
+  "name": "get-tested-covid19",
   "version": "1.1.0",
   "description": "Website for the public to find COVID19 testing centers.",
   "main": "index.js",
@@ -26,14 +26,14 @@
   "homepage": "https://get-tested-covid19.org",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && gulp licenses",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
     "compile-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css",
     "minify-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --output-style compressed",
     "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true",
-    "server:start": "pm2 serve ./build 3000 --spa",
+    "server:start": "pm2 stop all && pm2 serve ./build 3000 --spa",
     "docker:build": "DOCKER_REPO=tiagojsalmeida NAME=$npm_package_name ./shared/docker/hooks/build",
     "docker:push": "DOCKER_REPO=tiagojsalmeida NAME=$npm_package_name ./shared/docker/hooks/push"
   },
