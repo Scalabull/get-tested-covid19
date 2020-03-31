@@ -33,7 +33,7 @@
     "compile-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css",
     "minify-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --output-style compressed",
     "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true",
-    "server:start": "pm2 serve ./build 3000 --spa",
+    "server:start": "pm2 stop all && pm2 serve ./build 3000 --spa",
     "docker:build": "DOCKER_REPO=tiagojsalmeida NAME=$npm_package_name ./shared/docker/hooks/build",
     "docker:push": "DOCKER_REPO=tiagojsalmeida NAME=$npm_package_name ./shared/docker/hooks/push"
   },
