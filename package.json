@@ -1,5 +1,5 @@
 {
-  "name": "covid19-test-centers",
+  "name": "get-tested-covid19",
   "version": "1.1.0",
   "description": "Website for the public to find COVID19 testing centers.",
   "main": "index.js",

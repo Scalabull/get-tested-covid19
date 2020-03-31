@@ -31,11 +31,8 @@
 FROM mhart/alpine-node:12 AS builder
 WORKDIR /app
 COPY . .
-RUN yarn --pure-lockfile
-#RUN npm install --production
+RUN npm install --production
 RUN npm run build
-
-RUN yarn install pm2 -g
+RUN npm install pm2 -g
 
 RUN npm run server:start
-#CMD ["serve", "-p", "80", "-s", "."]
