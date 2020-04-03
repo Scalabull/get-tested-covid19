@@ -10,29 +10,52 @@ In both cases, we achieve this by collecting and organizing data, and providing 
 
 We do not intend to make any recommendations or opinionated statements. 
 
-# The Team (Org chart)
-
-- Tarryn Marcus: Marketing Manager (approves all website changes)
-- Katherine Conaway: Content Lead (approves all website changes)
-- Zach Boldyga: Organizer (approves all website changes)
-- Tiago Almeida: DevOps, Client-side development
-- Amy Nguyen: Branding (logo, color)
-
-## Significant Contributions From:
-- Nathan Boldyga: Content curation
-- Antony Oparin: Technical advice / guidance
-
 # Contributing
 
 We'd love your help. Don't be shy, every day that goes by has a heavy cost!
 
-For software-related work, please create or find a github issue. A project maintainer will coordinate with you to make sure someone else isn't already working on a particular task, and that the task is in-line with our vision. 
+Due to a large influx of contributor requests, we now have a robust contribution workflow, documented here: https://drive.google.com/file/d/15AKOek3_IeKS3gOxy8_mOvzm49eVx95H/view?usp=sharing . Please reference this document to understand how different contributors fit into the organization.
 
-Once you are cleared to work on a feature, task, or bug, create a branch using the git feature-branch workflow. 
+For first time contributors, we would love to meet with you via video conference / phone call! https://calendly.com/get-tested-covid19/get-tested-covid-19-project-sync?month=2020-04
 
-To have a project maintainer start to review your work, **open a PR to the 'staging' branch.**
+You can also join our Slack, where most of the project-related communication is now happening: gettestedcovid-19.slack.com .
+
+For ideas that reach the 'implementation' phase, efforts will be fully managed inside of GitHub, primarily in the GitHub Issues - with a high-level overview of task progress visible in GitHub Projects. We ask that all contributors claim their Issues before doing work to avoid collisions / conflicting efforts :)
+
+For work in progress, you can interact with Project Managers by opening a Pull Request **to the 'staging' branch.**
+
+## Ethos
+
+Since this is a volunteer project with a rapidly growing number of participants, we want to take special precautions to ensure that our work continues to follow the mission guidelines and that contributors feel valued and rewarded for their work! Please keep the following in mind:
+
+- We will always adhere to our contribution process. Ideas/efforts that aren't approved by the Project Maintainers should not be implemented. Approval is dependent on our approval checklist guidelines, and the disgression of the Project Maintainers.
+
+- For this project, supportiveness of our community is more important than critical feedback. If someone is struggling with an effort, explore how you can be supportive of their work. Open source is a great way for people to learn new skills and network!
+
+# The Team (Org chart)
+
+## Project Maintainers
+- Tarryn Marcus
+- Katherine Conaway
+- Zach Boldyga
+- Tentative: Shwetha Hariharan
+
+## Project Managers
+- Zach Boldyga
+- Tentative: Shwetha Hariharan
+
+## Implementation Team
+- Tarryn Marcus: Digital Marketing, Website
+- Katherine Conaway: Content Creation
+- Tiago Almeida: Software Engineer
+- Amy Nguyen: Branding, Logo, Color
+- Zach Boldyga: Software Engineer
+- Nathan Boldyga: Content curation
+- Antony Oparin: Technical advice / guidance
+
 
 # Technical Specs
+This technical documentation is rapidly evolving and may be out of sync. We will do our best to keep this up-to-date with a rough overview of the architecture so that newcomers can get up-to-speed quickly.
 
 ## CI/CD
 
