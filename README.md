@@ -28,21 +28,20 @@ For work in progress, you can interact with Project Managers by opening a Pull R
 
 Since this is a volunteer project with a rapidly growing number of participants, we want to take special precautions to ensure that our work continues to follow the mission guidelines and that contributors feel valued and rewarded for their work! Please keep the following in mind:
 
-- We will always adhere to our contribution process. Ideas/efforts that aren't approved by the Project Maintainers should not be implemented. Approval is dependent on our approval checklist guidelines, and the disgression of the Project Maintainers.
+- We will always adhere to our contribution process. Ideas/efforts that aren't approved by the Project Maintainers should not be implemented. Approval is dependent on our approval checklist guidelines: https://drive.google.com/file/d/1MMJCawwQWlC1fgXhWU_Kgqyi0OWmI7cN/view?usp=sharing, and the disgression of the Project Maintainers.
 
 - For this project, supportiveness of our community is more important than critical feedback. If someone is struggling with an effort, explore how you can be supportive of their work. Open source is a great way for people to learn new skills and network!
 
 # The Team (Org chart)
 
-## Project Maintainers
+## Project Maintainers (approvals)
 - Tarryn Marcus
 - Katherine Conaway
 - Zach Boldyga
 - Tentative: Shwetha Hariharan
 
-## Project Managers
+## Project Managers (code reviews, requirements documentation)
 - Zach Boldyga
-- Tentative: Shwetha Hariharan
 
 ## Implementation Team
 - Tarryn Marcus: Digital Marketing, Website
