@@ -32,6 +32,20 @@ Since this is a volunteer project with a rapidly growing number of participants,
 
 - For this project, supportiveness of our community is more important than critical feedback. If someone is struggling with an effort, explore how you can be supportive of their work. Open source is a great way for people to learn new skills and network!
 
+## Where you can find us:
+
+Primary Communication: Slack: gettestedcovid-19.slack.com
+
+Project Management: GitHub Issues and GitHub Projects
+
+Primary Email: info@get-tested-covid19.org
+
+Video Call w/ Organizers: https://calendly.com/get-tested-covid19/get-tested-covid-19-project-sync?month=2020-04
+
+Public Documents: https://drive.google.com/drive/folders/1jUMZZUvFeKywRVdMcaqAyzpnXsLVr8oP?usp=sharing
+
+Instagram: https://www.instagram.com/get_tested_covid19/
+
 # The Team (Org chart)
 
 ## Project Maintainers (approvals)
@@ -51,7 +65,6 @@ Since this is a volunteer project with a rapidly growing number of participants,
 - Zach Boldyga: Software Engineer
 - Nathan Boldyga: Content curation
 - Antony Oparin: Technical advice / guidance
-
 
 # Technical Specs
 This technical documentation is rapidly evolving and may be out of sync. We will do our best to keep this up-to-date with a rough overview of the architecture so that newcomers can get up-to-speed quickly.
