@@ -96,6 +96,9 @@ class CardList extends React.Component {
                                     Doctor screen required before arrival? {item.doctorScreenRequired === true ? 'Yes' : 'No'}
                                 </h6>
                                 <h6>
+                                    Appointment Required?  {item.appReq === true ? 'Yes' : 'No'}
+                                </h6>
+                                <h6>
                                     Is this a drive-thru testing site (stay in your car)? {item.driveThruSite === true ? 'Yes' : 'No'}
                                 </h6>
                                 <h6>
