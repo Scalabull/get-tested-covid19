@@ -93,16 +93,16 @@ class CardList extends React.Component {
                                     {item.address}, {item.city} {item.state}, {item.zip}
                                 </p>
                                 <h6>
-                                    Doctor screen required before arrival? {item.doctorScreenRequired === true ? 'Yes' : 'No'}
+                                    Doctor screen required before arrival? {item.doctorScreenRequired}
                                 </h6>
                                 <h6>
-                                    Appointment Required?  {item.appReq === true ? 'Yes' : 'No'}
+                                    Appointment Required?  {item.appReq}
                                 </h6>
                                 <h6>
-                                    Is this a drive-thru testing site (stay in your car)? {item.driveThruSite === true ? 'Yes' : 'No'}
+                                    Is this a drive-thru testing site (stay in your car)? {item.driveThruSite}
                                 </h6>
                                 <h6>
-                                    Is this a walk-in testing site (must come inside the facility at some point)? {item.walkUpSite === true ? 'Yes' : 'No'}
+                                    Is this a walk-in testing site (must come inside the facility at some point)? {item.walkUpSite}
                                 </h6>
                                 <p>
                                     <bold>Hours:</bold> {item.hours}
