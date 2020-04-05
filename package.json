@@ -34,7 +34,7 @@
     "minify-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --output-style compressed",
     "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true",
 
-    "server:build": "npm install --production && npm rebuild && CI='' npm run build",
+    "server:build": "yarn install && CI='' npm run build",
     "server:start": "pm2 deploy ecosystem.config.js production deploy",
 
     "docker:build": "DOCKER_REPO=tiagojsalmeida NAME=$npm_package_name ./shared/docker/hooks/build",
