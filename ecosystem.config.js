@@ -33,7 +33,7 @@ module.exports = {
             ref  : 'staging',
             repo : '.',
             path : '/home/testSiteApp/get-tested-covid19',
-            'post-deploy' : 'npm run server:build && pm2 startOrRestart ecosystem.config.js --env staging && pm2 save'
+            'post-deploy' : 'pm2 startOrRestart ecosystem.config.js --env staging && pm2 save'
         }
     }
 };
