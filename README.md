@@ -2,62 +2,22 @@
 
 We are a band of volunteers and we'd love your help!
 
-Our mission is two-fold:
-1. Help people locate COVID-19 testing centers, learn the protocols of these centers, and seek testing if needed.
-2. Help healthcare professionals and stakeholders create, manage, and support testing centers more effectively.
+**Our mission: Drive the use of designated testing centers for COVID-19 testing in the US.**
 
-In both cases, we achieve this by collecting and organizing data, and providing this transparently. 
+We are doing this through:
 
-We do not intend to make any recommendations or opinionated statements. 
+1. Building and maintaining the best tool for people to find a COVID-19 testing center, determine eligibility, and plan their trip.
+2. Implementing a wide variety of small initiatives to enhance our understanding of testing centers, extend our reach, and provide more complete and up-to-date data.
+
 
 # Contributing
 
-We'd love your help. Don't be shy, every day that goes by has a heavy cost!
+Please see our contributor documentation: https://docs.google.com/document/d/1japXUwtShwC1xyJJdMLuCQH2eMSVpoyjH-uoNnjR0C0/edit?usp=sharing
 
-Due to a large influx of contributor requests, we now have a robust contribution workflow, documented here: https://drive.google.com/file/d/15AKOek3_IeKS3gOxy8_mOvzm49eVx95H/view?usp=sharing . Please reference this document to understand how different contributors fit into the organization.
-
-For first time contributors, we would love to meet with you via video conference / phone call! https://calendly.com/get-tested-covid19/get-tested-covid-19-project-sync?month=2020-04
-
-You can also join our Slack, where most of the project-related communication is now happening: gettestedcovid-19.slack.com .
-
-For ideas that reach the 'implementation' phase, efforts will be fully managed inside of GitHub, primarily in the GitHub Issues - with a high-level overview of task progress visible in GitHub Projects. We ask that all contributors claim their Issues before doing work to avoid collisions / conflicting efforts :)
-
-For work in progress, you can interact with Project Managers by opening a Pull Request **to the 'staging' branch.**
-
-## Ethos
-
-Since this is a volunteer project with a rapidly growing number of participants, we want to take special precautions to ensure that our work continues to follow the mission guidelines and that contributors feel valued and rewarded for their work! Please keep the following in mind:
-
-- We will always adhere to our contribution process. Ideas/efforts that aren't approved by the Project Maintainers should not be implemented. Approval is dependent on our approval checklist guidelines: https://drive.google.com/file/d/1MMJCawwQWlC1fgXhWU_Kgqyi0OWmI7cN/view?usp=sharing, and the disgression of the Project Maintainers.
-
-- For this project, supportiveness of our community is more important than critical feedback. If someone is struggling with an effort, explore how you can be supportive of their work. Open source is a great way for people to learn new skills and network!
-
-## Where you can find us:
-
-Primary Communication: Slack: gettestedcovid-19.slack.com
-
-Project Management: GitHub Issues and GitHub Projects
-
-Primary Email: info@get-tested-covid19.org
-
-Video Call w/ Organizers: https://calendly.com/get-tested-covid19/get-tested-covid-19-project-sync?month=2020-04
-
-Public Documents: https://drive.google.com/drive/folders/1jUMZZUvFeKywRVdMcaqAyzpnXsLVr8oP?usp=sharing
-
-Instagram: https://www.instagram.com/get_tested_covid19/
 
 # The Team (Org chart)
 
-## Project Maintainers (approvals)
-- Tarryn Marcus
-- Katherine Conaway
-- Zach Boldyga
-- Tentative: Shwetha Hariharan
-
-## Project Managers (code reviews, requirements documentation)
-- Zach Boldyga
-
-## Implementation Team
+## Contributors
 - Tarryn Marcus: Digital Marketing, Website
 - Katherine Conaway: Content Creation
 - Tiago Almeida: Software Engineer
@@ -65,6 +25,13 @@ Instagram: https://www.instagram.com/get_tested_covid19/
 - Zach Boldyga: Software Engineer
 - Nathan Boldyga: Content curation
 - Antony Oparin: Technical advice / guidance
+- Any many more... We'll do our best to upload all of these soon!
+
+## Project Maintainers (approvals)
+- Tarryn Marcus
+- Katherine Conaway
+- Zach Boldyga
+- Shwetha Hariharan
 
 # Technical Specs
 This technical documentation is rapidly evolving and may be out of sync. We will do our best to keep this up-to-date with a rough overview of the architecture so that newcomers can get up-to-speed quickly.
