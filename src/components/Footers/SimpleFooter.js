@@ -50,7 +50,6 @@ class SimpleFooter extends React.Component {
                 <div className=" copyright">
                   © {new Date().getFullYear()}{" "}
                   Get-Tested-COVID19
-                  .
                 </div>
               </Col>
               <Col md="6">
