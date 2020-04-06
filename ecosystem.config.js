@@ -25,8 +25,7 @@ module.exports = {
             ref  : 'origin/master',
             repo : '.',
             path : '/home/testSiteApp/get-tested-covid19',
-            'pre-deploy' : 'npm run server:build',
-            'post-deploy' : 'pm2 startOrRestart ecosystem.config.js --env production && pm2 save'
+            'post-deploy' : 'npm run server:build && pm2 startOrRestart ecosystem.config.js --env production && pm2 save'
         },
         staging : {
             user : 'testSiteApp',
@@ -34,8 +33,7 @@ module.exports = {
             ref  : 'staging',
             repo : '.',
             path : '/home/testSiteApp/get-tested-covid19',
-            // 'pre-deploy' : 'npm run server:build',
-            'post-deploy' : 'npm run server:build && pm2 startOrRestart ecosystem.config.js --env staging --force && pm2 save'
+            'post-deploy' : 'npm run server:build && pm2 startOrRestart ecosystem.config.js --env staging && pm2 save'
         }
     }
 };
