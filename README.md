@@ -97,6 +97,13 @@ pm2 serve ./build 3000 --spa
 
 TODO: Still making adjustments to the infrastructure. May need to add iptables rules to these steps.
 
+## Local Docker Development
+
+```
+npm run docker:build
+npm run docker:run
+```
+
 ## Deployment Notes
 
 - The load balancer points to port 3000 on the VM instance.
