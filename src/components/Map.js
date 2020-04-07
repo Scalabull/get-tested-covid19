@@ -11,7 +11,7 @@ export default class SimpleExample extends Component {
     // googlemap or serve a JSON file with all zipcode and coord as key
     // value pair. 
     return (
-      <Map center={items[0]} zoom={6} style={{height: '400px', width: '100%'}}>
+      <Map center={items[0]} zoom={6} className="map">
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
