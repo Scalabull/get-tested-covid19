@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
 
-export default class SimpleExample extends Component {
+export default class TestSiteMap extends React.Component {
 
   render() {
     const { items } = this.props;
