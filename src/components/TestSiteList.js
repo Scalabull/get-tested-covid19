@@ -17,7 +17,7 @@
 */
 import React from "react";
 import CardList from "components/CardList";
-import TestSiteMap from 'components/TestSiteMap';
+import TestSiteMap from "components/TestSiteMap";
 import zipLookups from "assets/data/zipLookups"
 import haversine from "haversine";
 import qs from "query-string";
