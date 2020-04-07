@@ -34,6 +34,8 @@
     "minify-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --output-style compressed",
     "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true",
     "server:start": "pm2 stop all && pm2 serve ./build 3000 --spa --no-daemon",
+    "server:build": "yarn install && CI='' npm run build",
+    "server:start": "pm2 deploy ecosystem.config.js production deploy",
     "docker:build": "docker build -t get-tested -f docker/Dockerfile .",
     "docker:run": "docker run -p 3000:3000 get-tested",
     "docker:push": "echo Needs refactoring"
@@ -52,9 +54,11 @@
     "bootstrap": "4.3.1",
     "classnames": "2.2.6",
     "express": "~4.17.1",
+    "fibers": "^4.0.2",
     "geo-distance-js": "~1.0.0",
     "haversine": "~1.1.1",
     "headroom.js": "0.11.0",
+    "mkdirp": "^1.0.4",
     "moment": "2.24.0",
     "node-sass": "4.13.1",
     "nouislider": "14.1.1",
@@ -69,7 +73,8 @@
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
     "react-scripts": "3.4.0",
-    "reactstrap": "8.4.1"
+    "reactstrap": "8.4.1",
+    "sass": "^1.26.3"
   },
   "devDependencies": {
     "@types/googlemaps": "3.39.2",

@@ -2,37 +2,39 @@
 
 We are a band of volunteers and we'd love your help!
 
-Our mission is two-fold:
-1. Help people locate COVID-19 testing centers, learn the protocols of these centers, and seek testing if needed.
-2. Help healthcare professionals and stakeholders create, manage, and support testing centers more effectively.
+**Our mission: Drive the use of designated testing centers for COVID-19 testing in the US.**
 
-In both cases, we achieve this by collecting and organizing data, and providing this transparently. 
+We are doing this through:
 
-We do not intend to make any recommendations or opinionated statements. 
+1. Building and maintaining the best tool for people to find a COVID-19 testing center, determine eligibility, and plan their trip.
+2. Implementing a wide variety of small initiatives to enhance our understanding of testing centers, extend our reach, and provide more complete and up-to-date data.
 
-# The Team (Org chart)
-
-- Tarryn Marcus: Marketing Manager (approves all website changes)
-- Katherine Conaway: Content Lead (approves all website changes)
-- Zach Boldyga: Organizer (approves all website changes)
-- Tiago Almeida: DevOps, Client-side development
-- Amy Nguyen: Branding (logo, color)
-
-## Significant Contributions From:
-- Nathan Boldyga: Content curation
-- Antony Oparin: Technical advice / guidance
 
 # Contributing
 
-We'd love your help. Don't be shy, every day that goes by has a heavy cost!
+Please see our contributor documentation: https://docs.google.com/document/d/1japXUwtShwC1xyJJdMLuCQH2eMSVpoyjH-uoNnjR0C0/edit?usp=sharing
 
-For software-related work, please create or find a github issue. A project maintainer will coordinate with you to make sure someone else isn't already working on a particular task, and that the task is in-line with our vision. 
 
-Once you are cleared to work on a feature, task, or bug, create a branch using the git feature-branch workflow. 
+# The Team (Org chart)
 
-To have a project maintainer start to review your work, **open a PR to the 'staging' branch.**
+## Contributors
+- Tarryn Marcus: Digital Marketing, Website
+- Katherine Conaway: Content Creation
+- Tiago Almeida: Software Engineer
+- Amy Nguyen: Branding, Logo, Color
+- Zach Boldyga: Software Engineer
+- Nathan Boldyga: Content curation
+- Antony Oparin: Technical advice / guidance
+- Any many more... We'll do our best to upload all of these soon!
+
+## Project Maintainers (approvals)
+- Tarryn Marcus
+- Katherine Conaway
+- Zach Boldyga
+- Shwetha Hariharan
 
 # Technical Specs
+This technical documentation is rapidly evolving and may be out of sync. We will do our best to keep this up-to-date with a rough overview of the architecture so that newcomers can get up-to-speed quickly.
 
 ## CI/CD
 
