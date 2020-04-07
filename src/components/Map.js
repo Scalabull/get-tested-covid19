@@ -5,6 +5,11 @@ export default class SimpleExample extends Component {
 
   render() {
     const { items } = this.props;
+    // TODO: For now we center the map with the coord of the first item
+    // in the list. What we should really do is to center with the zipcode.
+    // This requires Geocoding. We can do this either by using an API like
+    // googlemap or serve a JSON file with all zipcode and coord as key
+    // value pair. 
     return (
       <Map center={items[0]} zoom={6} style={{height: '400px', width: '100%'}}>
         <TileLayer
