@@ -1,21 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[86]:
-
-
 import pandas as pd
 import numpy as np
 import gspread
 import json
-import phonenumbers
 import logging
 from oauth2client.service_account import ServiceAccountCredentials
 from google.cloud import storage
-
-
-# In[2]:
-
 
 SPEADSHEET_NAME = 'Updated Corona Virus Testing Site Form (Responses)'
 WORKSHEET_NAME = 'Form Responses 1'
@@ -23,10 +12,6 @@ BUCKET_NAME = 'gtest-abs'
 CREDENTIALS_FILEPATH = 'GSheetsToGCS-credentials.json'
 RECORDS_FILENAME = 'all_sheet_records.json'
 accepted_columns_names = ['name','address','city','state', 'zip', 'lat','lng','phone','hours','days','opPeriod','link','appReq','docScreen','driveThru','walkUp','description','estCap','comments']
-
-
-# In[3]:
-
 
 def upload_blob(bucket_name, source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""
@@ -45,10 +30,6 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
             source_file_name, destination_blob_name
         )
     )
-
-
-# In[88]:
-
 
 if __name__ == '__main__':
 
@@ -96,10 +77,4 @@ if __name__ == '__main__':
     # upload json file to gcs bucket
     upload_blob(bucket_name=BUCKET_NAME, source_file_name=RECORDS_FILENAME, destination_blob_name=RECORDS_FILENAME)
     logger.info('records JSON object uploaded to bucket')
-
-
-# In[ ]:
-
-
-
 
