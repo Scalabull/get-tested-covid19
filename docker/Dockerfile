@@ -1,7 +1,8 @@
-FROM mhart/alpine-node:12
-WORKDIR /app
+FROM node:12-alpine
 COPY . .
-RUN npm install --production
+RUN yarn install --production
 RUN npm run build
-RUN npm install pm2 -g
-ENTRYPOINT ["pm2", "serve", "./build", "3000", "--spa", "--no-daemon"]
+
+EXPOSE 3000
+
+ENTRYPOINT ["node", "expressServer.js"]
