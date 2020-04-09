@@ -1,5 +1,20 @@
 version: 2.1
 jobs:
+  terraform:
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - checkout
+      - run: 
+          name: insttal-aws-cli
+          command: apk add --update python python-dev py-pip build-base && wget https://s3.amazonaws.com/aws-cli/awscli-bundle.zip && unzip awscli-bundle.zip && ./awscli-bundle/install -i /usr/local/aws -b /bin/aws
+      - run:
+          name: terraform-init
+          command: cd infrastructure; OBJECT_KEY=dev ./util/terraform/terraform_init.sh
+      - run:
+          name: terraform-plan
+          command: cd infrastructure; terraform plan
+     
   build:
     docker:
       - image: node:12-alpine
@@ -15,3 +30,9 @@ jobs:
 #           name: npm-test
 #           command: npm run test
 # TODO: setup caching
+workflows:
+  version: 2
+  terraform_and_build:
+    jobs:
+      - terraform
+      - build
