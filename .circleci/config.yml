@@ -1,7 +1,6 @@
 version: 2.1
 jobs:
   terraform:
-    working_directory: ./infrastructure
     docker:
       - image: hashicorp/terraform:light
     steps:
