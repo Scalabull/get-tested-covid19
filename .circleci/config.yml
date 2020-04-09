@@ -8,10 +8,10 @@ jobs:
       - checkout
       - run:
          name: terraform-init
-         command: make terraform-init
+         command: OBJECT_KEY=dev ./util/terraform/terraform_init.sh
       - run:
          name: terraform-plan
-         command: make terraform-plan
+         command: terraform plan
      
   build:
     docker:
