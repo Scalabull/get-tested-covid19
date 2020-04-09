@@ -30,3 +30,7 @@ In the plan phase terraform takes a look at what is already deployed and lets yo
 > make terraform-apply
 
 In tthe apply phase terraform makes the changes specified in the plan stage.
+
+### Destroy
+
+> terraform destroy

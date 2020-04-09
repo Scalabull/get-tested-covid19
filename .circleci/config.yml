@@ -28,3 +28,9 @@ jobs:
 #           name: npm-test
 #           command: npm run test
 # TODO: setup caching
+workflows:
+  version: 2
+  terraform_and_build:
+    jobs:
+      - terraform
+      - build
