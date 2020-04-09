@@ -35,14 +35,9 @@
     "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true",
     "server:build": "yarn install && CI='' npm run build",
     "server:start": "pm2 deploy ecosystem.config.js production deploy",
-<<<<<<< HEAD
-    "docker:build": "DOCKER_REPO=tiagojsalmeida NAME=$npm_package_name ./shared/docker/hooks/build",
-    "docker:push": "DOCKER_REPO=tiagojsalmeida NAME=$npm_package_name ./shared/docker/hooks/push"
-=======
     "docker:build": "docker build -t gettestedcovid19/webserver:latest -f docker/Dockerfile .",
     "docker:run": "docker run -p 3000:3000 gettestedcovid19/webserver:latest",
     "docker:push": "docker push gettestedcovid19/webserver:latest"
->>>>>>> b7df9fae9f5ea21ff6e196609de6da8a68f043b7
   },
   "eslintConfig": {
     "extends": "react-app"
