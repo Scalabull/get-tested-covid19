@@ -72,7 +72,7 @@ class CardList extends React.Component {
           {
             
             topResults.map(item => {
-              return <Card className="shadow shadow-lg--hover mt-5">
+              return <Card key={item.name} className="shadow shadow-lg--hover mt-5">
                         <CardBody>
                             <div className="d-flex px-3">
                             <div>
@@ -105,9 +105,9 @@ class CardList extends React.Component {
                                     Is this a walk-in testing site (must come inside the facility at some point)? {item.walkUp}
                                 </h6>
                                 <p>
-                                    <bold>Hours:</bold> {item.hours}
+                                    <b>Hours:</b> {item.hours}
                                     <br />
-                                    <bold>Phone:</bold> {item.phone}
+                                    <b>Phone:</b> {item.phone}
                                 </p>
                             </div>
                             </div>

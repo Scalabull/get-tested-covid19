@@ -35,7 +35,7 @@ class HomeZipForm extends React.Component {
     render() {
         return (
             <>
-                <Col lg="4" sm="6" className="mt-3 mr-0 pr-0">
+                <Col lg="4" sm="6" xs="8" className="mt-3 mr-0 pr-0">
                     <FormGroup
                     className={classnames({
                         focused: this.state.searchFocused,
@@ -62,7 +62,7 @@ class HomeZipForm extends React.Component {
                     </InputGroup>
                     </FormGroup>
                 </Col>
-                <Col lg="4" sm="6" className="mt-3 ml-0 pl-0">
+                <Col lg="4" sm="6" xs="4" className="mt-3 ml-0 pl-0">
                     <Button 
                         className="btn-square btn-info"
                         href={"/test-site-search?zip=" + this.state.value}
