@@ -5,3 +5,8 @@ current
 source
 .deploys
 .DS_Store
+.terraform
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.backup
