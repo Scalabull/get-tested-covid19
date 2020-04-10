@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: terraform-init
-          command: cd infrastructure; OBJECT_KEY=$CIRCLE_BRANCH ./util/terraform/terraform_init.sh
+          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
       - run:
           name: terraform-plan
           command: cd infrastructure; terraform plan
@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run:
           name: terraform-init
-          command: cd infrastructure; OBJECT_KEY=$CIRCLE_BRANCH ./util/terraform/terraform_init.sh
+          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
       - run:
           name: terraform-apply
           command: cd infrastructure; terraform apply -auto-approve
@@ -29,7 +29,7 @@ jobs:
       - checkout
       - run:
           name: terraform-init
-          command: cd infrastructure; OBJECT_KEY=$CIRCLE_BRANCH ./util/terraform/terraform_init.sh
+          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
       - run:
           name: terraform-apply
           command: cd infrastructure; terraform apply -auto-approve
@@ -40,10 +40,21 @@ jobs:
       - checkout
       - run:
           name: terraform-init
-          command: cd infrastructure; OBJECT_KEY=$CIRCLE_BRANCH ./util/terraform/terraform_init.sh
+          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
       - run:
           name: terraform-apply
           command: cd infrastructure; terraform apply -auto-approve
+  terraform-dev-destroy:
+    docker:
+      - image: patrickcpierson/terraform-aws:latest
+    steps:
+      - checkout
+      - run:
+          name: terraform-init
+          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
+      - run:
+          name: terraform-destroy
+          command: cd infrastructure; terraform destroy -auto-approve
   build:
     docker:
       - image: node:12-alpine
@@ -90,6 +101,15 @@ workflows:
       - terraform-dev-deploy:
           requires:
             - terraform
+            - build
+          filters:
+            branches:
+              only: /infra-.*/
+          # context: dev
+      - terraform-dev-destroy:
+          requires:
+            - terraform
+            - terraform-dev-deploy
             - build
           filters:
             branches:
