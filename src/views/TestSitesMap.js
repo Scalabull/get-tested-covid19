@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 /*!
 
 =========================================================
@@ -15,14 +16,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 
 // reactstrap components
-import { Button, Card, Container, Row, Col } from "reactstrap";
+import { Card, Container } from 'reactstrap';
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
+import DemoNavbar from 'components/Navbars/DemoNavbar.js';
+import SimpleFooter from 'components/Footers/SimpleFooter.js';
 
 class Profile extends React.Component {
   componentDidMount() {
@@ -34,10 +35,10 @@ class Profile extends React.Component {
     return (
       <>
         <DemoNavbar />
-        <main className="profile-page" ref="main">
-          <section className="section-profile-cover section-shaped my-0">
+        <main className='profile-page' ref='main'>
+          <section className='section-profile-cover section-shaped my-0'>
             {/* Circles background */}
-            <div className="shape shape-style-1 shape-default alpha-4">
+            <div className='shape shape-style-1 shape-default alpha-4'>
               <span />
               <span />
               <span />
@@ -47,26 +48,33 @@ class Profile extends React.Component {
               <span />
             </div>
             {/* SVG separator */}
-            <div className="separator separator-bottom separator-skew">
+            <div className='separator separator-bottom separator-skew'>
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="none"
-                version="1.1"
-                viewBox="0 0 2560 100"
-                x="0"
-                y="0"
+                xmlns='http://www.w3.org/2000/svg'
+                preserveAspectRatio='none'
+                version='1.1'
+                viewBox='0 0 2560 100'
+                x='0'
+                y='0'
               >
                 <polygon
-                  className="fill-white"
-                  points="2560 0 2560 100 0 100"
+                  className='fill-white'
+                  points='2560 0 2560 100 0 100'
                 />
               </svg>
             </div>
           </section>
-          <section className="section">
+          <section className='section'>
             <Container>
-              <Card className="card-profile shadow mt--300">
-                <iframe height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-152.05078125%2C13.15437605541853%2C-61.52343750000001%2C56.607885465009254&amp;layer=mapnik"></iframe>
+              <Card className='card-profile shadow mt--300'>
+                <iframe
+                  height='600'
+                  frameborder='0'
+                  scrolling='no'
+                  marginheight='0'
+                  marginwidth='0'
+                  src='https://www.openstreetmap.org/export/embed.html?bbox=-152.05078125%2C13.15437605541853%2C-61.52343750000001%2C56.607885465009254&amp;layer=mapnik'
+                ></iframe>
               </Card>
             </Container>
           </section>

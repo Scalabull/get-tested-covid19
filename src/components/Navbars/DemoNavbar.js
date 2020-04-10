@@ -15,19 +15,13 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 // JavaScript plugin that hides or shows a component based on your scroll
-import Headroom from "headroom.js";
+import Headroom from 'headroom.js';
 // reactstrap components
 import {
-  Button,
   UncontrolledCollapse,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Media,
   NavbarBrand,
   Navbar,
   NavItem,
@@ -36,70 +30,69 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip
-} from "reactstrap";
+} from 'reactstrap';
 
 class DemoNavbar extends React.Component {
   componentDidMount() {
-    let headroom = new Headroom(document.getElementById("navbar-main"));
+    let headroom = new Headroom(document.getElementById('navbar-main'));
     // initialise
     headroom.init();
   }
   state = {
-    collapseClasses: "",
-    collapseOpen: false
+    collapseClasses: '',
+    collapseOpen: false,
   };
 
   onExiting = () => {
     this.setState({
-      collapseClasses: "collapsing-out"
+      collapseClasses: 'collapsing-out',
     });
   };
 
   onExited = () => {
     this.setState({
-      collapseClasses: ""
+      collapseClasses: '',
     });
   };
 
   render() {
     return (
       <>
-        <header className="header-global">
+        <header className='header-global'>
           <Navbar
-            className="navbar-main navbar-transparent navbar-light headroom"
-            expand="lg"
-            id="navbar-main"
+            className='navbar-main navbar-transparent navbar-light headroom'
+            expand='lg'
+            id='navbar-main'
           >
             <Container>
-            <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+              <NavbarBrand className='mr-lg-5' to='/' tag={Link}>
                 <img
-                  alt="..."
-                  src={require("assets/img/brand/GetTestedCovid19Finallogowhitebottom.png")}
+                  alt='...'
+                  src={require('assets/img/brand/GetTestedCovid19Finallogowhitebottom.png')}
                 />
               </NavbarBrand>
-              <button className="navbar-toggler" id="navbar_global">
-                <span className="navbar-toggler-icon" />
+              <button className='navbar-toggler' id='navbar_global'>
+                <span className='navbar-toggler-icon' />
               </button>
               <UncontrolledCollapse
-                toggler="#navbar_global"
+                toggler='#navbar_global'
                 navbar
                 className={this.state.collapseClasses}
                 onExiting={this.onExiting}
                 onExited={this.onExited}
               >
-                <div className="navbar-collapse-header">
+                <div className='navbar-collapse-header'>
                   <Row>
-                    <Col className="collapse-brand" xs="6">
-                      <Link to="/">
+                    <Col className='collapse-brand' xs='6'>
+                      <Link to='/'>
                         <img
-                          alt="..."
-                          src={require("assets/img/brand/GetTestedCovid19Finallogocolorfinal.png")}
+                          alt='...'
+                          src={require('assets/img/brand/GetTestedCovid19Finallogocolorfinal.png')}
                         />
                       </Link>
                     </Col>
-                    <Col className="collapse-close" xs="6">
-                      <button className="navbar-toggler" id="navbar_global">
+                    <Col className='collapse-close' xs='6'>
+                      <button className='navbar-toggler' id='navbar_global'>
                         <span />
                         <span />
                       </button>
@@ -107,38 +100,39 @@ class DemoNavbar extends React.Component {
                   </Row>
                 </div>
 
-                <Nav className="navbar-nav-hover align-items-lg-center ml-lg-auto mt-0 pt-0" navbar>
+                <Nav
+                  className='navbar-nav-hover align-items-lg-center ml-lg-auto mt-0 pt-0'
+                  navbar
+                >
                   <NavItem>
                     <NavLink
-                      className="nav-link-icon mt-0 pt-0"
-                      href="/test-site-search"
+                      className='nav-link-icon mt-0 pt-0'
+                      href='/test-site-search'
                     >
-                      <i className="ni ni-collection d-lg-none mr-1" />
-                      <span className="nav-link-inner--text mt-0 pt-0">FIND TEST CENTER</span>
+                      <i className='ni ni-collection d-lg-none mr-1' />
+                      <span className='nav-link-inner--text mt-0 pt-0'>
+                        FIND TEST CENTER
+                      </span>
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink
-                      className="nav-link-icon mt-0 pt-0"
-                      href="/resources"
+                      className='nav-link-icon mt-0 pt-0'
+                      href='/resources'
                     >
-                      <i className="ni ni-collection d-lg-none mr-1" />
-                      <span className="nav-link-inner--text mt-0 pt-0">RESOURCES</span>
+                      <i className='ni ni-collection d-lg-none mr-1' />
+                      <span className='nav-link-inner--text mt-0 pt-0'>
+                        RESOURCES
+                      </span>
                     </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink
-                      className="nav-link-icon mt-0 pt-0"
-                      href="/about"
-                    >
-                      <i className="ni ni-collection d-lg-none mr-1 pt-0 mt-0" />
-                      <span className="nav-link-inner--text">ABOUT</span>
+                    <NavLink className='nav-link-icon mt-0 pt-0' href='/about'>
+                      <i className='ni ni-collection d-lg-none mr-1 pt-0 mt-0' />
+                      <span className='nav-link-inner--text'>ABOUT</span>
                     </NavLink>
                   </NavItem>
                 </Nav>
-
-
-                
               </UncontrolledCollapse>
             </Container>
           </Navbar>
