@@ -1,0 +1,17 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: node:12-alpine
+    steps:
+      - checkout
+      - run:
+          name: yarn-install
+          command: yarn install --production
+      - run:
+          name: npm-build
+          command: CI=false npm run build
+#       - run:
+#           name: npm-test
+#           command: npm run test
+# TODO: setup caching
