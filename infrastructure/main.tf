@@ -31,3 +31,22 @@ module "saas_vpc" {
 
   tags = local.common_tags
 }
+
+module "ecs-fargate" {
+    source              = "cn-terraform/ecs-fargate/aws"
+    version             = "2.0.9"
+    name_preffix        = local.name
+    profile             = "gettested"
+    region              = "us-east-1"
+    vpc_id              = module.saas_vpc.vpc_id
+    availability_zones  = module.saas_vpc.azs
+    public_subnets_ids  = module.saas_vpc.public_subnets
+    private_subnets_ids = module.saas_vpc.private_subnets
+    container_name               = "webserver"
+    container_image              = "gettestedcovid19/webserver:latest"
+    container_cpu                = 512
+    container_memory             = 2048
+    container_memory_reservation = 1024
+    essential                    = true
+    container_port               = 3000
+}
