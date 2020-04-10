@@ -17,6 +17,7 @@
 */
 import React from "react";
 import CardList from "components/CardList";
+import TestSiteMap from "components/TestSiteMap";
 import zipLookups from "assets/data/zipLookups"
 import haversine from "haversine";
 import qs from "query-string";
@@ -182,6 +183,7 @@ class TestSiteList extends React.Component {
                     </fieldset>
                 </form>
 
+                <TestSiteMap items={this.state.items} />
                 <CardList items={this.state.items}/>
             </Col>
             </Row>
