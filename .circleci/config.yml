@@ -2,19 +2,48 @@ version: 2.1
 jobs:
   terraform:
     docker:
-      - image: hashicorp/terraform:light
+      - image: patrickcpierson/terraform-aws:latest
     steps:
       - checkout
-      - run: 
-          name: insttal-aws-cli
-          command: apk add --update python python-dev py-pip build-base && wget https://s3.amazonaws.com/aws-cli/awscli-bundle.zip && unzip awscli-bundle.zip && ./awscli-bundle/install -i /usr/local/aws -b /bin/aws
       - run:
           name: terraform-init
-          command: cd infrastructure; OBJECT_KEY=dev ./util/terraform/terraform_init.sh
+          command: cd infrastructure; OBJECT_KEY=$CIRCLE_BRANCH ./util/terraform/terraform_init.sh
       - run:
           name: terraform-plan
           command: cd infrastructure; terraform plan
-     
+  terraform-staging-deploy:
+    docker:
+      - image: patrickcpierson/terraform-aws:latest
+    steps:
+      - checkout
+      - run:
+          name: terraform-init
+          command: cd infrastructure; OBJECT_KEY=$CIRCLE_BRANCH ./util/terraform/terraform_init.sh
+      - run:
+          name: terraform-apply
+          command: cd infrastructure; terraform apply -auto-approve
+  terraform-prod-deploy:
+    docker:
+      - image: patrickcpierson/terraform-aws:latest
+    steps:
+      - checkout
+      - run:
+          name: terraform-init
+          command: cd infrastructure; OBJECT_KEY=$CIRCLE_BRANCH ./util/terraform/terraform_init.sh
+      - run:
+          name: terraform-apply
+          command: cd infrastructure; terraform apply -auto-approve
+  terraform-dev-deploy:
+    docker:
+      - image: patrickcpierson/terraform-aws:latest
+    steps:
+      - checkout
+      - run:
+          name: terraform-init
+          command: cd infrastructure; OBJECT_KEY=$CIRCLE_BRANCH ./util/terraform/terraform_init.sh
+      - run:
+          name: terraform-apply
+          command: cd infrastructure; terraform apply -auto-approve
   build:
     docker:
       - image: node:12-alpine
@@ -34,5 +63,35 @@ workflows:
   version: 2
   terraform_and_build:
     jobs:
-      - terraform
       - build
+      - terraform:
+          filters:
+            branches:
+              only: 
+                - staging
+                - master
+                - /infra-.*/  
+      - terraform-staging-deploy:
+          requires:
+            - terraform
+            - build
+          filters:
+            branches:
+              only: staging
+          # context: staging
+      - terraform-prod-deploy:
+          requires:
+            - terraform
+            - build
+          filters:
+            branches:
+              only: master
+          # context: prodution
+      - terraform-dev-deploy:
+          requires:
+            - terraform
+            - build
+          filters:
+            branches:
+              only: /infra-.*/
+          # context: dev

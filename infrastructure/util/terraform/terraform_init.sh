@@ -31,7 +31,8 @@ if [ -f ./environment.auto.tfvars ]; then
 fi
 echo "environment = \"$ENVIRONMENT_\"" > ./environment.auto.tfvars
 
-echo "AWS account id AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
+# Keeping account id from posting in CircleCI
+#echo "AWS account id AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
 echo "ENVIRONMENT=$ENVIRONMENT_"
 echo "S3 object prefix (should be the name of the subproject) OBJECT_KEY=$OBJECT_KEY"
 terraform init \
