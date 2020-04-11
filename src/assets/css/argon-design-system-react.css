@@ -157,7 +157,6 @@ a {
   text-decoration: none;
   background-color: transparent; }
   a:hover {
-    font-weight: bold;
     color: #233dd2;
     text-decoration: none; }
 
@@ -10300,7 +10299,7 @@ a.text-secondary:hover, a.text-secondary:focus {
   color: #2dce89 !important; }
 
 a.text-success:hover, a.text-success:focus {
-  font-weight: bold !important; }
+  color: #1f8f5f !important; }
 
 .text-info {
   color: #11cdef !important; }
@@ -11745,6 +11744,9 @@ a.text-lighter:hover, a.text-lighter:focus {
   .btn:not(:last-child) {
     margin-right: .5rem; }
 
+.btn-square {
+  border-radius: 0; }
+
 .btn-group .btn,
 .input-group .btn {
   margin-right: 0;
@@ -12461,7 +12463,7 @@ textarea[resize="horizontal"] {
     font-size: 4.25rem; }
 
 .icon-xl + .icon-text {
-  width: calc(100% - $icon-size-xl - 1); }
+  width: calc(100% - 5rem - 1); }
 
 .icon-lg {
   width: 4rem;
@@ -12470,7 +12472,7 @@ textarea[resize="horizontal"] {
     font-size: 3.25rem; }
 
 .icon-lg + .icon-text {
-  width: calc(100% - $icon-size-lg - 1); }
+  width: calc(100% - 4rem - 1); }
 
 .icon-sm {
   width: 2rem;
@@ -12479,7 +12481,7 @@ textarea[resize="horizontal"] {
     font-size: 1.25rem; }
 
 .icon-sm + .icon-text {
-  width: calc(100% - $icon-size-sm - 1); }
+  width: calc(100% - 2rem - 1); }
 
 .icon-xs {
   width: 1.25rem;
@@ -12487,7 +12489,7 @@ textarea[resize="horizontal"] {
   .icon-xs i, .icon-xs svg {
     font-size: 0.5rem !important; }
   .icon-xs + .icon-text {
-    width: calc(100% - $icon-size-xs - 1); }
+    width: calc(100% - 1.25rem - 1); }
 
 .icon-shape {
   padding: 12px;
@@ -13994,6 +13996,13 @@ article figure {
 
 article h5 + figure {
   margin-top: 0; }
+
+a.text-success {
+  font-weight: 400; }
+
+a.text-success:hover {
+  text-shadow: 0 0 0.5px #2dce89, 0 0 0.5px #2dce89;
+  color: #2dce89 !important; }
 
 /* flatpickr v4.5.7, @license MIT */
 .flatpickr-calendar {
@@ -16669,6 +16678,10 @@ pre > code.highlight {
 .separator {
   z-index: unset; }
 
+.map {
+  height: 400px;
+  width: 100%; }
+
 /*!
 * https://github.com/YouCanBookMe/react-datetime
 */
@@ -17042,5 +17055,3 @@ td.rdtYear:hover {
   margin-bottom: 0;
   flex: 1 1 auto;
   width: 1%; }
-
-/*# sourceMappingURL=argon-design-system-react.css.map */
