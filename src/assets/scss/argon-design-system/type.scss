@@ -92,7 +92,10 @@ article {
 	}
 }
 
+a.text-success{
+	font-weight: 400;
+}
 a.text-success:hover{
-	font-weight: bold;
+	text-shadow: 0 0 0.5px #2dce89, 0 0 0.5px #2dce89;
 	color: #2dce89 !important;
 }

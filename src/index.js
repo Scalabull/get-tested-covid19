@@ -28,6 +28,7 @@ import TestSiteSearch from "views/TestSiteSearch.js";
 import TestSitesMap from "views/TestSitesMap.js";
 import About from "views/About.js";
 import Resources from "views/Resources.js";
+import WhenShouldYouGetTested from "views/WhenShouldYouGetTested.js";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -42,6 +43,11 @@ ReactDOM.render(
         path="/resources"
         exact
         render={props => <Resources {...props} />}
+      />
+      <Route
+        path="/when-should-you-get-tested"
+        exact
+        render={props => <WhenShouldYouGetTested {...props} />}
       />
       <Route
         path="/test-sites-map"
