@@ -35,10 +35,10 @@ module "saas_vpc" {
 }
 
 module "fargate" {
-  source  = "strvcom/fargate/aws"
-  version = "0.17.0"
-  name = "${var.environment}"
-
+  source  = "git@github.com:patrickpierson/terraform-aws-fargate.git"
+  #version = "0.17.0"
+  name = "gtcv"
+  environment = "${var.environment}"
   vpc_create = false
   vpc_external_id = module.saas_vpc.vpc_id
 
