@@ -1,0 +1,21 @@
+[
+  {
+    "portMappings": [
+      {
+        "hostPort": ${container_port},
+        "protocol": "tcp",
+        "containerPort": ${container_port}
+      }
+    ],
+    "image": "gettestedcovid19/webserver:staging",
+    "name": "${container_name}",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "ecs"
+      }
+    }
+  }
+]

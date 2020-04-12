@@ -117,15 +117,27 @@ class DemoNavbar extends React.Component {
                       <span className="nav-link-inner--text mt-0 pt-0">FIND TEST CENTER</span>
                     </NavLink>
                   </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className="nav-link-icon mt-0 pt-0"
-                      href="/resources"
-                    >
+                  <UncontrolledDropdown nav inNavbar>
+                    <DropdownToggle caret nav className="nav-link-icon mt-0 pt-0 pr-5">
                       <i className="ni ni-collection d-lg-none mr-1" />
                       <span className="nav-link-inner--text mt-0 pt-0">RESOURCES</span>
-                    </NavLink>
-                  </NavItem>
+                      </DropdownToggle>
+                      <DropdownMenu
+                          aria-labelledby="navbar-default_dropdown_1"
+                          right
+                      >
+                          <DropdownItem
+                              href="/resources"
+                          >
+                              General
+                          </DropdownItem>
+                          <DropdownItem
+                              href="/when-should-you-get-tested"
+                          >
+                              When Should You Get Tested
+                          </DropdownItem>
+                      </DropdownMenu>
+                  </UncontrolledDropdown>
                   <NavItem>
                     <NavLink
                       className="nav-link-icon mt-0 pt-0"
@@ -138,7 +150,7 @@ class DemoNavbar extends React.Component {
                 </Nav>
 
 
-                
+
               </UncontrolledCollapse>
             </Container>
           </Navbar>
