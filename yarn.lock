@@ -2932,6 +2932,21 @@ charm@~0.1.1:
   resolved "https://registry.yarnpkg.com/charm/-/charm-0.1.2.tgz#06c21eed1a1b06aeb67553cdc53e23274bac2296"
   integrity sha1-BsIe7RobBq62dVPNxT4jJ0usIpY=
 
+"chokidar@>=2.0.0 <4.0.0", chokidar@^3.2.0, chokidar@^3.3.0:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.3.1.tgz#c84e5b3d18d9a4d77558fef466b1bf16bbeb3450"
+  integrity sha512-4QYCEWOcK3OJrxwvyyAOxFuhpvOVCYkr33LPfFNBjAD/w3sEzWsp2BUOkI4l9bHvWioAd0rc6NlHUOEaWkTeqg==
+  dependencies:
+    anymatch "~3.1.1"
+    braces "~3.0.2"
+    glob-parent "~5.1.0"
+    is-binary-path "~2.1.0"
+    is-glob "~4.0.1"
+    normalize-path "~3.0.0"
+    readdirp "~3.3.0"
+  optionalDependencies:
+    fsevents "~2.1.2"
+
 chokidar@^2.0.0, chokidar@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.1.8.tgz#804b3a7b6a99358c3c5c61e71d8728f041cff917"
@@ -2950,21 +2965,6 @@ chokidar@^2.0.0, chokidar@^2.1.8:
     upath "^1.1.1"
   optionalDependencies:
     fsevents "^1.2.7"
-
-chokidar@^3.2.0, chokidar@^3.3.0:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.3.1.tgz#c84e5b3d18d9a4d77558fef466b1bf16bbeb3450"
-  integrity sha512-4QYCEWOcK3OJrxwvyyAOxFuhpvOVCYkr33LPfFNBjAD/w3sEzWsp2BUOkI4l9bHvWioAd0rc6NlHUOEaWkTeqg==
-  dependencies:
-    anymatch "~3.1.1"
-    braces "~3.0.2"
-    glob-parent "~5.1.0"
-    is-binary-path "~2.1.0"
-    is-glob "~4.0.1"
-    normalize-path "~3.0.0"
-    readdirp "~3.3.0"
-  optionalDependencies:
-    fsevents "~2.1.2"
 
 chownr@^1.1.1, chownr@^1.1.2:
   version "1.1.4"
@@ -3950,6 +3950,11 @@ detect-file@^1.0.0:
   resolved "https://registry.yarnpkg.com/detect-file/-/detect-file-1.0.0.tgz#f0d66d03672a825cb1b73bdb3fe62310c8e552b7"
   integrity sha1-8NZtA2cqglyxtzvbP+YjEMjlUrc=
 
+detect-libc@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
+  integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
+
 detect-newline@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-2.1.0.tgz#f41f1c10be4b00e87b5f13da680759f2c5bfd3e2"
@@ -4868,6 +4873,13 @@ fclone@1.0.11, fclone@^1.0.11:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/fclone/-/fclone-1.0.11.tgz#10e85da38bfea7fc599341c296ee1d77266ee640"
   integrity sha1-EOhdo4v+p/xZk0HClu4ddyZu5kA=
+
+fibers@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/fibers/-/fibers-4.0.2.tgz#d04f9ccd0aba179588202202faeb4fed65d497f5"
+  integrity sha512-FhICi1K4WZh9D6NC18fh2ODF3EWy1z0gzIdV9P7+s2pRjfRBnCkMDJ6x3bV1DkVymKH8HGrQa/FNOBjYvnJ/tQ==
+  dependencies:
+    detect-libc "^1.0.3"
 
 figgy-pudding@^3.5.1:
   version "3.5.2"
@@ -7829,6 +7841,11 @@ mkdirp@0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+mkdirp@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
+  integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
 module-details-from-path@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/module-details-from-path/-/module-details-from-path-1.0.3.tgz#114c949673e2a8a35e9d35788527aa37b679da2b"
@@ -10017,15 +10034,15 @@ react-document-meta@~3.0.0-beta.2:
     prop-types "^15.5.8"
     react-side-effect "^1.1.0"
 
-react-dom@16.12.0:
-  version "16.12.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
-  integrity sha512-LMxFfAGrcS3kETtQaCkTKjMiifahaMySFDn71fZUNpPHZQEzmk/GiAeIT8JSOrHB23fnuCOMruL2a8NYlw+8Gw==
+react-dom@16.13.1:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
+  integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.18.0"
+    scheduler "^0.19.1"
 
 react-error-overlay@^6.0.7:
   version "6.0.7"
@@ -10166,10 +10183,10 @@ react-transition-group@^2.3.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@16.12.0:
-  version "16.12.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
-  integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==
+react@16.13.1:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
+  integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -10781,6 +10798,13 @@ sass-loader@8.0.2:
     schema-utils "^2.6.1"
     semver "^6.3.0"
 
+sass@^1.26.3:
+  version "1.26.3"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.26.3.tgz#412df54486143b76b5a65cdf7569e86f44659f46"
+  integrity sha512-5NMHI1+YFYw4sN3yfKjpLuV9B5l7MqQ6FlkTcC4FT+oHbBRUZoSjHrrt/mE0nFXJyY2kQtU9ou9HxvFVjLFuuw==
+  dependencies:
+    chokidar ">=2.0.0 <4.0.0"
+
 sax@^1.2.4, sax@~1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
@@ -10793,10 +10817,10 @@ saxes@^3.1.9:
   dependencies:
     xmlchars "^2.1.1"
 
-scheduler@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.18.0.tgz#5901ad6659bc1d8f3fdaf36eb7a67b0d6746b1c4"
-  integrity sha512-agTSHR1Nbfi6ulI0kYNK0203joW2Y5W4po4l+v03tOoiJKpTBbxpNhWDvqc/4IcOw+KLmSiQLTasZ4cab2/UWQ==
+scheduler@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
+  integrity sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
