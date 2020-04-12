@@ -12,7 +12,7 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${log_group}",
+        "awslogs-group": "/ecs/staging-webserver",
         "awslogs-region": "${region}",
         "awslogs-stream-prefix": "ecs"
       }
