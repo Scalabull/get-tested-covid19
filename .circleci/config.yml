@@ -79,6 +79,14 @@ jobs:
             docker push gettestedcovid19/webserver:$TAG
             docker tag gettestedcovid19/webserver:$TAG gettestedcovid19/webserver:$CIRCLE_BRANCH
             docker push gettestedcovid19/webserver:$CIRCLE_BRANCH
+  update-service:
+    docker:
+      - image: patrickcpierson/terraform-aws:latest
+    steps:
+      - checkout
+      - run:
+          name: update-service
+          command: aws ecs update-service --cluster "gtcv-$CIRCLE_BRANCH-cluster" --service "webserver" --task-definition "gtcv-$CIRCLE_BRANCH-webserver" --force-new-deployment --region us-east-1
 #       - run:
 #           name: npm-test
 #           command: npm run test
@@ -124,8 +132,19 @@ workflows:
           # context: dev
       - terraform-dev-destroy:
           requires:
-            - terraform-dev-deploy
+            - update-service
           filters:
             branches:
               only: /infra-.*/
           # context: dev
+      - update-service:
+          requires:
+            - terraform-staging-deploy
+            - terraform-prod-deploy
+            - terraform-dev-deploy
+          filters:
+            branches:
+              only: 
+                - staging
+                - master
+                - /infra-.*/
