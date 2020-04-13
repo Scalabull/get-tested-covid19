@@ -66,6 +66,27 @@ jobs:
       - run:
           name: npm-build
           command: CI=false npm run build
+  docker-build-push:
+      docker:
+        - image: cimg/go:1.13
+      steps:
+        - checkout
+        - setup_remote_docker
+        - run: |
+            TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+            docker build -t gettestedcovid19/webserver:$TAG -f docker/Dockerfile .
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push gettestedcovid19/webserver:$TAG
+            docker tag gettestedcovid19/webserver:$TAG gettestedcovid19/webserver:$CIRCLE_BRANCH
+            docker push gettestedcovid19/webserver:$CIRCLE_BRANCH
+  update-service:
+    docker:
+      - image: patrickcpierson/terraform-aws:latest
+    steps:
+      - checkout
+      - run:
+          name: update-service
+          command: aws ecs update-service --cluster "gtcv-$CIRCLE_BRANCH-cluster" --service "webserver" --task-definition "gtcv-$CIRCLE_BRANCH-webserver" --force-new-deployment --region us-east-1
 #       - run:
 #           name: npm-test
 #           command: npm run test
@@ -75,6 +96,9 @@ workflows:
   terraform_and_build:
     jobs:
       - build
+      - docker-build-push:
+          requires:
+            - build
       - terraform:
           filters:
             branches:
@@ -85,7 +109,7 @@ workflows:
       - terraform-staging-deploy:
           requires:
             - terraform
-            - build
+            - docker-build-push
           filters:
             branches:
               only: staging
@@ -93,7 +117,7 @@ workflows:
       - terraform-prod-deploy:
           requires:
             - terraform
-            - build
+            - docker-build-push
           filters:
             branches:
               only: master
@@ -101,17 +125,26 @@ workflows:
       - terraform-dev-deploy:
           requires:
             - terraform
-            - build
+            - docker-build-push
           filters:
             branches:
               only: /infra-.*/
           # context: dev
       - terraform-dev-destroy:
           requires:
-            - terraform
-            - terraform-dev-deploy
-            - build
+            - update-service
           filters:
             branches:
               only: /infra-.*/
           # context: dev
+      - update-service:
+          requires:
+            - terraform-staging-deploy
+            - terraform-prod-deploy
+            - terraform-dev-deploy
+          filters:
+            branches:
+              only: 
+                - staging
+                - master
+                - /infra-.*/
