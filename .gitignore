@@ -10,3 +10,4 @@ source
 *.tfstate.backup
 *.tfvars
 *.tfvars.backup
+connection.txt

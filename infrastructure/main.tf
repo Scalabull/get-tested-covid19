@@ -130,26 +130,52 @@ module "bastion" {
   tags = local.common_tags
 }
 
+data "template_file" "connection_txt" {
+  template = file("${path.module}/templates/connection.txt.tpl")
+
+  vars = {
+    environment                     = var.environment
+    rds_cluster_endpoint            = module.db.this_rds_cluster_endpoint
+    rds_cluster_instance_endpoints  = module.db.this_rds_cluster_instance_endpoints[0]
+    rds_cluster_reader_endpoint     = module.db.this_rds_cluster_reader_endpoint
+    rds_cluster_master_username     = module.db.this_rds_cluster_master_username
+    rds_cluster_master_password     = module.db.this_rds_cluster_master_password
+    bastion_public_ip               = module.bastion.public_ip
+  }
+}
+
+resource "local_file" "connection_txt" {
+  sensitive_content = data.template_file.connection_txt.rendered
+  filename = "./connection.txt"
+}
+
+
 output "rds_cluster_endpoint" {
   value = module.db.this_rds_cluster_endpoint
+  sensitive   = true  
 }
 
 output "rds_cluster_instance_endpoints" {
   value = module.db.this_rds_cluster_instance_endpoints
+  sensitive   = true
 }
 
 output "rds_cluster_reader_endpoint" {
   value = module.db.this_rds_cluster_reader_endpoint
+  sensitive   = true
 }
 
 output "rds_cluster_master_username" {
   value = module.db.this_rds_cluster_master_username
+  sensitive   = true
 }
 
 output "rds_cluster_master_password" {
   value = module.db.this_rds_cluster_master_password
+  sensitive   = true
 }
 
 output "bastion_public_ip" {
   value = module.bastion.public_ip
+  sensitive   = true
 }
