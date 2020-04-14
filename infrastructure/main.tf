@@ -74,3 +74,82 @@ resource "aws_route53_record" "www" {
     evaluate_target_health = true
   }
 }
+
+resource "aws_db_parameter_group" "aurora_db_postgres11_parameter_group" {
+  name        = "${var.environment}-gettestedcovid19"
+  family      = "aurora-postgresql11"
+  description = "${var.environment}-aurora-db-postgres11-parameter-group"
+}
+
+resource "aws_rds_cluster_parameter_group" "aurora_cluster_postgres11_parameter_group" {
+  name        = "${var.environment}-gettestedcovid19"
+  family      = "aurora-postgresql11"
+  description = "${var.environment}-aurora-postgres11-cluster-pg"
+}
+
+module "db" {
+  source  = "terraform-aws-modules/rds-aurora/aws"
+  version = "~> 2.0"
+
+  name                            = local.name
+
+  engine                          = "aurora-postgresql"
+  engine_version                  = "11.6"
+
+  vpc_id                          = module.saas_vpc.vpc_id
+  subnets                         = module.saas_vpc.private_subnets
+
+  replica_count                   = 1
+  #allowed_security_groups         = []
+  allowed_cidr_blocks             = ["10.200.0.0/21"]
+  instance_type                   = "db.r5.large"
+  storage_encrypted               = true
+  apply_immediately               = true
+  monitoring_interval             = 10
+
+  db_parameter_group_name         = local.name
+  db_cluster_parameter_group_name = local.name
+
+  enabled_cloudwatch_logs_exports = ["postgresql"]
+
+  tags                            = local.common_tags
+}
+
+module "bastion" {
+  source  = "philips-software/bastion/aws"
+  version = "2.0.0"
+  enable_bastion = true
+
+  environment = var.environment
+  project     = local.name
+
+  aws_region = var.aws_region
+  key_name   = "bastion"
+  subnet_id  = element(module.saas_vpc.public_subnets, 0)
+  vpc_id     = module.saas_vpc.vpc_id
+  tags = local.common_tags
+}
+
+output "rds_cluster_endpoint" {
+  value = module.db.this_rds_cluster_endpoint
+}
+
+output "rds_cluster_instance_endpoints" {
+  value = module.db.this_rds_cluster_instance_endpoints
+}
+
+output "rds_cluster_reader_endpoint" {
+  value = module.db.this_rds_cluster_reader_endpoint
+}
+
+output "rds_cluster_master_username" {
+  value = module.db.this_rds_cluster_master_username
+}
+
+output "rds_cluster_master_password" {
+  value = module.db.this_rds_cluster_master_password
+}
+
+output "bastion_public_ip" {
+  value = module.bastion.public_ip
+}
