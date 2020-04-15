@@ -54,7 +54,12 @@ jobs:
           command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
       - run:
           name: terraform-destroy
-          command: cd infrastructure; terraform destroy -auto-approve
+          command: |
+            cd infrastructure
+            set +e
+            terraform destroy -auto-approve
+            sleep 30
+            terraform destroy -auto-approve
   build:
     docker:
       - image: node:12-alpine

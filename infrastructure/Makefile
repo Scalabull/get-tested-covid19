@@ -10,3 +10,6 @@ terraform-plan:
 
 terraform-apply:
 	terraform apply $(AUTO_APPROVE)
+
+terraform-get-connection:
+	terraform apply -target local_file.connection_txt -auto-approve
