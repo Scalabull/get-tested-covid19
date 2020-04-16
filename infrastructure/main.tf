@@ -36,7 +36,6 @@ module "saas_vpc" {
 
 module "fargate" {
   source  = "git@github.com:patrickpierson/terraform-aws-fargate.git"
-  #version = "0.17.0"
   name = "gtcv"
   environment = "${var.environment}"
   vpc_create = false
@@ -148,7 +147,6 @@ resource "local_file" "connection_txt" {
   sensitive_content = data.template_file.connection_txt.rendered
   filename = "./connection.txt"
 }
-
 
 output "rds_cluster_endpoint" {
   value = module.db.this_rds_cluster_endpoint
