@@ -15,9 +15,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 // nodejs library that concatenates classes
-import classnames from "classnames";
+import classnames from 'classnames'
 
 // reactstrap components
 import {
@@ -29,20 +29,20 @@ import {
   TabContent,
   TabPane,
   Row,
-  Col
-} from "reactstrap";
+  Col,
+} from 'reactstrap'
 
 class TabsSection extends React.Component {
   state = {
     iconTabs: 1,
-    plainTabs: 1
-  };
+    plainTabs: 1,
+  }
   toggleNavs = (e, state, index) => {
-    e.preventDefault();
+    e.preventDefault()
     this.setState({
-      [state]: index
-    });
-  };
+      [state]: index,
+    })
+  }
   render() {
     return (
       <>
@@ -65,10 +65,10 @@ class TabsSection extends React.Component {
                 <NavItem>
                   <NavLink
                     aria-selected={this.state.iconTabs === 1}
-                    className={classnames("mb-sm-3 mb-md-0", {
-                      active: this.state.iconTabs === 1
+                    className={classnames('mb-sm-3 mb-md-0', {
+                      active: this.state.iconTabs === 1,
                     })}
-                    onClick={e => this.toggleNavs(e, "iconTabs", 1)}
+                    onClick={(e) => this.toggleNavs(e, 'iconTabs', 1)}
                     href="#pablo"
                     role="tab"
                   >
@@ -79,10 +79,10 @@ class TabsSection extends React.Component {
                 <NavItem>
                   <NavLink
                     aria-selected={this.state.iconTabs === 2}
-                    className={classnames("mb-sm-3 mb-md-0", {
-                      active: this.state.iconTabs === 2
+                    className={classnames('mb-sm-3 mb-md-0', {
+                      active: this.state.iconTabs === 2,
                     })}
-                    onClick={e => this.toggleNavs(e, "iconTabs", 2)}
+                    onClick={(e) => this.toggleNavs(e, 'iconTabs', 2)}
                     href="#pablo"
                     role="tab"
                   >
@@ -93,10 +93,10 @@ class TabsSection extends React.Component {
                 <NavItem>
                   <NavLink
                     aria-selected={this.state.iconTabs === 3}
-                    className={classnames("mb-sm-3 mb-md-0", {
-                      active: this.state.iconTabs === 3
+                    className={classnames('mb-sm-3 mb-md-0', {
+                      active: this.state.iconTabs === 3,
                     })}
-                    onClick={e => this.toggleNavs(e, "iconTabs", 3)}
+                    onClick={(e) => this.toggleNavs(e, 'iconTabs', 3)}
                     href="#pablo"
                     role="tab"
                   >
@@ -108,7 +108,7 @@ class TabsSection extends React.Component {
             </div>
             <Card className="shadow">
               <CardBody>
-                <TabContent activeTab={"iconTabs" + this.state.iconTabs}>
+                <TabContent activeTab={'iconTabs' + this.state.iconTabs}>
                   <TabPane tabId="iconTabs1">
                     <p className="description">
                       Raw denim you probably haven't heard of them jean shorts
@@ -161,10 +161,10 @@ class TabsSection extends React.Component {
                 <NavItem>
                   <NavLink
                     aria-selected={this.state.plainTabs === 1}
-                    className={classnames("mb-sm-3 mb-md-0", {
-                      active: this.state.plainTabs === 1
+                    className={classnames('mb-sm-3 mb-md-0', {
+                      active: this.state.plainTabs === 1,
                     })}
-                    onClick={e => this.toggleNavs(e, "plainTabs", 1)}
+                    onClick={(e) => this.toggleNavs(e, 'plainTabs', 1)}
                     href="#pablo"
                     role="tab"
                   >
@@ -174,10 +174,10 @@ class TabsSection extends React.Component {
                 <NavItem>
                   <NavLink
                     aria-selected={this.state.plainTabs === 2}
-                    className={classnames("mb-sm-3 mb-md-0", {
-                      active: this.state.plainTabs === 2
+                    className={classnames('mb-sm-3 mb-md-0', {
+                      active: this.state.plainTabs === 2,
                     })}
-                    onClick={e => this.toggleNavs(e, "plainTabs", 2)}
+                    onClick={(e) => this.toggleNavs(e, 'plainTabs', 2)}
                     href="#pablo"
                     role="tab"
                   >
@@ -187,10 +187,10 @@ class TabsSection extends React.Component {
                 <NavItem>
                   <NavLink
                     aria-selected={this.state.plainTabs === 3}
-                    className={classnames("mb-sm-3 mb-md-0", {
-                      active: this.state.plainTabs === 3
+                    className={classnames('mb-sm-3 mb-md-0', {
+                      active: this.state.plainTabs === 3,
                     })}
-                    onClick={e => this.toggleNavs(e, "plainTabs", 3)}
+                    onClick={(e) => this.toggleNavs(e, 'plainTabs', 3)}
                     href="#pablo"
                     role="tab"
                   >
@@ -201,7 +201,7 @@ class TabsSection extends React.Component {
             </div>
             <Card className="shadow">
               <CardBody>
-                <TabContent activeTab={"plainTabs" + this.state.plainTabs}>
+                <TabContent activeTab={'plainTabs' + this.state.plainTabs}>
                   <TabPane tabId="plainTabs1">
                     <p className="description">
                       Raw denim you probably haven't heard of them jean shorts
@@ -239,8 +239,8 @@ class TabsSection extends React.Component {
           </Col>
         </Row>
       </>
-    );
+    )
   }
 }
 
-export default TabsSection;
+export default TabsSection

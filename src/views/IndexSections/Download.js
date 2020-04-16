@@ -16,10 +16,10 @@
 
 */
 /*eslint-disable*/
-import React from "react";
+import React from 'react'
 
 // reactstrap components
-import { Button, Container, Row, Col, UncontrolledTooltip } from "reactstrap";
+import { Button, Container, Row, Col, UncontrolledTooltip } from 'reactstrap'
 
 class Download extends React.Component {
   render() {
@@ -30,7 +30,7 @@ class Download extends React.Component {
             <Row className="row-grid justify-content-center">
               <Col className="text-center" lg="8">
                 <h2 className="display-3">
-                  Do you love this awesome{" "}
+                  Do you love this awesome{' '}
                   <span className="text-success">
                     Design System for Bootstrap 4?
                   </span>
@@ -160,8 +160,8 @@ class Download extends React.Component {
           </Container>
         </section>
       </>
-    );
+    )
   }
 }
 
-export default Download;
+export default Download

@@ -15,43 +15,37 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardBody,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
+import { Button, Card, CardBody, Container, Row, Col } from 'reactstrap'
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
-import HomeZipForm from "components/Forms/HomeZipForm.js";
+import DemoNavbar from 'components/Navbars/DemoNavbar.js'
+import SimpleFooter from 'components/Footers/SimpleFooter.js'
+import HomeZipForm from 'components/Forms/HomeZipForm.js'
 
-import DocumentMeta from 'react-document-meta';
+import DocumentMeta from 'react-document-meta'
 
 class Landing extends React.Component {
-  state = {};
+  state = {}
   componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    this.refs.main.scrollTop = 0;
+    document.documentElement.scrollTop = 0
+    document.scrollingElement.scrollTop = 0
+    this.refs.main.scrollTop = 0
   }
   render() {
     const meta = {
       title: 'Help Build A COVID-19 Test Center Database | Get Tested COVID-19',
-      description: 'A community led effort to help people find the closest coronavirus testing center and provide accurate COVID-19 resources to every community',
+      description:
+        'A community led effort to help people find the closest coronavirus testing center and provide accurate COVID-19 resources to every community',
       meta: {
         charset: 'utf-8',
         name: {
-          keywords: 'COVID-19, testing centers, novel coronavirus'
-        }
-      }
-    };
+          keywords: 'COVID-19, testing centers, novel coronavirus',
+        },
+      },
+    }
 
     return (
       <DocumentMeta {...meta}>
@@ -78,25 +72,35 @@ class Landing extends React.Component {
                       <h1 className="display-3 text-white mt-3">
                         Building a COVID-19 Test Center Database With Your Help
                       </h1>
-                      
-                      
                     </Col>
                     <Col lg="10">
-                    <p className="text-white">
-                        As COVID19 spreads rapidly through the USA, community testing centers are springing up across the nation. We want to help make it easy for people to find their closest testing center and provide accurate information to every community — especially as more tests become available in the coming days and weeks. In order for us to achieve this goal, we need your help.
+                      <p className="text-white">
+                        As COVID19 spreads rapidly through the USA, community
+                        testing centers are springing up across the nation. We
+                        want to help make it easy for people to find their
+                        closest testing center and provide accurate information
+                        to every community — especially as more tests become
+                        available in the coming days and weeks. In order for us
+                        to achieve this goal, we need your help.
                       </p>
                     </Col>
                     <HomeZipForm></HomeZipForm>
                     <Col lg="10">
                       <p className="text-white small">
-                      *If you are sick or think you need to be tested now, please consult the <a className="text-success" href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank" >CDC’s recommendations</a> and/or talk to your doctor.
+                        *If you are sick or think you need to be tested now,
+                        please consult the{' '}
+                        <a
+                          className="text-success"
+                          href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"
+                          target="_blank"
+                        >
+                          CDC’s recommendations
+                        </a>{' '}
+                        and/or talk to your doctor.
                       </p>
                     </Col>
-                    
-                    
                   </Row>
                 </div>
-                
               </Container>
               {/* SVG separator */}
               <div className="separator separator-bottom separator-skew">
@@ -119,7 +123,7 @@ class Landing extends React.Component {
           </div>
           <section className="section section-lg pt-lg-0 ">
             <Container>
-            <Row className="text-center justify-content-center mb-3">
+              <Row className="text-center justify-content-center mb-3">
                 <Col lg="10">
                   <h2 className="display-3 ">Ways You Can Help</h2>
                 </Col>
@@ -134,12 +138,14 @@ class Landing extends React.Component {
                             <i className="ni ni-fat-add" />
                           </div>
                           <h6 className="text-success text-uppercase">
-                             CONTRIBUTE
+                            CONTRIBUTE
                           </h6>
                           <p className="description mt-3">
-                            Add missing community test centers to the list by submitting information for us to validate and add to our database.
+                            Add missing community test centers to the list by
+                            submitting information for us to validate and add to
+                            our database.
                           </p>
-                          
+
                           <Button
                             className="mt-4"
                             color="success"
@@ -161,9 +167,11 @@ class Landing extends React.Component {
                             SUPPORT
                           </h6>
                           <p className="description mt-3">
-                            Want to help amplify our efforts through promotion, partnerships, or donations? Reach out to see ways you can help us push forward.
+                            Want to help amplify our efforts through promotion,
+                            partnerships, or donations? Reach out to see ways
+                            you can help us push forward.
                           </p>
-                          
+
                           <Button
                             className="mt-4"
                             color="success"
@@ -181,13 +189,13 @@ class Landing extends React.Component {
                           <div className="icon icon-shape icon-shape-success rounded-circle mb-4">
                             <i className="ni ni-settings" />
                           </div>
-                          <h6 className="text-success text-uppercase">
-                            BUILD
-                          </h6>
+                          <h6 className="text-success text-uppercase">BUILD</h6>
                           <p className="description mt-3">
-                            If you have information on setting up a test center or want to set one up in your community, please get in touch with us.
+                            If you have information on setting up a test center
+                            or want to set one up in your community, please get
+                            in touch with us.
                           </p>
-                          
+
                           <Button
                             className="mt-4"
                             color="success"
@@ -208,9 +216,16 @@ class Landing extends React.Component {
             <Container className=" mt-0">
               <Row className="text-center justify-content-center mt-0">
                 <Col lg="10" className="mt-0">
-                  <h2 className="display-3 text-white pb-3">What are COVID-19 community testing centers?</h2>
+                  <h2 className="display-3 text-white pb-3">
+                    What are COVID-19 community testing centers?
+                  </h2>
                   <p className="text-white">
-                    Testing centers aim to help the public access laboratory testing in a safe way while minimizing potential spread of the novel coronavirus COVID19. These sites are often built as pop-up tents or converted facilities, in an effort to take some of the burden off of hospitals and help enable local healthcare providers to continue to operate normally.
+                    Testing centers aim to help the public access laboratory
+                    testing in a safe way while minimizing potential spread of
+                    the novel coronavirus COVID19. These sites are often built
+                    as pop-up tents or converted facilities, in an effort to
+                    take some of the burden off of hospitals and help enable
+                    local healthcare providers to continue to operate normally.
                   </p>
                 </Col>
               </Row>
@@ -221,7 +236,9 @@ class Landing extends React.Component {
                   </div>
                   <h5 className="mt-3 text-white">TIMES OF OPERATION</h5>
                   <p className="text-white mt-3">
-                  Most testing sites open around 8 - 9 AM and close around 6 - 8 PM on weekdays, with limited hours on weekends depending on the state.
+                    Most testing sites open around 8 - 9 AM and close around 6 -
+                    8 PM on weekdays, with limited hours on weekends depending
+                    on the state.
                   </p>
                 </Col>
                 <Col lg="4">
@@ -230,7 +247,12 @@ class Landing extends React.Component {
                   </div>
                   <h5 className="mt-3 text-white">OPERATING PROCEDURES</h5>
                   <p className="text-white mt-3">
-                  Most operate as walk up or drive-through facilities and only those who exhibit <a href="/resources" className="text-success">symptoms</a> will receive a test.
+                    Most operate as walk up or drive-through facilities and only
+                    those who exhibit{' '}
+                    <a href="/resources" className="text-success">
+                      symptoms
+                    </a>{' '}
+                    will receive a test.
                   </p>
                 </Col>
                 <Col lg="4">
@@ -239,22 +261,24 @@ class Landing extends React.Component {
                   </div>
                   <h5 className="mt-3 text-white">PREREQUISITE INFORMATION</h5>
                   <p className="text-white mt-3">
-                  Some testing sites may require appointments, doctor approval, or presence of certain symptoms before testing.
+                    Some testing sites may require appointments, doctor
+                    approval, or presence of certain symptoms before testing.
                   </p>
                 </Col>
               </Row>
               <Row className="row-grid pt-0 mt-0">
                 <Col lg="12" className="text-center">
-                  
                   <small className="text-success mt-3 text-center">
-                  *Note: this information is based on publicly availble resources and may not be reflected at every testing center as each is unique to the operating procedures defined by it’s maintainers.
+                    *Note: this information is based on publicly availble
+                    resources and may not be reflected at every testing center
+                    as each is unique to the operating procedures defined by
+                    it’s maintainers.
                   </small>
                 </Col>
-                
               </Row>
             </Container>
           </section>
-          
+
           <section className="section section-lg pt-100">
             <Container>
               <Card className="bg-gradient-warning shadow-lg border-0">
@@ -262,10 +286,12 @@ class Landing extends React.Component {
                   <Row className="align-items-center">
                     <Col lg="8">
                       <h3 className="text-white">
-                        Please see the CDC's Guidance on getting tested for COVID-19
+                        Please see the CDC's Guidance on getting tested for
+                        COVID-19
                       </h3>
                       <p className="lead text-white mt-3">
-                        Please check your temperature, consult with your doctor if possible, and follow the CDC's guidelines.
+                        Please check your temperature, consult with your doctor
+                        if possible, and follow the CDC's guidelines.
                       </p>
                     </Col>
                     <Col className="ml-lg-auto" lg="3">
@@ -284,12 +310,11 @@ class Landing extends React.Component {
               </Card>
             </Container>
           </section>
-
         </main>
         <SimpleFooter />
       </DocumentMeta>
-    );
+    )
   }
 }
 
-export default Landing;
+export default Landing

@@ -15,8 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 // reactstrap components
 import {
@@ -32,8 +32,8 @@ import {
   Nav,
   Container,
   Row,
-  Col
-} from "reactstrap";
+  Col,
+} from 'reactstrap'
 
 class Menus extends React.Component {
   render() {
@@ -54,7 +54,7 @@ class Menus extends React.Component {
                   <Container>
                     <NavbarBrand
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                     >
                       Menu
                     </NavbarBrand>
@@ -68,7 +68,7 @@ class Menus extends React.Component {
                             <Link to="/">
                               <img
                                 alt="..."
-                                src={require("assets/img/brand/argon-react.png")}
+                                src={require('assets/img/brand/argon-react.png')}
                               />
                             </Link>
                           </Col>
@@ -88,7 +88,7 @@ class Menus extends React.Component {
                         <NavItem>
                           <NavLink
                             href="#pablo"
-                            onClick={e => e.preventDefault()}
+                            onClick={(e) => e.preventDefault()}
                           >
                             Discover <span className="sr-only">(current)</span>
                           </NavLink>
@@ -96,7 +96,7 @@ class Menus extends React.Component {
                         <NavItem>
                           <NavLink
                             href="#pablo"
-                            onClick={e => e.preventDefault()}
+                            onClick={(e) => e.preventDefault()}
                           >
                             Profile
                           </NavLink>
@@ -109,20 +109,20 @@ class Menus extends React.Component {
                           >
                             <DropdownItem
                               href="#pablo"
-                              onClick={e => e.preventDefault()}
+                              onClick={(e) => e.preventDefault()}
                             >
                               Action
                             </DropdownItem>
                             <DropdownItem
                               href="#pablo"
-                              onClick={e => e.preventDefault()}
+                              onClick={(e) => e.preventDefault()}
                             >
                               Another action
                             </DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem
                               href="#pablo"
-                              onClick={e => e.preventDefault()}
+                              onClick={(e) => e.preventDefault()}
                             >
                               Something else here
                             </DropdownItem>
@@ -143,7 +143,7 @@ class Menus extends React.Component {
                   <Container>
                     <NavbarBrand
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                     >
                       Menu
                     </NavbarBrand>
@@ -157,7 +157,7 @@ class Menus extends React.Component {
                             <Link to="/">
                               <img
                                 alt="..."
-                                src={require("assets/img/brand/argon-react.png")}
+                                src={require('assets/img/brand/argon-react.png')}
                               />
                             </Link>
                           </Col>
@@ -177,7 +177,7 @@ class Menus extends React.Component {
                           <NavLink
                             className="nav-link-icon"
                             href="#pablo"
-                            onClick={e => e.preventDefault()}
+                            onClick={(e) => e.preventDefault()}
                           >
                             <i className="ni ni-favourite-28" />
                             <span className="nav-link-inner--text d-lg-none">
@@ -189,7 +189,7 @@ class Menus extends React.Component {
                           <NavLink
                             className="nav-link-icon"
                             href="#pablo"
-                            onClick={e => e.preventDefault()}
+                            onClick={(e) => e.preventDefault()}
                           >
                             <i className="ni ni-notification-70" />
                             <span className="nav-link-inner--text d-lg-none">
@@ -210,20 +210,20 @@ class Menus extends React.Component {
                           >
                             <DropdownItem
                               href="#pablo"
-                              onClick={e => e.preventDefault()}
+                              onClick={(e) => e.preventDefault()}
                             >
                               Action
                             </DropdownItem>
                             <DropdownItem
                               href="#pablo"
-                              onClick={e => e.preventDefault()}
+                              onClick={(e) => e.preventDefault()}
                             >
                               Another action
                             </DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem
                               href="#pablo"
-                              onClick={e => e.preventDefault()}
+                              onClick={(e) => e.preventDefault()}
                             >
                               Something else here
                             </DropdownItem>
@@ -238,8 +238,8 @@ class Menus extends React.Component {
           </Col>
         </Row>
       </>
-    );
+    )
   }
 }
 
-export default Menus;
+export default Menus

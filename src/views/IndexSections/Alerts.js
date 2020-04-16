@@ -15,10 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 
 // reactstrap components
-import { UncontrolledAlert } from "reactstrap";
+import { UncontrolledAlert } from 'reactstrap'
 
 class Alerts extends React.Component {
   render() {
@@ -60,8 +60,8 @@ class Alerts extends React.Component {
           </span>
         </UncontrolledAlert>
       </>
-    );
+    )
   }
 }
 
-export default Alerts;
+export default Alerts

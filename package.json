@@ -33,6 +33,8 @@
     "compile-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css",
     "minify-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.min.css --output-style compressed",
     "map-sass": "node-sass src/assets/scss/argon-design-system-react.scss src/assets/css/argon-design-system-react.css --source-map true",
+    "lint": "eslint .",
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.js' --write",
     "server:build": "yarn install && CI='' npm run build",
     "server:start": "pm2 deploy ecosystem.config.js production deploy",
     "docker:build": "docker build -t gettestedcovid19/webserver:latest -f docker/Dockerfile .",
@@ -48,6 +50,11 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier-format && npm run lint"
+    }
+  },
   "dependencies": {
     "body-parser": "~1.19.0",
     "bootstrap": "4.3.1",
@@ -79,10 +86,16 @@
     "@types/googlemaps": "3.39.2",
     "@types/markerclustererplus": "2.1.33",
     "@types/react": "16.9.19",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-flowtype": "3.13.0",
+    "eslint-plugin-prettier": "^3.1.3",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
+    "husky": "^4.2.5",
     "jquery": "3.4.1",
+    "prettier": "^2.0.4",
     "typescript": "3.7.5"
   }
 }

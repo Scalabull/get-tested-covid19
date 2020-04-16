@@ -16,8 +16,8 @@
 
 */
 /*eslint-disable*/
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
 // reactstrap components
 import {
   Button,
@@ -29,8 +29,8 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip
-} from "reactstrap";
+  UncontrolledTooltip,
+} from 'reactstrap'
 
 class CardsFooter extends React.Component {
   render() {
@@ -44,7 +44,7 @@ class CardsFooter extends React.Component {
                   <Link to="/landing-page">
                     <CardImg
                       alt="..."
-                      src={require("assets/img/theme/landing.jpg")}
+                      src={require('assets/img/theme/landing.jpg')}
                     />
                   </Link>
                 </Card>
@@ -54,7 +54,7 @@ class CardsFooter extends React.Component {
                   <Link to="/profile-page">
                     <CardImg
                       alt="..."
-                      src={require("assets/img/theme/profile.jpg")}
+                      src={require('assets/img/theme/profile.jpg')}
                     />
                   </Link>
                 </Card>
@@ -134,7 +134,7 @@ class CardsFooter extends React.Component {
             <Row className="align-items-center justify-content-md-between">
               <Col md="6">
                 <div className="copyright">
-                  © {new Date().getFullYear()}{" "}
+                  © {new Date().getFullYear()}{' '}
                   <a
                     href="https://www.creative-tim.com?ref=adsr-footer"
                     target="_blank"
@@ -184,8 +184,8 @@ class CardsFooter extends React.Component {
           </Container>
         </footer>
       </>
-    );
+    )
   }
 }
 
-export default CardsFooter;
+export default CardsFooter

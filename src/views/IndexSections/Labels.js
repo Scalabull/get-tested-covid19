@@ -15,10 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 
 // reactstrap components
-import { Badge, Col } from "reactstrap";
+import { Badge, Col } from 'reactstrap'
 
 class Labels extends React.Component {
   render() {
@@ -43,8 +43,8 @@ class Labels extends React.Component {
           </Badge>
         </Col>
       </>
-    );
+    )
   }
 }
 
-export default Labels;
+export default Labels

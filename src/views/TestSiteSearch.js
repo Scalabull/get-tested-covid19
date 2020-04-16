@@ -15,41 +15,36 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 
 // reactstrap components
-import {
-  Button,
-  Card,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
+import { Button, Card, Container, Row, Col } from 'reactstrap'
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
-import TestSiteList from "components/TestSiteList.js";
-import DocumentMeta from 'react-document-meta';
+import DemoNavbar from 'components/Navbars/DemoNavbar.js'
+import SimpleFooter from 'components/Footers/SimpleFooter.js'
+import TestSiteList from 'components/TestSiteList.js'
+import DocumentMeta from 'react-document-meta'
 
 class Landing extends React.Component {
-  state = {};
+  state = {}
   componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    this.refs.main.scrollTop = 0;
+    document.documentElement.scrollTop = 0
+    document.scrollingElement.scrollTop = 0
+    this.refs.main.scrollTop = 0
   }
   render() {
     const meta = {
       title: 'Search COVID-19 Test Center By Zipcode | Get Tested COVID-19',
-      description: 'Find the closest COVID-19 Test Center. Make sure to check requirements and double check that your symptoms match those listed by the CDC.',
+      description:
+        'Find the closest COVID-19 Test Center. Make sure to check requirements and double check that your symptoms match those listed by the CDC.',
       meta: {
         charset: 'utf-8',
         name: {
-          keywords: 'COVID-19, testing centers, novel coronavirus'
-        }
-      }
-    };
+          keywords: 'COVID-19, testing centers, novel coronavirus',
+        },
+      },
+    }
 
     return (
       <DocumentMeta {...meta}>
@@ -70,25 +65,22 @@ class Landing extends React.Component {
                 <span />
               </div>
               <TestSiteList></TestSiteList>
-              
-               {/* SVG separator */}
-            <div className="separator separator-bottom separator-skew zindex-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="none"
-                version="1.1"
-                viewBox="0 0 2560 100"
-                x="0"
-                y="0"
-              >
 
-              </svg>
-            </div>
+              {/* SVG separator */}
+              <div className="separator separator-bottom separator-skew zindex-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  preserveAspectRatio="none"
+                  version="1.1"
+                  viewBox="0 0 2560 100"
+                  x="0"
+                  y="0"
+                ></svg>
+              </div>
             </section>
             {/* 1st Hero Variation */}
           </div>
 
-          
           <section className="section section-lg pt-100">
             <Container>
               <Card className="bg-gradient-warning shadow-lg border-0">
@@ -96,10 +88,12 @@ class Landing extends React.Component {
                   <Row className="align-items-center">
                     <Col lg="8">
                       <h3 className="text-white">
-                        Please see the CDC's Guidance on getting tested for COVID-19
+                        Please see the CDC's Guidance on getting tested for
+                        COVID-19
                       </h3>
                       <p className="lead text-white mt-3">
-                        Please check your temperature, consult with your doctor if possible, and follow the CDC's guidelines.
+                        Please check your temperature, consult with your doctor
+                        if possible, and follow the CDC's guidelines.
                       </p>
                     </Col>
                     <Col className="ml-lg-auto" lg="3">
@@ -118,12 +112,11 @@ class Landing extends React.Component {
               </Card>
             </Container>
           </section>
-          
         </main>
         <SimpleFooter />
       </DocumentMeta>
-    );
+    )
   }
 }
 
-export default Landing;
+export default Landing

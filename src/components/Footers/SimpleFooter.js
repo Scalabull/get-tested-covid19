@@ -16,8 +16,8 @@
 
 */
 /*eslint-disable*/
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 // reactstrap components
 import {
@@ -29,51 +29,37 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip
-} from "reactstrap";
+  UncontrolledTooltip,
+} from 'reactstrap'
 
 class SimpleFooter extends React.Component {
   render() {
     return (
       <>
-      <footer className=" footer">
+        <footer className=" footer">
           <Container>
-
             <Row className=" align-items-center justify-content-md-between">
               <Col md="6">
-              <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
+                <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
                   <img
                     alt="..."
-                    src={require("assets/img/brand/GetTestedCovid19Finallogocolorfinal.png")}
+                    src={require('assets/img/brand/GetTestedCovid19Finallogocolorfinal.png')}
                   />
                 </NavbarBrand>
                 <div className=" copyright">
-                  © {new Date().getFullYear()}{" "}
-                  Get-Tested-COVID19
+                  © {new Date().getFullYear()} Get-Tested-COVID19
                 </div>
               </Col>
               <Col md="6">
                 <Nav className=" nav-footer justify-content-end">
                   <NavItem>
-                    <NavLink
-                      href="/test-site-search"
-                    >
-                      FIND TEST CENTER
-                    </NavLink>
+                    <NavLink href="/test-site-search">FIND TEST CENTER</NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink
-                      href="/resources"
-                    >
-                      RESOURCES
-                    </NavLink>
+                    <NavLink href="/resources">RESOURCES</NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink
-                      href="/about"
-                    >
-                      ABOUT
-                    </NavLink>
+                    <NavLink href="/about">ABOUT</NavLink>
                   </NavItem>
                 </Nav>
               </Col>
@@ -81,8 +67,8 @@ class SimpleFooter extends React.Component {
           </Container>
         </footer>
       </>
-    );
+    )
   }
 }
 
-export default SimpleFooter;
+export default SimpleFooter

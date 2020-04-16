@@ -15,10 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 
 // reactstrap components
-import { Row, Col } from "reactstrap";
+import { Row, Col } from 'reactstrap'
 
 class Typography extends React.Component {
   render() {
@@ -315,8 +315,8 @@ class Typography extends React.Component {
             <img
               alt="..."
               className="img-fluid rounded shadow"
-              src={require("assets/img/theme/team-1-800x800.jpg")}
-              style={{ width: "150px" }}
+              src={require('assets/img/theme/team-1-800x800.jpg')}
+              style={{ width: '150px' }}
             />
           </Col>
           <Col sm="3" xs="6">
@@ -326,8 +326,8 @@ class Typography extends React.Component {
             <img
               alt="..."
               className="img-fluid rounded-circle shadow"
-              src={require("assets/img/theme/team-2-800x800.jpg")}
-              style={{ width: "150px" }}
+              src={require('assets/img/theme/team-2-800x800.jpg')}
+              style={{ width: '150px' }}
             />
           </Col>
           <Col className="mt-5 mt-sm-0" sm="3" xs="6">
@@ -337,8 +337,8 @@ class Typography extends React.Component {
             <img
               alt="..."
               className="img-fluid rounded shadow-lg"
-              src={require("assets/img/theme/team-3-800x800.jpg")}
-              style={{ width: "150px" }}
+              src={require('assets/img/theme/team-3-800x800.jpg')}
+              style={{ width: '150px' }}
             />
           </Col>
           <Col className="mt-5 mt-sm-0" sm="3" xs="6">
@@ -348,14 +348,14 @@ class Typography extends React.Component {
             <img
               alt="..."
               className="img-fluid rounded-circle shadow-lg"
-              src={require("assets/img/theme/team-4-800x800.jpg")}
-              style={{ width: "150px" }}
+              src={require('assets/img/theme/team-4-800x800.jpg')}
+              style={{ width: '150px' }}
             />
           </Col>
         </Row>
       </>
-    );
+    )
   }
 }
 
-export default Typography;
+export default Typography

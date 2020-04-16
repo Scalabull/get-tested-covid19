@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 
 // reactstrap components
 import {
@@ -31,18 +31,18 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
-} from "reactstrap";
+  Col,
+} from 'reactstrap'
 
 // core components
-import DemoNavbar from "components/Navbars/DemoNavbar.js";
-import SimpleFooter from "components/Footers/SimpleFooter.js";
+import DemoNavbar from 'components/Navbars/DemoNavbar.js'
+import SimpleFooter from 'components/Footers/SimpleFooter.js'
 
 class Login extends React.Component {
   componentDidMount() {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-    this.refs.main.scrollTop = 0;
+    document.documentElement.scrollTop = 0
+    document.scrollingElement.scrollTop = 0
+    this.refs.main.scrollTop = 0
   }
   render() {
     return (
@@ -73,12 +73,12 @@ class Login extends React.Component {
                           className="btn-neutral btn-icon"
                           color="default"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={(e) => e.preventDefault()}
                         >
                           <span className="btn-inner--icon mr-1">
                             <img
                               alt="..."
-                              src={require("assets/img/icons/common/github.svg")}
+                              src={require('assets/img/icons/common/github.svg')}
                             />
                           </span>
                           <span className="btn-inner--text">Github</span>
@@ -87,12 +87,12 @@ class Login extends React.Component {
                           className="btn-neutral btn-icon ml-1"
                           color="default"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={(e) => e.preventDefault()}
                         >
                           <span className="btn-inner--icon mr-1">
                             <img
                               alt="..."
-                              src={require("assets/img/icons/common/google.svg")}
+                              src={require('assets/img/icons/common/google.svg')}
                             />
                           </span>
                           <span className="btn-inner--text">Google</span>
@@ -158,7 +158,7 @@ class Login extends React.Component {
                       <a
                         className="text-light"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                       >
                         <small>Forgot password?</small>
                       </a>
@@ -167,7 +167,7 @@ class Login extends React.Component {
                       <a
                         className="text-light"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                       >
                         <small>Create new account</small>
                       </a>
@@ -180,8 +180,8 @@ class Login extends React.Component {
         </main>
         <SimpleFooter />
       </>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login

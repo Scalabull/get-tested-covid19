@@ -15,10 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 
 // reactstrap components
-import { Progress, Col } from "reactstrap";
+import { Progress, Col } from 'reactstrap'
 
 class ProgressSection extends React.Component {
   render() {
@@ -52,8 +52,8 @@ class ProgressSection extends React.Component {
           </div>
         </Col>
       </>
-    );
+    )
   }
 }
 
-export default ProgressSection;
+export default ProgressSection

@@ -15,9 +15,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react'
 // react plugin used to create datetimepicker
-import ReactDatetime from "react-datetime";
+import ReactDatetime from 'react-datetime'
 
 // reactstrap components
 import {
@@ -26,64 +26,62 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
-} from "reactstrap";
+  Col,
+} from 'reactstrap'
 
 class Datepicker extends React.Component {
-  state = {};
+  state = {}
   handleReactDatetimeChange = (who, date) => {
     if (
       this.state.startDate &&
-      who === "endDate" &&
-      new Date(this.state.startDate._d + "") > new Date(date._d + "")
+      who === 'endDate' &&
+      new Date(this.state.startDate._d + '') > new Date(date._d + '')
     ) {
       this.setState({
         startDate: date,
-        endDate: date
-      });
+        endDate: date,
+      })
     } else if (
       this.state.endDate &&
-      who === "startDate" &&
-      new Date(this.state.endDate._d + "") < new Date(date._d + "")
+      who === 'startDate' &&
+      new Date(this.state.endDate._d + '') < new Date(date._d + '')
     ) {
       this.setState({
         startDate: date,
-        endDate: date
-      });
+        endDate: date,
+      })
     } else {
       this.setState({
-        [who]: date
-      });
+        [who]: date,
+      })
     }
-  };
+  }
   // this function adds on the day tag of the date picker
   // middle-date className which means that this day will have no border radius
   // start-date className which means that this day will only have left border radius
   // end-date className which means that this day will only have right border radius
   // this way, the selected dates will look nice and will only be rounded at the ends
-  getClassNameReactDatetimeDays = date => {
-    if (this.state.startDate && this.state.endDate) {
-    }
+  getClassNameReactDatetimeDays = (date) => {
     if (
       this.state.startDate &&
       this.state.endDate &&
-      this.state.startDate._d + "" !== this.state.endDate._d + ""
+      this.state.startDate._d + '' !== this.state.endDate._d + ''
     ) {
       if (
-        new Date(this.state.endDate._d + "") > new Date(date._d + "") &&
-        new Date(this.state.startDate._d + "") < new Date(date._d + "")
+        new Date(this.state.endDate._d + '') > new Date(date._d + '') &&
+        new Date(this.state.startDate._d + '') < new Date(date._d + '')
       ) {
-        return " middle-date";
+        return ' middle-date'
       }
-      if (this.state.endDate._d + "" === date._d + "") {
-        return " end-date";
+      if (this.state.endDate._d + '' === date._d + '') {
+        return ' end-date'
       }
-      if (this.state.startDate._d + "" === date._d + "") {
-        return " start-date";
+      if (this.state.startDate._d + '' === date._d + '') {
+        return ' start-date'
       }
     }
-    return "";
-  };
+    return ''
+  }
   render() {
     return (
       <>
@@ -104,7 +102,7 @@ class Datepicker extends React.Component {
                 </InputGroupAddon>
                 <ReactDatetime
                   inputProps={{
-                    placeholder: "Date Picker Here"
+                    placeholder: 'Date Picker Here',
                   }}
                   timeFormat={false}
                 />
@@ -126,23 +124,23 @@ class Datepicker extends React.Component {
                     </InputGroupAddon>
                     <ReactDatetime
                       inputProps={{
-                        placeholder: "Start Date"
+                        placeholder: 'Start Date',
                       }}
                       value={this.state.startDate}
                       timeFormat={false}
-                      onChange={e =>
-                        this.handleReactDatetimeChange("startDate", e)
+                      onChange={(e) =>
+                        this.handleReactDatetimeChange('startDate', e)
                       }
                       renderDay={(props, currentDate, selectedDate) => {
-                        let classes = props.className;
+                        let classes = props.className
                         classes += this.getClassNameReactDatetimeDays(
                           currentDate
-                        );
+                        )
                         return (
                           <td {...props} className={classes}>
                             {currentDate.date()}
                           </td>
-                        );
+                        )
                       }}
                     />
                   </InputGroup>
@@ -158,24 +156,24 @@ class Datepicker extends React.Component {
                     </InputGroupAddon>
                     <ReactDatetime
                       inputProps={{
-                        placeholder: "End Date"
+                        placeholder: 'End Date',
                       }}
                       className="rdtPickerOnRight"
                       value={this.state.endDate}
                       timeFormat={false}
-                      onChange={e =>
-                        this.handleReactDatetimeChange("endDate", e)
+                      onChange={(e) =>
+                        this.handleReactDatetimeChange('endDate', e)
                       }
                       renderDay={(props, currentDate, selectedDate) => {
-                        let classes = props.className;
+                        let classes = props.className
                         classes += this.getClassNameReactDatetimeDays(
                           currentDate
-                        );
+                        )
                         return (
                           <td {...props} className={classes}>
                             {currentDate.date()}
                           </td>
-                        );
+                        )
                       }}
                     />
                   </InputGroup>
@@ -185,8 +183,8 @@ class Datepicker extends React.Component {
           </Col>
         </Row>
       </>
-    );
+    )
   }
 }
 
-export default Datepicker;
+export default Datepicker
