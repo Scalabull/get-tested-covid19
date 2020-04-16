@@ -1,4 +1,4 @@
-SERVICE_NAME := "gettestedcovid19"
+SERVICE_NAME := "gettested"
 AUTO_APPROVE=$(shell [ "x${BUILD_PLACEHOLDER}" = "x" ] && echo "" || echo "-auto-approve")
 
 .PHONY: terraform-apply-prep terraform-output
