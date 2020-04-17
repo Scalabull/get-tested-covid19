@@ -29,6 +29,7 @@ import TestSitesMap from "views/TestSitesMap.js";
 import About from "views/About.js";
 import Resources from "views/Resources.js";
 import WhenShouldYouGetTested from "views/WhenShouldYouGetTested.js";
+import HowDoesTestingWork from "views/HowDoesTestingWork.js";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -48,6 +49,11 @@ ReactDOM.render(
         path="/when-should-you-get-tested"
         exact
         render={props => <WhenShouldYouGetTested {...props} />}
+      />
+      <Route
+        path="/how-does-covid19-testing-work"
+        exact
+        render={props => <HowDoesTestingWork {...props} />}
       />
       <Route
         path="/test-sites-map"

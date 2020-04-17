@@ -136,6 +136,11 @@ class DemoNavbar extends React.Component {
                           >
                               When Should You Get Tested
                           </DropdownItem>
+                          <DropdownItem
+                              href="/how-does-covid19-testing-work"
+                          >
+                              How Does Testing Work?
+                          </DropdownItem>
                       </DropdownMenu>
                   </UncontrolledDropdown>
                   <NavItem>
