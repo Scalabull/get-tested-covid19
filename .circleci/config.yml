@@ -104,6 +104,12 @@ workflows:
       - docker-build-push:
           requires:
             - build
+          filters:
+            branches:
+              only: 
+                - staging
+                - master
+                - /infra-.*/  
       - terraform:
           filters:
             branches:
