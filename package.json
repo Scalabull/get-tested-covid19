@@ -43,6 +43,11 @@
         "docker:push": "docker push gettestedcovid19/webserver:latest",
         "api:start:dev": "nodemon ./src/server/server.js"
     },
+    "husky": {
+        "hooks": {
+            "pre-push": "npm run build"
+        }
+    },
     "eslintConfig": {
         "extends": "react-app"
     },
@@ -56,7 +61,7 @@
         "body-parser": "^1.19.0",
         "bootstrap": "4.3.1",
         "bufferutil": "^4.0.1",
-        "classnames": "2.2.6",
+        "classnames": "^2.2.6",
         "compression": "^1.7.4",
         "concurrently": "^5.1.0",
         "cors": "^2.8.5",
@@ -94,6 +99,7 @@
         "eslint-plugin-flowtype": "3.13.0",
         "gulp": "4.0.2",
         "gulp-append-prepend": "1.0.8",
+        "husky": "^4.2.5",
         "jquery": "3.4.1",
         "node-sass": "4.13.1",
         "supertest": "^4.0.2",
