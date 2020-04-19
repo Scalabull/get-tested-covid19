@@ -1,9 +1,10 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import { CDCContainer } from './DisplayCDCNotice/styles'
 import DocumentMeta from 'react-document-meta';
 import DemoNavbar from 'components/Navbars/DemoNavbar.js';
 import SimpleFooter from 'components/Footers/SimpleFooter.js';
-
+import { ResourcesWrapper, QAWrapper } from './sharedStyles'
 import { displayHeading } from './DisplayHeading'
 import { displayCDCNotice } from './DisplayCDCNotice'
 import { displayBeforeTesting } from './DisplayBeforeTesting'
@@ -41,21 +42,17 @@ export default () => {
 
         {displayHeading()}
       </section>
-      <Container>
-        <Row>
-          <Col sm={7} className={{ background: 'red' }}>
-            <div>
-              {displayBeforeTesting()}
-              {displayTestingCenters()}
-              {displayHowTestingWorks()}
-              {displayAfterTesting()}
-            </div>
-          </Col>
-          <Col sm={5}>
-            <div>{displayCDCNotice()}</div>
-          </Col>
-        </Row>
-      </Container>
+      <ResourcesWrapper>
+        <QAWrapper className={{ background: 'red' }}>
+          {displayBeforeTesting()}
+          {displayTestingCenters()}
+          {displayHowTestingWorks()}
+          {displayAfterTesting()}
+        </QAWrapper>
+        <div>
+          {displayCDCNotice()}
+        </div>
+      </ResourcesWrapper>
 
       <SimpleFooter />
     </DocumentMeta >

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
 import { displaySubHeadingSections } from '../DisplaySubHeadingSections'
-
+import { ResourcesWrapper, ResourceSection } from '../sharedStyles'
 export const displaySubHeading = ({ title, sections }) => {
   return (
-    <Row>
-      <Col lg="8">
+    <ResourcesWrapper>
+      <ResourceSection>
         <h1 className="display-3 mt-3">{title}</h1>
         {displaySubHeadingSections(sections)}
-      </Col>
-    </Row>
+      </ResourceSection>
+    </ResourcesWrapper>
   );
 };
