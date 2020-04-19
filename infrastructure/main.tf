@@ -101,7 +101,7 @@ module "db" {
   replica_count                   = 1
   #allowed_security_groups         = []
   allowed_cidr_blocks             = ["10.200.0.0/21"]
-  instance_type                   = "db.r5.large"
+  instance_type                   = "db.t3.medium"
   storage_encrypted               = true
   apply_immediately               = true
   monitoring_interval             = 10
