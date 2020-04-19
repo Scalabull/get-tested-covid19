@@ -68,6 +68,9 @@ jobs:
             - run:
                   name: yarn-install
                   command: yarn install --production
+            - run:
+                  name: npm-build
+                  command: CI=false npm run build
     docker-build-push:
         docker:
             - image: cimg/go:1.13
