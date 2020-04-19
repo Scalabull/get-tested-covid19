@@ -43,11 +43,6 @@
         "docker:push": "docker push gettestedcovid19/webserver:latest",
         "api:start:dev": "nodemon ./src/server/server.js"
     },
-    "husky": {
-        "hooks": {
-            "pre-push": "rm -rf ./build && npm run build"
-        }
-    },
     "eslintConfig": {
         "extends": "react-app"
     },
@@ -74,6 +69,7 @@
         "mkdirp": "^1.0.4",
         "moment": "2.24.0",
         "morgan": "^1.10.0",
+        "node-sass": "4.13.1",
         "nouislider": "14.1.1",
         "path": "~0.12.7",
         "pm2": "^4.2.3",
@@ -101,7 +97,6 @@
         "gulp-append-prepend": "1.0.8",
         "husky": "^4.2.5",
         "jquery": "3.4.1",
-        "node-sass": "4.13.1",
         "supertest": "^4.0.2",
         "typescript": "3.7.5"
     }
