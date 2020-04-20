@@ -4,7 +4,7 @@ import { CDCContainer } from './DisplayCDCNotice/styles'
 import DocumentMeta from 'react-document-meta';
 import DemoNavbar from 'components/Navbars/DemoNavbar.js';
 import SimpleFooter from 'components/Footers/SimpleFooter.js';
-import { ResourcesWrapper, QAWrapper } from './sharedStyles'
+import { ResourcesWrapper, QAWrapper, CDCWrapper } from './sharedStyles'
 import { displayHeading } from './DisplayHeading'
 import { displayCDCNotice } from './DisplayCDCNotice'
 import { displayBeforeTesting } from './DisplayBeforeTesting'
@@ -49,9 +49,9 @@ export default () => {
           {displayHowTestingWorks()}
           {displayAfterTesting()}
         </QAWrapper>
-        <div>
+        <CDCWrapper>
           {displayCDCNotice()}
-        </div>
+        </CDCWrapper>
       </ResourcesWrapper>
 
       <SimpleFooter />
