@@ -74,7 +74,7 @@ class TestSiteList extends React.Component {
     }
 
     filterList(searchStr) {
-        console.log(searchStr)
+        //console.log(searchStr)
         const searchZipStr = searchStr;
         const zipRE = /^[0-9]{5}$/;
         const zipMatchFlag = zipRE.test(searchZipStr);

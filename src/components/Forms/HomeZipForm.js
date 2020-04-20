@@ -23,6 +23,7 @@ class HomeZipForm extends React.Component {
       this.state = {value: ''};
   
       this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
     }
   
     handleChange(event) {
@@ -31,10 +32,16 @@ class HomeZipForm extends React.Component {
             this.setState({value: updateVal});
         }
     }
-    
+
+    handleSubmit(event) {
+        let submitVal = this.state.value;
+        if(submitVal !== null && submitVal !== undefined && submitVal.length === 5 && isNumeric(submitVal)){
+            this.props.onSubmit(submitVal);
+        }
+    }
+
     render() {
-        let { onSubmit } = this.props;
-        
+
         return (
             <>
                 <Col lg="4" sm="6" xs="8" className="mt-3 mr-0 pr-0">
@@ -67,7 +74,7 @@ class HomeZipForm extends React.Component {
                 <Col lg="4" sm="6" xs="4" className="mt-3 ml-0 pl-0">
                     <Button 
                         className="btn-square btn-info"
-                        onClick={() => this.props.onSubmit(this.state.value)}
+                        onClick={this.handleSubmit}
                     >SEARCH</Button>
                 </Col>
             </>
