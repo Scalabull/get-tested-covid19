@@ -211,7 +211,7 @@ class TestSiteList extends React.Component {
                                 <FormGroup>
                                     <Row form>
                                         <Input
-                                            className='mr-0 pr-0 search-input form-control form-control-lg'
+                                            className='mr-0 pr-12 search-input form-control form-control-lg'
                                             type='text'
                                             maxLength='5'
                                             title='Enter Zip Code (5 digit)'
