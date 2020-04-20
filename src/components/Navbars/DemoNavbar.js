@@ -68,7 +68,7 @@ class DemoNavbar extends React.Component {
                         expand='lg'
                         id='navbar-main'
                     >
-                        <Container>
+                        <Container className='navbar-container'>
                             <NavbarBrand className='mr-lg-5' to='/' tag={Link}>
                                 <img
                                     alt='...'
@@ -84,7 +84,7 @@ class DemoNavbar extends React.Component {
                             <UncontrolledCollapse
                                 toggler='#navbar_global'
                                 navbar
-                                className={this.state.collapseClasses}
+                                className={this.state.collapseClasses }
                                 onExiting={this.onExiting}
                                 onExited={this.onExited}
                             >
