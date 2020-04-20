@@ -72,14 +72,9 @@ class CardList extends React.Component {
           {
             
             topResults.map(item => {
-              return <Card key={item.name} className="shadow shadow-lg--hover mt-5">
+              return <Card key={item.name} className="shadow shadow-lg--hover mb-5">
                         <CardBody>
                             <div className="d-flex px-3">
-                            <div>
-                                <div className="icon icon-shape bg-gradient-success rounded-circle text-white">
-                                <i className="ni ni-check-bold" />
-                                </div>
-                            </div>
                             <div className="pl-4">
                                 <h5 className="title text-success">
                                 {item.name}
