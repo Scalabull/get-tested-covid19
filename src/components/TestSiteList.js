@@ -69,7 +69,8 @@ class TestSiteList extends React.Component {
             initialItems: [],
             items: [],
             zipLookups: [],
-            zip: zip,
+            searchZip: zip,
+            displayZip: ''
         };
 
         this.filterList = this.filterList.bind(this);
@@ -79,13 +80,13 @@ class TestSiteList extends React.Component {
 
     onSubmit(e) {
         e.preventDefault();
-        this.filterList(this.state.zip);
-        this.setState({ zip: '' });
+        this.filterList(this.state.displayZip);
+        this.setState({ searchZip: this.state.displayZip, displayZip: '' });
     }
 
     onChangeZip(e) {
         const zip = e.target.value;
-        this.setState({ zip });
+        this.setState({ displayZip: zip });
     }
 
     filterList(searchZipStr) {
@@ -186,8 +187,8 @@ class TestSiteList extends React.Component {
 
     render() {
         let zipLatLng = null;
-        if (this.state.zip) {
-            zipLatLng = this.state.zipLookups[this.state.zip];
+        if (this.state.searchZip) {
+            zipLatLng = this.state.zipLookups[this.state.searchZip];
         }
 
         return (
@@ -223,7 +224,7 @@ class TestSiteList extends React.Component {
                                             onChange={(e) =>
                                                 this.onChangeZip(e)
                                             }
-                                            value={this.state.zip}
+                                            value={this.state.displayZip}
                                         />
                                         <Button type='submit' color='info'>
                                             Search

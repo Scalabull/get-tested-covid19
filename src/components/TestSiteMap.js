@@ -19,7 +19,7 @@ export default class TestSiteMap extends React.Component {
             <Map
                 center={mapCenterCoords}
                 zoom={10}
-                zoomControl={false}
+                zoomControl={true}
                 dragging={true}
                 className='map'
             >
