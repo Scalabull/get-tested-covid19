@@ -70,7 +70,6 @@ p {
 	}
 }
 
-
 // Articles
 
 article {
@@ -98,4 +97,22 @@ a.text-success{
 a.text-success:hover{
 	text-shadow: 0 0 0.5px #2dce89, 0 0 0.5px #2dce89;
 	color: #2dce89 !important;
+}
+
+.card-head-text {
+	color: #1C1F4B;
+}
+
+p strong {
+
+	font-style: normal;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 32px;
+	color: #162B4D;
+}
+
+.medWeight {
+	font-weight: 500;
+	color: #000000;
 }
