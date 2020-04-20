@@ -95,10 +95,10 @@ class CardList extends React.Component {
                                 <CardBody>
                                     <div className='d-flex px-3'>
                                         <div className='pl-4'>
-                                            <h5 className='title text-success'>
-                                                {item.name}
-                                            </h5>
-                                            
+                                            <h4 className="display-4 mb-0">
+                                            {item.name}
+                                            </h4>
+                                                                           
                                             <p>
                                                 {item.address}, {item.city}{' '}
                                                 {item.state}, {item.zip}
@@ -117,13 +117,13 @@ class CardList extends React.Component {
                                                 <b>Site:</b> {item.link}
                                             </p>
                                             <Row className='row-grid align-items-start mb-0 pb-0'>
-                                                <Col lg='6'>
+                                                <Col lg='6 mt-0 pt-0'>
                                                     <h6>
                                                         <strong>In-Facility Testing?{' '}</strong>
                                                         {item.walkUp}
                                                     </h6>
                                                 </Col>
-                                                <Col lg='6'>
+                                                <Col lg='6 mt-0 pt-0'>
                                                     <h6>
                                                         <strong>Doctor Screening Required?{' '}</strong>
                                                         {item.docScreen}
@@ -131,13 +131,13 @@ class CardList extends React.Component {
                                                 </Col>
                                             </Row>
                                             <Row className='row-grid align-items-start mt-0 pt-0'>
-                                                <Col lg='6'>
+                                                <Col lg='6 mt-0 pt-0'>
                                                     <h6>
                                                         <strong>Drive-Thru Testing?{' '}</strong>
                                                         {item.driveThru}
                                                     </h6>
                                                 </Col>
-                                                <Col lg='6'>
+                                                <Col lg='6 mt-0 pt-0'>
                                                     <h6>
                                                         <strong>Appointment Required?{' '}</strong>
                                                         {item.appReq}
