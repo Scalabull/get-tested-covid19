@@ -238,7 +238,7 @@ class TestSiteList extends React.Component {
                     <Col className='order-lg-1' lg='7'>
                         <CardList items={viewItems} totalCount={this.state.items.length} />
                     </Col>
-                    <Col className='order-lg-1' lg='5'>
+                    <Col className='map-container order-lg-1' lg='5'>
                         <TestSiteMap items={viewItems} totalCount={this.state.items.length} zipLatLng />
                     </Col>
                 </Row>
