@@ -6,3 +6,16 @@
     background-color: #f3f3f3;
     padding: 25px 45px;
 }
+
+.search-input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: none;
+}
+.search-button {
+    background: #162b4d;
+    border-top-right-radius: 5;
+    border-bottom-right-radius: 5;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
