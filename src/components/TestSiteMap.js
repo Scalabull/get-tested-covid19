@@ -31,6 +31,10 @@ export default class TestSiteMap extends React.Component {
                 if(item.lng > maxLng) maxLng = item.lng;
                 if(item.lng < minLng) minLng = item.lng;
             });
+            minLat = minLat + 0.005;
+            maxLat = maxLat + 0.005;
+            minLng = minLng + 0.005;
+            maxLng = maxLng + 0.005;
 
             bounds = [[maxLat, minLng], [minLat, maxLng]];
         }
