@@ -1,4 +1,10 @@
-.map {
+.map-container {
     height: 600px;
     width: 100%;
+    overflow: hidden;
+}
+
+.map {
+    height: 100vh;
+    width: 100vw;
 }
