@@ -28,25 +28,25 @@ import { Row, Col } from 'reactstrap';
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
 
-const setQueryStringWithoutPageReload = (qsValue) => {
-    const newurl =
-        window.location.protocol +
-        window.location.host +
-        window.location.pathname +
-        qsValue;
+// const setQueryStringWithoutPageReload = (qsValue) => {
+//     const newurl =
+//         window.location.protocol +
+//         window.location.host +
+//         window.location.pathname +
+//         qsValue;
 
-    window.history.pushState({ path: newurl }, '', newurl);
-};
+//     window.history.pushState({ path: newurl }, '', newurl);
+// };
 
-const setQueryStringValue = (
-    key,
-    value,
-    queryString = window.location.search
-) => {
-    const values = qs.parse(queryString);
-    const newQsValue = qs.stringify({ ...values, [key]: value });
-    setQueryStringWithoutPageReload(`?${newQsValue}`);
-};
+// const setQueryStringValue = (
+//     key,
+//     value,
+//     queryString = window.location.search
+// ) => {
+//     const values = qs.parse(queryString);
+//     const newQsValue = qs.stringify({ ...values, [key]: value });
+//     setQueryStringWithoutPageReload(`?${newQsValue}`);
+// };
 
 const getQueryStringValue = (key, queryString = window.location.search) => {
     const values = qs.parse(queryString);
@@ -138,9 +138,9 @@ class TestSiteList extends React.Component {
             .then((res) => res.json())
             .then(
                 (res) => {
-                    console.log(
-                        'external test site directory loaded successfully, CORS success.'
-                    );
+                    // console.log(
+                    //     'external test site directory loaded successfully, CORS success.'
+                    // );
                     this.setState({
                         initialItems: res.testSites,
                         items: res.testSites,
