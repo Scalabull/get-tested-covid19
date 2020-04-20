@@ -18,7 +18,6 @@
 import React from 'react';
 import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
-import zipLookups from 'assets/data/zipLookups';
 import haversine from 'haversine';
 import qs from 'query-string';
 
@@ -66,6 +65,7 @@ class TestSiteList extends React.Component {
         this.state = {
             initialItems: [],
             items: [],
+            zipLookups: [],
             zip: zip,
         };
 
@@ -81,7 +81,7 @@ class TestSiteList extends React.Component {
         if (isNumeric(searchZipStr) || searchZipStr === '') {
             if (zipMatchFlag) {
                 // Zip should be present in lookup table in 99% of cases.
-                let zipLatLng = zipLookups.zipLookups[searchZipStr];
+                let zipLatLng = this.state.zipLookups[searchZipStr];
                 let updatedList = this.state.initialItems;
 
                 if (zipLatLng === undefined) {
@@ -138,9 +138,6 @@ class TestSiteList extends React.Component {
             .then((res) => res.json())
             .then(
                 (res) => {
-                    // console.log(
-                    //     'external test site directory loaded successfully, CORS success.'
-                    // );
                     this.setState({
                         initialItems: res.testSites,
                         items: res.testSites,
@@ -152,9 +149,28 @@ class TestSiteList extends React.Component {
             )
             .then(() => {
                 this.filterList({ target: { value: this.state.zip } });
-            });
+            })
+            .then(() => {
+                return fetch('https://storage.googleapis.com/covid19-resources/zipLookups.json')
+            })
+            .then((res) => res.json())
+            .then(
+                (res) => {
+                    this.setState({
+                        zipLookups: res.zipLookups
+                    });
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
     }
     render() {
+        let zipLatLng = null
+        if(this.state.zip){
+            zipLatLng = this.state.zipLookups[this.state.zip];
+        }
+
         return (
             <div>
                 <Row
@@ -203,7 +219,7 @@ class TestSiteList extends React.Component {
                         <CardList items={this.state.items.slice(0,10)} totalCount={this.state.items.length} />
                     </Col>
                     <Col className='order-lg-1' lg='5'>
-                        <TestSiteMap items={this.state.items.slice(0,10)} totalCount={this.state.items.length} />
+                        <TestSiteMap items={this.state.items.slice(0,10)} totalCount={this.state.items.length} zipLatLng />
                     </Col>
                 </Row>
             </div>

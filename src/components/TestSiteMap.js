@@ -3,14 +3,14 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 export default class TestSiteMap extends React.Component {
     render() {
-        const { items } = this.props;
-        // TODO: For now we center the map with the coord of the first item
-        // in the list. What we should really do is to center with the zipcode.
-        // This requires Geocoding. We can do this either by using an API like
-        // googlemap or serve a JSON file with all zipcode and coord as key
-        // value pair.
+        const { items, zipLatLng } = this.props;
+        let mapCenterCoords = items[0];
+
+        if(zipLatLng && Array.isArray(zipLatLng)){
+            mapCenterCoords = zipLatLng;
+        }
         return (
-            <Map center={items[0]} zoom={8} className='map'>
+            <Map center={mapCenterCoords} zoom={10} zoomControl={false} dragging={false} className='map'>
                 <TileLayer
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
