@@ -17,13 +17,13 @@
 */
 import React from "react";
 import CardList from "components/CardList";
+import TestSiteMap from "components/TestSiteMap";
 import zipLookups from "assets/data/zipLookups"
 import haversine from "haversine";
 import qs from "query-string";
 
 // reactstrap components
 import {
-  Container,
   Row,
   Col
 } from "reactstrap";
@@ -158,34 +158,47 @@ class TestSiteList extends React.Component {
     render() {
     
     return (
-        <Container>
-            <Row className="row-grid align-items-center">
-            
-            <Col className="order-lg-1" lg="10">
-                <div className="d-flex px-3">
-                <div>
-                    <div className="icon icon-lg icon-shape bg-gradient-white shadow rounded-circle text-primary">
-                    <i className="ni ni-building text-primary" />
-                    </div>
-                </div>
-                <div className="pl-6">
-                    <h4 className="display-3 text-white">COVID-19 Testing Centers</h4>
-                    <p className="lead text-white">
-                        We are working around-the-clock to provide accurate information.
-                    </p>
-                </div>
-                </div>
-
-                <form>
-                    <fieldset className="form-group">
-                    <input type="text" maxLength="5" title="Five digit zip code" placeholder="5 digit zip code" className="form-control form-control-lg" onChange={this.filterList} value={this.state.zip}/>
-                    </fieldset>
-                </form>
-
-                <CardList items={this.state.items}/>
-            </Col>
+        <div>
+            <Row className="row-grid align-items-start pt-6 pb-6
+                            pl-6 pr-6 search-header">
+                <Col className="order-lg-1" lg="8">
+                    <Row>
+                        <h4 className="display-3 text-white">
+                            Find a COVID-19 community-test center near you.
+                        </h4>
+                    </Row>
+                    <Row>
+                        <p className="text-white">
+                            We have created a database of community centers
+                            across the U.S. Please enter your location zip code
+                            to find one near you
+                        </p>
+                    </Row>
+                    <Row>
+                        <form>
+                            <fieldset className="form-group">
+                            <input type="text" maxLength="5" title="Enter Zip Code (5 digit)"
+                                   placeholder="Enter Zip Code (5 digit)" className="form-control form-control-lg"
+                                   onChange={this.filterList} value={this.state.zip}/>
+                            </fieldset>
+                        </form>
+                    </Row>
+                </Col>
+                <Col className="order-lg-1" lg="4">
+                </Col>
             </Row>
-        </Container>
+            <Row className="row-grid align-items-start card-list">
+                <Row className="pl-5 pr-5">
+                    <p>Currently, there are over 200 community testing centers across U.S.</p>
+                </Row>
+                <Col className="order-lg-1" lg="8">
+                    <CardList items={this.state.items}/>
+                </Col>
+                <Col className="order-lg-1" lg="4">
+                    <TestSiteMap items={this.state.items} />
+                </Col>
+            </Row>
+        </div>
     );
   }
 }
