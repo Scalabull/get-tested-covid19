@@ -117,7 +117,7 @@ class DemoNavbar extends React.Component {
                                     <NavItem>
                                         <NavLink
                                             className='nav-link-icon mt-0 pt-0'
-                                            href='/test-site-search'
+                                            href='/'
                                         >
                                             <i className='ni ni-collection d-lg-none mr-1' />
                                             <span className='nav-link-inner--text mt-0 pt-0'>
