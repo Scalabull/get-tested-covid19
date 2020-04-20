@@ -18,7 +18,7 @@
 import React from 'react';
 
 // reactstrap components
-import { Row, Col, Card, CardBody } from 'reactstrap';
+import { Row, Col, Card, Button, CardBody, UncontrolledPopover, PopoverBody, PopoverHeader} from 'reactstrap';
 
 
 class CardList extends React.Component {
@@ -63,7 +63,7 @@ class CardList extends React.Component {
         } else {
             return (
                 <>
-                    {topResults.map((item) => {
+                    {topResults.map((item, index) => {
                         if(item.link === ''){
                             item.link = 'Unavailable'
                         }
@@ -89,7 +89,7 @@ class CardList extends React.Component {
 
                         return (
                             <Card
-                                key={item.name}
+                                key={index}
                                 className='shadow shadow-lg--hover mb-5'
                             >
                                 <CardBody>
@@ -146,10 +146,25 @@ class CardList extends React.Component {
                                             </Row>
                                             <hr />
                                             {item.description !== null &&
-                                                item.description !== undefined && (
+                                                item.description !== undefined && 
+                                                    item.description !== "" && (
                                                     <>
-                                                    <strong><span> View message </span></strong>
+                                                    <Button color="danger" id={"vm-" + index} size="sm">
+                                                    View Message
+                                                    </Button>
                                                     <span>from {item.name}</span>
+
+                                                    <UncontrolledPopover
+                                                    trigger="focus"
+                                                    placement="top"
+                                                    target={"vm-" + index}
+                                                    >
+                                                    <PopoverHeader>View message</PopoverHeader>
+                                                    <PopoverBody>
+                                                        {item.description}
+                                                    </PopoverBody>
+                                                    </UncontrolledPopover>
+                                                    
                                                     </>
                                                 )}
                                         </div>
