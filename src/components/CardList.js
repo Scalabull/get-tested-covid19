@@ -100,66 +100,70 @@ class CardList extends React.Component {
                                 key={index}
                                 className='shadow shadow-lg--hover mb-5'
                             >
-                                <CardBody>
+                                <CardBody className="ml-0 pl-0">
                                     <div className='d-flex px-3'>
                                         <div className='pl-4'>
-                                            <h4 className='display-4 mb-0'>
+                                            <h4 className='display-4 mb-0 card-head-text'>
                                                 {index + 1 + '. ' + item.name}
                                             </h4>
 
-                                            <p>
+                                            <p className="mb-0 pb-0">
+                                                <strong className="mb-0 pb-0">
                                                 {item.address}, {item.city}{' '}
                                                 {item.state}, {item.zip}
-                                            </p>
-                                            {item.dist !== null &&
+                                                </strong>
+                                                {item.dist !== null &&
                                                 item.dist !== undefined && (
-                                                    <small className='text-black pt-0 mt-0'>
-                                                        Est. Distance:{' '}
+                                                    <>
+                                                    <br />
+                                                    <small className='text-danger pt-0 mt-0'>
                                                         {item.dist.toFixed(2)}{' '}
-                                                        miles
+                                                        mi.
                                                     </small>
+                                                    </>
                                                 )}
-                                            <p>
-                                                <b>Ph:</b> {item.phone}
+                                            </p>
+                                            <p className="mb-0 pb-0">
+                                                <strong className='pt-0 mt-0'>Ph:</strong> {item.phone}
                                                 <br />
-                                                <b>Site:</b> {item.link}
+                                                <strong className='pt-0 mt-0'>Site:</strong> <a href={item.link}>{item.link}</a>
                                             </p>
                                             <Row className='row-grid align-items-start mb-0 pb-0'>
                                                 <Col lg='6 mt-0 pt-0'>
-                                                    <h6>
+                                                    <p>
                                                         <strong>
                                                             In-Facility Testing?{' '}
                                                         </strong>
-                                                        {item.walkUp}
-                                                    </h6>
+                                                        <span className="medWeight">{item.walkUp}</span>
+                                                    </p>
                                                 </Col>
                                                 <Col lg='6 mt-0 pt-0'>
-                                                    <h6>
+                                                    <p>
                                                         <strong>
                                                             Doctor Screening
                                                             Required?{' '}
                                                         </strong>
-                                                        {item.docScreen}
-                                                    </h6>
+                                                        <span className="medWeight">{item.docScreen}</span>
+                                                    </p>
                                                 </Col>
                                             </Row>
                                             <Row className='row-grid align-items-start mt-0 pt-0'>
                                                 <Col lg='6 mt-0 pt-0'>
-                                                    <h6>
+                                                    <p>
                                                         <strong>
                                                             Drive-Thru Testing?{' '}
                                                         </strong>
-                                                        {item.driveThru}
-                                                    </h6>
+                                                        <span className="medWeight">{item.driveThru}</span>
+                                                    </p>
                                                 </Col>
                                                 <Col lg='6 mt-0 pt-0'>
-                                                    <h6>
+                                                    <p>
                                                         <strong>
                                                             Appointment
                                                             Required?{' '}
                                                         </strong>
-                                                        {item.appReq}
-                                                    </h6>
+                                                        <span className="medWeight">{item.appReq}</span>
+                                                    </p>
                                                 </Col>
                                             </Row>
 
