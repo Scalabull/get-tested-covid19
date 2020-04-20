@@ -121,7 +121,18 @@ class DemoNavbar extends React.Component {
                                         >
                                             <i className='ni ni-collection d-lg-none mr-1' />
                                             <span className='nav-link-inner--text mt-0 pt-0'>
-                                                FIND TEST CENTER
+                                                Find a test center
+                                            </span>
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink
+                                            className='nav-link-icon mt-0 pt-0'
+                                            href='/about'
+                                        >
+                                            <i className='ni ni-collection d-lg-none mr-1 pt-0 mt-0' />
+                                            <span className='nav-link-inner--text'>
+                                                About
                                             </span>
                                         </NavLink>
                                     </NavItem>
@@ -133,7 +144,7 @@ class DemoNavbar extends React.Component {
                                         >
                                             <i className='ni ni-collection d-lg-none mr-1' />
                                             <span className='nav-link-inner--text mt-0 pt-0'>
-                                                RESOURCES
+                                                Resources
                                             </span>
                                         </DropdownToggle>
                                         <DropdownMenu
@@ -148,17 +159,7 @@ class DemoNavbar extends React.Component {
                                             </DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
-                                    <NavItem>
-                                        <NavLink
-                                            className='nav-link-icon mt-0 pt-0'
-                                            href='/about'
-                                        >
-                                            <i className='ni ni-collection d-lg-none mr-1 pt-0 mt-0' />
-                                            <span className='nav-link-inner--text'>
-                                                ABOUT
-                                            </span>
-                                        </NavLink>
-                                    </NavItem>
+                                    
                                 </Nav>
                             </UncontrolledCollapse>
                         </Container>
