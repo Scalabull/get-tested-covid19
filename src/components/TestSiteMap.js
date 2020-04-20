@@ -59,7 +59,7 @@ export default class TestSiteMap extends React.Component {
                 {items.map((item, index) => (
                     <Marker position={{ lat: item.lat, lng: item.lng }}>
                         <Tooltip permanent={true}>
-                            <h6>{index + 1 + '. ' + item.shortName}</h6>
+                            <h6>{index + 1 }</h6>
                         </Tooltip>
                         <Popup>
                             <h6>{index + 1 + '. ' + item.name}</h6>
