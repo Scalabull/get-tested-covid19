@@ -26,6 +26,7 @@ import HomeZipForm from 'components/Forms/HomeZipForm.js';
 
 // reactstrap components
 import { Row, Col } from 'reactstrap';
+import hero1 from '../assets/img/hero/Hero1.png'
 
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
@@ -191,7 +192,7 @@ class TestSiteList extends React.Component {
         return (
             <div>
                 <Row
-                    className='row-grid align-items-start pt-6 pb-6
+                    className='row-grid align-items-start pt-6 pb-1
                             pl-6 pr-6 search-header'
                 >
                     <Col className='order-lg-1' lg='7'>
@@ -226,9 +227,11 @@ class TestSiteList extends React.Component {
                             </Form>
                         </Row>
                     </Col>
-                    <Col className='order-lg-1' lg='5'></Col>
+                    <Col className='order-lg-1 mt--100' lg='5'>
+                        <img src={hero1} alt='lab testing'></img>
+                    </Col>
                 </Row>
-                <Row className='row-grid align-items-start card-list'>
+                <Row className='row-grid align-items-start card-list mt-0'>
                     <Row className='pl-5 pr-5'>
                         <p>
                             Currently, there are over {this.state.initialItems.length} community testing centers across
