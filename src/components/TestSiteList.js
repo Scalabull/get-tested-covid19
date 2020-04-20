@@ -161,7 +161,7 @@ class TestSiteList extends React.Component {
                     className='row-grid align-items-start pt-6 pb-6
                             pl-6 pr-6 search-header'
                 >
-                    <Col className='order-lg-1' lg='8'>
+                    <Col className='order-lg-1' lg='7'>
                         <Row>
                             <h4 className='display-3 text-white'>
                                 Find a COVID-19 community-test center near you.
@@ -190,7 +190,7 @@ class TestSiteList extends React.Component {
                             </form>
                         </Row>
                     </Col>
-                    <Col className='order-lg-1' lg='4'></Col>
+                    <Col className='order-lg-1' lg='5'></Col>
                 </Row>
                 <Row className='row-grid align-items-start card-list'>
                     <Row className='pl-5 pr-5'>
@@ -199,10 +199,10 @@ class TestSiteList extends React.Component {
                             centers across U.S.
                         </p>
                     </Row>
-                    <Col className='order-lg-1' lg='8'>
+                    <Col className='order-lg-1' lg='7'>
                         <CardList items={this.state.items} />
                     </Col>
-                    <Col className='order-lg-1' lg='4'>
+                    <Col className='order-lg-1' lg='5'>
                         <TestSiteMap items={this.state.items} />
                     </Col>
                 </Row>
