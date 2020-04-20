@@ -29,6 +29,11 @@ import {
     PopoverHeader,
 } from 'reactstrap';
 
+import icon1 from '../assets/img/icons/card/Hospital.png';
+import icon2 from '../assets/img/icons/card/Doc-blue.png';
+import icon3 from '../assets/img/icons/card/DriveThrough.png';
+import icon4 from '../assets/img/icons/card/Appointment-blue.png'
+
 class CardList extends React.Component {
     componentDidMount() {}
 
@@ -129,16 +134,19 @@ class CardList extends React.Component {
                                                 <strong className='pt-0 mt-0'>Site:</strong> <a href={item.link}>{item.link}</a>
                                             </p>
                                             <Row className='row-grid align-items-start mb-0 pb-0'>
-                                                <Col lg='6 mt-0 pt-0'>
+                                                <Col lg='6 mt-2 pt-2 mr-0 pr-0'>
                                                     <p>
+                                                        <img src={icon1} alt='hospital icon'/>
                                                         <strong>
                                                             In-Facility Testing?{' '}
                                                         </strong>
+                                                        
                                                         <span className="medWeight">{item.walkUp}</span>
                                                     </p>
                                                 </Col>
-                                                <Col lg='6 mt-0 pt-0'>
+                                                <Col lg='6 mt-2 pt-2 ml-0 pl-0 mr-0 pr-0'>
                                                     <p>
+                                                        <img src={icon2} alt='doctor'/>
                                                         <strong>
                                                             Doctor Screening
                                                             Required?{' '}
@@ -148,16 +156,18 @@ class CardList extends React.Component {
                                                 </Col>
                                             </Row>
                                             <Row className='row-grid align-items-start mt-0 pt-0'>
-                                                <Col lg='6 mt-0 pt-0'>
+                                                <Col lg='6'>
                                                     <p>
+                                                        <img src={icon3} alt='car driving'/>
                                                         <strong>
                                                             Drive-Thru Testing?{' '}
                                                         </strong>
                                                         <span className="medWeight">{item.driveThru}</span>
                                                     </p>
                                                 </Col>
-                                                <Col lg='6 mt-0 pt-0'>
+                                                <Col lg='6'>
                                                     <p>
+                                                        <img src={icon4} alt='calendar'/>
                                                         <strong>
                                                             Appointment
                                                             Required?{' '}
