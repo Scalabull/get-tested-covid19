@@ -71,7 +71,7 @@ $default:       #172b4d !default;
 $primary:       #5e72e4 !default;
 $secondary:     #f4f5f7 !default;
 $success:       $green !default;
-$info:          $teal !default;
+$info:          #162B4D !default;
 $warning:       $orange !default;
 $danger:        $red !default;
 $light:         $gray-500 !default;
@@ -244,7 +244,7 @@ $container-max-widths: (
   sm: 540px,
   md: 720px,
   lg: 960px,
-  xl: 1040px
+  xl: 1120px
 );
 
 @include _assert-ascending($container-max-widths, "$container-max-widths");
@@ -296,7 +296,7 @@ $shape-height-sm:              1.5 !default;
 $border-width:                .0625rem !default;
 $border-color:                $gray-200 !default;
 
-$border-radius:               .25rem !default;
+$border-radius:               10px !default;
 $border-radius-xl:            .35rem !default;
 $border-radius-lg:            .3rem !default;
 $border-radius-sm:            .2rem !default;

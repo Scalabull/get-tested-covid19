@@ -18,7 +18,7 @@
 import React from 'react';
 
 // reactstrap components
-import { Button, Card, Container, Row, Col } from 'reactstrap';
+import { Card, Container } from 'reactstrap';
 
 // core components
 import DemoNavbar from 'components/Navbars/DemoNavbar.js';
@@ -67,6 +67,7 @@ class Profile extends React.Component {
                         <Container>
                             <Card className='card-profile shadow mt--300'>
                                 <iframe
+                                    title='map'
                                     height='600'
                                     frameborder='0'
                                     scrolling='no'

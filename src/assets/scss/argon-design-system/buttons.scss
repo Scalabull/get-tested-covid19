@@ -91,6 +91,12 @@
   color: theme-color("primary");
 }
 
+.btn-info {
+  color: white;
+  background-color: theme-color("info");
+  border-color: theme-color("info");
+}
+
 // Icons
 
 .btn svg:not(:first-child),
