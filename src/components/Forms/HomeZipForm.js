@@ -33,6 +33,8 @@ class HomeZipForm extends React.Component {
     }
     
     render() {
+        let { onSubmit } = this.props;
+        
         return (
             <>
                 <Col lg="4" sm="6" xs="8" className="mt-3 mr-0 pr-0">
@@ -65,7 +67,7 @@ class HomeZipForm extends React.Component {
                 <Col lg="4" sm="6" xs="4" className="mt-3 ml-0 pl-0">
                     <Button 
                         className="btn-square btn-info"
-                        href={"/test-site-search?zip=" + this.state.value}
+                        onClick={() => this.props.onSubmit(this.state.value)}
                     >SEARCH</Button>
                 </Col>
             </>

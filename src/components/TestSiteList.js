@@ -20,6 +20,7 @@ import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
 import qs from 'query-string';
+import HomeZipForm from 'components/Forms/HomeZipForm.js';
 
 // reactstrap components
 import { Row, Col } from 'reactstrap';
@@ -72,8 +73,9 @@ class TestSiteList extends React.Component {
         this.filterList = this.filterList.bind(this);
     }
 
-    filterList(event) {
-        const searchZipStr = event.target.value;
+    filterList(searchStr) {
+        console.log(searchStr)
+        const searchZipStr = searchStr;
         const zipRE = /^[0-9]{5}$/;
         const zipMatchFlag = zipRE.test(searchZipStr);
 
@@ -191,19 +193,8 @@ class TestSiteList extends React.Component {
                             </p>
                         </Row>
                         <Row>
-                            <form>
-                                <fieldset className='form-group'>
-                                    <input
-                                        type='text'
-                                        maxLength='5'
-                                        title='Enter Zip Code (5 digit)'
-                                        placeholder='Enter Zip Code (5 digit)'
-                                        className='form-control form-control-lg'
-                                        onChange={this.filterList}
-                                        value={this.state.zip}
-                                    />
-                                </fieldset>
-                            </form>
+                            <HomeZipForm onSubmit={this.filterList}></HomeZipForm>
+                            
                         </Row>
                     </Col>
                     <Col className='order-lg-1' lg='5'></Col>
