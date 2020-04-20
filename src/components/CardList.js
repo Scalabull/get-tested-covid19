@@ -18,21 +18,12 @@
 import React from 'react';
 
 // reactstrap components
-import {
-    Row,
-    Col,
-    Card,
-    Button,
-    CardBody,
-    UncontrolledPopover,
-    PopoverBody,
-    PopoverHeader,
-} from 'reactstrap';
+import { Row, Col, Card, Button, CardBody, UncontrolledPopover, PopoverBody, PopoverHeader } from 'reactstrap';
 
 import icon1 from '../assets/img/icons/card/Hospital.png';
 import icon2 from '../assets/img/icons/card/Doc-blue.png';
 import icon3 from '../assets/img/icons/card/DriveThrough.png';
-import icon4 from '../assets/img/icons/card/Appointment-blue.png'
+import icon4 from '../assets/img/icons/card/Appointment-blue.png';
 
 class CardList extends React.Component {
     componentDidMount() {}
@@ -42,6 +33,22 @@ class CardList extends React.Component {
     onExiting = () => {};
 
     onExited = () => {};
+
+    DisplayCardItem = (icon, title, alt, item) => (
+        <conainter>
+            <div className='cardlist-item-container'>
+                <div className='cardlist-item-icon'>
+                    <img src={icon} alt={alt} />
+                </div>
+                <div className='cardlist-item-title'>
+                    <strong>{title}</strong>
+                </div>
+                <div className='cardlist-item-yes-no'>
+                    <span className='medWeight'>{item}</span>
+                </div>
+            </div>
+        </conainter>
+    );
 
     render() {
         let topResults = this.props.items;
@@ -58,14 +65,11 @@ class CardList extends React.Component {
                                 </div>
                                 <div className='pl-4'>
                                     <h5 className='title text-primary'>
-                                        No test centers were located within 40
-                                        miles of your zip code.
+                                        No test centers were located within 40 miles of your zip code.
                                     </h5>
                                     <p className='text-muted'>
-                                        Our data may be incomplete. Please check
-                                        with your doctor and/or local
-                                        government, and inform us if we are
-                                        missing test centers in your area.
+                                        Our data may be incomplete. Please check with your doctor and/or local
+                                        government, and inform us if we are missing test centers in your area.
                                     </p>
                                 </div>
                             </div>
@@ -101,118 +105,86 @@ class CardList extends React.Component {
                         item.walkUp = item.walkUp.toUpperCase();
 
                         return (
-                            <Card
-                                key={index}
-                                className='shadow shadow-lg--hover mb-5'
-                            >
-                                <CardBody className="ml-0 pl-0">
-                                    <div className='d-flex px-3'>
-                                        <div className='pl-4'>
-                                            <h4 className='display-4 mb-0 card-head-text'>
-                                                {index + 1 + '. ' + item.name}
-                                            </h4>
+                            <Card key={index} className='shadow shadow-lg--hover mb-5'>
+                                <CardBody>
+                                    <div>
+                                        <h4 className='display-4 mb-0 card-head-text'>
+                                            {index + 1 + '. ' + item.name}
+                                        </h4>
 
-                                            <p className="mb-0 pb-0">
-                                                <strong className="mb-0 pb-0">
-                                                {item.address}, {item.city}{' '}
-                                                {item.state}, {item.zip}
-                                                </strong>
-                                                {item.dist !== null &&
-                                                item.dist !== undefined && (
-                                                    <>
+                                        <p className='mb-0 pb-0'>
+                                            <strong className='mb-0 pb-0'>
+                                                {item.address}, {item.city} {item.state}, {item.zip}
+                                            </strong>
+                                            {item.dist !== null && item.dist !== undefined && (
+                                                <>
                                                     <br />
                                                     <small className='text-danger pt-0 mt-0'>
-                                                        {item.dist.toFixed(2)}{' '}
-                                                        mi.
+                                                        {item.dist.toFixed(2)} mi.
                                                     </small>
-                                                    </>
+                                                </>
+                                            )}
+                                        </p>
+                                        <p className='mb-0 pb-0'>
+                                            <strong className='pt-0 mt-0'>Ph:</strong> {item.phone}
+                                            <br />
+                                            <strong className='pt-0 mt-0'>Site:</strong>{' '}
+                                            <a href={item.link}>{item.link}</a>
+                                        </p>
+                                        <div className='cardlist-item-grid'>
+                                            <div>
+                                                {this.DisplayCardItem(
+                                                    icon1,
+                                                    'In-Facility Testing?',
+                                                    'hospital icon',
+                                                    item.walkUp
                                                 )}
-                                            </p>
-                                            <p className="mb-0 pb-0">
-                                                <strong className='pt-0 mt-0'>Ph:</strong> {item.phone}
-                                                <br />
-                                                <strong className='pt-0 mt-0'>Site:</strong> <a href={item.link}>{item.link}</a>
-                                            </p>
-                                            <Row className='row-grid align-items-start mb-0 pb-0'>
-                                                <Col lg='6 mt-2 pt-2 mr-0 pr-0'>
-                                                    <p>
-                                                        <img src={icon1} alt='hospital icon'/>
-                                                        <strong>
-                                                            In-Facility Testing?{' '}
-                                                        </strong>
-                                                        
-                                                        <span className="medWeight">{item.walkUp}</span>
-                                                    </p>
-                                                </Col>
-                                                <Col lg='6 mt-2 pt-2 ml-0 pl-0 mr-0 pr-0'>
-                                                    <p>
-                                                        <img src={icon2} alt='doctor'/>
-                                                        <strong>
-                                                            Doctor Screening
-                                                            Required?{' '}
-                                                        </strong>
-                                                        <span className="medWeight">{item.docScreen}</span>
-                                                    </p>
-                                                </Col>
-                                            </Row>
-                                            <Row className='row-grid align-items-start mt-0 pt-0'>
-                                                <Col lg='6'>
-                                                    <p>
-                                                        <img src={icon3} alt='car driving'/>
-                                                        <strong>
-                                                            Drive-Thru Testing?{' '}
-                                                        </strong>
-                                                        <span className="medWeight">{item.driveThru}</span>
-                                                    </p>
-                                                </Col>
-                                                <Col lg='6'>
-                                                    <p>
-                                                        <img src={icon4} alt='calendar'/>
-                                                        <strong>
-                                                            Appointment
-                                                            Required?{' '}
-                                                        </strong>
-                                                        <span className="medWeight">{item.appReq}</span>
-                                                    </p>
-                                                </Col>
-                                            </Row>
-
-                                            {item.description !== null &&
-                                                item.description !==
-                                                    undefined &&
-                                                item.description !== '' && (
-                                                    <>
-                                                        <hr />
-                                                        <Button
-                                                            color='danger'
-                                                            id={'vm-' + index}
-                                                            size='sm'
-                                                        >
-                                                            View Message
-                                                        </Button>
-                                                        <span>
-                                                            from {item.name}
-                                                        </span>
-
-                                                        <UncontrolledPopover
-                                                            trigger='focus'
-                                                            placement='top'
-                                                            target={
-                                                                'vm-' + index
-                                                            }
-                                                        >
-                                                            <PopoverHeader>
-                                                                View message
-                                                            </PopoverHeader>
-                                                            <PopoverBody>
-                                                                {
-                                                                    item.description
-                                                                }
-                                                            </PopoverBody>
-                                                        </UncontrolledPopover>
-                                                    </>
+                                            </div>
+                                            <div>
+                                                {this.DisplayCardItem(
+                                                    icon2,
+                                                    'Doctor Screening Required?',
+                                                    'doctor',
+                                                    item.docScreen
                                                 )}
+                                            </div>
+                                            <div>
+                                                {this.DisplayCardItem(
+                                                    icon3,
+                                                    'Drive-Thru Testing?',
+                                                    'car driving',
+                                                    item.driveThru
+                                                )}
+                                            </div>
+                                            <div>
+                                                {this.DisplayCardItem(
+                                                    icon4,
+                                                    'Appointment Required?',
+                                                    'calendar',
+                                                    item.appReq
+                                                )}
+                                            </div>
                                         </div>
+                                        {item.description !== null &&
+                                            item.description !== undefined &&
+                                            item.description !== '' && (
+                                                <>
+                                                    <hr />
+                                                    <Button color='danger' id={'vm-' + index} size='sm'>
+                                                        View Message
+                                                    </Button>
+                                                    <span>from {item.name}</span>
+
+                                                    <UncontrolledPopover
+                                                        trigger='focus'
+                                                        placement='top'
+                                                        target={'vm-' + index}
+                                                    >
+                                                        <PopoverHeader>View message</PopoverHeader>
+                                                        <PopoverBody>{item.description}</PopoverBody>
+                                                    </UncontrolledPopover>
+                                                </>
+                                            )}
                                     </div>
                                 </CardBody>
                             </Card>

@@ -26,7 +26,7 @@ import HomeZipForm from 'components/Forms/HomeZipForm.js';
 
 // reactstrap components
 import { Row, Col } from 'reactstrap';
-import hero1 from '../assets/img/hero/Hero1.png'
+import hero1 from '../assets/img/hero/Hero1.png';
 
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
@@ -231,18 +231,23 @@ class TestSiteList extends React.Component {
                         <img src={hero1} alt='lab testing'></img>
                     </Col>
                 </Row>
-                <Row className='row-grid align-items-start card-list mt-0'>
-                    <Row className='pl-5 pr-5'>
+                <Row className='row-grid align-items-start card-list'>
+                    {/* <Row className='pl-5 pr-5'>
                         <p>
                             Currently, there are over {this.state.initialItems.length} community testing centers across
                             U.S.
                         </p>
-                    </Row>
+                    </Row> */}
                     <Col className='order-lg-1' lg='7'>
-                        <CardList items={viewItems} totalCount={this.state.items.length} />
+                        <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
                     </Col>
-                    <Col className='map-container order-lg-1' lg='5'>
-                        <TestSiteMap items={viewItems} totalCount={this.state.items.length} zipLatLng />
+                    <Col className='map-container order-lg-2' lg='5'>
+                        <TestSiteMap
+                            style={{ width: '100vw' }}
+                            items={viewItems}
+                            totalCount={this.state.items.length}
+                            zipLatLng
+                        />
                     </Col>
                 </Row>
             </div>
