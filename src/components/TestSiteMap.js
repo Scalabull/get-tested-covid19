@@ -15,10 +15,10 @@ export default class TestSiteMap extends React.Component {
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
-                {items.map((item) => (
-                    <Marker position={{ lat: item.lat, lng: item.lng }}>
+                {items.map((item, index) => (
+                    <Marker position={{ lat: item.lat, lng: item.lng }} >
                         <Popup>
-                            <h6>{item.name}</h6>
+                            <h6>{index + 1 + ". " + item.name}</h6>
                             <div>
                                 {item.address}, {item.city}, {item.state}
                             </div>

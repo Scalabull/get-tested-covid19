@@ -96,7 +96,7 @@ class CardList extends React.Component {
                                     <div className='d-flex px-3'>
                                         <div className='pl-4'>
                                             <h4 className="display-4 mb-0">
-                                            {item.name}
+                                            {index + 1 + '. ' + item.name}
                                             </h4>
                                                                            
                                             <p>
