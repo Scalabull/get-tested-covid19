@@ -70,7 +70,7 @@ class TestSiteList extends React.Component {
             items: [],
             zipLookups: [],
             searchZip: zip,
-            displayZip: ''
+            displayZip: '',
         };
 
         this.filterList = this.filterList.bind(this);
@@ -107,7 +107,7 @@ class TestSiteList extends React.Component {
                     updatedList = updatedList.filter(function (item) {
                         return item.zip === searchZipStr;
                     });
-                    this.setState({ items: updatedList});
+                    this.setState({ items: updatedList });
                 } else {
                     // else zip code is present in lookup table. Use haversine distance w/ lat, lng
                     const start = {
@@ -142,9 +142,9 @@ class TestSiteList extends React.Component {
                 }
             } else if (searchZipStr === '') {
                 this.setState({
-                    items: this.state.initialItems
+                    items: this.state.initialItems,
                 });
-            } 
+            }
         }
     }
 
@@ -163,9 +163,7 @@ class TestSiteList extends React.Component {
                 }
             )
             .then(() => {
-                return fetch(
-                    'https://storage.googleapis.com/covid19-resources/zipLookups.json'
-                );
+                return fetch('https://storage.googleapis.com/covid19-resources/zipLookups.json');
             })
             .then((res) => res.json())
             .then(
@@ -198,15 +196,12 @@ class TestSiteList extends React.Component {
                 >
                     <Col className='order-lg-1' lg='7'>
                         <Row>
-                            <h4 className='display-3 text-white'>
-                                Find a COVID-19 community-test center near you.
-                            </h4>
+                            <h4 className='display-3 text-white'>Find a COVID-19 community-test center near you.</h4>
                         </Row>
                         <Row>
                             <p className='text-white'>
-                                We have created a database of community centers
-                                across the U.S. Please enter your location zip
-                                code to find one near you
+                                We have created a database of community centers across the U.S. Please enter your
+                                location zip code to find one near you
                             </p>
                         </Row>
                         <Row>
@@ -214,18 +209,16 @@ class TestSiteList extends React.Component {
                                 <FormGroup>
                                     <Row form>
                                         <Input
-                                            className='mr-0 pr-0'
+                                            className='mr-0 pr-0 search-input'
                                             type='text'
                                             maxLength='5'
                                             title='Enter Zip Code (5 digit)'
                                             placeholder='Enter Zip Code (5 digit)'
                                             // className='form-control form-control-lg'
-                                            onChange={(e) =>
-                                                this.onChangeZip(e)
-                                            }
+                                            onChange={(e) => this.onChangeZip(e)}
                                             value={this.state.displayZip}
                                         />
-                                        <Button type='submit' color='info'>
+                                        <Button className='search-button' type='submit' color='info'>
                                             Search
                                         </Button>
                                     </Row>
@@ -238,23 +231,15 @@ class TestSiteList extends React.Component {
                 <Row className='row-grid align-items-start card-list'>
                     <Row className='pl-5 pr-5'>
                         <p>
-                            Currently, there are over{' '}
-                            {this.state.initialItems.length} community testing
-                            centers across U.S.
+                            Currently, there are over {this.state.initialItems.length} community testing centers across
+                            U.S.
                         </p>
                     </Row>
                     <Col className='order-lg-1' lg='7'>
-                        <CardList
-                            items={viewItems}
-                            totalCount={this.state.items.length}
-                        />
+                        <CardList items={viewItems} totalCount={this.state.items.length} />
                     </Col>
                     <Col className='order-lg-1' lg='5'>
-                        <TestSiteMap
-                            items={viewItems}
-                            totalCount={this.state.items.length}
-                            zipLatLng
-                        />
+                        <TestSiteMap items={viewItems} totalCount={this.state.items.length} zipLatLng />
                     </Col>
                 </Row>
             </div>
