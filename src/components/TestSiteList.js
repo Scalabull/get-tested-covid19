@@ -16,6 +16,8 @@
 
 */
 import React from 'react';
+import { Form, FormGroup, Input, Button } from 'reactstrap';
+import debounce from 'lodash.debounce';
 import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
@@ -71,11 +73,23 @@ class TestSiteList extends React.Component {
         };
 
         this.filterList = this.filterList.bind(this);
+        this.onChangeZip = this.onChangeZip.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
-    filterList(searchStr) {
-        console.log(searchStr)
-        const searchZipStr = searchStr;
+    onSubmit(e) {
+        e.preventDefault();
+        this.filterList(this.state.zip);
+        this.setState({ zip: '' });
+    }
+
+    onChangeZip(e) {
+        const zip = e.target.value;
+        this.setState({ zip });
+    }
+
+    filterList(searchZipStr) {
+        // const searchZipStr = event.target.value;
         const zipRE = /^[0-9]{5}$/;
         const zipMatchFlag = zipRE.test(searchZipStr);
 
@@ -153,13 +167,15 @@ class TestSiteList extends React.Component {
                 this.filterList({ target: { value: this.state.zip } });
             })
             .then(() => {
-                return fetch('https://storage.googleapis.com/covid19-resources/zipLookups.json')
+                return fetch(
+                    'https://storage.googleapis.com/covid19-resources/zipLookups.json'
+                );
             })
             .then((res) => res.json())
             .then(
                 (res) => {
                     this.setState({
-                        zipLookups: res.zipLookups
+                        zipLookups: res.zipLookups,
                     });
                 },
                 (error) => {
@@ -167,9 +183,10 @@ class TestSiteList extends React.Component {
                 }
             );
     }
+
     render() {
-        let zipLatLng = null
-        if(this.state.zip){
+        let zipLatLng = null;
+        if (this.state.zip) {
             zipLatLng = this.state.zipLookups[this.state.zip];
         }
 
@@ -193,8 +210,27 @@ class TestSiteList extends React.Component {
                             </p>
                         </Row>
                         <Row>
-                            <HomeZipForm onSubmit={this.filterList}></HomeZipForm>
-                            
+                            <Form onSubmit={this.onSubmit} inline>
+                                <FormGroup>
+                                    <Row form>
+                                        <Input
+                                            className='mr-0 pr-0'
+                                            type='text'
+                                            maxLength='5'
+                                            title='Enter Zip Code (5 digit)'
+                                            placeholder='Enter Zip Code (5 digit)'
+                                            // className='form-control form-control-lg'
+                                            onChange={(e) =>
+                                                this.onChangeZip(e)
+                                            }
+                                            value={this.state.zip}
+                                        />
+                                        <Button type='submit' color='info'>
+                                            Search
+                                        </Button>
+                                    </Row>
+                                </FormGroup>
+                            </Form>
                         </Row>
                     </Col>
                     <Col className='order-lg-1' lg='5'></Col>
@@ -202,15 +238,23 @@ class TestSiteList extends React.Component {
                 <Row className='row-grid align-items-start card-list'>
                     <Row className='pl-5 pr-5'>
                         <p>
-                            Currently, there are over {this.state.initialItems.length} community testing
+                            Currently, there are over{' '}
+                            {this.state.initialItems.length} community testing
                             centers across U.S.
                         </p>
                     </Row>
                     <Col className='order-lg-1' lg='7'>
-                        <CardList items={this.state.items.slice(0,10)} totalCount={this.state.items.length} />
+                        <CardList
+                            items={this.state.items.slice(0, 10)}
+                            totalCount={this.state.items.length}
+                        />
                     </Col>
                     <Col className='order-lg-1' lg='5'>
-                        <TestSiteMap items={this.state.items.slice(0,10)} totalCount={this.state.items.length} zipLatLng />
+                        <TestSiteMap
+                            items={this.state.items.slice(0, 10)}
+                            totalCount={this.state.items.length}
+                            zipLatLng
+                        />
                     </Col>
                 </Row>
             </div>

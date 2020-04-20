@@ -18,8 +18,16 @@
 import React from 'react';
 
 // reactstrap components
-import { Row, Col, Card, Button, CardBody, UncontrolledPopover, PopoverBody, PopoverHeader} from 'reactstrap';
-
+import {
+    Row,
+    Col,
+    Card,
+    Button,
+    CardBody,
+    UncontrolledPopover,
+    PopoverBody,
+    PopoverHeader,
+} from 'reactstrap';
 
 class CardList extends React.Component {
     componentDidMount() {}
@@ -31,7 +39,7 @@ class CardList extends React.Component {
     onExited = () => {};
 
     render() {
-        let topResults = this.props.items
+        let topResults = this.props.items;
         if (topResults === null || topResults.length === 0) {
             return (
                 <>
@@ -64,28 +72,28 @@ class CardList extends React.Component {
             return (
                 <>
                     {topResults.map((item, index) => {
-                        if(item.link === ''){
-                            item.link = 'Unavailable'
+                        if (item.link === '') {
+                            item.link = 'Unavailable';
                         }
-                        if(item.phone === ''){
-                            item.phone = 'Unavailable'
+                        if (item.phone === '') {
+                            item.phone = 'Unavailable';
                         }
-                        if(item.docScreen === ''){
-                            item.docScreen = 'N/A'
+                        if (item.docScreen === '') {
+                            item.docScreen = 'N/A';
                         }
-                        if(item.appReq === ''){
-                            item.appReq = 'N/A'
+                        if (item.appReq === '') {
+                            item.appReq = 'N/A';
                         }
-                        if(item.driveThru === ''){
-                            item.driveThru = 'N/A'
+                        if (item.driveThru === '') {
+                            item.driveThru = 'N/A';
                         }
-                        if(item.walkUp === ''){
-                            item.walkUp = 'N/A'
+                        if (item.walkUp === '') {
+                            item.walkUp = 'N/A';
                         }
-                        item.docScreen = item.docScreen.toUpperCase()
-                        item.appReq = item.appReq.toUpperCase()
-                        item.driveThru = item.driveThru.toUpperCase()
-                        item.walkUp = item.walkUp.toUpperCase()
+                        item.docScreen = item.docScreen.toUpperCase();
+                        item.appReq = item.appReq.toUpperCase();
+                        item.driveThru = item.driveThru.toUpperCase();
+                        item.walkUp = item.walkUp.toUpperCase();
 
                         return (
                             <Card
@@ -95,10 +103,10 @@ class CardList extends React.Component {
                                 <CardBody>
                                     <div className='d-flex px-3'>
                                         <div className='pl-4'>
-                                            <h4 className="display-4 mb-0">
-                                            {index + 1 + '. ' + item.name}
+                                            <h4 className='display-4 mb-0'>
+                                                {index + 1 + '. ' + item.name}
                                             </h4>
-                                                                           
+
                                             <p>
                                                 {item.address}, {item.city}{' '}
                                                 {item.state}, {item.zip}
@@ -119,13 +127,18 @@ class CardList extends React.Component {
                                             <Row className='row-grid align-items-start mb-0 pb-0'>
                                                 <Col lg='6 mt-0 pt-0'>
                                                     <h6>
-                                                        <strong>In-Facility Testing?{' '}</strong>
+                                                        <strong>
+                                                            In-Facility Testing?{' '}
+                                                        </strong>
                                                         {item.walkUp}
                                                     </h6>
                                                 </Col>
                                                 <Col lg='6 mt-0 pt-0'>
                                                     <h6>
-                                                        <strong>Doctor Screening Required?{' '}</strong>
+                                                        <strong>
+                                                            Doctor Screening
+                                                            Required?{' '}
+                                                        </strong>
                                                         {item.docScreen}
                                                     </h6>
                                                 </Col>
@@ -133,39 +146,56 @@ class CardList extends React.Component {
                                             <Row className='row-grid align-items-start mt-0 pt-0'>
                                                 <Col lg='6 mt-0 pt-0'>
                                                     <h6>
-                                                        <strong>Drive-Thru Testing?{' '}</strong>
+                                                        <strong>
+                                                            Drive-Thru Testing?{' '}
+                                                        </strong>
                                                         {item.driveThru}
                                                     </h6>
                                                 </Col>
                                                 <Col lg='6 mt-0 pt-0'>
                                                     <h6>
-                                                        <strong>Appointment Required?{' '}</strong>
+                                                        <strong>
+                                                            Appointment
+                                                            Required?{' '}
+                                                        </strong>
                                                         {item.appReq}
                                                     </h6>
                                                 </Col>
                                             </Row>
-                                            
-                                            {item.description !== null &&
-                                                item.description !== undefined && 
-                                                    item.description !== "" && (
-                                                    <>
-                                                    <hr />
-                                                    <Button color="danger" id={"vm-" + index} size="sm">
-                                                    View Message
-                                                    </Button>
-                                                    <span>from {item.name}</span>
 
-                                                    <UncontrolledPopover
-                                                    trigger="focus"
-                                                    placement="top"
-                                                    target={"vm-" + index}
-                                                    >
-                                                    <PopoverHeader>View message</PopoverHeader>
-                                                    <PopoverBody>
-                                                        {item.description}
-                                                    </PopoverBody>
-                                                    </UncontrolledPopover>
-                                                    
+                                            {item.description !== null &&
+                                                item.description !==
+                                                    undefined &&
+                                                item.description !== '' && (
+                                                    <>
+                                                        <hr />
+                                                        <Button
+                                                            color='danger'
+                                                            id={'vm-' + index}
+                                                            size='sm'
+                                                        >
+                                                            View Message
+                                                        </Button>
+                                                        <span>
+                                                            from {item.name}
+                                                        </span>
+
+                                                        <UncontrolledPopover
+                                                            trigger='focus'
+                                                            placement='top'
+                                                            target={
+                                                                'vm-' + index
+                                                            }
+                                                        >
+                                                            <PopoverHeader>
+                                                                View message
+                                                            </PopoverHeader>
+                                                            <PopoverBody>
+                                                                {
+                                                                    item.description
+                                                                }
+                                                            </PopoverBody>
+                                                        </UncontrolledPopover>
                                                     </>
                                                 )}
                                         </div>

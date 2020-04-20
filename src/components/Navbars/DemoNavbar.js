@@ -72,7 +72,7 @@ class DemoNavbar extends React.Component {
                             <NavbarBrand className='mr-lg-5' to='/' tag={Link}>
                                 <img
                                     alt='...'
-                                    src={require('assets/img/brand/GetTestedCovid19Finallogocolorfinal_white.png')}
+                                    src={require('assets/img/brand/GetTestedCovid19Finallogowhitebottom.png')}
                                 />
                             </NavbarBrand>
                             <button
@@ -94,7 +94,7 @@ class DemoNavbar extends React.Component {
                                             <Link to='/'>
                                                 <img
                                                     alt='...'
-                                                    src={require('assets/img/brand/GetTestedCovid19Finallogocolorfinal_white.png')}
+                                                    src={require('assets/img/brand/GetTestedCovid19Finallogowhitebottom.png')}
                                                 />
                                             </Link>
                                         </Col>
