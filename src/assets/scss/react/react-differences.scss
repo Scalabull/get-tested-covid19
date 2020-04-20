@@ -18,13 +18,14 @@
 
 // Custom components
 
-@import "custom/dropdown.scss";
-@import "custom/mixins.scss";
-@import "custom/navbar.scss";
-@import "custom/popover.scss";
-@import "custom/separator.scss";
-
+@import 'custom/dropdown.scss';
+@import 'custom/map.scss';
+@import 'custom/mixins.scss';
+@import 'custom/navbar.scss';
+@import 'custom/popover.scss';
+@import 'custom/search.scss';
+@import 'custom/separator.scss';
 
 // Vendor
 
-@import "custom/vendor/react-datetime.scss";
+@import 'custom/vendor/react-datetime.scss';
