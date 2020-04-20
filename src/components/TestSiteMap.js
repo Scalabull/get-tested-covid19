@@ -1,16 +1,40 @@
 import React from 'react';
 import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 
+const MAX_GEO = 400;
+const MIN_GEO = -400;
 export default class TestSiteMap extends React.Component {
     render() {
         let { items, zipLatLng } = this.props;
-        let mapCenterCoords = items[0];
+        
 
         items = items.map((item) => {
             item.shortName = item.name.substring(0, 12);
             if (item.name && item.name.length > 12) item.shortName += '...';
             return item;
         });
+
+        let mapCenterCoords = null;
+        let bounds = undefined;
+
+
+        if(items && Array.isArray(items) && items.length > 0){
+            mapCenterCoords = items[0];
+
+            let maxLat = MIN_GEO;
+            let maxLng = MIN_GEO;
+            let minLng = MAX_GEO;
+            let minLat = MAX_GEO;
+            items.forEach(item => {
+                if(item.lat > maxLat) maxLat = item.lat;
+                if(item.lat < minLat) minLat = item.lat;
+                if(item.lng > maxLng) maxLng = item.lng;
+                if(item.lng < minLng) minLng = item.lng;
+            });
+
+            bounds = [[maxLat, minLng], [minLat, maxLng]];
+        }
+       
 
         if (zipLatLng && Array.isArray(zipLatLng)) {
             mapCenterCoords = zipLatLng;
@@ -21,6 +45,7 @@ export default class TestSiteMap extends React.Component {
                 zoom={10}
                 zoomControl={true}
                 dragging={true}
+                bounds={bounds}
                 className='map'
             >
                 <TileLayer
