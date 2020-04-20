@@ -31,7 +31,7 @@ class CardList extends React.Component {
     onExited = () => {};
 
     render() {
-        let topResults = this.props.items.slice(0, 9);
+        let topResults = this.props.items
         if (topResults === null || topResults.length === 0) {
             return (
                 <>
@@ -144,11 +144,12 @@ class CardList extends React.Component {
                                                     </h6>
                                                 </Col>
                                             </Row>
-                                            <hr />
+                                            
                                             {item.description !== null &&
                                                 item.description !== undefined && 
                                                     item.description !== "" && (
                                                     <>
+                                                    <hr />
                                                     <Button color="danger" id={"vm-" + index} size="sm">
                                                     View Message
                                                     </Button>

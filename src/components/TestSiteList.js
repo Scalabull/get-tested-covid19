@@ -195,15 +195,15 @@ class TestSiteList extends React.Component {
                 <Row className='row-grid align-items-start card-list'>
                     <Row className='pl-5 pr-5'>
                         <p>
-                            Currently, there are over 200 community testing
+                            Currently, there are over {this.state.initialItems.length} community testing
                             centers across U.S.
                         </p>
                     </Row>
                     <Col className='order-lg-1' lg='7'>
-                        <CardList items={this.state.items} />
+                        <CardList items={this.state.items.slice(0,10)} totalCount={this.state.items.length} />
                     </Col>
                     <Col className='order-lg-1' lg='5'>
-                        <TestSiteMap items={this.state.items} />
+                        <TestSiteMap items={this.state.items.slice(0,10)} totalCount={this.state.items.length} />
                     </Col>
                 </Row>
             </div>
