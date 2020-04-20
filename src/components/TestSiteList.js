@@ -94,6 +94,7 @@ class TestSiteList extends React.Component {
         const zipRE = /^[0-9]{5}$/;
         const zipMatchFlag = zipRE.test(searchZipStr);
 
+        //console.log('searching: ', searchZipStr)
         // Only allow numeric inputs.
         if (isNumeric(searchZipStr) || searchZipStr === '') {
             if (zipMatchFlag) {
@@ -106,7 +107,7 @@ class TestSiteList extends React.Component {
                     updatedList = updatedList.filter(function (item) {
                         return item.zip === searchZipStr;
                     });
-                    this.setState({ items: updatedList, zip: searchZipStr });
+                    this.setState({ items: updatedList});
                 } else {
                     // else zip code is present in lookup table. Use haversine distance w/ lat, lng
                     const start = {
@@ -137,16 +138,13 @@ class TestSiteList extends React.Component {
                         return item1.dist - item2.dist;
                     });
 
-                    this.setState({ items: updatedList, zip: searchZipStr });
+                    this.setState({ items: updatedList });
                 }
             } else if (searchZipStr === '') {
                 this.setState({
-                    items: this.state.initialItems,
-                    zip: searchZipStr,
+                    items: this.state.initialItems
                 });
-            } else {
-                this.setState({ zip: searchZipStr });
-            }
+            } 
         }
     }
 
@@ -165,9 +163,6 @@ class TestSiteList extends React.Component {
                 }
             )
             .then(() => {
-                this.filterList({ target: { value: this.state.zip } });
-            })
-            .then(() => {
                 return fetch(
                     'https://storage.googleapis.com/covid19-resources/zipLookups.json'
                 );
@@ -182,7 +177,10 @@ class TestSiteList extends React.Component {
                 (error) => {
                     console.log(error);
                 }
-            );
+            )
+            .then(() => {
+                this.filterList(this.state.searchZip || '10001');
+            });
     }
 
     render() {
@@ -190,6 +188,7 @@ class TestSiteList extends React.Component {
         if (this.state.searchZip) {
             zipLatLng = this.state.zipLookups[this.state.searchZip];
         }
+        let viewItems = this.state.items.slice(0, 10);
 
         return (
             <div>
@@ -246,13 +245,13 @@ class TestSiteList extends React.Component {
                     </Row>
                     <Col className='order-lg-1' lg='7'>
                         <CardList
-                            items={this.state.items.slice(0, 10)}
+                            items={viewItems}
                             totalCount={this.state.items.length}
                         />
                     </Col>
                     <Col className='order-lg-1' lg='5'>
                         <TestSiteMap
-                            items={this.state.items.slice(0, 10)}
+                            items={viewItems}
                             totalCount={this.state.items.length}
                             zipLatLng
                         />
