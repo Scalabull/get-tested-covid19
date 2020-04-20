@@ -6,6 +6,12 @@
       "maxAgeSeconds": 3600
     },
     {
+        "origin": ["http://192.168.0.104:3000"],
+        "responseHeader": ["Content-Type"],
+        "method": ["GET"],
+        "maxAgeSeconds": 3600
+      },
+    {
         "origin": ["https://get-tested-covid19.org"],
         "responseHeader": ["Content-Type"],
         "method": ["GET"],
@@ -13,6 +19,12 @@
     },
     {
         "origin": ["http://get-tested-covid19.org"],
+        "responseHeader": ["Content-Type"],
+        "method": ["GET"],
+        "maxAgeSeconds": 3600
+    },
+    {
+        "origin": ["https://staging.get-tested-covid19.org/"],
         "responseHeader": ["Content-Type"],
         "method": ["GET"],
         "maxAgeSeconds": 3600

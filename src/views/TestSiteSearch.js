@@ -31,6 +31,7 @@ import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import SimpleFooter from "components/Footers/SimpleFooter.js";
 import TestSiteList from "components/TestSiteList.js";
 import DocumentMeta from 'react-document-meta';
+import footerHero from '../assets/img/hero/Email_illustration.png';
 
 class Landing extends React.Component {
   state = {};
@@ -57,7 +58,7 @@ class Landing extends React.Component {
         <main ref="main">
           <div className="position-relative">
             {/* shape Hero */}
-            <section className="section section-lg section-shaped pb-100">
+            <section className="section section-lg section-shaped pb-0 mr-0">
               <div className="shape shape-style-1 shape-default">
                 <span />
                 <span />
@@ -89,33 +90,41 @@ class Landing extends React.Component {
           </div>
 
           
-          <section className="section section-lg pt-100">
+          <section className="section section-lg pt-0 mt-0 pb-0 pt-0 footer-container">
             <Container>
-              <Card className="bg-gradient-warning shadow-lg border-0">
-                <div className="p-5">
-                  <Row className="align-items-center">
-                    <Col lg="8">
-                      <h3 className="text-white">
-                        Please see the CDC's Guidance on getting tested for COVID-19
-                      </h3>
-                      <p className="lead text-white mt-3">
-                        Please check your temperature, consult with your doctor if possible, and follow the CDC's guidelines.
-                      </p>
-                    </Col>
-                    <Col className="ml-lg-auto" lg="3">
-                      <Button
-                        block
-                        className="btn-white"
-                        color="default"
-                        href="https://www.cdc.gov/coronavirus/2019-ncov/index.html"
-                        size="lg"
-                      >
-                        CDC Website
-                      </Button>
-                    </Col>
-                  </Row>
-                </div>
-              </Card>
+            <Row className="align-items-center">
+              <Col lg="7">
+                <Row>
+                <p> 
+                <span className="medWeight">
+                  We are a team of volunteers working around-the-clock to provide accurate information.
+                  If any data you see here is incorrect, please report the issue, and we will fix it.
+                  Stay safe.
+                </span>
+                </p>
+                </Row>
+                <Row>
+                  <Col lg="4">
+                  <Button
+                    block
+                    className="btn-info"
+                    color="default"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSdr_SEZYn9s6SOahSEGMkrWn4_p-9sCJQf9HtWFyNR9mAPCow/viewform?usp=sf_link"
+                    size="lg"
+                    target="_blank"
+                  >
+                    Contact Us
+                  </Button>
+                  </Col>
+                
+                </Row>
+                
+                
+              </Col>
+              <Col className="ml-lg-auto" lg="4">
+                <img src={footerHero} alt='lab testing'></img>
+              </Col>
+            </Row>
             </Container>
           </section>
           
