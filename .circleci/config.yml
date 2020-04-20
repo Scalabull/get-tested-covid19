@@ -1,155 +1,161 @@
 version: 2.1
 jobs:
-  terraform:
-    docker:
-      - image: patrickcpierson/terraform-aws:latest
-    steps:
-      - checkout
-      - run:
-          name: terraform-init
-          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
-      - run:
-          name: terraform-plan
-          command: cd infrastructure; terraform plan
-  terraform-staging-deploy:
-    docker:
-      - image: patrickcpierson/terraform-aws:latest
-    steps:
-      - checkout
-      - run:
-          name: terraform-init
-          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
-      - run:
-          name: terraform-apply
-          command: cd infrastructure; terraform apply -auto-approve
-  terraform-prod-deploy:
-    docker:
-      - image: patrickcpierson/terraform-aws:latest
-    steps:
-      - checkout
-      - run:
-          name: terraform-init
-          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
-      - run:
-          name: terraform-apply
-          command: cd infrastructure; terraform apply -auto-approve
-  terraform-dev-deploy:
-    docker:
-      - image: patrickcpierson/terraform-aws:latest
-    steps:
-      - checkout
-      - run:
-          name: terraform-init
-          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
-      - run:
-          name: terraform-apply
-          command: cd infrastructure; terraform apply -auto-approve
-  terraform-dev-destroy:
-    docker:
-      - image: patrickcpierson/terraform-aws:latest
-    steps:
-      - checkout
-      - run:
-          name: terraform-init
-          command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
-      - run:
-          name: terraform-destroy
-          command: |
-            cd infrastructure
-            set +e
-            terraform destroy -auto-approve
-            sleep 30
-            terraform destroy -auto-approve
-  build:
-    docker:
-      - image: node:12-alpine
-    steps:
-      - checkout
-      - run:
-          name: yarn-install
-          command: yarn install --production
-      - run:
-          name: npm-build
-          command: CI=false npm run build
-  docker-build-push:
-      docker:
-        - image: cimg/go:1.13
-      steps:
-        - checkout
-        - setup_remote_docker
-        - run: |
-            TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
-            docker build -t gettestedcovid19/webserver:$TAG -f docker/Dockerfile .
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-            docker push gettestedcovid19/webserver:$TAG
-            docker tag gettestedcovid19/webserver:$TAG gettestedcovid19/webserver:$CIRCLE_BRANCH
-            docker push gettestedcovid19/webserver:$CIRCLE_BRANCH
-  update-service:
-    docker:
-      - image: patrickcpierson/terraform-aws:latest
-    steps:
-      - checkout
-      - run:
-          name: update-service
-          command: aws ecs update-service --cluster "gtcv-$CIRCLE_BRANCH-cluster" --service "webserver" --task-definition "gtcv-$CIRCLE_BRANCH-webserver" --force-new-deployment --region us-east-1
+    terraform:
+        docker:
+            - image: patrickcpierson/terraform-aws:latest
+        steps:
+            - checkout
+            - run:
+                  name: terraform-init
+                  command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
+            - run:
+                  name: terraform-plan
+                  command: cd infrastructure; terraform plan
+    terraform-staging-deploy:
+        docker:
+            - image: patrickcpierson/terraform-aws:latest
+        steps:
+            - checkout
+            - run:
+                  name: terraform-init
+                  command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
+            - run:
+                  name: terraform-apply
+                  command: cd infrastructure; terraform apply -auto-approve
+    terraform-prod-deploy:
+        docker:
+            - image: patrickcpierson/terraform-aws:latest
+        steps:
+            - checkout
+            - run:
+                  name: terraform-init
+                  command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
+            - run:
+                  name: terraform-apply
+                  command: cd infrastructure; terraform apply -auto-approve
+    terraform-dev-deploy:
+        docker:
+            - image: patrickcpierson/terraform-aws:latest
+        steps:
+            - checkout
+            - run:
+                  name: terraform-init
+                  command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
+            - run:
+                  name: terraform-apply
+                  command: cd infrastructure; terraform apply -auto-approve
+    terraform-dev-destroy:
+        docker:
+            - image: patrickcpierson/terraform-aws:latest
+        steps:
+            - checkout
+            - run:
+                  name: terraform-init
+                  command: cd infrastructure; ENVIRONMENT=$CIRCLE_BRANCH OBJECT_KEY=gettested ./util/terraform/terraform_init.sh
+            - run:
+                  name: terraform-destroy
+                  command: |
+                      cd infrastructure
+                      set +e
+                      terraform destroy -auto-approve
+                      sleep 30
+                      terraform destroy -auto-approve
+    build:
+        docker:
+            - image: node:12-alpine
+        steps:
+            - checkout
+            - run:
+                  name: yarn-install
+                  command: yarn install --production
+            - run:
+                  name: npm-build
+                  command: CI=false npm run build
+    docker-build-push:
+        docker:
+            - image: cimg/go:1.13
+        steps:
+            - checkout
+            - setup_remote_docker
+            - run: |
+                  TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+                  docker build -t gettestedcovid19/webserver:$TAG -f docker/Dockerfile .
+                  echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                  docker push gettestedcovid19/webserver:$TAG
+                  docker tag gettestedcovid19/webserver:$TAG gettestedcovid19/webserver:$CIRCLE_BRANCH
+                  docker push gettestedcovid19/webserver:$CIRCLE_BRANCH
+    update-service:
+        docker:
+            - image: patrickcpierson/terraform-aws:latest
+        steps:
+            - checkout
+            - run:
+                  name: update-service
+                  command: aws ecs update-service --cluster "gtcv-$CIRCLE_BRANCH-cluster" --service "webserver" --task-definition "gtcv-$CIRCLE_BRANCH-webserver" --force-new-deployment --region us-east-1
 #       - run:
 #           name: npm-test
 #           command: npm run test
 # TODO: setup caching
 workflows:
-  version: 2
-  terraform_and_build:
-    jobs:
-      - build
-      - docker-build-push:
-          requires:
+    version: 2
+    terraform_and_build:
+        jobs:
             - build
-      - terraform:
-          filters:
-            branches:
-              only: 
-                - staging
-                - master
-                - /infra-.*/  
-      - terraform-staging-deploy:
-          requires:
-            - terraform
-            - docker-build-push
-          filters:
-            branches:
-              only: staging
-          # context: staging
-      - terraform-prod-deploy:
-          requires:
-            - terraform
-            - docker-build-push
-          filters:
-            branches:
-              only: master
-          # context: prodution
-      - terraform-dev-deploy:
-          requires:
-            - terraform
-            - docker-build-push
-          filters:
-            branches:
-              only: /infra-.*/
-          # context: dev
-      - terraform-dev-destroy:
-          requires:
-            - update-service
-          filters:
-            branches:
-              only: /infra-.*/
-          # context: dev
-      - update-service:
-          requires:
-            - terraform-staging-deploy
-            - terraform-prod-deploy
-            - terraform-dev-deploy
-          filters:
-            branches:
-              only: 
-                - staging
-                - master
-                - /infra-.*/
+            - docker-build-push:
+                  requires:
+                      - build
+                  filters:
+                      branches:
+                          only:
+                              - staging
+                              - master
+                              - /infra-.*/
+            - terraform:
+                  filters:
+                      branches:
+                          only:
+                              - staging
+                              - master
+                              - /infra-.*/
+            - terraform-staging-deploy:
+                  requires:
+                      - terraform
+                      - docker-build-push
+                  filters:
+                      branches:
+                          only: staging
+                  # context: staging
+            - terraform-prod-deploy:
+                  requires:
+                      - terraform
+                      - docker-build-push
+                  filters:
+                      branches:
+                          only: master
+                  # context: prodution
+            - terraform-dev-deploy:
+                  requires:
+                      - terraform
+                      - docker-build-push
+                  filters:
+                      branches:
+                          only: /infra-.*/
+                  # context: dev
+            - terraform-dev-destroy:
+                  requires:
+                      - update-service
+                  filters:
+                      branches:
+                          only: /infra-.*/
+                  # context: dev
+            - update-service:
+                  requires:
+                      - terraform-staging-deploy
+                      - terraform-prod-deploy
+                      - terraform-dev-deploy
+                  filters:
+                      branches:
+                          only:
+                              - staging
+                              - master
+                              - /infra-.*/
