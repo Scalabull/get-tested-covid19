@@ -179,6 +179,7 @@ class TestSiteList extends React.Component {
             )
             .then(() => {
                 this.filterList(this.state.searchZip || '10001');
+                this.setState({searchZip: '10001'});
             });
     }
 
@@ -231,14 +232,14 @@ class TestSiteList extends React.Component {
                         <img src={hero1} alt='lab testing'></img>
                     </Col>
                 </Row>
-                <Row className='row-grid align-items-start card-list'>
-                    {/* <Row className='pl-5 pr-5'>
-                        <p>
-                            Currently, there are over {this.state.initialItems.length} community testing centers across
-                            U.S.
-                        </p>
-                    </Row> */}
-                    <Col className='order-lg-1' lg='7'>
+                <Row className='row-grid align-items-start card-list mt-4'>
+                    
+                    <Col className='order-lg-1 pt-4' lg='7'>
+                        <Row className='pl-4'>
+                            <p>
+                                {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
+                            </p>
+                        </Row>
                         <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
                     </Col>
                     <Col className='order-lg-2' lg='5'>

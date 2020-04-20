@@ -38,7 +38,7 @@ class CardList extends React.Component {
         <conainter>
             <div className='cardlist-item-container'>
                 <div className='cardlist-item-icon'>
-                    <img src={icon} alt={alt} />
+                    <img src={icon} alt={alt} height="25px" />
                 </div>
                 <div className='cardlist-item-title'>
                     <strong>{title}</strong>
@@ -55,7 +55,7 @@ class CardList extends React.Component {
         if (topResults === null || topResults.length === 0) {
             return (
                 <>
-                    <Card className='shadow shadow-lg--hover mt-5'>
+                    <Card className='shadow shadow-lg--hover pt-4 pb-4 mb-3 mt-3'>
                         <CardBody>
                             <div className='d-flex px-3'>
                                 <div>
@@ -105,7 +105,7 @@ class CardList extends React.Component {
                         item.walkUp = item.walkUp.toUpperCase();
 
                         return (
-                            <Card key={index} className='shadow shadow-lg--hover mb-5'>
+                            <Card key={index} className='shadow shadow-lg--hover pt-4 pb-4 mb-3 mt-3'>
                                 <CardBody>
                                     <div>
                                         <h4 className='display-4 mb-0 card-head-text'>
