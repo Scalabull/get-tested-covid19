@@ -72,7 +72,7 @@
         "moment": "2.24.0",
         "morgan": "^1.10.0",
         "node-sass": "4.13.1",
-        "nouislider": "14.1.1",
+        "nouislider": "14.2.0",
         "path": "~0.12.7",
         "pm2": "^4.3.0",
         "prerender-node": "~3.2.5",
