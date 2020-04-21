@@ -23,9 +23,7 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/vendor/font-awesome/css/font-awesome.min.css";
 import "assets/scss/argon-design-system-react.scss?v1.1.0";
 
-import Index from "views/Index.js";
 import TestSiteSearch from "views/TestSiteSearch.js";
-import TestSitesMap from "views/TestSitesMap.js";
 import About from "views/About.js";
 import Resources from "views/Resources.js";
 import WhenShouldYouGetTested from "views/WhenShouldYouGetTested.js";
@@ -34,12 +32,7 @@ import HowTestingWorks from './views/HowTestWorks/index.js';
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/" exact render={props => <Index {...props} />} />
-      <Route
-        path="/test-site-search"
-        exact
-        render={props => <TestSiteSearch {...props} />}
-      />
+      <Route path="/" exact render={props => <TestSiteSearch {...props} />} />
       <Route
         path="/resources"
         exact
@@ -54,11 +47,6 @@ ReactDOM.render(
         path="/how-testing-works"
         exact
         render={(props) => <HowTestingWorks {...props} />}
-      />
-      <Route
-        path="/test-sites-map"
-        exact
-        render={props => <TestSitesMap {...props} />}
       />
 
       <Route

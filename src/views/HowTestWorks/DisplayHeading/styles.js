@@ -4,9 +4,10 @@ export const HeadingWrapper = styled.div`
 display: flex;
 flex-direction: row;
 justify-content: space-between;
-padding: 50px 110px 0px 130px;
+padding: 40px 110px 0px 130px;
 `
 export const HeadingText = styled.div`
+padding: 35px 20px 0px 20px;
 width: 55%;
 display: flex;
 flex-direction: column;

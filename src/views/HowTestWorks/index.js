@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
 import DocumentMeta from 'react-document-meta';
 import DemoNavbar from 'components/Navbars/DemoNavbar.js';
 import SimpleFooter from 'components/Footers/SimpleFooter.js';
@@ -45,7 +44,7 @@ export default () => {
         {displayHeading()}
       </section>
       <ResourcesWrapper>
-        <QAWrapper className={{ background: 'red' }}>
+        <QAWrapper>
           {displayBeforeTesting()}
           {displayTestingCenters()}
           {displayHowTestingWorks()}

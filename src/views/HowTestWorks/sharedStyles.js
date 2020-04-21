@@ -14,14 +14,14 @@ export const QAWrapper = styled.div`
 width: 57%;
 display: column;
 justify-content: center;
-margin-left: 30px
+margin-right: 30px;
 `
 
 export const ResourceSection = styled.div`
 display: flex;
 flex-direction: column;
 padding-left: 80px;
-margin-left: 40px;
+margin-left: 30px;
 margin-top: 40px;
 max-width: 100%
 `
@@ -47,7 +47,7 @@ font-weight: 500;
 & > span{
   color: #828282;
   position: absolute;
-right: 43%;
+right: 46%;
 font-size: 170%;
 font-weight: lighter;
 margin-top: -10px

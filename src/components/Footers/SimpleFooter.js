@@ -56,7 +56,7 @@ class SimpleFooter extends React.Component {
                 <Nav className=" nav-footer justify-content-end">
                   <NavItem>
                     <NavLink
-                      href="/test-site-search"
+                      href="/"
                     >
                       FIND TEST CENTER
                     </NavLink>

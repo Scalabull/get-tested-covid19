@@ -56,8 +56,8 @@ module "fargate" {
       health_check_interval = 30
       health_check_path     = "/"
       acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/fc031590-82a6-4f62-b0e5-c30b5d2e6996"
-      auto_scaling_max_replicas = 5
-      auto_scaling_max_cpu_util = 60
+      auto_scaling_max_replicas = 50
+      auto_scaling_requests_per_target = 4000
     }
   }
 }
@@ -101,7 +101,7 @@ module "db" {
   replica_count                   = 1
   #allowed_security_groups         = []
   allowed_cidr_blocks             = ["10.200.0.0/21"]
-  instance_type                   = "db.r5.large"
+  instance_type                   = "db.t3.medium"
   storage_encrypted               = true
   apply_immediately               = true
   monitoring_interval             = 10

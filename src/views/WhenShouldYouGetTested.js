@@ -93,7 +93,7 @@ class Resources extends React.Component {
                                             <p></p>
                                             <p className="text-white"><span>Outside of confirming if your symptoms match COVID-19 many testing sites require you have a doctor screening prior to receiving a test. This is largely done through </span><Link
                                                 href="https://chironhealth.com/telemedicine/what-is-telemedicine/"><span>telemedicine</span></Link><span> which allows a patient to receive an evaluation via video or audio instead of an in-person visit. Ultimately, decisions about testing are at the discretion of your state and local health departments or your individual clinician. To find out the locations and requirements of specific testing centers near you, go </span><Link
-                                                href="https://get-tested-covid19.org/test-site-search"><span>here</span></Link><span>. </span>
+                                                href="https://get-tested-covid19.org/"><span>here</span></Link><span>. </span>
                                             </p>
 
 
