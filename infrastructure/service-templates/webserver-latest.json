@@ -7,7 +7,7 @@
         "containerPort": ${container_port}
       }
     ],
-    "image": "gettestedcovid19/webserver:latest",
+    "image": "gettestedcovid19/webserver:master",
     "name": "${container_name}",
     "logConfiguration": {
       "logDriver": "awslogs",
