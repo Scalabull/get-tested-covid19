@@ -5,6 +5,7 @@ display: flex;
 flex-direction: row;
 justify-content: center;
 background-color: #F2F2F2;
+padding-bottom: 50px;
 `
 export const CDCWrapper = styled.div`
 width: 43%
@@ -29,19 +30,28 @@ export const ResourcesListItem = styled.div`
 padding: 10px;
 background-color: white;
 border-radius: 10px;
-margin: 5px
+margin: 5px;
 `
 
 export const ResourceTitle = styled.label`
-backgroud-color: white;
 color: #5E72E4;
-cursor:pointer;
+cursor: pointer;
 font-size: 1.25rem;
 font-family: inherit;
-font-weight: bold;
 padding: 5px;
 padding-left: 15px;
-align: center;
+margin: 0px;
+letter-spacing: -0.5px;
+font-weight: 500;
+
+& > span{
+  color: #828282;
+  position: absolute;
+right: 43%;
+font-size: 170%;
+font-weight: lighter;
+margin-top: -10px
+  }
 `
 export const Content = styled.div`
 max-height: 0;
@@ -56,7 +66,15 @@ display: none;
 &:checked ~ ${Content} {
   max-height: 100%;
 }
+&:checked ~label :first-child{
+  display: none
+}
 
+&:not(:checked) ~label span ~ :last-child{
+  display: none
+}
 `
+export const TextLink = styled.a`
+color:#2F80ED`
 
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import { CDCContainer } from './DisplayCDCNotice/styles'
 import DocumentMeta from 'react-document-meta';
 import DemoNavbar from 'components/Navbars/DemoNavbar.js';
 import SimpleFooter from 'components/Footers/SimpleFooter.js';
@@ -11,6 +10,9 @@ import { displayBeforeTesting } from './DisplayBeforeTesting'
 import { displayTestingCenters } from './DisplayTestingCenters'
 import { displayHowTestingWorks } from './DisplayHowTestingWorks'
 import { displayAfterTesting } from './DisplayAfterTesting'
+import { displayWhyIsTestingImportant } from './DisplayWhyIsTestingImportant'
+import { DisplayResources } from './DisplayResources'
+
 
 export default () => {
   const meta = {
@@ -53,7 +55,8 @@ export default () => {
           {displayCDCNotice()}
         </CDCWrapper>
       </ResourcesWrapper>
-
+      {displayWhyIsTestingImportant()}
+      {DisplayResources()}
       <SimpleFooter />
     </DocumentMeta >
   );

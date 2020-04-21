@@ -7,7 +7,7 @@ export const displaySubHeadingSections = (sections) => {
     return (
       <ResourcesListItem>
         <ResourceInput type="checkbox" id={title} />
-        <ResourceTitle for={title}>{title}</ResourceTitle>
+        <ResourceTitle for={title}>{title}<span>	&#43;</span><span>&#45;</span></ResourceTitle>
         <Content align='left'>{content}</Content>    </ResourcesListItem>
     );
   });

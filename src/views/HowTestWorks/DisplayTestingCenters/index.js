@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'components/Link/Link.js';
+import { TextLink } from '../sharedStyles';
 import { displaySubHeading } from '../DisplaySubHeading'
 
 export const displayTestingCenters = () => {
@@ -43,12 +43,12 @@ export const displayTestingCenters = () => {
             An in-facility testing site would require you to a local clinic,
             doctor’s office, hospital, or other location. If your testing site
             is a facility,{' '}
-            <Link
+            <TextLink
               href="https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/social-distancing.html"
               target="_blank"
             >
               follow CDC guidelines{' '}
-            </Link>{' '}
+            </TextLink>{' '}
             like social distancing and face-covering while around others. You
             will likely be asked to present your license and insurance card if
             you have one.

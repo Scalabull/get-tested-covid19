@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'components/Link/Link.js';
+import { TextLink } from '../sharedStyles';
 import { displaySubHeading } from '../DisplaySubHeading'
 
 export const displayBeforeTesting = () => {
@@ -11,12 +11,12 @@ export const displayBeforeTesting = () => {
         content: [
           <p>
             Your first step should be to{' '}
-            <Link
+            <TextLink
               href="https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/testing.html"
               target="_blank"
             >
               ensure you qualify for a COVID-19 test
-            </Link>
+            </TextLink>
             .
           </p>,
           <p>
@@ -60,12 +60,12 @@ export const displayBeforeTesting = () => {
           <p>No. Insurance companies are waiving fees for COVID-19 testing.</p>,
           <p>
             Thanks to the{' '}
-            <Link
+            <TextLink
               href="https://appropriations.house.gov/sites/democrats.appropriations.house.gov/files/Families%20First%20summary.pdf"
               target="_blank"
             >
               Families First Coronavirus Response Act
-            </Link>
+            </TextLink>
             , states can expand Medicaid coverage for uninsured individuals so
             that they may receive free COVID-19 diagnostics and testing. If you
             are uninsured, it’s important to know that the legislation does not

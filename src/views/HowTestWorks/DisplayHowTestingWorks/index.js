@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'components/Link/Link.js';
+import { TextLink } from '../sharedStyles';
 import { displaySubHeading } from '../DisplaySubHeading'
 
 export const displayHowTestingWorks = () => {
@@ -11,19 +11,19 @@ export const displayHowTestingWorks = () => {
         content: [
           <p>
             Many testing centers follow{' '}
-            <Link
+            <TextLink
               href="https://www.cdc.gov/coronavirus/2019-ncov/lab/guidelines-clinical-specimens.html"
               target="_blank"
             >
               the CDC guidelines
-            </Link>{' '}
+            </TextLink>{' '}
             and administer a{' '}
-            <Link
+            <TextLink
               href="http://www.hss.gov.yk.ca/pdf/npswab.pdf"
               target="_blank"
             >
               nasopharyngeal test
-            </Link>
+            </TextLink>
             . This is a quick, painless test used to detect an ongoing
             respiratory infection, including in asymptomatic people
           </p>,
