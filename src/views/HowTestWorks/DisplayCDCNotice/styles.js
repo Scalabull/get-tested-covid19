@@ -29,6 +29,7 @@ font-size: smaller;
 };
 @media(max-width: 414px){
   margin: 20px;
-  padding: 15px 20px 5px 30px
+  padding: 15px 20px 5px 30px;
+
 };
  `
