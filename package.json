@@ -63,6 +63,7 @@
         "express": "^4.17.1",
         "fibers": "^4.0.3",
         "geo-distance-js": "~1.0.0",
+        "google-maps-react": "~2.0.6",
         "haversine": "~1.1.1",
         "headroom.js": "0.11.0",
         "helmet": "^3.22.0",
