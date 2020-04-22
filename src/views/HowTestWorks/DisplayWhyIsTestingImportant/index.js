@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'components/Link/Link.js';
 import { TextLink } from '../sharedStyles'
 import WTIImage from '../../../assets/img/theme/Why_testing_is_imp_image.png'
 import { WhyTestingWrapper, WhyTestingText, WhyTestingImage } from './styles'

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Container, Row, Col } from 'reactstrap';
 import { HeadingImage, HeadingText, HeadingWrapper } from './styles'
 import HeroImage from 'assets/img/theme/How_it_works_hero.png'
 

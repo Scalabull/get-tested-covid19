@@ -1,5 +1,4 @@
 import React from 'react';
-import { Row, Col } from 'reactstrap';
 import { displaySubHeadingSections } from '../DisplaySubHeadingSections'
 import { ResourcesWrapper, ResourceSection } from '../sharedStyles'
 export const displaySubHeading = ({ title, sections }) => {
