@@ -62,6 +62,35 @@ module "fargate" {
   }
 }
 
+resource "aws_iam_policy" "ecs_ssm_task_policy" {
+  path        = "/"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ssm:GetParameters",
+        "ssm:GetParameter",
+        "secretsmanager:GetSecretValue",
+        "kms:Decrypt"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "ecs_ssm_task_atttachment" {
+  name       = "gtcv-${var.environment}-attachment"
+  roles      = ["gtcv-${var.environment}-task-execution-role"]
+  policy_arn = "${aws_iam_policy.ecs_ssm_task_policy.arn}"
+  depends_on = [module.fargate]
+}
+
 resource "aws_route53_record" "www" {
   zone_id = "Z0805372RGZMLZDPFNEH"
   name    = "${local.env_dns_prefix}get-tested-covid19.org"
@@ -146,6 +175,42 @@ data "template_file" "connection_txt" {
 resource "local_file" "connection_txt" {
   sensitive_content = data.template_file.connection_txt.rendered
   filename = "./connection.txt"
+}
+
+resource "aws_ssm_parameter" "DB_USERNAME" {
+  name        = "/${var.environment}/database/DB_USERNAME"
+  description = "${var.environment} DB_USERNAME"
+  type        = "String"
+  value       = "${module.db.this_rds_cluster_master_username}"
+
+  tags = local.common_tags
+}
+
+resource "aws_ssm_parameter" "DB_PASSWORD" {
+  name        = "/${var.environment}/database/DB_PASSWORD"
+  description = "${var.environment} DB_PASSWORD"
+  type        = "SecureString"
+  value       = "${module.db.this_rds_cluster_master_password}"
+
+  tags = local.common_tags
+}
+
+resource "aws_ssm_parameter" "DB_HOSTNAME" {
+  name        = "/${var.environment}/database/DB_HOSTNAME"
+  description = "${var.environment} DB_HOSTNAME"
+  type        = "String"
+  value       = "${module.db.this_rds_cluster_endpoint}"
+
+  tags = local.common_tags
+}
+
+resource "aws_ssm_parameter" "DB_NAME" {
+  name        = "/${var.environment}/database/DB_NAME"
+  description = "${var.environment} DB_NAME"
+  type        = "String"
+  value       = "postgres"
+
+  tags = local.common_tags
 }
 
 output "rds_cluster_endpoint" {
