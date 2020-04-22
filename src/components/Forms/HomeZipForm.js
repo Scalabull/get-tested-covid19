@@ -60,6 +60,7 @@ class HomeZipForm extends React.Component {
                                 placeholder='Enter Zip Code (5 digit)'
                                 type='text'
                                 maxLength='5'
+                                autoFocus='true'
                                 onFocus={(e) =>
                                     this.setState({ searchFocused: true })
                                 }

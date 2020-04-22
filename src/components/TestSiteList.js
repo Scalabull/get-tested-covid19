@@ -54,7 +54,6 @@ class TestSiteList extends React.Component {
 
     onSubmit(zipStr) {
         this.filterList(zipStr + "");
-        this.scrollToMyRef();
     }
 
     filterList(searchZipStr) {
