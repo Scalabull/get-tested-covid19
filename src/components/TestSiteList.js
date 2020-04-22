@@ -1,30 +1,12 @@
-/*!
 
-=========================================================
-* Argon Design System React - v1.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-design-system-react
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from 'react';
-import { Form, FormGroup, Input, Button } from 'reactstrap';
-import debounce from 'lodash.debounce';
 import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
 import qs from 'query-string';
 import HomeZipForm from 'components/Forms/HomeZipForm.js';
 
-// reactstrap components
 import { Row, Col } from 'reactstrap';
 import hero1 from '../assets/img/hero/Hero1.png';
 
@@ -63,24 +45,16 @@ class TestSiteList extends React.Component {
             initialItems: [],
             items: [],
             searchZip: zip,
-            zipLatLng: null,
-            displayZip: '',
+            zipLatLng: null
         };
 
         this.filterList = this.filterList.bind(this);
-        this.onChangeZip = this.onChangeZip.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    onSubmit(e) {
-        e.preventDefault();
-        this.filterList(this.state.displayZip);
-        this.setState({ searchZip: this.state.displayZip, displayZip: '' });
-    }
-
-    onChangeZip(e) {
-        const zip = e.target.value;
-        this.setState({ displayZip: zip });
+    onSubmit(zipStr) {
+        this.filterList(zipStr + "");
+        this.scrollToMyRef();
     }
 
     filterList(searchZipStr) {
@@ -123,12 +97,12 @@ class TestSiteList extends React.Component {
                             return item1.dist - item2.dist;
                         });
 
-                        this.setState({ items: updatedList, zipLatLng });
+                        this.setState({ items: updatedList, zipLatLng, searchZip: searchZipStr });                 
                     }
                 });
-            } else if (searchZipStr === '') {
+            } else {
                 this.setState({
-                    items: this.state.initialItems,
+                    items: [],
                 });
             }
         }
@@ -174,24 +148,7 @@ class TestSiteList extends React.Component {
                             </p>
                         </Row>
                         <Row>
-                            <Form onSubmit={this.onSubmit} inline>
-                                <FormGroup>
-                                    <Row form>
-                                        <Input
-                                            className='mr-0 pr-12 search-input form-control form-control-lg'
-                                            type='text'
-                                            maxLength='5'
-                                            title='Enter Zip Code (5 digit)'
-                                            placeholder='Enter Zip Code (5 digit)'
-                                            onChange={(e) => this.onChangeZip(e)}
-                                            value={this.state.displayZip}
-                                        />
-                                        <Button className='search-button' type='submit' color='info'>
-                                            Search
-                                        </Button>
-                                    </Row>
-                                </FormGroup>
-                            </Form>
+                            <HomeZipForm onSubmit={this.onSubmit}></HomeZipForm>
                         </Row>
                     </Col>
                     <Col className='order-lg-1 mt--100' lg='5'>
@@ -214,6 +171,7 @@ class TestSiteList extends React.Component {
                             items={viewItems}
                             totalCount={this.state.items.length}
                             zipLatLng={this.state.zipLatLng}
+                            searchZip={this.state.searchZip}
                         />
                     </Col>
                 </Row>

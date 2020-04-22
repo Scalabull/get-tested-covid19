@@ -6,11 +6,8 @@ import {
     Button,
     Form,
     FormGroup,
-    InputGroup,
     Input,
-    InputGroupAddon,
-    InputGroupText,
-    Col,
+    Row,
 } from 'reactstrap';
 
 function isNumeric(s) {
@@ -34,6 +31,8 @@ class HomeZipForm extends React.Component {
     }
 
     handleSubmit(event) {
+        event.preventDefault();
+        
         let submitVal = this.state.value;
         if (
             submitVal !== null &&
@@ -47,24 +46,18 @@ class HomeZipForm extends React.Component {
 
     render() {
         return (
-            <Form>
-                <Col lg='4' sm='6' xs='8' className='mt-3 mr-0 pr-0'>
+
+            <Form onSubmit={this.handleSubmit} inline>
                     <FormGroup
                         className={classnames({
-                            focused: this.state.searchFocused,
-                            'mr-0': true,
-                            'pr-0': true,
+                            focused: this.state.searchFocused
                         })}
                     >
-                        <InputGroup className='mb-4 mr-0 pr-0'>
-                            <InputGroupAddon addonType='prepend'>
-                                <InputGroupText>
-                                    <i className='ni ni-zoom-split-in' />
-                                </InputGroupText>
-                            </InputGroupAddon>
+                        <Row form>
                             <Input
-                                className='mr-0 pr-0'
-                                placeholder='ENTER ZIP CODE (5 DIGIT)'
+                                className='mr-0 pr-12 search-input form-control form-control-lg'
+                                title='Enter Zip Code (5 digit)'
+                                placeholder='Enter Zip Code (5 digit)'
                                 type='text'
                                 maxLength='5'
                                 onFocus={(e) =>
@@ -76,17 +69,11 @@ class HomeZipForm extends React.Component {
                                 value={this.state.value}
                                 onChange={this.handleChange}
                             />
-                        </InputGroup>
+                            <Button className='search-button' type='submit' color='info'>
+                                Search
+                            </Button>
+                        </Row>
                     </FormGroup>
-                </Col>
-                <Col lg='4' sm='6' xs='4' className='mt-3 ml-0 pl-0'>
-                    <Button
-                        className='btn-square btn-info'
-                        onClick={this.handleSubmit}
-                    >
-                        SEARCH
-                    </Button>
-                </Col>
             </Form>
         );
     }
