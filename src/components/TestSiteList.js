@@ -31,25 +31,78 @@ import hero1 from '../assets/img/hero/Hero1.png';
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
 
-// const setQueryStringWithoutPageReload = (qsValue) => {
-//     const newurl =
-//         window.location.protocol +
-//         window.location.host +
-//         window.location.pathname +
-//         qsValue;
+// Check if GeocoderResult object return form Google Geolocation is a US address.
+function isUSLocation(geocoderResult){
+    let filtered = geocoderResult.address_components.filter((component) => {
+        if(component.types && 
+           component.types.includes("country") && 
+           component.short_name === "US"
+            ){
+                return true;
+        }
+    });
 
-//     window.history.pushState({ path: newurl }, '', newurl);
-// };
+    return filtered.length > 0;
+}
 
-// const setQueryStringValue = (
-//     key,
-//     value,
-//     queryString = window.location.search
-// ) => {
-//     const values = qs.parse(queryString);
-//     const newQsValue = qs.stringify({ ...values, [key]: value });
-//     setQueryStringWithoutPageReload(`?${newQsValue}`);
-// };
+function returnPostalCode(geocoderResult){
+    let zipCode = null;
+
+    geocoderResult.address_components.forEach(component => {
+        if(component.types && 
+            component.types.includes("postal_code") && 
+            component.short_name.length === 5){
+
+            zipCode = component.short_name;
+        }
+    });
+
+    return zipCode;
+}
+
+// If Geolocation runs successfully and points to a US address, return lat, lng
+function tryGeolocation(geocoder, callback){
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+          console.log('location found: ', pos);
+          geocoder.geocode({'location': pos}, (res, status) => {
+            if (status === 'OK') {
+                const isUSLoc = isUSLocation(res[0]);
+                const postalCode = returnPostalCode(res[0]);
+                if (res[0] && isUSLoc && postalCode !== null) {
+                    console.log('gelocation: ', res[0]);
+                    console.log('postalCode: ', postalCode)
+                    callback(null, pos, postalCode);
+                } else {
+                    callback(new Error('Geolocated address not in the US, or not valid postal code.'))
+                }
+            } else {
+                callback(new Error('Error running geolocation.', status));
+            }
+          });
+        }, () => {
+            callback(new Error('Error loading geolocation.'));
+        });
+      } else {
+          callback(new Error('Geolocation not supported.'));
+      }
+}
+
+function codeAddress(zip, geocoder, callback) {
+    geocoder.geocode( { 'address': zip}, function(results, status) {
+        if (status === 'OK') {
+            callback(null, results[0].geometry.location);
+        } 
+        else{
+            callback(status, null);
+        }
+    });
+}
 
 const getQueryStringValue = (key, queryString = window.location.search) => {
     const values = qs.parse(queryString);
@@ -164,23 +217,17 @@ class TestSiteList extends React.Component {
                 }
             )
             .then(() => {
-                return fetch('https://storage.googleapis.com/covid19-resources/zipLookups.json');
+                let geocoder = new this.props.google.maps.Geocoder();
+                tryGeolocation(geocoder, (err, pos, postalCode) => {
+                    if(err){
+                        this.filterList(this.state.searchZip || '10001');
+                        this.setState({searchZip: '10001'});
+                    } else {
+                        this.filterList(postalCode);
+                        this.setState({searchZip: postalCode});
+                    }
+                });
             })
-            .then((res) => res.json())
-            .then(
-                (res) => {
-                    this.setState({
-                        zipLookups: res.zipLookups,
-                    });
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
-            .then(() => {
-                this.filterList(this.state.searchZip || '10001');
-                this.setState({searchZip: '10001'});
-            });
     }
 
     render() {
@@ -207,24 +254,7 @@ class TestSiteList extends React.Component {
                             </p>
                         </Row>
                         <Row>
-                            <Form onSubmit={this.onSubmit} inline>
-                                <FormGroup>
-                                    <Row form>
-                                        <Input
-                                            className='mr-0 pr-12 search-input form-control form-control-lg'
-                                            type='text'
-                                            maxLength='5'
-                                            title='Enter Zip Code (5 digit)'
-                                            placeholder='Enter Zip Code (5 digit)'
-                                            onChange={(e) => this.onChangeZip(e)}
-                                            value={this.state.displayZip}
-                                        />
-                                        <Button className='search-button' type='submit' color='info'>
-                                            Search
-                                        </Button>
-                                    </Row>
-                                </FormGroup>
-                            </Form>
+                            <HomeZipForm onSubmit={this.onSubmit} searchZip={this.state.searchZip}></HomeZipForm>
                         </Row>
                     </Col>
                     <Col className='order-lg-1 mt--100' lg='5'>
