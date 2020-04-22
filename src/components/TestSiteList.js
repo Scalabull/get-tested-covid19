@@ -28,28 +28,21 @@ import HomeZipForm from 'components/Forms/HomeZipForm.js';
 import { Row, Col } from 'reactstrap';
 import hero1 from '../assets/img/hero/Hero1.png';
 
+import { GoogleApiWrapper } from 'google-maps-react';
+
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
 
-// const setQueryStringWithoutPageReload = (qsValue) => {
-//     const newurl =
-//         window.location.protocol +
-//         window.location.host +
-//         window.location.pathname +
-//         qsValue;
-
-//     window.history.pushState({ path: newurl }, '', newurl);
-// };
-
-// const setQueryStringValue = (
-//     key,
-//     value,
-//     queryString = window.location.search
-// ) => {
-//     const values = qs.parse(queryString);
-//     const newQsValue = qs.stringify({ ...values, [key]: value });
-//     setQueryStringWithoutPageReload(`?${newQsValue}`);
-// };
+function codeAddress(zip, geocoder, callback) {
+    geocoder.geocode( { 'address': zip}, function(results, status) {
+        if (status === 'OK') {
+            callback(null, results[0].geometry.location);
+        } 
+        else{
+            callback(status, null);
+        }
+    });
+}
 
 const getQueryStringValue = (key, queryString = window.location.search) => {
     const values = qs.parse(queryString);
@@ -69,8 +62,8 @@ class TestSiteList extends React.Component {
         this.state = {
             initialItems: [],
             items: [],
-            zipLookups: [],
             searchZip: zip,
+            zipLatLng: null,
             displayZip: '',
         };
 
@@ -91,56 +84,48 @@ class TestSiteList extends React.Component {
     }
 
     filterList(searchZipStr) {
-        // const searchZipStr = event.target.value;
         const zipRE = /^[0-9]{5}$/;
         const zipMatchFlag = zipRE.test(searchZipStr);
 
-        //console.log('searching: ', searchZipStr)
         // Only allow numeric inputs.
         if (isNumeric(searchZipStr) || searchZipStr === '') {
             if (zipMatchFlag) {
-                // Zip should be present in lookup table in 99% of cases.
-                let zipLatLng = this.state.zipLookups[searchZipStr];
                 let updatedList = this.state.initialItems;
 
-                if (zipLatLng === undefined) {
-                    // If no zip in lookup table, search by exact zip match (not lat, lng distance)
-                    updatedList = updatedList.filter(function (item) {
-                        return item.zip === searchZipStr;
-                    });
-                    this.setState({ items: updatedList });
-                } else {
-                    // else zip code is present in lookup table. Use haversine distance w/ lat, lng
-                    const start = {
-                        latitude: zipLatLng[0],
-                        longitude: zipLatLng[1],
-                    };
-
-                    updatedList = updatedList.map(function (item) {
-                        // return any sites within 40 miles.
-                        const end = {
-                            latitude: item.lat,
-                            longitude: item.lng,
+                let geocoder = new this.props.google.maps.Geocoder();
+                codeAddress(searchZipStr, geocoder, (err, googleLatLng) => {
+                    if(!err){
+                        //Use haversine distance w/ lat, lng
+                        const zipLatLng = {
+                            latitude: googleLatLng.lat(),
+                            longitude: googleLatLng.lng(),
                         };
 
-                        const dist = haversine(start, end, { unit: 'mile' });
-                        // console.log('calculated distance: ', JSON.stringify(start), JSON.stringify(end), dist);
+                        updatedList = updatedList.map(function (item) {
+                            // return any sites within 40 miles.
+                            const end = {
+                                latitude: item.lat,
+                                longitude: item.lng,
+                            };
 
-                        let newItem = { ...item };
-                        newItem.dist = dist;
-                        return newItem;
-                    });
+                            const dist = haversine(zipLatLng, end, { unit: 'mile' });
+                            
+                            let newItem = { ...item };
+                            newItem.dist = dist;
+                            return newItem;
+                        });
 
-                    updatedList = updatedList.filter((item) => {
-                        return item.dist < DISTANCE_THRESH;
-                    });
+                        updatedList = updatedList.filter((item) => {
+                            return item.dist < DISTANCE_THRESH;
+                        });
 
-                    updatedList.sort((item1, item2) => {
-                        return item1.dist - item2.dist;
-                    });
+                        updatedList.sort((item1, item2) => {
+                            return item1.dist - item2.dist;
+                        });
 
-                    this.setState({ items: updatedList });
-                }
+                        this.setState({ items: updatedList, zipLatLng });
+                    }
+                });
             } else if (searchZipStr === '') {
                 this.setState({
                     items: this.state.initialItems,
@@ -164,30 +149,12 @@ class TestSiteList extends React.Component {
                 }
             )
             .then(() => {
-                return fetch('https://storage.googleapis.com/covid19-resources/zipLookups.json');
-            })
-            .then((res) => res.json())
-            .then(
-                (res) => {
-                    this.setState({
-                        zipLookups: res.zipLookups,
-                    });
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
-            .then(() => {
                 this.filterList(this.state.searchZip || '10001');
                 this.setState({searchZip: '10001'});
             });
     }
 
     render() {
-        let zipLatLng = null;
-        if (this.state.searchZip) {
-            zipLatLng = this.state.zipLookups[this.state.searchZip];
-        }
         let viewItems = this.state.items.slice(0, 10);
 
         return (
@@ -246,7 +213,7 @@ class TestSiteList extends React.Component {
                             style={{ width: '100vw' }}
                             items={viewItems}
                             totalCount={this.state.items.length}
-                            zipLatLng
+                            zipLatLng={this.state.zipLatLng}
                         />
                     </Col>
                 </Row>
@@ -255,4 +222,6 @@ class TestSiteList extends React.Component {
     }
 }
 
-export default TestSiteList;
+export default GoogleApiWrapper({
+    apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'
+  })(TestSiteList);

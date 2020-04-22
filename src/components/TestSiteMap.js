@@ -3,9 +3,16 @@ import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
 
 const MAX_GEO = 400;
 const MIN_GEO = -400;
+const MAP_MARKER_BUFFER = 0.001;
+
 export default class TestSiteMap extends React.Component {
     render() {
         let { items, zipLatLng } = this.props;
+        
+        let latLng = null;
+        if(zipLatLng && zipLatLng.latitude && zipLatLng.longitude){
+            latLng = [zipLatLng.latitude, zipLatLng.longitude];
+        }
         
 
         items = items.map((item) => {
@@ -31,17 +38,17 @@ export default class TestSiteMap extends React.Component {
                 if(item.lng > maxLng) maxLng = item.lng;
                 if(item.lng < minLng) minLng = item.lng;
             });
-            minLat = minLat + 0.005;
-            maxLat = maxLat + 0.005;
-            minLng = minLng + 0.005;
-            maxLng = maxLng + 0.005;
+            minLat = minLat + MAP_MARKER_BUFFER;
+            maxLat = maxLat + MAP_MARKER_BUFFER;
+            minLng = minLng + MAP_MARKER_BUFFER;
+            maxLng = maxLng + MAP_MARKER_BUFFER;
 
             bounds = [[maxLat, minLng], [minLat, maxLng]];
         }
        
 
-        if (zipLatLng && Array.isArray(zipLatLng)) {
-            mapCenterCoords = zipLatLng;
+        if (latLng && Array.isArray(latLng)) {
+            mapCenterCoords = latLng;
         }
         return (
             <Map
