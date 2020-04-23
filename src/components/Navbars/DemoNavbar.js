@@ -84,7 +84,7 @@ class DemoNavbar extends React.Component {
                             <UncontrolledCollapse
                                 toggler='#navbar_global'
                                 navbar
-                                className={this.state.collapseClasses }
+                                className={this.state.collapseClasses}
                                 onExiting={this.onExiting}
                                 onExited={this.onExited}
                             >
@@ -157,9 +157,12 @@ class DemoNavbar extends React.Component {
                                             <DropdownItem href='/when-should-you-get-tested'>
                                                 When Should You Get Tested
                                             </DropdownItem>
+                                            <DropdownItem href='/how-testing-works'>
+                                                How Does Testing Work
+                                            </DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
-                                    
+
                                 </Nav>
                             </UncontrolledCollapse>
                         </Container>
