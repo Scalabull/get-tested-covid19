@@ -1,32 +1,36 @@
 const fs = require('fs')
+require('dotenv').config(process.cwd(), '.env')
 
 module.exports = {
   development: {
-    username: '',
-    password: null,
-    database: 'gettestedDB_development',
-    host: '127.0.0.1',
-    dialect: 'postgresql',
-    operatorsAliases: false,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: `${process.env.DB_NAME}_development`,
+    host: process.env.DB_HOST,
+    dialect: 'postgres',
+    operatorsAliases: 0,
+    logging: false,
   },
   test: {
-    username: '',
-    password: null,
-    database: 'gettestedDB_test',
-    host: '127.0.0.1',
-    dialect: 'postgresql',
-    operatorsAliases: false,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: `${process.env.DB_NAME}_test`,
+    host: process.env.DB_HOST,
+    dialect: 'postgres',
+    operatorsAliases: 0,
+    logging: false,
   },
   production: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    host: process.env.DB_HOSTNAME,
-    dialect: 'postgresql',
+    host: process.env.DB_HOST,
+    dialect: 'postgres',
     dialectOptions: {
-      ssl: {
-        ca: fs.readFileSync(__dirname + '/postgresql-ca-master.crt'),
-      },
+      // ssl: {
+      //   ca: fs.readFileSync(__dirname + '/postgresql-ca-master.crt'),
+      // },
     },
+    logging: false,
   },
 }

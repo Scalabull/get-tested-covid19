@@ -1,9 +1,11 @@
-const request = require('supertest');
-const app = require('../server');
+const request = require('supertest')
+const app = require('../server')
+const db = require('../db/models')
 
-describe('/auth route', () => {
-    test('should respond not implemented', async () => {
-        const response = await request(app).get('/auth').expect(200);
-        expect(response.text).toBe('not implemented');
-    });
-});
+describe('User API Routes', () => {
+  beforeEach(() => {})
+
+  test('should respond with a 400', async () => {
+    await request(app).post('/api/v1/auth/signup').expect(400)
+  })
+})

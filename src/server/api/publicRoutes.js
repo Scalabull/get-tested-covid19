@@ -1,7 +1,7 @@
-const router = require('express').Router();
+const router = require('express').Router()
 
-router.get('/v1/public', (req, res) => {
-    res.send('not implemented');
-});
+router.get('/', (req, res) => {
+  res.send('not implemented')
+})
 
-module.exports = router;
+module.exports = router
