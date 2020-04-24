@@ -142,8 +142,7 @@ class TestSiteList extends React.Component {
                         </Row>
                         <Row>
                             <p className='text-white'>
-                                We have created a database of community centers across the U.S. Please enter your
-                                location zip code to find one near you
+                            We have created a database of COVID-19 testing centers across the US. Please enter your zip code to find a location near you.
                             </p>
                         </Row>
                         <Row>
