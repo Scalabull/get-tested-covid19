@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 const socketio = require('socket.io')
 const compression = require('compression')
 const helmet = require('helmet')
-const cookieSession = require('cookie-session')
 const db = require('./db/models/index')
 require('dotenv').config(process.cwd(), '.env')
 
@@ -17,20 +16,10 @@ const publicRouter = require('./api/publicRoutes')
 
 const app = express()
 
-// in the event we use nginx
-// app.set('trust proxy', true);
-
 app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common'))
 
 app.use(bodyParser.json({ limit: '1mb' }))
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
-app.use(
-  cookieSession({
-    signed: false,
-    secure: true,
-  })
-)
-
 app.use(compression())
 app.use(helmet())
 

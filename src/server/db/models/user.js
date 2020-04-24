@@ -11,7 +11,16 @@ module.exports = (sequelize, DataTypes) => {
       disabled: DataTypes.BOOLEAN,
       token: DataTypes.STRING,
     },
-    {}
+    {
+      hooks: {
+        beforeCreate: (user) => {
+          return encryptPassword(user)
+        },
+        beforeUpdate: (user) => {
+          return encryptPassword(user)
+        },
+      },
+    }
   )
   User.associate = function (models) {
     // associations can be defined here
@@ -31,11 +40,10 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   const encryptPassword = async (user) => {
-    user.password = await bcrypt.hashSync(user.password, 8)
+    if (user.changed('password')) {
+      user.password = await bcrypt.hashSync(user.password, 8)
+    }
   }
-
-  User.beforeCreate(encryptPassword)
-  // User.beforeUpdate(encryptPassword)
 
   return User
 }

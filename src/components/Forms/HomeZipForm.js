@@ -32,7 +32,7 @@ class HomeZipForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        
+
         let submitVal = this.state.value;
         if (
             submitVal !== null &&
@@ -41,7 +41,9 @@ class HomeZipForm extends React.Component {
             isNumeric(submitVal)
         ) {
             this.props.onSubmit(submitVal);
+            window.scroll( { left:0, top: document.getElementsByClassName( "search-header")[0].scrollHeight, behavior: 'smooth'})
         }
+        // event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.top = "-200px"
     }
 
     render() {
