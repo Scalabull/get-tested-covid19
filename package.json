@@ -72,7 +72,7 @@
         "mkdirp": "^1.0.4",
         "moment": "2.24.0",
         "morgan": "^1.10.0",
-        "node-sass": "4.13.1",
+        "node-sass": "^4.13.1",
         "nouislider": "14.1.1",
         "passport-jwt": "^4.0.0",
         "path": "~0.12.7",
@@ -96,6 +96,7 @@
         "sequelize-cli": "^5.5.1",
         "socket.io": "^2.3.0",
         "socket.io-mock": "^1.2.4",
+        "styled-components": "^5.1.0",
         "utf-8-validate": "^5.0.2"
     },
     "devDependencies": {
