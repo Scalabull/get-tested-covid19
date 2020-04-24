@@ -90,11 +90,8 @@ jobs:
         steps:
             - checkout
             - run:
-                  name: update-www-service
-                  command: aws ecs update-service --cluster "gtcv-$CIRCLE_BRANCH-cluster" --service "www" --task-definition "gtcv-$CIRCLE_BRANCH-www" --force-new-deployment --region us-east-1
-            - run:
-                  name: update-api-service
-                  command: aws ecs update-service --cluster "gtcv-$CIRCLE_BRANCH-cluster" --service "api" --task-definition "gtcv-$CIRCLE_BRANCH-api" --force-new-deployment --region us-east-1
+                  name: update-service
+                  command: aws ecs update-service --cluster "gtcv-$CIRCLE_BRANCH-cluster" --service "webserver" --task-definition "gtcv-$CIRCLE_BRANCH-webserver" --force-new-deployment --region us-east-1
 #       - run:
 #           name: npm-test
 #           command: npm run test
