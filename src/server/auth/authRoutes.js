@@ -5,7 +5,7 @@ const auth = require('../middleware/auth')
 const db = require('../db/models')
 
 router.post(
-  '/signup',
+  '/add',
   [
     body('email').isEmail().withMessage('Email must be valid'),
     body('password')
@@ -26,9 +26,9 @@ router.post(
         return res.status(400).send()
       }
 
-      const user = await db.User.create({ email, password })
-      const token = await user.generateToken()
-      res.status(201).json({ user, token })
+      const user = await db.User.build({ email, password })
+      await user.save()
+      res.status(201).send({ message: 'success' })
     } catch (error) {
       res.status(500).send()
     }
@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'login_failure' })
     }
     const token = user.generateToken()
-    res.json({ user, token })
+    res.json({ token })
   } catch (error) {
     res.status(500).send()
   }
@@ -62,7 +62,10 @@ router.post('/logout', auth, async (req, res) => {
 })
 
 router.get('/me', auth, (req, res) => {
-  res.send(req.user)
+  res.send({
+    user: { email: req.user.email, disabled: req.user.disabled },
+    token: req.user.token,
+  })
 })
 
 router.patch(
@@ -101,20 +104,14 @@ router.patch(
     try {
       updates.forEach((update) => (req.user[update] = req.body[update]))
       await req.user.save()
-      res.send(req.user)
+      res.send({
+        user: { email: req.user.email, disabled: req.user.disabled },
+        token: req.user.token,
+      })
     } catch (error) {
       res.status(500).send()
     }
   }
 )
-
-router.get('/users', auth, async (req, res) => {
-  try {
-    const users = await db.User.findAll()
-    res.send(users)
-  } catch (error) {
-    res.send(error)
-  }
-})
 
 module.exports = router

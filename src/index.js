@@ -27,6 +27,7 @@ import TestSiteSearch from "views/TestSiteSearch.js";
 import About from "views/About.js";
 import Resources from "views/Resources.js";
 import WhenShouldYouGetTested from "views/WhenShouldYouGetTested.js";
+import HowTestingWorks from './views/HowTestWorks/index.js';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -41,6 +42,11 @@ ReactDOM.render(
         path="/when-should-you-get-tested"
         exact
         render={props => <WhenShouldYouGetTested {...props} />}
+      />
+      <Route
+        path="/how-testing-works"
+        exact
+        render={(props) => <HowTestingWorks {...props} />}
       />
 
       <Route

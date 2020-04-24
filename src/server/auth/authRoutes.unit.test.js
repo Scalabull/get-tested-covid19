@@ -6,6 +6,6 @@ describe('User API Routes', () => {
   beforeEach(() => {})
 
   test('should respond with a 400', async () => {
-    await request(app).post('/api/v1/auth/signup').expect(400)
+    await request(app).post('/api/v1/auth/add').expect(400)
   })
 })
