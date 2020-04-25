@@ -145,7 +145,6 @@ class TestSiteList extends React.Component {
                             };
 
                             const dist = haversine(zipLatLng, end, { unit: 'mile' });
-
                             let newItem = { ...item };
                             newItem.dist = dist;
                             return newItem;
@@ -255,6 +254,7 @@ class TestSiteList extends React.Component {
                 </Row>
                 <section ref={this.scrollRef}>
                     <Row className='row-grid align-items-start card-list mt-4'>
+
                         <Col className='order-lg-1 pt-4' lg='7'>
                             <Row className='pl-4'>
                                 <p>
