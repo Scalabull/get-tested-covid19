@@ -162,6 +162,7 @@ module "db" {
   storage_encrypted               = true
   apply_immediately               = true
   monitoring_interval             = 10
+  performance_insights_enabled    = true
 
   db_parameter_group_name         = local.name
   db_cluster_parameter_group_name = local.name
