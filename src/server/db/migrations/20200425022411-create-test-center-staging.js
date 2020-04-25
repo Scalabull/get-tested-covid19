@@ -8,9 +8,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      accepted: {
-        type: Sequelize.INTEGER,
+      public: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
+      },
+      name: {
+        type: Sequelize.STRING,
       },
       location: {
         type: Sequelize.STRING,

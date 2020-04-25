@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const TestCenter = sequelize.define(
     'TestCenter',
     {
-      accepted: DataTypes.INTEGER,
+      public: DataTypes.BOOLEAN,
+      name: DataTypes.STRING,
       location: DataTypes.STRING,
       address: DataTypes.STRING,
       city: DataTypes.STRING,
