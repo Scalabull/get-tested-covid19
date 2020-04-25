@@ -18,12 +18,9 @@ const DISTANCE_THRESH = 40;
 // Check if GeocoderResult object return form Google Geolocation is a US address.
 function isUSLocation(geocoderResult){
     let filtered = geocoderResult.address_components.filter((component) => {
-        if(component.types &&
+        return component.types &&
            component.types.includes("country") &&
-           component.short_name === "US"
-            ){
-                return true;
-        }
+           component.short_name === "US";
     });
 
     return filtered.length > 0;
@@ -105,6 +102,7 @@ class TestSiteList extends React.Component {
         super(props);
 
         let zip = getQueryStringValue('zip') || '';
+        this.scrollRef = React.createRef();
 
         this.state = {
             initialItems: [],
@@ -187,7 +185,19 @@ class TestSiteList extends React.Component {
                 }
             )
             .then(() => {
-                this.setDefaultZip();
+                // try to get previously approved location
+                if (navigator && navigator.permissions) {
+                    navigator.permissions.query({ name: 'geolocation' })
+                        .then(status => {
+                            if (status && status.state === 'granted') {
+                                this.locateUser();
+                            } else {
+                                this.setDefaultZip();
+                            }
+                        })
+                } else {
+                    this.setDefaultZip();
+                }
             })
     }
 
@@ -197,13 +207,16 @@ class TestSiteList extends React.Component {
         });
     }
 
-    locateUser() {
+    locateUser(scrollTo = false) {
         let geocoder = new this.props.google.maps.Geocoder();
         tryGeolocation(geocoder, (err, pos, postalCode) => {
             if(err){
                 this.setDefaultZip();
             } else {
                 this.setDefaultZip(postalCode);
+                if (scrollTo && this.scrollRef) {
+                    window.scrollTo(0, this.scrollRef.current.offsetTop)
+                }
             }
         });
     }
@@ -211,7 +224,6 @@ class TestSiteList extends React.Component {
     render() {
         let viewItems = this.state.items.slice(0, 10);
 
-        console.error(this.state.searchZip);
         return (
             <div>
                 <Row
@@ -232,7 +244,7 @@ class TestSiteList extends React.Component {
                             <HomeZipForm onSubmit={this.onSubmit} searchZip={this.state.searchZip}></HomeZipForm>
                         </Row>
                         <Row>
-                            <div type="button" className='text-white mt-2' onClick={() => this.locateUser()}>
+                            <div type="button" className='text-white mt-2' onClick={() => this.locateUser(true)}>
                                 Use my current location
                             </div>
                         </Row>
@@ -241,26 +253,27 @@ class TestSiteList extends React.Component {
                         <img src={hero1} alt='lab testing'></img>
                     </Col>
                 </Row>
-                <Row className='row-grid align-items-start card-list mt-4'>
-
-                    <Col className='order-lg-1 pt-4' lg='7'>
-                        <Row className='pl-4'>
-                            <p>
-                                {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
-                            </p>
-                        </Row>
-                        <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
-                    </Col>
-                    <Col className='order-lg-2' lg='5'>
-                        <TestSiteMap
-                            style={{ width: '100vw' }}
-                            items={viewItems}
-                            totalCount={this.state.items.length}
-                            zipLatLng={this.state.zipLatLng}
-                            searchZip={this.state.searchZip}
-                        />
-                    </Col>
-                </Row>
+                <section ref={this.scrollRef}>
+                    <Row className='row-grid align-items-start card-list mt-4'>
+                        <Col className='order-lg-1 pt-4' lg='7'>
+                            <Row className='pl-4'>
+                                <p>
+                                    {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
+                                </p>
+                            </Row>
+                            <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
+                        </Col>
+                        <Col className='order-lg-2' lg='5'>
+                            <TestSiteMap
+                                style={{ width: '100vw' }}
+                                items={viewItems}
+                                totalCount={this.state.items.length}
+                                zipLatLng={this.state.zipLatLng}
+                                searchZip={this.state.searchZip}
+                            />
+                        </Col>
+                    </Row>
+                </section>
             </div>
         );
     }

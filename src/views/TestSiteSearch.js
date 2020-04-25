@@ -20,7 +20,6 @@ import React from "react";
 // reactstrap components
 import {
   Button,
-  Card,
   Container,
   Row,
   Col
@@ -71,7 +70,7 @@ class Landing extends React.Component {
                 <span />
               </div>
               <TestSiteList></TestSiteList>
-              
+
                {/* SVG separator */}
             <div className="separator separator-bottom separator-skew zindex-100">
               <svg
@@ -89,13 +88,13 @@ class Landing extends React.Component {
             {/* 1st Hero Variation */}
           </div>
 
-          
+
           <section className="section section-lg pt-0 mt-0 pb-0 pt-0 footer-container">
             <Container>
             <Row className="align-items-center">
               <Col lg="7">
                 <Row>
-                <p> 
+                <p>
                 <span className="medWeight">
                   We are a team of volunteers working around-the-clock to provide accurate information.
                   If any data you see here is incorrect, please report the issue, and we will fix it.
@@ -116,10 +115,10 @@ class Landing extends React.Component {
                     Contact Us
                   </Button>
                   </Col>
-                
+
                 </Row>
-                
-                
+
+
               </Col>
               <Col className="ml-lg-auto" lg="4">
                 <img src={footerHero} alt='lab testing'></img>
@@ -127,7 +126,7 @@ class Landing extends React.Component {
             </Row>
             </Container>
           </section>
-          
+
         </main>
         <SimpleFooter />
       </DocumentMeta>
