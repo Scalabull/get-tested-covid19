@@ -49,16 +49,24 @@ module.exports = {
         type: Sequelize.STRING,
       },
       appointment_required: {
-        type: Sequelize.STRING,
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: null,
       },
       doctor_screen_required_beforehand: {
-        type: Sequelize.STRING,
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: null,
       },
       drive_thru_site: {
-        type: Sequelize.STRING,
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: null,
       },
       walk_in_site: {
-        type: Sequelize.STRING,
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: null,
       },
       facilities_provided: {
         type: Sequelize.STRING,
@@ -74,6 +82,7 @@ module.exports = {
       },
       closed: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       date_closed: {
         type: Sequelize.DATE,

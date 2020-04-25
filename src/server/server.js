@@ -24,9 +24,9 @@ app.use(compression())
 app.use(helmet())
 
 app.get('/ping', (req, res) => res.status(200).send('pong'))
-app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/internal', internalRouter)
-app.use('/api/v1/public', publicRouter)
+app.use(`/api/v1/${process.env.API_AUTH_ROUTE}`, authRouter)
+app.use(`/api/v1/${process.env.API_INTERNAL_ROUTE}`, internalRouter)
+app.use(`/api/v1/${process.env.API_PUBLIC_ROUTE}`, publicRouter)
 app.use('*', (req, res) => res.send('v1'))
 
 app.use((err, req, res, next) => {
