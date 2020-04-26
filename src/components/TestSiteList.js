@@ -214,7 +214,7 @@ class TestSiteList extends React.Component {
             } else {
                 this.setDefaultZip(postalCode);
                 if (scrollTo && this.scrollRef) {
-                    window.scrollTo(0, this.scrollRef.current.offsetTop)
+                    window.scroll( { left:0, top: this.scrollRef.current.offsetTop, behavior: 'smooth'})
                 }
             }
         });
