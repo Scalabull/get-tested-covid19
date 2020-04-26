@@ -10,6 +10,9 @@ module.exports = {
     dialect: 'postgres',
     operatorsAliases: 0,
     logging: false,
+    define: {
+      underscored: true,
+    },
   },
   test: {
     username: process.env.DB_USERNAME,
@@ -19,6 +22,9 @@ module.exports = {
     dialect: 'postgres',
     operatorsAliases: 0,
     logging: false,
+    define: {
+      underscored: true,
+    },
   },
   production: {
     username: process.env.DB_USERNAME,
@@ -30,6 +36,10 @@ module.exports = {
       // ssl: {
       //   ca: fs.readFileSync(__dirname + '/postgresql-ca-master.crt'),
       // },
+    },
+    logging: false,
+    define: {
+      underscored: true,
     },
     logging: false,
   },
