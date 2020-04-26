@@ -36,6 +36,9 @@ module.exports = {
       longitude: {
         type: Sequelize.FLOAT,
       },
+      geolocation: {
+        type: Sequelize.GEOMETRY('POINT', 4326),
+      },
       phone_number: {
         type: Sequelize.STRING(30),
       },

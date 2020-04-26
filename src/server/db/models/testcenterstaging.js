@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       zipcode: DataTypes.INTEGER,
       latitude: DataTypes.FLOAT,
       longitude: DataTypes.FLOAT,
+      geolocation: DataTypes.GEOMETRY,
       phone_number: DataTypes.STRING,
       hours_of_operation: DataTypes.STRING,
       days_of_operation: DataTypes.STRING,
