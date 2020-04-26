@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('UserSearches', {
@@ -6,34 +6,34 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       zip_code: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       user_latitude: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
       },
       user_longitude: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
       },
       user_ip: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       search_timestamp: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserSearches');
-  }
-};
+    return queryInterface.dropTable('UserSearches')
+  },
+}
