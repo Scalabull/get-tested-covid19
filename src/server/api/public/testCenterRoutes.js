@@ -37,4 +37,20 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const openCenter = await db.TestCenter.findOne({
+      where: { id, public: true },
+      attributes,
+    })
+    if (!openCenter) {
+      return res.status(404).send()
+    }
+    res.status(200).json(openCenter)
+  } catch (error) {
+    res.status(500).send()
+  }
+})
+
 module.exports = router
