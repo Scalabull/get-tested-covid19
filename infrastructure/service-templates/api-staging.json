@@ -7,12 +7,12 @@
         "containerPort": ${container_port}
       }
     ],
-    "image": "gettestedcovid19/webserver:staging",
+    "image": "nginx",
     "name": "${container_name}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "/ecs/staging-www",
+        "awslogs-group": "/ecs/staging-api",
         "awslogs-region": "${region}",
         "awslogs-stream-prefix": "ecs"
       }
