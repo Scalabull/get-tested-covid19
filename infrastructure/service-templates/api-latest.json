@@ -16,6 +16,24 @@
         "awslogs-region": "${region}",
         "awslogs-stream-prefix": "ecs"
       }
-    }
+    },
+    "secrets": [
+      {
+        "name": "DB_USERNAME",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_USERNAME"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_PASSWORD"
+      },
+      {
+        "name": "DB_HOSTNAME",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_HOSTNAME"
+      },
+      {
+        "name": "DB_NAME",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_NAME"
+      }
+    ]
   }
 ]
