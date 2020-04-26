@@ -1,5 +1,8 @@
 const fs = require('fs')
-require('dotenv').config(process.cwd(), '.env')
+if(process.env.NODE_ENV !== 'staging' && process.env.NODE_ENV !== 'production'){
+  require('dotenv').config(process.cwd(), '.env')
+}
+
 
 module.exports = {
   development: {

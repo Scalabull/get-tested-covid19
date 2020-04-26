@@ -41,7 +41,7 @@
         "docker:build": "docker build -t gettestedcovid19/webserver:latest -f docker/Dockerfile .",
         "docker:run": "docker run -p 3000:3000 gettestedcovid19/webserver:latest",
         "docker:push": "docker push gettestedcovid19/webserver:latest",
-        "api:start:dev": "nodemon ./src/server/server.js"
+        "api:start:dev": "export NODE_ENV=development&& nodemon ./src/server/server.js"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -111,6 +111,7 @@
         "gulp-append-prepend": "1.0.8",
         "husky": "^4.2.5",
         "jquery": "3.4.1",
+        "nodemon": "^2.0.3",
         "supertest": "^4.0.2",
         "typescript": "3.7.5"
     }
