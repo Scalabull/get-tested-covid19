@@ -1,7 +1,6 @@
 FROM node:12-alpine
 COPY . .
 RUN yarn install --production
-RUN npx sequelize-cli db:migrate
 
 EXPOSE 5000
 
