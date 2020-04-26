@@ -16,7 +16,6 @@ router.post('/', auth, async (req, res) => {
     const testCenter = await db.TestCenterStaging.create(req.body)
     res.status(201).json(testCenter)
   } catch (error) {
-    console.log(req.body)
     res.status(500).send()
   }
 })

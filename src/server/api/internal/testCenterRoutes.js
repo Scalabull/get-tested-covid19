@@ -12,7 +12,6 @@ router.get('/', auth, async (req, res) => {
 })
 
 router.post('/', auth, async (req, res) => {
-  console.log(req.body)
   try {
     const testCenter = await db.TestCenter.create(req.body)
     res.status(201).json(testCenter)

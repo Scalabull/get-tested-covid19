@@ -16,7 +16,6 @@ router.post('/', auth, async (req, res) => {
     const search = await db.UserSearches.create(req.body)
     res.status(201).json(search)
   } catch (error) {
-    console.log(req.body)
     res.status(500).send()
   }
 })
