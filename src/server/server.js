@@ -1,50 +1,59 @@
-const express = require('express');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const path = require('path');
-const socketio = require('socket.io');
-const compression = require('compression');
-const helmet = require('helmet');
-const port = process.env.PORT || 5000;
+const path = require('path')
+const express = require('express')
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+const socketio = require('socket.io')
+const compression = require('compression')
+const helmet = require('helmet')
+const db = require('./db/models/index')
+require('dotenv').config(process.cwd(), '.env')
 
-const authRouter = require('./auth/authRoutes');
-const internalRouter = require('./api/internalRoutes');
-const publicRouter = require('./api/publicRoutes');
+const port = process.env.API_PORT
 
-const app = express();
+const authRouter = require('./auth/authRoutes')
+const internalRouter = require('./api/internalRoutes')
+const publicRouter = require('./api/publicRoutes')
 
-app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common'));
+const app = express()
 
-app.use(bodyParser.json({ limit: '1mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
+app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common'))
 
-app.use(compression());
-app.use(helmet());
+app.use(bodyParser.json({ limit: '1mb' }))
+app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
+app.use(compression())
+app.use(helmet())
 
-app.use(authRouter);
-app.use(internalRouter);
-app.use(publicRouter);
-
-app.get('/ping', (req, res) => res.status(200).send('pong'));
-
-app.get('*', (req, res) => res.send('v1'));
+app.get('/ping', (req, res) => res.status(200).send('pong'))
+app.use(`/api/v1/${process.env.API_AUTH_ROUTE}`, authRouter)
+app.use(`/api/v1/${process.env.API_INTERNAL_ROUTE}`, internalRouter)
+app.use(`/api/v1/${process.env.API_PUBLIC_ROUTE}`, publicRouter)
+app.use('*', (req, res) => res.send('v1'))
 
 app.use((err, req, res, next) => {
-    res.status(err.status || 500).send(err.message || 'Internal server error');
-});
+  res.status(err.status || 500).send(err.message || 'Internal server error')
+})
 
-const startListening = () => {
-    const server = app.listen(port, () => {
-        // eslint-disable-next-line no-console
-        console.log(`Server listening port ${port}...`);
-    });
-
-    const io = socketio(server);
-    require('./socket/socket')(io);
-};
-
-if (require.main === module) {
-    startListening();
+async function syncDatabase() {
+  try {
+    await db.sequelize.sync()
+    console.log(`Connected to database ${db.sequelize.config.database} ...`)
+  } catch (error) {
+    console.error('Unable to connect to databae:', error)
+  }
 }
 
-module.exports = app;
+function startListening() {
+  syncDatabase()
+  const server = app.listen(port, () => {
+    console.log(`Server listening port ${port}...`)
+  })
+
+  const io = socketio(server)
+  require('./socket/socket')(io)
+}
+
+if (require.main === module) {
+  startListening()
+}
+
+module.exports = app
