@@ -52,7 +52,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       website: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(512),
       },
       appointment_required: {
         type: Sequelize.BOOLEAN,
@@ -75,13 +75,13 @@ module.exports = {
         defaultValue: null,
       },
       facilities_provided: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(2048),
       },
       estimated_daily_test_capacity: {
         type: Sequelize.INTEGER,
       },
       comments: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1024),
       },
       address_freetext_blob: {
         type: Sequelize.STRING,
@@ -94,12 +94,12 @@ module.exports = {
         type: Sequelize.DATE,
       },
       created_at: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       updated_at: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
     })
   },
