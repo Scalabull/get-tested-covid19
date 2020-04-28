@@ -1,6 +1,6 @@
 
-
 import React from 'react';
+import styled from 'styled-components'
 import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
@@ -108,7 +108,9 @@ class TestSiteList extends React.Component {
             initialItems: [],
             items: [],
             searchZip: zip,
-            zipLatLng: null
+            defaultZip: zip || '10001',
+            zipLatLng: null,
+            isFetching: true,
         };
 
         this.filterList = this.filterList.bind(this);
@@ -184,8 +186,13 @@ class TestSiteList extends React.Component {
                 }
             )
             .then(() => {
+                this.setState({
+                    isFetching: false,
+                });
+
                 // try to get previously approved location
-                if (navigator && navigator.permissions) {
+                const zipQueryString = getQueryStringValue('zip');
+                if (!zipQueryString && navigator && navigator.permissions) {
                     navigator.permissions.query({ name: 'geolocation' })
                         .then(status => {
                             if (status && status.state === 'granted') {
@@ -200,7 +207,7 @@ class TestSiteList extends React.Component {
             })
     }
 
-    setDefaultZip(searchZip = '10001') {
+    setDefaultZip(searchZip = this.state.defaultZip) {
         this.setState({ searchZip }, () => {
             this.filterList(this.state.searchZip || searchZip);
         });
@@ -220,9 +227,43 @@ class TestSiteList extends React.Component {
         });
     }
 
-    render() {
-        let viewItems = this.state.items.slice(0, 10);
+    renderList() {
+        if (this.state.isFetching) {
+            return (
+                <Col className='order-lg-1 text-center mb-9 mt-9 display-2' lg='12'>
+                    <RotateAnimation>
+                        <i className="fa fa-circle-o-notch" />
+                    </RotateAnimation>
+                </Col>
+            );
+        }
 
+        const viewItems = this.state.items.slice(0, 10);
+
+        return (
+            <>
+                <Col className='order-lg-1 pt-4' lg='7'>
+                    <Row className='pl-4'>
+                        <p>
+                            {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
+                        </p>
+                    </Row>
+                    <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
+                </Col>
+                <Col className='order-lg-2' lg='5'>
+                    <TestSiteMap
+                        style={{ width: '100vw' }}
+                        items={viewItems}
+                        totalCount={this.state.items.length}
+                        zipLatLng={this.state.zipLatLng}
+                        searchZip={this.state.searchZip}
+                    />
+                </Col>
+            </>
+        )
+    }
+
+    render() {
         return (
             <div>
                 <Row
@@ -254,30 +295,23 @@ class TestSiteList extends React.Component {
                 </Row>
                 <section ref={this.scrollRef}>
                     <Row className='row-grid align-items-start card-list mt-4'>
-
-                        <Col className='order-lg-1 pt-4' lg='7'>
-                            <Row className='pl-4'>
-                                <p>
-                                    {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
-                                </p>
-                            </Row>
-                            <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
-                        </Col>
-                        <Col className='order-lg-2' lg='5'>
-                            <TestSiteMap
-                                style={{ width: '100vw' }}
-                                items={viewItems}
-                                totalCount={this.state.items.length}
-                                zipLatLng={this.state.zipLatLng}
-                                searchZip={this.state.searchZip}
-                            />
-                        </Col>
+                        {this.renderList()}
                     </Row>
                 </section>
             </div>
         );
     }
 }
+
+export const RotateAnimation = styled.div`
+-webkit-animation:spin 2s linear infinite;
+-moz-animation:spin 2s linear infinite;
+animation:spin 2s linear infinite;
+    
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+`
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'

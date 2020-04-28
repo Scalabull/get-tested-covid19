@@ -15,12 +15,21 @@ function isNumeric(s) {
 }
 
 class HomeZipForm extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = { value: props.searchZip };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.searchZip !== nextProps.searchZip) {
+            this.setState({
+                value: nextProps.searchZip,
+            });
+        }
     }
 
     handleChange(event) {
@@ -42,6 +51,7 @@ class HomeZipForm extends React.Component {
         ) {
             this.props.onSubmit(submitVal);
             window.scroll( { left:0, top: document.getElementsByClassName( "search-header")[0].scrollHeight, behavior: 'smooth'})
+            this.setState({ value: '' });
         }
         // event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.top = "-200px"
     }
