@@ -42,6 +42,23 @@ To get a local environment up and running use [Docker Compose](https://docs.dock
 
 > docker-compose up
 
+Wait for the build to complete and the db to come up. Usually in a new terminal run:
+
+> docker-compose exec api npx sequelize-cli db:migrate
+
+You should see output like:
+
+```
+npx: installed 80 in 7.635s
+
+Sequelize CLI [Node: 12.16.2, CLI: 5.5.1, ORM: 5.21.6]
+
+Loaded configuration file "src/server/db/config/config.js".
+Using environment "development".
+== 20200424025602-create-user: migrating =======
+== 20200424025602-create-user: migrated (0.031s)
+```
+
 From here you can get to the API server.
 
 ```

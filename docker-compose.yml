@@ -10,8 +10,8 @@ services:
       - API_AUTH_ROUTE=auth
       - API_INTERNAL_ROUTE=internal
       - API_PUBLIC_ROUTE=public
-      - DB_USERNAME='testing'
-      - DB_PASSWORD='testing'
+      - DB_USERNAME=testing
+      - DB_PASSWORD=testing
       - DB_NAME=coronavirus
       - DB_HOST=db
       - JWT_SECRET=GetTestedCOVID19
@@ -20,8 +20,8 @@ services:
     ports:
       - "5000:5000"
   db:
-    image: postgres
+    image: mdillon/postgis
     environment:
       POSTGRES_USER: testing
       POSTGRES_PASSWORD: testing
-      POSTGRES_DB: coronavirus
+      POSTGRES_DB: coronavirus_development
