@@ -29,10 +29,33 @@ module.exports = (sequelize, DataTypes) => {
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
     },
-    {}
+    {
+      hooks: {
+        beforeCreate: (testCenter) => {
+          return updateGeolocation(testCenter)
+        },
+        beforeUpdate: (testCenter) => {
+          return updateGeolocation(testCenter)
+        },
+      },
+    }
   )
   TestCenter.associate = function (models) {
     // associations can be defined here
+  }
+
+  const updateGeolocation = async (testCenter) => {
+    if (testCenter.changed('latitude') || testCenter.changed('longitutde')) {
+      if (testCenter.longitude === null || testCenter.latitude === null) {
+        return
+      }
+
+      testCenter.geolocation = {
+        type: 'Point',
+        coordinates: [testCenter.longitude, testCenter.latitude],
+        crs: { type: 'name', properties: { name: 'EPSG:4326' } },
+      }
+    }
   }
   return TestCenter
 }
