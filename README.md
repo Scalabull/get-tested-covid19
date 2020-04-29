@@ -36,9 +36,24 @@ Please see our contributor documentation: https://docs.google.com/document/d/1ja
 # Technical Specs
 This technical documentation is rapidly evolving and may be out of sync. We will do our best to keep this up-to-date with a rough overview of the architecture so that newcomers can get up-to-speed quickly.
 
+## Docker Compose
+
+To get a local environment up and running use [Docker Compose](https://docs.docker.com/compose/install/). You will need [Docker](https://docs.docker.com/get-docker/) for this.
+
+> docker-compose up
+
+From here you can get to the API server.
+
+```
+curl localhost:5000/ping
+pong
+```
+
 ## CI/CD
 
-We are leveraging Buddy for CI/CD. PRs will be merged to the 'staging' branch, which deploys to a dev site. We will do quick manual QA, then merge to 'master' to deploy to production.
+We are leveraging Circle CI for CI/CD. PRs will be merged to the 'staging' branch, which deploys to [https://staging.get-tested-covid19.org/](https://staging.get-tested-covid19.org/). We will do quick manual QA, then merge to 'master' to deploy to production.
+
+![CI](./Documentation/images/gtcv19ci.svg)
 
 ## Database
 
@@ -46,47 +61,9 @@ The public datasource is updated on a daily basis. We manually review submission
 
 We are seeking to automate this process. See the related Issue for more information.
 
-# DEV OPS
-
-Deployment is on a Rackspace VM in the Dallas region. We have a VM server image that can be duplicated for multi-host deployment, if needed. This instance sits behind a load balancer which holds the SSL certificate and does SSL termination. The load balancer only accepts HTTPS(443) traffic and redirects HTTP to HTTPS.
-
 ## Infrastructure
 
-We currently have a single-server deployment for production, which sits behind a load balancing device. We have an identical development configuration.
-
-We use GCP Cloud Storage to serve a static 'database' file (testSites.json).
-
-## VM Instance Configuration
-```
-Configuration:
-
-Base operating system: CentOS8
-
-#skipping user account, security configuration, firewalld port rules
-
-#sudo firewall-cmd --add-port=3000/tcp --permanent
-#sudo service firewalld restart
-
-sudo yum install git
-
-curl -sL https://rpm.nodesource.com/setup_12.x | sudo bash -
-
-sudo yum install node.js
-
-sudo npm install -g pm2
-```
-
-Notes on checking deployment
-
-```
-# NOTE: In production deployment, SSH chain and key files are stored in the load balancer, and SSH termination happens at the load balancer. Traffic served by the server(s) is HTTP traffic on port 3000.
-
-# Check if the service is running on local 3000 port:
-# lsof -i :3000
-# Check if service is externally exposed on a remote server:
-# nc -vz HOST 3000
-# (where HOST is host IP)
-```
+We currently have two environments. Staging and Production are deploy with Terraform via Circle CI.  Both environments use [AWS Fargate](https://aws.amazon.com/fargate/) behind an [AWS Application LoadBalancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html). We are starting to use an AWS Relational Database Service endpoint using Aurora with Postgres compatability.  
 
 ## App Deployment
 

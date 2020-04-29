@@ -6,7 +6,10 @@ const socketio = require('socket.io')
 const compression = require('compression')
 const helmet = require('helmet')
 const db = require('./db/models/index')
-require('dotenv').config(process.cwd(), '.env')
+
+if(process.env.NODE_ENV !== 'staging' && process.env.NODE_ENV !== 'production'){
+  require('dotenv').config(process.cwd(), '.env')
+}
 
 const port = process.env.API_PORT
 
