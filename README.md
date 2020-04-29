@@ -38,7 +38,7 @@ This technical documentation is rapidly evolving and may be out of sync. We will
 
 ## CI/CD
 
-We are leveraging Buddy for CI/CD. PRs will be merged to the 'staging' branch, which deploys to a dev site. We will do quick manual QA, then merge to 'master' to deploy to production.
+We are leveraging Circle CI for CI/CD. PRs will be merged to the 'staging' branch, which deploys to a dev site. We will do quick manual QA, then merge to 'master' to deploy to production.
 
 ## Database
 
