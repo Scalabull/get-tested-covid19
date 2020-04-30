@@ -11,10 +11,12 @@ import {
   PopoverHeader,
 } from 'reactstrap'
 
-import icon1 from '../assets/img/icons/card/Hospital.png' //
+import { Container, Card, Button, CardBody, UncontrolledPopover, PopoverBody, PopoverHeader } from 'reactstrap';
+
+import icon1 from '../assets/img/icons/card/Hospital.png'
 import icon2 from '../assets/img/icons/card/Doc-blue.png'
 import icon2Red from '../assets/img/icons/card/Doc-red.png'
-import icon3 from '../assets/img/icons/card/DriveThrough.png' //
+import icon3 from '../assets/img/icons/card/DriveThrough.png'
 import icon4 from '../assets/img/icons/card/Appointment-blue.png'
 import icon4Red from '../assets/img/icons/card/Appointment-red.png'
 

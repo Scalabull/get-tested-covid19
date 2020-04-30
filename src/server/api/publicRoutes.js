@@ -1,7 +1,5 @@
-const router = require('express').Router();
+const router = require('express').Router()
 
-router.get('/v1/public', (req, res) => {
-    res.send('not implemented');
-});
+router.use('/test-centers', require('./public/testCenterRoutes'))
 
-module.exports = router;
+module.exports = router

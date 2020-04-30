@@ -1,0 +1,7 @@
+FROM node:12-alpine
+COPY . .
+RUN yarn install --production
+
+EXPOSE 5000
+
+ENTRYPOINT ["node", "/src/server/server.js"]
