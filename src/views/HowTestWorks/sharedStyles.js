@@ -152,4 +152,32 @@ display: none;
 export const TextLink = styled.a`
 color:#2F80ED`
 
+export const ShareButton = styled.button`
+background: none;
+border: none;
+position: relative;
+display: inline-block;
+cursor: pointer;
+highlight-color: none;
+
+&:active{
+  outline: 0;
+}
+
+& > span {
+    visibility: hidden;
+    width: 350px;
+    background-color: #5e72e4;
+    opacity: 80%;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 50%;
+    margin-left: -200px;
+}
+`
 

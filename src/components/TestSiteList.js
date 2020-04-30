@@ -6,6 +6,7 @@ import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
 import qs from 'query-string';
 import HomeZipForm from 'components/Forms/HomeZipForm.js';
+import { ShareButton } from '../views/HowTestWorks/sharedStyles'
 
 import { Row, Col } from 'reactstrap';
 import hero1 from '../assets/img/hero/Hero1.png';
@@ -15,12 +16,26 @@ import { GoogleApiWrapper } from 'google-maps-react';
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
 
+function copy(zip) {
+    const dummy = document.createElement('input'),
+        text = `https://get-tested-covid19.org?zip=${zip}`;
+
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy)
+    document.getElementById('popup').style.visibility = 'visible'
+    const strCmd = "document.getElementById('popup').style.visibility = 'hidden'";
+    setTimeout(strCmd, 1500);
+}
+
 function codeAddress(zip, geocoder, callback) {
-    geocoder.geocode( { 'address': zip}, function(results, status) {
+    geocoder.geocode({ 'address': zip }, function (results, status) {
         if (status === 'OK') {
             callback(null, results[0].geometry.location);
-        } 
-        else{
+        }
+        else {
             callback(status, null);
         }
     });
@@ -54,6 +69,7 @@ class TestSiteList extends React.Component {
 
     onSubmit(zipStr) {
         this.filterList(zipStr + "");
+
     }
 
     filterList(searchZipStr) {
@@ -67,7 +83,7 @@ class TestSiteList extends React.Component {
 
                 let geocoder = new this.props.google.maps.Geocoder();
                 codeAddress(searchZipStr, geocoder, (err, googleLatLng) => {
-                    if(!err){
+                    if (!err) {
                         //Use haversine distance w/ lat, lng
                         const zipLatLng = {
                             latitude: googleLatLng.lat(),
@@ -82,7 +98,7 @@ class TestSiteList extends React.Component {
                             };
 
                             const dist = haversine(zipLatLng, end, { unit: 'mile' });
-                            
+
                             let newItem = { ...item };
                             newItem.dist = dist;
                             return newItem;
@@ -96,7 +112,7 @@ class TestSiteList extends React.Component {
                             return item1.dist - item2.dist;
                         });
 
-                        this.setState({ items: updatedList, zipLatLng, searchZip: searchZipStr });                 
+                        this.setState({ items: updatedList, zipLatLng, searchZip: searchZipStr });
                     }
                 });
             } else {
@@ -123,7 +139,7 @@ class TestSiteList extends React.Component {
             )
             .then(() => {
                 this.filterList(this.state.searchZip || '10001');
-                this.setState({searchZip: '10001'});
+                this.setState({ searchZip: '10001' });
             });
     }
 
@@ -155,12 +171,19 @@ class TestSiteList extends React.Component {
                     </Col>
                 </Row>
                 <Row className='row-grid align-items-start card-list mt-4'>
-                    
+
                     <Col className='order-lg-1 pt-4' lg='7'>
                         <Row className='pl-4'>
-                            <p>
-                                {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
+                            <Col lg='8'>
+                                <p>
+                                    {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
                             </p>
+                            </Col>
+                            <Col lg='4'>
+                                <ShareButton onClick={() => copy(this.state.searchZip)}>Share results
+                                <span id='popup'>Search results have been copied to clipboard</span>
+                                </ShareButton>
+                            </Col>
                         </Row>
                         <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
                     </Col>
@@ -181,4 +204,6 @@ class TestSiteList extends React.Component {
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'
-  })(TestSiteList);
+})(TestSiteList);
+
+
