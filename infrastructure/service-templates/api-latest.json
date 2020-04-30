@@ -17,6 +17,12 @@
         "awslogs-stream-prefix": "ecs"
       }
     },
+    "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        }
+    ],
     "secrets": [
       {
         "name": "DB_USERNAME",
