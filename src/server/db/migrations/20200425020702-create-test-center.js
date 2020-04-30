@@ -16,13 +16,13 @@ module.exports = {
         type: Sequelize.STRING,
       },
       location: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       address: {
         type: Sequelize.STRING,
       },
       city: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING,
       },
       state: {
         type: Sequelize.STRING(2),
@@ -40,7 +40,7 @@ module.exports = {
         type: Sequelize.GEOMETRY('POINT', 4326),
       },
       phone_number: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING,
       },
       hours_of_operation: {
         type: Sequelize.STRING,
@@ -52,7 +52,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       website: {
-        type: Sequelize.STRING(512),
+        type: Sequelize.TEXT,
       },
       appointment_required: {
         type: Sequelize.BOOLEAN,
@@ -75,16 +75,16 @@ module.exports = {
         defaultValue: null,
       },
       facilities_provided: {
-        type: Sequelize.STRING(2048),
+        type: Sequelize.TEXT,
       },
       estimated_daily_test_capacity: {
         type: Sequelize.INTEGER,
       },
       comments: {
-        type: Sequelize.STRING(1024),
+        type: Sequelize.TEXT,
       },
       address_freetext_blob: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       closed: {
         type: Sequelize.BOOLEAN,
