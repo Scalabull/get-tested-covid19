@@ -69,7 +69,7 @@ module "fargate" {
       registry_retention_count = 15
       logs_retention_days      = 14
       health_check_interval = 30
-      health_check_path     = "/"
+      health_check_path     = "/ping"
       acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/fc031590-82a6-4f62-b0e5-c30b5d2e6996"
       auto_scaling_max_replicas = 50
       auto_scaling_requests_per_target = 4000
