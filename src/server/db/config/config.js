@@ -9,7 +9,7 @@ module.exports = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: `${process.env.DB_NAME}_development`,
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
     operatorsAliases: 0,
     logging: false,
@@ -21,7 +21,7 @@ module.exports = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: `${process.env.DB_NAME}_test`,
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
     operatorsAliases: 0,
     logging: false,
@@ -33,7 +33,7 @@ module.exports = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
     logging: false,
     define: {
@@ -45,7 +45,7 @@ module.exports = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
     dialectOptions: {
       // ssl: {
