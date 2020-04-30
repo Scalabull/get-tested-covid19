@@ -159,7 +159,7 @@ position: relative;
 display: inline-block;
 cursor: pointer;
 highlight-color: none;
-
+text-decoration: underline;
 &:active{
   outline: 0;
 }

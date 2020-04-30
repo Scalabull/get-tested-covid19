@@ -7,6 +7,7 @@ import haversine from 'haversine';
 import qs from 'query-string';
 import HomeZipForm from 'components/Forms/HomeZipForm.js';
 import { ShareButton } from '../views/HowTestWorks/sharedStyles'
+import Vector from '../assets/img/icons/map/Vector.png'
 
 import { Row, Col } from 'reactstrap';
 import hero1 from '../assets/img/hero/Hero1.png';
@@ -180,8 +181,8 @@ class TestSiteList extends React.Component {
                             </p>
                             </Col>
                             <Col lg='4'>
-                                <ShareButton onClick={() => copy(this.state.searchZip)}>Share results
-                                <span id='popup'>Search results have been copied to clipboard</span>
+                                <ShareButton onClick={() => copy(this.state.searchZip)}>Share results <img src={Vector} alt='Vector' />
+                                    <span id='popup'>Search results have been copied to clipboard </span>
                                 </ShareButton>
                             </Col>
                         </Row>
