@@ -175,12 +175,12 @@ class TestSiteList extends React.Component {
 
                     <Col className='order-lg-1 pt-4' lg='7'>
                         <Row className='pl-4'>
-                            <Col lg='8'>
+                            <Col lg='9'>
                                 <p>
                                     {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
                             </p>
                             </Col>
-                            <Col lg='4'>
+                            <Col lg='3'>
                                 <ShareButton onClick={() => copy(this.state.searchZip)}>Share results <img src={Vector} alt='Vector' />
                                     <span id='popup'>Search results have been copied to clipboard </span>
                                 </ShareButton>
