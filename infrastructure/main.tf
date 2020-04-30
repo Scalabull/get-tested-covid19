@@ -62,7 +62,7 @@ module "fargate" {
     }
     api = {
       task_definition = "service-templates/api-${local.image_tag}.json"
-      container_port  = 80
+      container_port  = 5000
       cpu             = "256"
       memory          = "512"
       replicas        = 1
