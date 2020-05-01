@@ -7,7 +7,7 @@
         "containerPort": ${container_port}
       }
     ],
-    "image": "nginx",
+    "image": "gettestedcovid19/api:master",
     "name": "${container_name}",
     "logConfiguration": {
       "logDriver": "awslogs",
@@ -16,6 +16,46 @@
         "awslogs-region": "${region}",
         "awslogs-stream-prefix": "ecs"
       }
-    }
+    },
+    "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "API_PORT",
+          "value": "5000"
+        },
+        {
+          "name": "API_AUTH_ROUTE",
+          "value": "auth"
+        },
+        {
+          "name": "API_INTERNAL_ROUTE",
+          "value": "internal"
+        },
+        {
+          "name": "API_PUBLIC_ROUTE",
+          "value": "public"
+        }
+      ],
+    "secrets": [
+      {
+        "name": "DB_USERNAME",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_USERNAME"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_PASSWORD"
+      },
+      {
+        "name": "DB_HOSTNAME",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_HOSTNAME"
+      },
+      {
+        "name": "DB_NAME",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_NAME"
+      }
+    ]
   }
 ]

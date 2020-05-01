@@ -8,12 +8,10 @@ const MAP_MARKER_BUFFER = 0.001;
 export default class TestSiteMap extends React.Component {
     render() {
         let { items, zipLatLng } = this.props;
-        
         let latLng = null;
         if(zipLatLng && zipLatLng.latitude && zipLatLng.longitude){
             latLng = [zipLatLng.latitude, zipLatLng.longitude];
         }
-        
 
         items = items.map((item) => {
             item.shortName = item.name.substring(0, 12);
@@ -45,7 +43,6 @@ export default class TestSiteMap extends React.Component {
 
             bounds = [[maxLat, minLng], [minLat, maxLng]];
         }
-       
 
         if (latLng && Array.isArray(latLng)) {
             mapCenterCoords = latLng;
@@ -64,7 +61,7 @@ export default class TestSiteMap extends React.Component {
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
                 {items.map((item, index) => (
-                    <Marker position={{ lat: item.lat, lng: item.lng }}>
+                    <Marker key={index} position={{ lat: item.lat, lng: item.lng }}>
                         <Tooltip permanent={true}>
                             <h6>{index + 1 }</h6>
                         </Tooltip>

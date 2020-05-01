@@ -1,7 +1,6 @@
 
 import React from 'react';
 
-// reactstrap components
 import { Container, Card, Button, CardBody, UncontrolledPopover, PopoverBody, PopoverHeader } from 'reactstrap';
 
 import icon1 from '../assets/img/icons/card/Hospital.png';
