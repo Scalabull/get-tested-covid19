@@ -5,15 +5,15 @@ services:
       context: ./
       dockerfile: ./docker/APIDockerfile
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=staging
       - API_PORT=5000
       - API_AUTH_ROUTE=auth
       - API_INTERNAL_ROUTE=internal
       - API_PUBLIC_ROUTE=public
       - DB_USERNAME=testing
       - DB_PASSWORD=testing
-      - DB_NAME=coronavirus
-      - DB_HOST=db
+      - DB_NAME=postgres
+      - DB_HOSTNAME=db
       - JWT_SECRET=GetTestedCOVID19
     links:
       - db
@@ -24,4 +24,4 @@ services:
     environment:
       POSTGRES_USER: testing
       POSTGRES_PASSWORD: testing
-      POSTGRES_DB: coronavirus_development
+      POSTGRES_DB: postgres

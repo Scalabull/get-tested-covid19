@@ -38,7 +38,7 @@
           "name": "API_PUBLIC_ROUTE",
           "value": "public"
         }
-    ],
+      ],
     "secrets": [
       {
         "name": "DB_USERNAME",
