@@ -6,33 +6,46 @@ import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
 import qs from 'query-string';
 import HomeZipForm from 'components/Forms/HomeZipForm.js';
-
+import Vector from '../assets/img/icons/map/Vector.png'
 import { Row, Col } from 'reactstrap';
 import hero1 from '../assets/img/hero/Hero1.png';
-
+import { ShareButton } from '../views/HowTestWorks/sharedStyles'
 import { GoogleApiWrapper } from 'google-maps-react';
 
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
 
 // Check if GeocoderResult object return form Google Geolocation is a US address.
-function isUSLocation(geocoderResult){
+function isUSLocation(geocoderResult) {
     let filtered = geocoderResult.address_components.filter((component) => {
         return component.types &&
-           component.types.includes("country") &&
-           component.short_name === "US";
+            component.types.includes("country") &&
+            component.short_name === "US";
     });
 
     return filtered.length > 0;
 }
+function copyUrl(zip) {
+    const dummy = document.createElement('input'),
+        text = `https://get-tested-covid19.org?zip=${zip}`;
 
-function returnPostalCode(geocoderResult){
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy)
+    document.getElementById('popup').style.visibility = 'visible'
+    const strCmd = "document.getElementById('popup').style.visibility = 'hidden'";
+    setTimeout(strCmd, 1500);
+}
+
+function returnPostalCode(geocoderResult) {
     let zipCode = null;
 
     geocoderResult.address_components.forEach(component => {
-        if(component.types &&
+        if (component.types &&
             component.types.includes("postal_code") &&
-            component.short_name.length === 5){
+            component.short_name.length === 5) {
 
             zipCode = component.short_name;
         }
@@ -42,47 +55,47 @@ function returnPostalCode(geocoderResult){
 }
 
 // If Geolocation runs successfully and points to a US address, return lat, lng
-function tryGeolocation(geocoder, callback){
+function tryGeolocation(geocoder, callback) {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
 
-          console.log('location found: ', pos);
-          geocoder.geocode({'location': pos}, (res, status) => {
-            if (status === 'OK') {
-                const isUSLoc = isUSLocation(res[0]);
-                const postalCode = returnPostalCode(res[0]);
-                if (res[0] && isUSLoc && postalCode !== null) {
-                    console.log('gelocation: ', res[0]);
-                    console.log('postalCode: ', postalCode)
-                    callback(null, pos, postalCode);
+            console.log('location found: ', pos);
+            geocoder.geocode({ 'location': pos }, (res, status) => {
+                if (status === 'OK') {
+                    const isUSLoc = isUSLocation(res[0]);
+                    const postalCode = returnPostalCode(res[0]);
+                    if (res[0] && isUSLoc && postalCode !== null) {
+                        console.log('gelocation: ', res[0]);
+                        console.log('postalCode: ', postalCode)
+                        callback(null, pos, postalCode);
+                    } else {
+                        callback(new Error('Geolocated address not in the US, or not valid postal code.'))
+                    }
                 } else {
-                    callback(new Error('Geolocated address not in the US, or not valid postal code.'))
+                    callback(new Error('Error running geolocation.', status));
                 }
-            } else {
-                callback(new Error('Error running geolocation.', status));
-            }
-          });
+            });
         }, () => {
             callback(new Error('Error loading geolocation.'));
         },
-        {
-            timeout: 5000, // wait 5s for the reply
-        });
-      } else {
-          callback(new Error('Geolocation not supported.'));
-      }
+            {
+                timeout: 5000, // wait 5s for the reply
+            });
+    } else {
+        callback(new Error('Geolocation not supported.'));
+    }
 }
 
 function codeAddress(zip, geocoder, callback) {
-    geocoder.geocode( { 'address': zip}, function(results, status) {
+    geocoder.geocode({ 'address': zip }, function (results, status) {
         if (status === 'OK') {
             callback(null, results[0].geometry.location);
         }
-        else{
+        else {
             callback(status, null);
         }
     });
@@ -132,7 +145,7 @@ class TestSiteList extends React.Component {
 
                 let geocoder = new this.props.google.maps.Geocoder();
                 codeAddress(searchZipStr, geocoder, (err, googleLatLng) => {
-                    if(!err){
+                    if (!err) {
                         //Use haversine distance w/ lat, lng
                         const zipLatLng = {
                             latitude: googleLatLng.lat(),
@@ -216,12 +229,12 @@ class TestSiteList extends React.Component {
     locateUser(scrollTo = false) {
         let geocoder = new this.props.google.maps.Geocoder();
         tryGeolocation(geocoder, (err, pos, postalCode) => {
-            if(err){
+            if (err) {
                 this.setDefaultZip();
             } else {
                 this.setDefaultZip(postalCode);
                 if (scrollTo && this.scrollRef) {
-                    window.scroll( { left:0, top: this.scrollRef.current.offsetTop, behavior: 'smooth'})
+                    window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
                 }
             }
         });
@@ -244,9 +257,16 @@ class TestSiteList extends React.Component {
             <>
                 <Col className='order-lg-1 pt-4' lg='7'>
                     <Row className='pl-4'>
-                        <p>
-                            {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
-                        </p>
+                        <Col lg='9'>
+                            <p>
+                                {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
+                            </p>
+                        </Col>
+                        <Col lg='3'>
+                            <ShareButton onClick={() => copyUrl(this.state.searchZip)}>Share results <img src={Vector} alt='Vector' />
+                                <span id='popup'>Search results have been copied to clipboard</span>
+                            </ShareButton>
+                        </Col>
                     </Row>
                     <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
                 </Col>
@@ -276,7 +296,7 @@ class TestSiteList extends React.Component {
                         </Row>
                         <Row>
                             <p className='text-white'>
-                            We have created a database of COVID-19 testing centers across the US. Please enter your zip code to find a location near you.
+                                We have created a database of COVID-19 testing centers across the US. Please enter your zip code to find a location near you.
                             </p>
                         </Row>
                         <Row>
@@ -306,7 +326,7 @@ export const RotateAnimation = styled.div`
 -webkit-animation:spin 2s linear infinite;
 -moz-animation:spin 2s linear infinite;
 animation:spin 2s linear infinite;
-    
+
 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
@@ -314,4 +334,4 @@ animation:spin 2s linear infinite;
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'
-  })(TestSiteList);
+})(TestSiteList);
