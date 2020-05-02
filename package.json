@@ -8,18 +8,7 @@
     },
     "keywords": [
         "react",
-        "reactjs",
-        "argon",
-        "argon-react",
-        "design",
-        "design-react",
-        "argon-design",
-        "argon-design-react",
-        "kit",
-        "react-kit",
-        "argon-design-system",
-        "argon-design-system-react",
-        "design-system-react"
+        "reactjs"
     ],
     "author": "Zach Boldyga",
     "license": "MIT",

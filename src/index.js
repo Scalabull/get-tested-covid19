@@ -8,15 +8,16 @@ import 'normalize.css/normalize.css';
 
 
 // To delete
-import "assets/vendor/nucleo/css/nucleo.css";
-import "assets/vendor/font-awesome/css/font-awesome.min.css";
-import "assets/scss/argon-design-system-react.scss?v1.1.0";
+// import "assets/vendor/nucleo/css/nucleo.css";
+// import "assets/vendor/font-awesome/css/font-awesome.min.css";
+// import "assets/scss/argon-design-system-react.scss?v1.1.0";
 
 import TestSiteSearch from "views/TestSiteSearch.js";
 import About from "views/About.js";
 import Resources from "views/Resources.js";
 import WhenShouldYouGetTested from "views/WhenShouldYouGetTested.js";
 import HowTestingWorks from './views/HowTestWorks/index.js';
+import HomePage from './components/home/HomePage.js';
 
 // Colors
 const colors = {
@@ -39,19 +40,20 @@ ReactDOM.render(
     <GlobalStyle />
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact render={props => <TestSiteSearch {...props} />} />
+        <Route path="/" exact render={props => <HomePage {...props} />} />
+        <Route path="/old/home" exact render={props => <TestSiteSearch {...props} />} />
         <Route
-          path="/resources"
+          path="/old/resources"
           exact
           render={props => <Resources {...props} />}
         />
         <Route
-          path="/when-should-you-get-tested"
+          path="/old/when-should-you-get-tested"
           exact
           render={props => <WhenShouldYouGetTested {...props} />}
         />
         <Route
-          path="/how-testing-works"
+          path="/old/how-testing-works"
           exact
           render={(props) => <HowTestingWorks {...props} />}
         />
