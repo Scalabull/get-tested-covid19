@@ -18,6 +18,7 @@ import Resources from "views/Resources.js";
 import WhenShouldYouGetTested from "views/WhenShouldYouGetTested.js";
 import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
+import ResultsPage from './components/results/ResultsPage.js';
 
 // Colors
 const colors = {
@@ -41,6 +42,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route path="/" exact render={props => <HomePage {...props} />} />
+        <Route path="/results" exact render={props => <ResultsPage {...props} />} />
         <Route path="/old/home" exact render={props => <TestSiteSearch {...props} />} />
         <Route
           path="/old/resources"

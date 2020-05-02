@@ -5,27 +5,14 @@ import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
 import qs from 'query-string';
-import HomeZipForm from 'components/Forms/HomeZipForm.js';
-import Vector from '../assets/img/icons/map/Vector.png'
+import Vector from '../../assets/img/icons/map/Vector.png'
 import { Row, Col } from 'reactstrap';
-import hero1 from '../assets/img/hero/Hero1.png';
-import { ShareButton } from '../views/HowTestWorks/sharedStyles'
+import { ShareButton } from '../../views/HowTestWorks/sharedStyles'
 import { GoogleApiWrapper } from 'google-maps-react';
-import styled from 'styled-components';
 
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
 
-// Check if GeocoderResult object return form Google Geolocation is a US address.
-function isUSLocation(geocoderResult) {
-    let filtered = geocoderResult.address_components.filter((component) => {
-        return component.types &&
-            component.types.includes("country") &&
-            component.short_name === "US";
-    });
-
-    return filtered.length > 0;
-}
 function copyUrl(zip) {
     const dummy = document.createElement('input'),
         text = `https://get-tested-covid19.org?zip=${zip}`;
@@ -38,57 +25,6 @@ function copyUrl(zip) {
     document.getElementById('popup').style.visibility = 'visible'
     const strCmd = "document.getElementById('popup').style.visibility = 'hidden'";
     setTimeout(strCmd, 1500);
-}
-
-function returnPostalCode(geocoderResult) {
-    let zipCode = null;
-
-    geocoderResult.address_components.forEach(component => {
-        if (component.types &&
-            component.types.includes("postal_code") &&
-            component.short_name.length === 5) {
-
-            zipCode = component.short_name;
-        }
-    });
-
-    return zipCode;
-}
-
-// If Geolocation runs successfully and points to a US address, return lat, lng
-function tryGeolocation(geocoder, callback) {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-
-            console.log('location found: ', pos);
-            geocoder.geocode({ 'location': pos }, (res, status) => {
-                if (status === 'OK') {
-                    const isUSLoc = isUSLocation(res[0]);
-                    const postalCode = returnPostalCode(res[0]);
-                    if (res[0] && isUSLoc && postalCode !== null) {
-                        console.log('gelocation: ', res[0]);
-                        console.log('postalCode: ', postalCode)
-                        callback(null, pos, postalCode);
-                    } else {
-                        callback(new Error('Geolocated address not in the US, or not valid postal code.'))
-                    }
-                } else {
-                    callback(new Error('Error running geolocation.', status));
-                }
-            });
-        }, () => {
-            callback(new Error('Error loading geolocation.'));
-        },
-            {
-                timeout: 5000, // wait 5s for the reply
-            });
-    } else {
-        callback(new Error('Geolocation not supported.'));
-    }
 }
 
 function codeAddress(zip, geocoder, callback) {
@@ -111,7 +47,7 @@ function isNumeric(s) {
     return !isNaN(s - parseFloat(s));
 }
 
-class HomeHero extends React.Component {
+class ResultsPage extends React.Component {
     constructor(props) {
         super(props);
         let zip = getQueryStringValue('zip') || '';
@@ -208,11 +144,11 @@ class HomeHero extends React.Component {
                 if (!zipQueryString && navigator && navigator.permissions) {
                     navigator.permissions.query({ name: 'geolocation' })
                         .then(status => {
-                            if (status && status.state === 'granted') {
-                                this.locateUser();
-                            } else {
+                            // if (status && status.state === 'granted') {
+                            //     this.locateUser();
+                            // } else {
                                 this.setDefaultZip();
-                            }
+                            //}
                         })
                 } else {
                     this.setDefaultZip();
@@ -282,4 +218,4 @@ animation:spin 2s linear infinite;
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'
-})(HomeHero);
+})(ResultsPage);
