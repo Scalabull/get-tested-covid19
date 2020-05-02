@@ -14,7 +14,7 @@ module.exports = {
     operatorsAliases: 0,
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
   },
   test: {
