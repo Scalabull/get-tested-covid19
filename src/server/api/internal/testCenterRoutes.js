@@ -11,6 +11,30 @@ router.get('/', auth, async (req, res) => {
   }
 })
 
+router.get('/:zipStr', auth, async (req, res)=>{
+  try {
+    //geo coding api
+    //get lat & lng
+    const { zipStr } = req.params
+    await fetch("https://maps.googleapis.com/maps/api/geocode/json?address="+zipStr+'&key=AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg')
+    .then(response => response.json())
+    .then(data => {
+      const latitude = data.results[0].geometry.location.lat;
+      const longitude = data.results[0].geometry.location.lng;
+      console.log({latitude, longitude})
+    })
+    //get the textcenters from database using lat and lng
+    const testCenters = await db.TestCenter.findAll({
+      attributes: [[sequelize.literal("6371 * acos(cos(radians("+lat+")) * cos(radians(latitude)) * cos(radians("+lng+") - radians(longitude)) + sin(radians("+lat+")) * sin(radians(latitude)))"),'distance']], //Haversine Formula for more accuracy
+    order: sequelize.col('distance'),
+    limit: 250
+    })
+    res.status(200).json(testCenters)
+  } catch (error) {
+    res.status(500).send()
+  }
+})
+
 router.post('/', auth, async (req, res) => {
   try {
     const testCenter = await db.TestCenter.create(req.body)
