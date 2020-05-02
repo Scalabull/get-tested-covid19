@@ -4,10 +4,10 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(t => {
       return Promise.all([
-        queryInterface.changeColumn('TestCenter', 'latitude', {
+        queryInterface.changeColumn('TestCenters', 'latitude', {
           type: Sequelize.DataTypes.DECIMAL(9,6)
         }, { transaction: t }),
-        queryInterface.changeColumn('TestCenter', 'longitude', {
+        queryInterface.changeColumn('TestCenters', 'longitude', {
           type: Sequelize.DataTypes.DECIMAL(9,6)
         }, { transaction: t }),
         queryInterface.changeColumn('TestCenterStagings', 'latitude', {
@@ -22,10 +22,10 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(t => {
       return Promise.all([
-        queryInterface.changeColumn('TestCenter', 'latitude', {
+        queryInterface.changeColumn('TestCenters', 'latitude', {
           type: Sequelize.DataTypes.FLOAT
         }, { transaction: t }),
-        queryInterface.changeColumn('TestCenter', 'longitude', {
+        queryInterface.changeColumn('TestCenters', 'longitude', {
           type: Sequelize.DataTypes.FLOAT
         }, { transaction: t }),
         queryInterface.changeColumn('TestCenterStagings', 'latitude', {
