@@ -58,13 +58,23 @@ router.get('/zip/:zipStr', async (req, res)=>{
     let testCenters = await performLatLngLookup(latitude, longitude);
 
     res.status(200).json({testCenters});
+
+    const searchData = {
+      zip_code: zipStr,
+      latitude: latitude,
+      longitude: longitude,
+      search_timestamp: new Date().getTime()
+    };
+
+    await db.UserSearches.create(searchData);
+
   } catch (error) {
     console.error('zip query error: ', error);
     res.status(500).send()
   }
 })
 
-router.get('/searchByLatLng', async (req, res)=>{
+router.get('/searchByUserLatLng', async (req, res)=>{
   try {
 
     const { latitude, longitude } = req.query;
@@ -79,6 +89,16 @@ router.get('/searchByLatLng', async (req, res)=>{
     let testCenters = await performLatLngLookup(latitude, longitude);
 
     res.status(200).json({testCenters});
+
+    const searchData = {
+      latitude: latitude,
+      longitude: longitude,
+      is_geolocated_query: true,
+      search_timestamp: new Date().getTime()
+    };
+
+    await db.UserSearches.create(searchData);
+    
   } catch (error) {
     console.error('zip query error: ', error);
     res.status(500).send()
