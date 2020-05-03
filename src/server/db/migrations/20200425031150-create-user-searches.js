@@ -12,10 +12,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
       latitude: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.DECIMAL(9,6),
       },
       longitude: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.DECIMAL(9,6),
       },
       is_geolocated_query: {
         type: Sequelize.BOOLEAN,
