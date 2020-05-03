@@ -11,11 +11,15 @@ module.exports = {
       zip_code: {
         type: Sequelize.STRING,
       },
-      user_latitude: {
-        type: Sequelize.FLOAT,
+      latitude: {
+        type: Sequelize.DECIMAL(9,6),
       },
-      user_longitude: {
-        type: Sequelize.FLOAT,
+      longitude: {
+        type: Sequelize.DECIMAL(9,6),
+      },
+      is_geolocated_query: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       user_ip: {
         type: Sequelize.STRING,
@@ -23,11 +27,11 @@ module.exports = {
       search_timestamp: {
         type: Sequelize.DATE,
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },

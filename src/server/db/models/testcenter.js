@@ -30,6 +30,12 @@ module.exports = (sequelize, DataTypes) => {
       date_closed: DataTypes.DATE,
     },
     {
+      indexes: [
+        {
+          fields: ['geolocation'],
+          using: 'gist'
+        }
+      ],
       hooks: {
         beforeCreate: (testCenter) => {
           return updateGeolocation(testCenter)
