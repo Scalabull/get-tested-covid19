@@ -1,6 +1,6 @@
 
 import React from "react";
-//TODO: zip query
+
 // reactstrap components
 import {
   Button,
