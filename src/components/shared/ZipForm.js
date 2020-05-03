@@ -8,7 +8,8 @@ import {
     Form,
     FormGroup,
     Input,
-    Row,
+    InputGroup,
+    InputGroupAddon
 } from 'reactstrap';
 
 function isNumeric(s) {
@@ -126,14 +127,19 @@ class ZipForm extends React.Component {
                         focused: this.state.searchFocused
                     })}
                 >
-                    <Row form>
+                    <InputGroup>
+                        {/* <InputGroupAddon addonType="prepend">
+                          <Button outline onClick={this.locateUser}>
+                            Locate
+                          </Button>
+                        </InputGroupAddon> */}
                         <Input
-                            className='mr-0 pr-12 search-input form-control form-control-lg'
+                            className={`mr-0 pr-12 search-input form-control ${this.props.large ? 'form-control-lg' : ''}`}
                             title='Enter zip code'
                             placeholder='Enter zip code'
                             type='text'
                             maxLength='5'
-                            autoFocus
+                            autoFocus={true}
                             onFocus={(e) =>
                                 this.setState({ searchFocused: true })
                             }
@@ -143,13 +149,12 @@ class ZipForm extends React.Component {
                             value={this.state.value}
                             onChange={this.handleChange}
                         />
-                        <Button className='search-button' type='submit' color='info'>
-                            Search
-                        </Button>
-                        <Button onClick={this.locateUser}>
-                          Locate
-                        </Button>
-                    </Row>
+                        <InputGroupAddon addonType="append">
+                          <Button type='submit' color='info'>
+                              Search
+                          </Button>
+                        </InputGroupAddon>
+                    </InputGroup>
                 </FormGroup>
             </Form>
         );

@@ -30,11 +30,21 @@ const colors = {
 const theme = {
   ...colors,
   colorPrimary: colors.colorRed,
+  fontSerif: `'Playfair Display', serif`,
+  fontSans: `'Libre Franklin', serif`,
 }
 
 // For CSS styling shared across different components
 const GlobalStyle = createGlobalStyle`
-  background-color: ${props => props.theme.colorPrimary};
+
+  body {
+    font-family: ${props => props.theme.fontSans};
+    font-weight: 300;
+  }
+  
+  h1, h2, h3, h4 {
+    font-family: ${props => props.theme.fontSerif};
+  }
 `
 
 ReactDOM.render(

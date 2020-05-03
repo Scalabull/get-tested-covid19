@@ -6,16 +6,22 @@ import ZipForm from 'components/shared/ZipForm.js';
 const StyledHomeHero = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
-  padding: 50px 15px;
+  height: 500px;
+
+  h1 {
+      margin-bottom: 30px;
+  }
+
 `
 
 class HomeHero extends React.Component {
     render() {
         return (
-            <StyledHomeHero>
+            <StyledHomeHero className="container">
               <h1>Find a nearby COVID-19 test center</h1>
-              <ZipForm />
+              <ZipForm large />
             </StyledHomeHero>
         );
     }

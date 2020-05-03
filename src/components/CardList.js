@@ -91,22 +91,22 @@ class CardList extends React.Component {
                             <Card key={index} className='shadow shadow-lg--hover pt-4 pb-4 mb-3 mt-3'>
                                 <CardBody>
                                     <div>
-                                        <h4 className='display-4 mb-0 card-head-text'>
+                                        <h4 className='mb-0 card-head-text'>
                                             {index + 1 + '. ' + item.name}
                                         </h4>
 
                                         <p className='mb-0 pb-0'>
-                                            <strong className='mb-0 pb-0'>
-                                                {item.address}, {item.city} {item.state}, {item.zip}
-                                            </strong>
                                             {item.dist !== null && item.dist !== undefined && (
                                                 <>
-                                                    <br />
-                                                    <small className='text-danger pt-0 mt-0'>
-                                                        {item.dist.toFixed(2)} mi.
-                                                    </small>
+                                                    <strong className='text-danger pt-0 mt-0'>
+                                                        {item.dist.toFixed(2)} mi away
+                                                    </strong>
+                                                    &middot;
                                                 </>
                                             )}
+                                            <strong>
+                                                {item.address}
+                                            </strong>
                                         </p>
                                         <p className='mb-0 pb-0'>
                                             <strong className='pt-0 mt-0'>Ph:</strong> {item.phone}
@@ -153,19 +153,7 @@ class CardList extends React.Component {
                                             item.description !== '' && (
                                                 <>
                                                     <hr />
-                                                    <Button color='danger' id={'vm-' + index} size='sm'>
-                                                        View Message
-                                                    </Button>
-                                                    <span>from {item.name}</span>
-
-                                                    <UncontrolledPopover
-                                                        trigger='focus'
-                                                        placement='top'
-                                                        target={'vm-' + index}
-                                                    >
-                                                        <PopoverHeader>View message</PopoverHeader>
-                                                        <PopoverBody>{item.description}</PopoverBody>
-                                                    </UncontrolledPopover>
+                                                    {item.description}
                                                 </>
                                             )}
                                     </div>
