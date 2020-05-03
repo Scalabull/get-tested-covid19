@@ -5,6 +5,7 @@ const db = require('../db/models')
 
 router.post(
   '/add',
+  auth,
   [
     body('email').isEmail().withMessage('Email must be valid'),
     body('password')
