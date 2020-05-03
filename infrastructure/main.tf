@@ -242,6 +242,15 @@ resource "aws_ssm_parameter" "DB_NAME" {
   tags = local.common_tags
 }
 
+resource "aws_ssm_parameter" "GOOGLE_GEOCODING_KEY" {
+  name        = "/${var.environment}/GOOGLE_GEOCODING_KEY"
+  description = "${var.environment} GOOGLE_GEOCODING_KEY"
+  type        = "String"
+  value       = var.google_geocoding_key
+
+  tags = local.common_tags
+}
+
 output "rds_cluster_endpoint" {
   value = module.db.this_rds_cluster_endpoint
   sensitive   = true  

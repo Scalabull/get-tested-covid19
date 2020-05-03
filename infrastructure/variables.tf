@@ -21,3 +21,9 @@ variable "vpc_cidr" {
   description = "CIDR to use for VPC"
   default     = "10.200.0.0/21"
 }
+
+variable "google_geocoding_key" {
+  type        = string
+  description = "Geocoding key for Google"
+  default     = "REPLACE_ME"
+}
