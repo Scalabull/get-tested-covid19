@@ -1,4 +1,5 @@
 'use strict'
+
 module.exports = (sequelize, DataTypes) => {
   const TestCenterStaging = sequelize.define(
     'TestCenterStaging',
@@ -40,8 +41,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   )
+  
   TestCenterStaging.associate = function (models) {
-    // associations can be defined here
+    TestCenterStaging.hasOne(models.VerifiedTestCenter);
+    TestCenterStaging.hasOne(models.UnverifiedTestCenter);
   }
 
   const updateGeolocation = async (testCenterStaging) => {
