@@ -5,7 +5,7 @@ services:
       context: ./
       dockerfile: ./docker/APIDockerfile
     environment:
-      - NODE_ENV=staging
+      - NODE_ENV=development
       - API_PORT=5000
       - API_AUTH_ROUTE=auth
       - API_INTERNAL_ROUTE=internal
@@ -19,6 +19,8 @@ services:
       - db
     ports:
       - "5000:5000"
+    volumes:
+      - ./src:/src
   db:
     image: mdillon/postgis
     environment:

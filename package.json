@@ -24,8 +24,8 @@
     "author": "Zach Boldyga",
     "license": "MIT",
     "homepage": "https://get-tested-covid19.org",
-    "engines" : { 
-        "node" : ">=12.0.0" 
+    "engines": {
+        "node": ">=12.0.0"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -54,6 +54,7 @@
         "not op_mini all"
     ],
     "dependencies": {
+        "axios": "^0.19.2",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
         "bootstrap": "4.3.1",
