@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import 'normalize.css/normalize.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 // To delete

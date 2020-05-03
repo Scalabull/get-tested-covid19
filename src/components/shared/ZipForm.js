@@ -105,7 +105,7 @@ class ZipForm extends React.Component {
         }
     }
 
-    locateUser(scrollTo = false) {
+    locateUser = () => {
         let geocoder = new this.props.google.maps.Geocoder();
         
         tryGeolocation(geocoder, (err, pos, postalCode) => {
@@ -146,11 +146,11 @@ class ZipForm extends React.Component {
                         <Button className='search-button' type='submit' color='info'>
                             Search
                         </Button>
+                        <Button onClick={this.locateUser}>
+                          Locate
+                        </Button>
                     </Row>
                 </FormGroup>
-                <div type="button" className='text-white mt-2' onClick={() => this.locateUser(true)}>
-                    Use my current location
-                </div>
             </Form>
         );
     }
