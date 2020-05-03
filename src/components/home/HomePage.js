@@ -7,7 +7,7 @@ class HomePage extends React.Component {
     render() {
         return (
           <>
-            <NavHeader />
+            <NavHeader hideSearch />
             <HomeHero />
           </>
         );

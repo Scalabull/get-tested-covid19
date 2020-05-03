@@ -9,43 +9,52 @@ import Vector from '../../assets/img/icons/map/Vector.png'
 import { Row, Col } from 'reactstrap';
 import { ShareButton } from '../../views/HowTestWorks/sharedStyles'
 import { GoogleApiWrapper } from 'google-maps-react';
+import NavHeader from '../shared/NavHeader.js';
+import ResultsListCards from './ResultsListCards';
 
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
 
-function copyUrl(zip) {
-    const dummy = document.createElement('input'),
-        text = `https://get-tested-covid19.org?zip=${zip}`;
+const StyledResultsPage = styled.div`
+  display: flex;
 
-    document.body.appendChild(dummy);
-    dummy.value = text;
-    dummy.select();
-    document.execCommand('copy');
-    document.body.removeChild(dummy)
-    document.getElementById('popup').style.visibility = 'visible'
-    const strCmd = "document.getElementById('popup').style.visibility = 'hidden'";
-    setTimeout(strCmd, 1500);
-}
+  .results__list {
+    max-width: 550px;
+    width: 100%;
 
-function codeAddress(zip, geocoder, callback) {
-    geocoder.geocode({ 'address': zip }, function (results, status) {
-        if (status === 'OK') {
-            callback(null, results[0].geometry.location);
-        }
-        else {
-            callback(status, null);
-        }
-    });
-}
+    @media screen and (max-width: ${props => props.theme.bpSmall}) {
+      max-width: none;
+    }
+  }
 
-const getQueryStringValue = (key, queryString = window.location.search) => {
-    const values = qs.parse(queryString);
-    return values[key];
-};
+  .results__map {
+    width: 100%;
+    position: fixed;
+    top: 70px;
+    bottom: 0;
+    right: 0;
+    left: 550px;
 
-function isNumeric(s) {
-    return !isNaN(s - parseFloat(s));
-}
+    .map {
+      width: 100%;
+      height: 100%;
+    }
+
+    @media screen and (max-width: ${props => props.theme.bpSmall}) {
+      display: none;
+    }
+  }
+
+  .results__list-header {
+    padding: 15px;
+
+    h2 {
+      font-family ${props => props.theme.fontSans};
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+`
 
 class ResultsPage extends React.Component {
     constructor(props) {
@@ -177,30 +186,28 @@ class ResultsPage extends React.Component {
 
         return (
             <>
-                <Col className='order-lg-1 pt-4' lg='7'>
-                    <Row className='pl-4'>
-                        <Col lg='9'>
-                            <p>
-                                {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
-                            </p>
-                        </Col>
-                        <Col lg='3'>
-                            <ShareButton onClick={() => copyUrl(this.state.searchZip)}>Share results <img src={Vector} alt='Vector' />
-                                <span id='popup'>Search results have been copied to clipboard</span>
-                            </ShareButton>
-                        </Col>
-                    </Row>
-                    <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
-                </Col>
-                <Col className='order-lg-2' lg='5'>
-                    <TestSiteMap
-                        style={{ width: '100vw' }}
-                        items={viewItems}
-                        totalCount={this.state.items.length}
-                        zipLatLng={this.state.zipLatLng}
-                        searchZip={this.state.searchZip}
-                    />
-                </Col>
+              <NavHeader />
+              <StyledResultsPage>
+                <div className="results__list">
+                  <div className="results__list-header">
+                    <h2>{this.state.items.length} test centers within 40 miles of "{this.state.searchZip}"</h2>
+                    {/* <ShareButton onClick={() => copyUrl(this.state.searchZip)}>Share results <img src={Vector} alt='Vector' />
+                        <span id='popup'>Search results have been copied to clipboard</span>
+                    </ShareButton> */}
+                  </div>
+                  <div className="results__list-cards">
+                    <ResultsListCards items={viewItems} />
+                  </div>
+                </div>
+                <div className="results__map">
+                  <TestSiteMap
+                      items={viewItems}
+                      totalCount={this.state.items.length}
+                      zipLatLng={this.state.zipLatLng}
+                      searchZip={this.state.searchZip}
+                  />
+                </div>
+              </StyledResultsPage>
             </>
         )
     }
@@ -219,3 +226,37 @@ animation:spin 2s linear infinite;
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'
 })(ResultsPage);
+
+function copyUrl(zip) {
+    const dummy = document.createElement('input'),
+        text = `https://get-tested-covid19.org?zip=${zip}`;
+
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy)
+    document.getElementById('popup').style.visibility = 'visible'
+    const strCmd = "document.getElementById('popup').style.visibility = 'hidden'";
+    setTimeout(strCmd, 1500);
+}
+
+function codeAddress(zip, geocoder, callback) {
+    geocoder.geocode({ 'address': zip }, function (results, status) {
+        if (status === 'OK') {
+            callback(null, results[0].geometry.location);
+        }
+        else {
+            callback(status, null);
+        }
+    });
+}
+
+const getQueryStringValue = (key, queryString = window.location.search) => {
+    const values = qs.parse(queryString);
+    return values[key];
+};
+
+function isNumeric(s) {
+    return !isNaN(s - parseFloat(s));
+}

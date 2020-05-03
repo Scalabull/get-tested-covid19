@@ -195,7 +195,7 @@ const StyledNavHeader = styled.header`
   }
 
   .header__left {
-    @media screen and (max-width: 576px) {
+    @media screen and (max-width: ${props => props.theme.bpSmall}) {
       width: 100%;
 
       .header__search {
@@ -211,15 +211,17 @@ const NavHeader = (props) => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <StyledNavHeader>
+    <StyledNavHeader className="sticky-top">
       <Navbar color="light" light expand="lg">
         <div className="header__left d-flex flex-column align-items-start align-items-sm-center flex-sm-row">
           <NavbarBrand href="/">
             <img className="header__logo" alt='Get Tested Covid Logo' src={require('assets/img/brand/GetTestedCovid19Finallogocolorfinal.png')} />
           </NavbarBrand>
-          <div className="header__search">
-            <ZipForm />
-          </div>
+          {!props.hideSearch && (
+            <div className="header__search">
+              <ZipForm />
+            </div>
+          )}
         </div>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

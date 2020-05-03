@@ -8,12 +8,11 @@ const StyledHomeHero = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 500px;
+  height: 400px;
 
   h1 {
       margin-bottom: 30px;
   }
-
 `
 
 class HomeHero extends React.Component {

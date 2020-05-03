@@ -32,6 +32,7 @@ const theme = {
   colorPrimary: colors.colorRed,
   fontSerif: `'Playfair Display', serif`,
   fontSans: `'Libre Franklin', serif`,
+  bpSmall: '576px'
 }
 
 // For CSS styling shared across different components
