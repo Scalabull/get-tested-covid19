@@ -7,5 +7,6 @@ router.use(
   require('./internal/testCenterStagingRoutes')
 )
 router.use('/user-searches', require('./internal/userSearchesRoutes'))
+router.use('/verified-test-centers', require('./internal/verifiedTestCenterRoutes'))
 
 module.exports = router
