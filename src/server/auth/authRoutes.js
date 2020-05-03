@@ -26,7 +26,7 @@ router.post(
         return res.status(400).send()
       }
 
-      const user = await db.User.create({ email, password })
+      const user = await db.User.build({ email, password })
       await user.save()
       res.status(201).send({ message: 'success' })
     } catch (error) {
