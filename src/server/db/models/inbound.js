@@ -1,11 +1,11 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Inbound = sequelize.define('Inbound', {
-    full_address: DataTypes.STRING,
-    name: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    url: DataTypes.STRING,
-    description: DataTypes.STRING
+    full_address: DataTypes.TEXT,
+    name: DataTypes.TEXT,
+    phone: DataTypes.TEXT,
+    url: DataTypes.TEXT,
+    description: DataTypes.TEXT
   }, {});
   Inbound.associate = function(models) {
     // associations can be defined here

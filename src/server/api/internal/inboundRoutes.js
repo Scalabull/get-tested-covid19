@@ -13,7 +13,8 @@ router.post('/', async (req, res) => {
       return res.status(400).send('scrapedRows must be an array with at least one object.');
     }
 
-    db.Inbound.bulkCreate(scrapedRows)
+    await db.Inbound.bulkCreate([{full_address: "abc 123"}]);
+
     res.status(201).send()
   } catch (error) {
     res.status(500).send()
@@ -23,17 +24,29 @@ router.post('/', async (req, res) => {
 router.get('/fresh', async (req, res) => {
   try {
     const { since } = req.query;
+    const sinceTs = parseInt(since);
 
-    if (!TS_RE.test(since)){
+    if (!TS_RE.test(since) && !isNaN(sinceTs)){
       return res.status(400).send('Bad timestamp.');
     }
 
-    let freshRows = db.Inbound.findAll({
-      createdAt: {
-        [Op.gt]: new Date(since)
+    let freshRows = await db.Inbound.findAll({
+      where: {
+        createdAt: {
+          [Op.gt]: new Date(sinceTs)
+        }
       }
     });
     res.status(200).json(freshRows)
+  } catch (error) {
+    res.status(500).send()
+  }
+})
+
+router.get('/', async (req, res) => {
+  try {
+    let scrapedRows = await db.Inbound.findAll({});
+    res.status(200).json(scrapedRows);
   } catch (error) {
     res.status(500).send()
   }
