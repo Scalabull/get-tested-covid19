@@ -55,6 +55,10 @@
       {
         "name": "DB_NAME",
         "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/database/DB_NAME"
+      },
+      {
+        "name": "GOOGLE_GEOCODING_KEY",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/master/GOOGLE_GEOCODING_KEY"
       }
     ]
   }
