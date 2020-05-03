@@ -14,7 +14,7 @@ class HomeHero extends React.Component {
     render() {
         return (
             <StyledHomeHero>
-              <h4 className='display-3 text-white'>Find a COVID-19 community-test center near you.</h4>
+              <h4 className='display-3 text-white'>Find a nearby COVID-19 test center</h4>
               <ZipForm />
             </StyledHomeHero>
         );

@@ -83,15 +83,7 @@ class ZipForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.searchZip !== nextProps.searchZip) {
-            this.setState({
-                value: nextProps.searchZip,
-            });
-        }
-    }
-
+    
     handleChange(event) {
         let updateVal = event.target.value;
         if (updateVal === '' || isNumeric(updateVal)) {
@@ -118,12 +110,10 @@ class ZipForm extends React.Component {
         
         tryGeolocation(geocoder, (err, pos, postalCode) => {
             if (err) {
-                this.setDefaultZip();
+                //this.setDefaultZip();
+                // Add error state
             } else {
-                this.setDefaultZip(postalCode);
-                if (scrollTo && this.scrollRef) {
-                    window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
-                }
+                this.props.history.push(`/search?zip=${postalCode}`);
             }
         });
     }
@@ -139,8 +129,8 @@ class ZipForm extends React.Component {
                     <Row form>
                         <Input
                             className='mr-0 pr-12 search-input form-control form-control-lg'
-                            title='Enter Zip Code (5 digit)'
-                            placeholder='Enter Zip Code (5 digit)'
+                            title='Enter zip code'
+                            placeholder='Enter zip code'
                             type='text'
                             maxLength='5'
                             autoFocus

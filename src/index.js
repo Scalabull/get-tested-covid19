@@ -42,7 +42,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Switch>
         <Route path="/" exact render={props => <HomePage {...props} />} />
-        <Route path="/results" exact render={props => <ResultsPage {...props} />} />
+        <Route path="/search" exact render={props => <ResultsPage {...props} />} />
         <Route path="/old/home" exact render={props => <TestSiteSearch {...props} />} />
         <Route
           path="/old/resources"
