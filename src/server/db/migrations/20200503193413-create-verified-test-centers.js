@@ -15,9 +15,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      location: {
-        type: Sequelize.TEXT,
-      },
       address: {
         type: Sequelize.STRING,
       },
@@ -116,6 +113,10 @@ module.exports = {
       },
       latest_verification_by: {
         type: Sequelize.STRING,
+        allowNull: false
+      },
+      latest_verification_at: {
+        type: Sequelize.DATE,
         allowNull: false
       },
       flagged_as_duplicate: {

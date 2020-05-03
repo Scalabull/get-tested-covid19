@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       public: DataTypes.BOOLEAN,
       name: DataTypes.STRING,
-      location: DataTypes.TEXT,
       address: DataTypes.STRING,
       city: DataTypes.STRING,
       state: DataTypes.STRING,
@@ -29,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
       latest_verification_by: DataTypes.STRING,
+      latest_verification_at: DataTypes.DATE,
       flagged_as_duplicate: DataTypes.BOOLEAN,
       test_result_turnaround_time: DataTypes.STRING,
       is_designated_covid_facility: DataTypes.BOOLEAN,
