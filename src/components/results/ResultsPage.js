@@ -60,8 +60,6 @@ class ResultsPage extends React.Component {
     constructor(props) {
         super(props);
         let zip = getQueryStringValue('zip') || '';
-        this.scrollRef = React.createRef();
-
         this.state = {
             initialItems: [],
             items: [],
@@ -70,13 +68,7 @@ class ResultsPage extends React.Component {
             zipLatLng: null,
             isFetching: true,
         };
-
         this.filterList = this.filterList.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
-
-    onSubmit(zipStr) {
-        this.filterList(zipStr + "");
     }
 
     filterList(searchZipStr) {
@@ -127,6 +119,17 @@ class ResultsPage extends React.Component {
                 });
             }
         }
+    }
+
+    componentDidUpdate() {
+      // When zip value changes, then update results
+      if (getQueryStringValue('zip') !== this.state.searchZip) {
+        // TODO: Update this so that whenever filterList is called, it also updates the zip code
+        this.setState({
+          searchZip: getQueryStringValue('zip')
+        });
+        this.filterList(getQueryStringValue('zip'));
+      }
     }
 
     componentDidMount() {

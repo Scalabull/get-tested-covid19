@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { GoogleApiWrapper } from 'google-maps-react';
-
+import qs from 'query-string';
 import {
     Button,
     Form,
@@ -80,7 +80,8 @@ function returnPostalCode(geocoderResult) {
 class ZipForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: props.searchZip || '' };
+        console.log(props.location.search);
+        this.state = { value: getQueryStringValue('zip') || '' };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -164,3 +165,8 @@ class ZipForm extends React.Component {
 export default withRouter(GoogleApiWrapper({
     apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'
 })(ZipForm));
+
+const getQueryStringValue = (key, queryString = window.location.search) => {
+    const values = qs.parse(queryString);
+    return values[key];
+};
