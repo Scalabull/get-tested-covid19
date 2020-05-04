@@ -9,7 +9,7 @@ import { ShareButton } from '../../views/HowTestWorks/sharedStyles'
 import { GoogleApiWrapper } from 'google-maps-react';
 import NavHeader from '../shared/NavHeader.js';
 import ResultsListCards from './ResultsListCards';
-import { Button } from 'reactstrap';
+import { Spinner } from 'reactstrap';
 import DocumentMeta from 'react-document-meta';
 
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
@@ -54,6 +54,17 @@ const StyledResultsPage = styled.div`
       font-weight: 600;
       margin-bottom: 0;
     }
+  }
+
+  .results__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
   }
 `
 
@@ -186,16 +197,6 @@ class ResultsPage extends React.Component {
           }
         }
       };
-      
-      if (this.state.isFetching) {
-          return (
-              <Col className='order-lg-1 text-center mb-9 mt-9 display-2' lg='12'>
-                  <RotateAnimation>
-                      <i className="fa fa-circle-o-notch" />
-                  </RotateAnimation>
-              </Col>
-          );
-      }
 
       const viewItems = this.state.items.slice(0, 10);
 
@@ -203,25 +204,34 @@ class ResultsPage extends React.Component {
           <DocumentMeta {...meta}>
             <NavHeader />
             <StyledResultsPage>
-              <div className="results__list">
-                <div className="results__list-header">
-                  <h2>{this.state.items.length} test centers within 40 miles of {this.state.searchZip}</h2>
-                  <ShareButton onClick={() => copyUrl(this.state.searchZip)}>Share results
-                      <span id='popup'>Search results have been copied to clipboard</span>
-                  </ShareButton>
+              {this.state.isFetching && (
+                <div className="results__loading">
+                  <Spinner color="secondary" />
                 </div>
-                <div className="results__list-cards">
-                  <ResultsListCards items={viewItems} />
-                </div>
-              </div>
-              <div className="results__map">
-                <TestSiteMap
-                    items={viewItems}
-                    totalCount={this.state.items.length}
-                    zipLatLng={this.state.zipLatLng}
-                    searchZip={this.state.searchZip}
-                />
-              </div>
+              )}
+              {!this.state.isFetching && (
+                <>
+                  <div className="results__list">
+                    <div className="results__list-header">
+                      <h2>{this.state.items.length} test centers within 40 miles of {this.state.searchZip}</h2>
+                      <ShareButton onClick={() => copyUrl(this.state.searchZip)}>Share results
+                          <span id='popup'>Search results have been copied to clipboard</span>
+                      </ShareButton>
+                    </div>
+                    <div className="results__list-cards">
+                      <ResultsListCards items={viewItems} />
+                    </div>
+                  </div>
+                  <div className="results__map">
+                    <TestSiteMap
+                        items={viewItems}
+                        totalCount={this.state.items.length}
+                        zipLatLng={this.state.zipLatLng}
+                        searchZip={this.state.searchZip}
+                    />
+                  </div>
+                </>
+              )}
             </StyledResultsPage>
           </DocumentMeta>
       )
