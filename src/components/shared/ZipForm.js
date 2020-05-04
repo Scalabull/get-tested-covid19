@@ -151,7 +151,7 @@ class ZipForm extends React.Component {
                             onChange={this.handleChange}
                         />
                         <InputGroupAddon addonType="append">
-                          <Button type='submit' color='info'>
+                          <Button type='submit' color="primary">
                               Search
                           </Button>
                         </InputGroupAddon>

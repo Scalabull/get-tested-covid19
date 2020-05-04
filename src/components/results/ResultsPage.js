@@ -4,8 +4,7 @@ import styled from 'styled-components'
 import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
 import qs from 'query-string';
-import { Col } from 'reactstrap';
-import { ShareButton } from '../../views/HowTestWorks/sharedStyles'
+import { Col, Button, Tooltip } from 'reactstrap';
 import { GoogleApiWrapper } from 'google-maps-react';
 import NavHeader from '../shared/NavHeader.js';
 import ResultsListCards from './ResultsListCards';
@@ -47,6 +46,9 @@ const StyledResultsPage = styled.div`
 
   .results__list-header {
     padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     h2 {
       font-family ${props => props.theme.fontSans};
@@ -79,6 +81,7 @@ class ResultsPage extends React.Component {
             defaultZip: zip || '10001',
             zipLatLng: null,
             isFetching: true,
+            isShareTooltipOpen: false
         };
         this.filterList = this.filterList.bind(this);
     }
@@ -141,6 +144,8 @@ class ResultsPage extends React.Component {
           searchZip: getQueryStringValue('zip')
         });
         this.filterList(getQueryStringValue('zip'));
+        // Scroll to top of page
+        window.scrollTo({ top: 0, behavior: 'smooth' })
       }
     }
 
@@ -186,6 +191,25 @@ class ResultsPage extends React.Component {
         });
     }
 
+    copyUrl = zip => {
+        const dummyInput = document.createElement('input');
+        const url = `https://gettestedcovid.org/search?zip=${zip}`;
+        document.body.appendChild(dummyInput);
+        dummyInput.value = url;
+        dummyInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummyInput);
+        this.setState({
+          isShareTooltipOpen: true
+        }, () => {
+          setTimeout(() => {
+            this.setState({
+              isShareTooltipOpen: false
+            })
+          }, 3000)
+        })
+    }
+
     render() {
       const meta = {
         title: `COVID-19 test centers near ${this.state.searchZip} | Get Tested COVID-19`,
@@ -206,7 +230,7 @@ class ResultsPage extends React.Component {
             <StyledResultsPage>
               {this.state.isFetching && (
                 <div className="results__loading">
-                  <Spinner color="secondary" />
+                  <Spinner color="primary" />
                 </div>
               )}
               {!this.state.isFetching && (
@@ -214,9 +238,14 @@ class ResultsPage extends React.Component {
                   <div className="results__list">
                     <div className="results__list-header">
                       <h2>{this.state.items.length} test centers within 40 miles of {this.state.searchZip}</h2>
-                      <ShareButton onClick={() => copyUrl(this.state.searchZip)}>Share results
-                          <span id='popup'>Search results have been copied to clipboard</span>
-                      </ShareButton>
+                      <Button id="tooltip-share" outline size="sm" onClick={() => this.copyUrl(this.state.searchZip)}>Share</Button>
+                      <Tooltip
+                        placement="top"
+                        isOpen={this.state.isShareTooltipOpen}
+                        target="tooltip-share"
+                      >
+                        Results URL copied to clipboard
+                      </Tooltip>
                     </div>
                     <div className="results__list-cards">
                       <ResultsListCards items={viewItems} />
@@ -251,20 +280,6 @@ animation:spin 2s linear infinite;
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'
 })(ResultsPage);
-
-function copyUrl(zip) {
-    const dummy = document.createElement('input'),
-        text = `https://get-tested-covid19.org?zip=${zip}`;
-
-    document.body.appendChild(dummy);
-    dummy.value = text;
-    dummy.select();
-    document.execCommand('copy');
-    document.body.removeChild(dummy)
-    document.getElementById('popup').style.visibility = 'visible'
-    const strCmd = "document.getElementById('popup').style.visibility = 'hidden'";
-    setTimeout(strCmd, 1500);
-}
 
 function codeAddress(zip, geocoder, callback) {
     geocoder.geocode({ 'address': zip }, function (results, status) {

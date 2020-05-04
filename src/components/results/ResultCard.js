@@ -45,9 +45,9 @@ class ResultCard extends React.Component {
         <StyledResultCard>
           <h3>{this.props.index + 1}. {name}</h3>
           <div className="card__req">
-            {docScreen === "No" && appReq === "No" && <span class="badge badge-success">No requirements for testing</span>}
+            {docScreen === "No" && appReq === "No" && <span class="badge badge-success">Walk-in testing</span>}
             {(docScreen !== "No" || appReq !== "No") && (
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                 {(docScreen === "Yes" && appReq === "No") && "Doctor's screening "}
                 {(docScreen === "Yes" && appReq === "Yes") && "Doctor's screening and appointment "}
                 {(docScreen === "No" && appReq === "Yes") && "Appointment "}

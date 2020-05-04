@@ -23,13 +23,15 @@ import ResultsPage from './components/results/ResultsPage.js';
 
 // Colors
 const colors = {
-  colorRed: 'red'
+  colorRed: 'red',
+  colorPurple: '#4046BB',
+  colorPurpleDarker: '#202028'
 }
 
 // Shared CSS theme variables
 const theme = {
   ...colors,
-  colorPrimary: colors.colorRed,
+  colorPrimary: colors.colorPurple,
   fontSerif: `'Playfair Display', serif`,
   fontSans: `'Libre Franklin', serif`,
   bpSmall: '576px'
@@ -45,6 +47,26 @@ const GlobalStyle = createGlobalStyle`
   
   h1, h2, h3, h4 {
     font-family: ${props => props.theme.fontSerif};
+  }
+
+  .btn-primary {
+    background-color: ${props => props.theme.colorPrimary};
+    border-color: ${props => props.theme.colorPrimary};
+
+    &:hover {
+      background-color: ${props => props.theme.colorPurpleDarker};
+      border-color: ${props => props.theme.colorPurpleDarker};
+    }
+  }
+
+  .btn-outline-primary {
+    border-color: ${props => props.theme.colorPrimary};
+    color: ${props => props.theme.colorPrimary};
+
+    &:hover {
+      background-color: ${props => props.theme.colorPrimary};
+      border-color: ${props => props.theme.colorPrimary};
+    }
   }
 `
 
