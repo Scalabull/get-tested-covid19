@@ -26,7 +26,7 @@ module.exports = {
     operatorsAliases: 0,
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
   },
   staging: {
@@ -37,7 +37,7 @@ module.exports = {
     dialect: 'postgres',
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
     logging: false,
   },
@@ -54,7 +54,7 @@ module.exports = {
     },
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
     logging: false,
   },
