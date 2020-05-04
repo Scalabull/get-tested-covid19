@@ -12,6 +12,7 @@ const StyledResultCard = styled.div`
 
   h3 {
     font-size: 1.5rem;
+    margin-top: -5px;
   }
 
   p {
@@ -24,11 +25,11 @@ const StyledResultCard = styled.div`
   }
 
   .card__actions {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
   .card__abilities {
-    margin-top: 7px;
+    margin-top: 5px;
     font-weight: 500;
 
     .fa {
@@ -59,9 +60,6 @@ class ResultCard extends React.Component {
               </span>
             )}
           </div>
-          <p className="card__meta text-secondary">
-            {address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
-          </p>
           <p className="card__descr">
             <ReadMore lines={2}>
                 {description}
@@ -74,6 +72,9 @@ class ResultCard extends React.Component {
             {driveThru === 'Yes' && (
               <span><i className="fa fa-automobile" />Drive through testing</span>
             )}
+          </p>
+          <p className="card__meta text-secondary">
+            {address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
           </p>
           <div className="card__actions">
             <ButtonGroup size="sm">

@@ -4,12 +4,12 @@ import styled from 'styled-components'
 import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
 import qs from 'query-string';
-import { Col, Button, Tooltip } from 'reactstrap';
 import { GoogleApiWrapper } from 'google-maps-react';
 import NavHeader from '../shared/NavHeader.js';
 import ResultsListCards from './ResultsListCards';
 import { Spinner } from 'reactstrap';
 import DocumentMeta from 'react-document-meta';
+import ShareBtn from '../shared/ShareBtn.js';
 
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
@@ -192,25 +192,6 @@ class ResultsPage extends React.Component {
         });
     }
 
-    copyUrl = zip => {
-        const dummyInput = document.createElement('input');
-        const url = window.location.href;
-        document.body.appendChild(dummyInput);
-        dummyInput.value = url;
-        dummyInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(dummyInput);
-        this.setState({
-          isShareTooltipOpen: true
-        }, () => {
-          setTimeout(() => {
-            this.setState({
-              isShareTooltipOpen: false
-            })
-          }, 3000)
-        })
-    }
-
     render() {
       const meta = {
         title: `COVID-19 test centers near ${this.state.searchZip} | Get Tested COVID-19`,
@@ -239,14 +220,7 @@ class ResultsPage extends React.Component {
                   <div className="results__list">
                     <div className="results__list-header">
                       <h2>{this.state.items.length} results within 40 miles of {this.state.searchZip}</h2>
-                      <Button id="tooltip-share" outline size="sm" onClick={() => this.copyUrl(this.state.searchZip)}><i className="fa fa-share" /> Share</Button>
-                      <Tooltip
-                        placement="top"
-                        isOpen={this.state.isShareTooltipOpen}
-                        target="tooltip-share"
-                      >
-                        Results URL copied to clipboard
-                      </Tooltip>
+                      <ShareBtn />
                     </div>
                     <div className="results__list-cards">
                       <ResultsListCards items={viewItems} />
