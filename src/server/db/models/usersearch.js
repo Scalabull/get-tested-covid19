@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const UserSearches = sequelize.define('UserSearches', {
+  const UserSearch = sequelize.define('UserSearch', {
     zip_code: DataTypes.STRING,
     latitude: DataTypes.DECIMAL(9,6),
     longitude: DataTypes.DECIMAL(9,6),
@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     user_ip: DataTypes.STRING,
     search_timestamp: DataTypes.DATE
   }, {});
-  UserSearches.associate = function(models) {
+  UserSearch.associate = function(models) {
     // associations can be defined here
   };
-  return UserSearches;
+  return UserSearch;
 };
