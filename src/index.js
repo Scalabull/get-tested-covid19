@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 // To delete
 // import "assets/vendor/nucleo/css/nucleo.css";
-// import "assets/vendor/font-awesome/css/font-awesome.min.css";
+import "assets/vendor/font-awesome/css/font-awesome.min.css";
 // import "assets/scss/argon-design-system-react.scss?v1.1.0";
 
 import TestSiteSearch from "views/TestSiteSearch.js";
@@ -66,6 +66,13 @@ const GlobalStyle = createGlobalStyle`
     &:hover {
       background-color: ${props => props.theme.colorPrimary};
       border-color: ${props => props.theme.colorPrimary};
+    }
+  }
+
+  .form-control-lg + .input-group-append {
+    .btn {
+      padding: 0.375rem 1.25rem;
+      font-size: 1.2rem;
     }
   }
 `

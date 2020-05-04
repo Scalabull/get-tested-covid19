@@ -152,7 +152,7 @@ class ZipForm extends React.Component {
                         />
                         <InputGroupAddon addonType="append">
                           <Button type='submit' color="primary">
-                              Search
+                              <i className="fa fa-search" />
                           </Button>
                         </InputGroupAddon>
                     </InputGroup>

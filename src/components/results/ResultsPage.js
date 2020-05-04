@@ -55,6 +55,7 @@ const StyledResultsPage = styled.div`
       font-size: 16px;
       font-weight: 600;
       margin-bottom: 0;
+      margin-right: 1rem;
     }
   }
 
@@ -193,7 +194,7 @@ class ResultsPage extends React.Component {
 
     copyUrl = zip => {
         const dummyInput = document.createElement('input');
-        const url = `https://gettestedcovid.org/search?zip=${zip}`;
+        const url = window.location.href;
         document.body.appendChild(dummyInput);
         dummyInput.value = url;
         dummyInput.select();
@@ -237,8 +238,8 @@ class ResultsPage extends React.Component {
                 <>
                   <div className="results__list">
                     <div className="results__list-header">
-                      <h2>{this.state.items.length} test centers within 40 miles of {this.state.searchZip}</h2>
-                      <Button id="tooltip-share" outline size="sm" onClick={() => this.copyUrl(this.state.searchZip)}>Share</Button>
+                      <h2>{this.state.items.length} results within 40 miles of {this.state.searchZip}</h2>
+                      <Button id="tooltip-share" outline size="sm" onClick={() => this.copyUrl(this.state.searchZip)}><i className="fa fa-share" /> Share</Button>
                       <Tooltip
                         placement="top"
                         isOpen={this.state.isShareTooltipOpen}

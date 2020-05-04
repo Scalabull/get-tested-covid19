@@ -8,7 +8,7 @@ import { ButtonGroup } from 'reactstrap';
 
 const StyledResultCard = styled.div`
   border-top: 1px solid #eee;
-  padding: 20px;
+  padding: 40px 20px;
 
   h3 {
     font-size: 1.5rem;
@@ -20,7 +20,7 @@ const StyledResultCard = styled.div`
   }
 
   .card__req {
-    margin: -3px 0 5px;
+    margin: 0 0 5px;
   }
 
   .card__actions {
@@ -28,8 +28,12 @@ const StyledResultCard = styled.div`
   }
 
   .card__abilities {
-    margin-top: 10px;
+    margin-top: 7px;
     font-weight: 500;
+
+    .fa {
+      margin-right: 5px;
+    }
   }
 
   .card__ability-icon {
@@ -45,7 +49,7 @@ class ResultCard extends React.Component {
         <StyledResultCard>
           <h3>{this.props.index + 1}. {name}</h3>
           <div className="card__req">
-            {docScreen === "No" && appReq === "No" && <span class="badge badge-success">Walk-in testing</span>}
+            {docScreen === "No" && appReq === "No" && <span class="badge badge-success">No requirements for testing</span>}
             {(docScreen !== "No" || appReq !== "No") && (
               <span className="badge badge-danger">
                 {(docScreen === "Yes" && appReq === "No") && "Doctor's screening "}
@@ -65,10 +69,10 @@ class ResultCard extends React.Component {
           </p>
           <p className="card__abilities">
             {walkUp === 'Yes' && (
-              <span><img className="card__ability-icon" src={iconInFacility} alt="Has in-facility testing"/>In-facility testing</span>
+              <span><i className="fa fa-hospital-o" />In-facility testing</span>
             )}
             {driveThru === 'Yes' && (
-              <span><img className="card__ability-icon" src={iconDrive} alt="Has drive through testing" />Drive through testing</span>
+              <span><i className="fa fa-automobile" />Drive through testing</span>
             )}
           </p>
           <div className="card__actions">
