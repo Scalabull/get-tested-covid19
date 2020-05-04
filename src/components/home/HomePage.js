@@ -18,7 +18,7 @@ class HomePage extends React.Component {
     };
     return (
       <DocumentMeta {...meta}>
-        <NavHeader minimal />
+        <NavHeader minimal hideZipForm />
         <HomeHero />
       </DocumentMeta>
     );

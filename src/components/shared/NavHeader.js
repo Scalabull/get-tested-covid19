@@ -58,12 +58,12 @@ const NavHeader = (props) => {
 
   return (
     <StyledNavHeader className="sticky-top" minimal={props.minimal}>
-      <Navbar light expand="lg">
+      <Navbar light expand="lg" className={`${props.wide ? '' : 'container'}`}>
         <div className="header__left d-flex flex-column align-items-start align-items-sm-center flex-sm-row">
           <NavbarBrand href="/">
             <img className="header__logo" alt='Get Tested Covid Logo' src={require('assets/img/brand/GetTestedCovid19Finallogocolorfinal.png')} />
           </NavbarBrand>
-          {!props.minimal && (
+          {!props.hideZipForm && (
             <div className="header__search">
               <ZipForm />
             </div>

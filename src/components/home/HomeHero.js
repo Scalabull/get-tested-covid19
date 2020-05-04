@@ -12,11 +12,12 @@ const StyledHomeHero = styled.div`
   text-align: center;
 
   h1 {
-      margin-bottom: 15px;
+    margin-bottom: 15px;
   }
 
   p {
-      margin-bottom: 20px;
+    margin-bottom: 20px;
+    font-size: 1.35rem;
   }
 `
 
@@ -24,9 +25,9 @@ class HomeHero extends React.Component {
     render() {
         return (
             <StyledHomeHero className="container">
-              <h1>Find a nearby COVID-19 test center</h1>
-              <p>Search over 5,000 test centers in the United States.</p>
-              <ZipForm large />
+                <h1>Find a nearby COVID-19 test center</h1>
+                <p>Search over 5,000 test centers in the US.</p>
+                <ZipForm large />
             </StyledHomeHero>
         );
     }

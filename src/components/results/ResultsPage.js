@@ -208,7 +208,7 @@ class ResultsPage extends React.Component {
 
       return (
           <DocumentMeta {...meta}>
-            <NavHeader />
+            <NavHeader wide />
             <StyledResultsPage>
               {this.state.isFetching && (
                 <div className="results__loading">

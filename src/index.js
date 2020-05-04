@@ -20,6 +20,7 @@ import WhenShouldYouGetTested from "views/WhenShouldYouGetTested.js";
 import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
+import AboutPage from './components/content/AboutPage.js';
 
 // Colors
 const colors = {
@@ -75,6 +76,10 @@ const GlobalStyle = createGlobalStyle`
       font-size: 1.2rem;
     }
   }
+
+  .icon-left {
+    margin-right: 3px;
+  }
 `
 
 ReactDOM.render(
@@ -84,6 +89,7 @@ ReactDOM.render(
       <Switch>
         <Route path="/" exact render={props => <HomePage {...props} />} />
         <Route path="/search" exact render={props => <ResultsPage {...props} />} />
+        <Route path="/about" exact render={props => <AboutPage {...props} />} />
         <Route path="/old/home" exact render={props => <TestSiteSearch {...props} />} />
         <Route
           path="/old/resources"

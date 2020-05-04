@@ -15,19 +15,19 @@ const ShareBtn = props => {
       setTooltipOpen(true);
       setTimeout(() => {
         setTooltipOpen(false);
-      }, 3000)
+      }, 2000)
   }
 
   return (
     <>
-      <Button id="tooltip-share" outline size="sm" onClick={copyUrl}><i className="fa fa-share" /> Share</Button>
+      <Button id="tooltip-share" className="d-flex align-items-center" outline size="sm" onClick={copyUrl}><i className="fa fa-share icon-left" /> Share</Button>
       <Tooltip
         placement="top"
         isOpen={tooltipOpen}
         target="tooltip-share"
         fade={false}
       >
-        Results URL copied to clipboard
+        Results link copied
       </Tooltip>
     </>
   )
