@@ -1,16 +1,16 @@
 
 import React from 'react';
 import styled from 'styled-components'
-import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
 import haversine from 'haversine';
 import qs from 'query-string';
-import Vector from '../../assets/img/icons/map/Vector.png'
-import { Row, Col } from 'reactstrap';
+import { Col } from 'reactstrap';
 import { ShareButton } from '../../views/HowTestWorks/sharedStyles'
 import { GoogleApiWrapper } from 'google-maps-react';
 import NavHeader from '../shared/NavHeader.js';
 import ResultsListCards from './ResultsListCards';
+import { Button } from 'reactstrap';
+import DocumentMeta from 'react-document-meta';
 
 // DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
 const DISTANCE_THRESH = 40;
@@ -46,12 +46,13 @@ const StyledResultsPage = styled.div`
   }
 
   .results__list-header {
-    padding: 15px;
+    padding: 20px;
 
     h2 {
       font-family ${props => props.theme.fontSans};
       font-size: 16px;
       font-weight: 600;
+      margin-bottom: 0;
     }
   }
 `
@@ -175,44 +176,55 @@ class ResultsPage extends React.Component {
     }
 
     render() {
-        if (this.state.isFetching) {
-            return (
-                <Col className='order-lg-1 text-center mb-9 mt-9 display-2' lg='12'>
-                    <RotateAnimation>
-                        <i className="fa fa-circle-o-notch" />
-                    </RotateAnimation>
-                </Col>
-            );
+      const meta = {
+        title: `COVID-19 test centers near ${this.state.searchZip} | Get Tested COVID-19`,
+        description: 'Find the closest COVID-19 test center. Make sure to check requirements and double check that your symptoms match those listed by the CDC.',
+        meta: {
+          charset: 'utf-8',
+          name: {
+            keywords: 'COVID-19, testing centers, novel coronavirus'
+          }
         }
+      };
+      
+      if (this.state.isFetching) {
+          return (
+              <Col className='order-lg-1 text-center mb-9 mt-9 display-2' lg='12'>
+                  <RotateAnimation>
+                      <i className="fa fa-circle-o-notch" />
+                  </RotateAnimation>
+              </Col>
+          );
+      }
 
-        const viewItems = this.state.items.slice(0, 10);
+      const viewItems = this.state.items.slice(0, 10);
 
-        return (
-            <>
-              <NavHeader />
-              <StyledResultsPage>
-                <div className="results__list">
-                  <div className="results__list-header">
-                    <h2>{this.state.items.length} test centers within 40 miles of "{this.state.searchZip}"</h2>
-                    {/* <ShareButton onClick={() => copyUrl(this.state.searchZip)}>Share results <img src={Vector} alt='Vector' />
-                        <span id='popup'>Search results have been copied to clipboard</span>
-                    </ShareButton> */}
-                  </div>
-                  <div className="results__list-cards">
-                    <ResultsListCards items={viewItems} />
-                  </div>
+      return (
+          <DocumentMeta {...meta}>
+            <NavHeader />
+            <StyledResultsPage>
+              <div className="results__list">
+                <div className="results__list-header">
+                  <h2>{this.state.items.length} test centers within 40 miles of {this.state.searchZip}</h2>
+                  <ShareButton onClick={() => copyUrl(this.state.searchZip)}>Share results
+                      <span id='popup'>Search results have been copied to clipboard</span>
+                  </ShareButton>
                 </div>
-                <div className="results__map">
-                  <TestSiteMap
-                      items={viewItems}
-                      totalCount={this.state.items.length}
-                      zipLatLng={this.state.zipLatLng}
-                      searchZip={this.state.searchZip}
-                  />
+                <div className="results__list-cards">
+                  <ResultsListCards items={viewItems} />
                 </div>
-              </StyledResultsPage>
-            </>
-        )
+              </div>
+              <div className="results__map">
+                <TestSiteMap
+                    items={viewItems}
+                    totalCount={this.state.items.length}
+                    zipLatLng={this.state.zipLatLng}
+                    searchZip={this.state.searchZip}
+                />
+              </div>
+            </StyledResultsPage>
+          </DocumentMeta>
+      )
     }
 }
 

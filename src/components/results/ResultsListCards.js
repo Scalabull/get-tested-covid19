@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Container, Card, Button, CardBody, UncontrolledPopover, PopoverBody, PopoverHeader } from 'reactstrap';
+import { Card, CardBody} from 'reactstrap';
 import ResultCard from './ResultCard.js';
 
 class ResultsListCards extends React.Component {
