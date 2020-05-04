@@ -66,7 +66,7 @@ router.get('/zip/:zipStr', async (req, res)=>{
       search_timestamp: new Date().getTime()
     };
 
-    await db.UserSearches.create(searchData);
+    await db.UserSearch.create(searchData);
 
   } catch (error) {
     console.error('zip query error: ', error);
@@ -97,7 +97,7 @@ router.get('/searchByUserLatLng', async (req, res)=>{
       search_timestamp: new Date().getTime()
     };
 
-    await db.UserSearches.create(searchData);
+    await db.UserSearch.create(searchData);
     
   } catch (error) {
     console.error('zip query error: ', error);
