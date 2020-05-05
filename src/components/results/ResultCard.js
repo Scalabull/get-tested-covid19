@@ -45,7 +45,7 @@ const StyledResultCard = styled.div`
 
 class ResultCard extends React.Component {
   render() {
-    const { name, address, city, state, zip, phone, link, description, docScreen, appReq, driveThru, walkUp } = this.props.item;
+    const { name, dist, address, city, state, zip, phone, link, description, docScreen, appReq, driveThru, walkUp } = this.props.item;
     return (
         <StyledResultCard>
           <h3>{this.props.index + 1}. {name}</h3>
@@ -74,7 +74,7 @@ class ResultCard extends React.Component {
             )}
           </p>
           <p className="card__meta text-secondary">
-            {address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
+            {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
           </p>
           <div className="card__actions">
             <ButtonGroup size="sm">
