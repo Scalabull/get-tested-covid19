@@ -22,10 +22,30 @@ const StyledResultCard = styled.div`
 
   .card__req {
     margin: 0 0 5px;
+
+    .badge {
+      margin-right: 5px;
+    }
   }
 
   .card__actions {
-    margin-top: 10px;
+    margin-top: 15px;
+  }
+
+  .card__actions-desktop {
+    display: block;
+
+    @media screen and (min-width: ${props => props.theme.bpSmall}) {
+      display: none;
+    }
+  }
+
+  .card__actions-mobile {
+    display: none;
+
+    @media screen and (min-width: ${props => props.theme.bpSmall}) {
+      display: block;
+    }
   }
 
   .card__abilities {
@@ -49,15 +69,16 @@ class ResultCard extends React.Component {
     return (
         <StyledResultCard>
           <h3>{this.props.index + 1}. {name}</h3>
+          <p className="card__meta text-secondary">
+            {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
+          </p>
           <div className="card__req">
-            {docScreen === "No" && appReq === "No" && <span class="badge badge-success">No requirements for testing</span>}
+            {docScreen === "No" && appReq === "No" && <span class="badge badge-success"><i className="fa fa-check icon-right" /> No requirements for testing</span>}
             {(docScreen !== "No" || appReq !== "No") && (
-              <span className="badge badge-danger">
-                {(docScreen === "Yes" && appReq === "No") && "Doctor's screening "}
-                {(docScreen === "Yes" && appReq === "Yes") && "Doctor's screening and appointment "}
-                {(docScreen === "No" && appReq === "Yes") && "Appointment "}
-                required
-              </span>
+              <>
+                {docScreen === "Yes" && <span className="badge badge-danger"><i className="fa fa-user-md icon-right" /> Doctor's screening required</span>}
+                {appReq === "Yes" && <span className="badge badge-danger"><i className="fa fa-calendar icon-right" /> Appointment required</span>}
+              </>
             )}
           </div>
           <p className="card__descr">
@@ -73,15 +94,16 @@ class ResultCard extends React.Component {
               <span><i className="fa fa-automobile" />Drive through testing</span>
             )}
           </p>
-          <p className="card__meta text-secondary">
-            {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
-          </p>
           <div className="card__actions">
-            <ButtonGroup size="sm">
+            <ButtonGroup className="card__actions-desktop" size="sm">
               <a class="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
+              {link !== '' && <a className="btn btn-outline-primary" href={link} target="_blank" rel="noopener noreferrer">Visit website</a>}
               {phone !== '' && (
-                <a className="btn btn-outline-primary" href={`tel: ${phone}`}  target="_blank" rel="noopener noreferrer">Call</a>
+                <a className="btn btn-outline-primary card__call" href={`tel: ${phone}`}  target="_blank" rel="noopener noreferrer">Call</a>
               )}
+            </ButtonGroup>
+            <ButtonGroup className="card__actions-mobile" size="sm">
+              <a class="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
               {link !== '' && <a className="btn btn-outline-primary" href={link} target="_blank" rel="noopener noreferrer">Visit website</a>}
             </ButtonGroup>
           </div>

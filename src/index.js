@@ -44,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
+
   body {
     font-family: ${props => props.theme.fontSans};
     font-weight: 300;
@@ -70,6 +70,13 @@ const GlobalStyle = createGlobalStyle`
 
     &:hover {
       background-color: ${props => props.theme.colorPrimary};
+      border-color: ${props => props.theme.colorPrimary};
+    }
+  }
+  
+  .form-control {
+    &:focus {
+      box-shadow: none;
       border-color: ${props => props.theme.colorPrimary};
     }
   }

@@ -140,7 +140,7 @@ class ZipForm extends React.Component {
                             placeholder='Enter zip code'
                             type='text'
                             maxLength='5'
-                            autoFocus={true}
+                            autoFocus={this.props.autoFocus}
                             onFocus={(e) =>
                                 this.setState({ searchFocused: true })
                             }
