@@ -73,18 +73,18 @@ class NavFooter extends React.Component {
         <div className="container d-flex">
           <div>
             <ul>
-              <li><Link href="/about">Resources</Link></li>
-              <li><Link href="/when-to-get-tested">When To Get Tested</Link></li>
-              <li><Link href="/how-testing-works">How Testing Works</Link></li>
-              <li><Link href="/about">About</Link></li>
+              <li><Link to="/about">Resources</Link></li>
+              <li><Link to="/when-to-get-tested">When To Get Tested</Link></li>
+              <li><Link to="/how-testing-works">How Testing Works</Link></li>
+              <li><a href="https://medium.com/@get_tested_covid19">Blog</a></li>
+              <li><Link to="/about">About</Link></li>
             </ul>
           </div>
           <div className="footer__right">
             <div className="footer__links">
-              <Link href="https://www.instagram.com/gettestedcovid/"><i className="fa fa-instagram" /></Link>
-              <Link href="https://www.facebook.com/GetTestedCOVID19/"><i className="fa fa-facebook" /></Link>
-              <Link href="https://twitter.com/GetTested_COVID"><i className="fa fa-twitter" /></Link>
-              <Link href="https://medium.com/@get_tested_covid19"><i className="fa fa-medium" /></Link>
+              <a href="https://www.instagram.com/gettestedcovid/"><i className="fa fa-instagram" /></a>
+              <a href="https://www.facebook.com/GetTestedCOVID19/"><i className="fa fa-facebook" /></a>
+              <a href="https://twitter.com/GetTested_COVID"><i className="fa fa-twitter" /></a>
             </div>
             &copy; Get Tested COVID-19
           </div>

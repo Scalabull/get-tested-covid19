@@ -29,7 +29,7 @@ const StyledResultCard = styled.div`
   }
 
   .card__actions {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
   .card__actions-desktop {
@@ -69,11 +69,11 @@ class ResultCard extends React.Component {
     return (
         <StyledResultCard>
           <h3>{this.props.index + 1}. {name}</h3>
-          <p className="card__meta text-secondary">
+          {/* <p className="card__meta text-secondary">
             {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
-          </p>
+          </p> */}
           <div className="card__req">
-            {docScreen === "No" && appReq === "No" && <span class="badge badge-success"><i className="fa fa-check icon-right" /> No requirements for testing</span>}
+            {docScreen === "No" && appReq === "No" && <span class="badge badge-success"><i className="fa fa-check icon-right" /> Walk-in testing available</span>}
             {(docScreen !== "No" || appReq !== "No") && (
               <>
                 {docScreen === "Yes" && <span className="badge badge-danger"><i className="fa fa-user-md icon-right" /> Doctor's screening required</span>}
@@ -93,6 +93,9 @@ class ResultCard extends React.Component {
             {driveThru === 'Yes' && (
               <span><i className="fa fa-automobile" />Drive through testing</span>
             )}
+          </p>
+          <p className="card__meta text-secondary">
+            {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
           </p>
           <div className="card__actions">
             <ButtonGroup className="card__actions-desktop" size="sm">

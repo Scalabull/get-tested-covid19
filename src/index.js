@@ -6,11 +6,10 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import 'normalize.css/normalize.css';
 import 'bootstrap/dist/css/bootstrap.css';
-
+import "assets/vendor/font-awesome/css/font-awesome.min.css"; // Need to update to latest version
 
 // To delete
 // import "assets/vendor/nucleo/css/nucleo.css";
-import "assets/vendor/font-awesome/css/font-awesome.min.css";
 // import "assets/scss/argon-design-system-react.scss?v1.1.0";
 
 import TestSiteSearch from "views/TestSiteSearch.js";
@@ -103,17 +102,17 @@ ReactDOM.render(
         <Route path="/about" exact render={props => <AboutPage {...props} />} />
         <Route path="/old/home" exact render={props => <TestSiteSearch {...props} />} />
         <Route
-          path="/old/resources"
+          path="/resources"
           exact
           render={props => <Resources {...props} />}
         />
         <Route
-          path="/old/when-should-you-get-tested"
+          path="/when-should-you-get-tested"
           exact
           render={props => <WhenShouldYouGetTested {...props} />}
         />
         <Route
-          path="/old/how-testing-works"
+          path="/how-testing-works"
           exact
           render={(props) => <HowTestingWorks {...props} />}
         />
