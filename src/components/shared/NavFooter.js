@@ -26,14 +26,33 @@ const StyledNavFooter = styled.div`
       padding: 10px;
       text-transform: uppercase;
       font-size: 12px;
-      color: rgba(255,255,255,0.75);
+      color: #fff;
+      font-weight: 400;
+    }
+  }
+
+  .footer__right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .footer__links {
+    font-size: 1.25rem;
+    color: #fff;
+    margin-right: 1rem;
+
+    a {
+      padding: 5px;
+      color: #fff;
+      margin-left: 3px;
     }
   }
 
   @media screen and (max-width: ${props => props.theme.bpSmall}) {
     text-align: center;
 
-    .container, ul {
+    .container, ul, .footer__right {
       flex-direction: column;
     }
 
@@ -60,7 +79,13 @@ class NavFooter extends React.Component {
               <li><Link href="/about">About</Link></li>
             </ul>
           </div>
-          <div className="footer__copy">
+          <div className="footer__right">
+            <div className="footer__links">
+              <Link href="https://www.instagram.com/gettestedcovid/"><i className="fa fa-instagram" /></Link>
+              <Link href="https://www.facebook.com/GetTestedCOVID19/"><i className="fa fa-facebook" /></Link>
+              <Link href="https://twitter.com/GetTested_COVID"><i className="fa fa-twitter" /></Link>
+              <Link href="https://medium.com/@get_tested_covid19"><i className="fa fa-medium" /></Link>
+            </div>
             &copy; Get Tested COVID-19
           </div>
         </div>

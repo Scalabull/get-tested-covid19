@@ -2,6 +2,7 @@
 import React from 'react';
 import NavHeader from '../shared/NavHeader.js';
 import DocumentMeta from 'react-document-meta';
+import NavFooter from '../shared/NavFooter.js';
 
 class AboutPage extends React.Component {
   render() {
@@ -25,6 +26,7 @@ class AboutPage extends React.Component {
             <p class="lead">As COVID-19 spreads through the United States, the CDC expects that much of the population will be exposed to the virus. Widespread testing is one of the key measures that will help the US (and the world) contain COVID-19, but community awareness of public testing centers has lagged behind demand. So we created a database to address that need.</p>
           </div>
         </div>
+        <NavFooter />
       </DocumentMeta>
     );
   }

@@ -40,7 +40,11 @@ const theme = {
 
 // For CSS styling shared across different components
 const GlobalStyle = createGlobalStyle`
-
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
   body {
     font-family: ${props => props.theme.fontSans};
     font-weight: 300;
