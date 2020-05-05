@@ -1,3 +1,4 @@
+.env
 /build
 /node_modules
 package-lock.json
@@ -11,3 +12,4 @@ source
 *.tfvars
 *.tfvars.backup
 connection.txt
+

@@ -62,14 +62,14 @@ module "fargate" {
     }
     api = {
       task_definition = "service-templates/api-${local.image_tag}.json"
-      container_port  = 80
+      container_port  = 5000
       cpu             = "256"
       memory          = "512"
       replicas        = 1
       registry_retention_count = 15
       logs_retention_days      = 14
       health_check_interval = 30
-      health_check_path     = "/"
+      health_check_path     = "/ping"
       acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/fc031590-82a6-4f62-b0e5-c30b5d2e6996"
       auto_scaling_max_replicas = 50
       auto_scaling_requests_per_target = 4000
@@ -238,6 +238,15 @@ resource "aws_ssm_parameter" "DB_NAME" {
   description = "${var.environment} DB_NAME"
   type        = "String"
   value       = "postgres"
+
+  tags = local.common_tags
+}
+
+resource "aws_ssm_parameter" "GOOGLE_GEOCODING_KEY" {
+  name        = "/${var.environment}/GOOGLE_GEOCODING_KEY"
+  description = "${var.environment} GOOGLE_GEOCODING_KEY"
+  type        = "String"
+  value       = var.google_geocoding_key
 
   tags = local.common_tags
 }
