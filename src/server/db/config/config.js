@@ -12,7 +12,7 @@ module.exports = {
     host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
     operatorsAliases: 0,
-    logging: false,
+    logging: console.log,
     define: {
       underscored: false,
     },
@@ -26,7 +26,7 @@ module.exports = {
     operatorsAliases: 0,
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
   },
   staging: {
@@ -35,9 +35,9 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOSTNAME,
     dialect: 'postgres',
-    logging: false,
+    logging: console.log,
     define: {
-      underscored: true,
+      underscored: false,
     },
     logging: false,
   },
@@ -54,7 +54,7 @@ module.exports = {
     },
     logging: false,
     define: {
-      underscored: true,
+      underscored: false,
     },
     logging: false,
   },

@@ -5,6 +5,7 @@ const db = require('../db/models')
 
 router.post(
   '/add',
+  auth,
   [
     body('email').isEmail().withMessage('Email must be valid'),
     body('password')
@@ -39,8 +40,10 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body
     const user = await db.User.findOne({ where: { email } })
     if (!user) {
+      console.log('user not found');
       return res.status(401).json({ error: 'login_failure' })
     } else if (!user.correctPassword(password)) {
+      console.log('invalid password');
       return res.status(401).json({ error: 'login_failure' })
     }
     const token = user.generateToken()
