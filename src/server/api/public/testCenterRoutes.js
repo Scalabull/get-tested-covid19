@@ -54,10 +54,15 @@ router.get('/zip/:zipStr', async (req, res)=>{
       return res.status(400).send()
     }
 
-    const {latitude, longitude} = await zipToLatLng(zipStr);
+    const zipLookupRes = await zipToLatLng(zipStr);
+    if(!zipLookupRes){
+      return res.status(400).send('Invalid zip code.');
+    }
+
+    const {latitude, longitude} = zipLookupRes;
     let testCenters = await performLatLngLookup(latitude, longitude);
 
-    res.status(200).json({testCenters});
+    res.status(200).json({testCenters, coords: {latitude, longitude}});
 
     const searchData = {
       zip_code: zipStr,
@@ -67,7 +72,6 @@ router.get('/zip/:zipStr', async (req, res)=>{
     };
 
     await db.UserSearch.create(searchData);
-
   } catch (error) {
     console.error('zip query error: ', error);
     res.status(500).send()

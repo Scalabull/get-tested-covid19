@@ -29,7 +29,7 @@
     },
     "scripts": {
         "start": "env-cmd -f .env.development react-scripts start",
-        "build": "env-cmd -f .env.production react-scripts build",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "test:dev": "react-scripts test --watchAll",
         "test:coverage": "jest --coverage",

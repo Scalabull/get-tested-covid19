@@ -15,6 +15,7 @@ services:
       - DB_NAME=postgres
       - DB_HOSTNAME=db
       - GOOGLE_GEOCODING_KEY=abc123
+      - API_CORS_WHITELIST=http://localhost:3000
       - JWT_SECRET=GetTestedCOVID19
     links:
       - db

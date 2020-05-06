@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components'
 import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
-import haversine from 'haversine';
 import qs from 'query-string';
+import axios from 'axios';
 import HomeZipForm from 'components/Forms/HomeZipForm.js';
 import Vector from '../assets/img/icons/map/Vector.png'
 import { Row, Col } from 'reactstrap';
@@ -12,8 +12,7 @@ import hero1 from '../assets/img/hero/Hero1.png';
 import { ShareButton } from '../views/HowTestWorks/sharedStyles'
 import { GoogleApiWrapper } from 'google-maps-react';
 
-// DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
-const DISTANCE_THRESH = 40;
+const REACT_APP_GTC_API_URL = process.env.REACT_APP_GTC_API_URL;
 
 // Check if GeocoderResult object return form Google Geolocation is a US address.
 function isUSLocation(geocoderResult) {
@@ -138,86 +137,38 @@ class TestSiteList extends React.Component {
         const zipRE = /^[0-9]{5}$/;
         const zipMatchFlag = zipRE.test(searchZipStr);
 
-        // Only allow numeric inputs.
-        if (isNumeric(searchZipStr) || searchZipStr === '') {
-            if (zipMatchFlag) {
-                let updatedList = this.state.initialItems;
-
-                let geocoder = new this.props.google.maps.Geocoder();
-                codeAddress(searchZipStr, geocoder, (err, googleLatLng) => {
-                    if (!err) {
-                        //Use haversine distance w/ lat, lng
-                        const zipLatLng = {
-                            latitude: googleLatLng.lat(),
-                            longitude: googleLatLng.lng(),
-                        };
-
-                        updatedList = updatedList.map(function (item) {
-                            // return any sites within 40 miles.
-                            const end = {
-                                latitude: item.lat,
-                                longitude: item.lng,
-                            };
-
-                            const dist = haversine(zipLatLng, end, { unit: 'mile' });
-                            let newItem = { ...item };
-                            newItem.dist = dist;
-                            return newItem;
-                        });
-
-                        updatedList = updatedList.filter((item) => {
-                            return item.dist < DISTANCE_THRESH;
-                        });
-
-                        updatedList.sort((item1, item2) => {
-                            return item1.dist - item2.dist;
-                        });
-
-                        this.setState({ items: updatedList, zipLatLng, searchZip: searchZipStr });
-                    }
-                });
-            } else {
-                this.setState({
-                    items: [],
-                });
-            }
+        if (zipMatchFlag) {
+            axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
+            .then(response => {
+                console.log('response is: ', JSON.stringify(response));
+                this.setState({items: response.data.testCenters, zipLatLng: response.coords, searchZip: searchZipStr, isFetching: false});
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({items: []});
+            });
+        } else {
+            this.setState({
+                items: [],
+            });
         }
     }
 
     componentDidMount() {
-        fetch('https://storage.googleapis.com/covid19-resources/testSites.json')
-            .then((res) => res.json())
-            .then(
-                (res) => {
-                    this.setState({
-                        initialItems: res.testSites,
-                        items: res.testSites,
-                    });
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
-            .then(() => {
-                this.setState({
-                    isFetching: false,
-                });
-
-                // try to get previously approved location
-                const zipQueryString = getQueryStringValue('zip');
-                if (!zipQueryString && navigator && navigator.permissions) {
-                    navigator.permissions.query({ name: 'geolocation' })
-                        .then(status => {
-                            if (status && status.state === 'granted') {
-                                this.locateUser();
-                            } else {
-                                this.setDefaultZip();
-                            }
-                        })
-                } else {
-                    this.setDefaultZip();
-                }
-            })
+        // try to get previously approved location
+        const zipQueryString = getQueryStringValue('zip');
+        if (!zipQueryString && navigator && navigator.permissions) {
+            navigator.permissions.query({ name: 'geolocation' })
+                .then(status => {
+                    if (status && status.state === 'granted') {
+                        this.locateUser();
+                    } else {
+                        this.setDefaultZip();
+                    }
+                })
+        } else {
+            this.setDefaultZip();
+        }
     }
 
     setDefaultZip(searchZip = this.state.defaultZip) {

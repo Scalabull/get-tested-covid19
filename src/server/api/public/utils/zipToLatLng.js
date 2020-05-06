@@ -13,6 +13,10 @@ async function zipToLatLng(zip) {
     }
 
     const response = await axios.get("https://maps.googleapis.com/maps/api/geocode/json?address="+zip+'&key=' + GOOGLE_GEOCODING_KEY)
+    
+    if(!response.data || !response.data.results || !response.data.results[0]){
+        return null;
+    }
 
     const latitude = response.data.results[0].geometry.location.lat;
     const longitude = response.data.results[0].geometry.location.lng;
