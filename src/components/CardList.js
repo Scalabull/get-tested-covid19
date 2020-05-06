@@ -7,6 +7,7 @@ import icon1 from '../assets/img/icons/card/Hospital.png';
 import icon2 from '../assets/img/icons/card/Doc-blue.png';
 import icon3 from '../assets/img/icons/card/DriveThrough.png';
 import icon4 from '../assets/img/icons/card/Appointment-blue.png';
+const METERS_PER_MILE = 1609;
 
 class CardList extends React.Component {
     componentDidMount() {}
@@ -64,28 +65,61 @@ class CardList extends React.Component {
             return (
                 <>
                     {topResults.map((item, index) => {
-                        if (item.link === '') {
-                            item.link = 'Unavailable';
+                        if (!item.website || item.website === '') {
+                            item.website = 'Unavailable';
                         }
-                        if (item.phone === '') {
-                            item.phone = 'Unavailable';
+                        if (!item.phone_number || item.phone_number === '') {
+                            item.phone_number = 'Unavailable';
                         }
-                        if (item.docScreen === '') {
-                            item.docScreen = 'N/A';
+                        switch(item.doctor_screen_required_beforehand){
+                            case true:
+                                item.docScreen = 'YES';
+                                break;
+                            case false:
+                                item.docScreen = 'NO';
+                                break;
+                            default:
+                                item.docScreen = 'N/A';
+                                break;
+                        };
+                        switch(item.appointment_required){
+                            case true:
+                                item.appReq = 'YES';
+                                break;
+                            case false:
+                                item.appReq = 'NO';
+                                break;
+                            default:
+                                item.appReq = 'N/A';
+                                break;
                         }
-                        if (item.appReq === '') {
-                            item.appReq = 'N/A';
+                        switch(item.drive_thru_site){
+                            case true:
+                                item.driveThru = 'YES';
+                                break;
+                            case false:
+                                item.driveThru = 'NO';
+                                break;
+                            default:
+                                item.driveThru = 'N/A';
+                                break;
                         }
-                        if (item.driveThru === '') {
-                            item.driveThru = 'N/A';
+                        switch(item.walk_in_site){
+                            case true:
+                                item.walkIn = 'YES';
+                                break;
+                            case false:
+                                item.walkIn = 'NO';
+                                break;
+                            default:
+                                item.walkIn = 'N/A';
+                                break;
                         }
-                        if (item.walkUp === '') {
-                            item.walkUp = 'N/A';
+
+                        if(!item.distance){
+                            item.distance = 0;
                         }
-                        item.docScreen = item.docScreen.toUpperCase();
-                        item.appReq = item.appReq.toUpperCase();
-                        item.driveThru = item.driveThru.toUpperCase();
-                        item.walkUp = item.walkUp.toUpperCase();
+                        item.distance = item.distance / METERS_PER_MILE;
 
                         return (
                             <Card key={index} className='shadow shadow-lg--hover pt-4 pb-4 mb-3 mt-3'>
@@ -97,22 +131,22 @@ class CardList extends React.Component {
 
                                         <p className='mb-0 pb-0'>
                                             <strong className='mb-0 pb-0'>
-                                                {item.address}, {item.city} {item.state}, {item.zip}
+                                                {item.address}, {item.city} {item.state}, {item.zipcode}
                                             </strong>
-                                            {item.dist !== null && item.dist !== undefined && (
+                                            {item.distance !== null && item.distance !== undefined && (
                                                 <>
                                                     <br />
                                                     <small className='text-danger pt-0 mt-0'>
-                                                        {item.dist.toFixed(2)} mi.
+                                                        {item.distance.toFixed(2)} mi.
                                                     </small>
                                                 </>
                                             )}
                                         </p>
                                         <p className='mb-0 pb-0'>
-                                            <strong className='pt-0 mt-0'>Ph:</strong> {item.phone}
+                                            <strong className='pt-0 mt-0'>Ph:</strong> {item.phone_number}
                                             <br />
                                             <strong className='pt-0 mt-0'>Site:</strong>{' '}
-                                            <a href={item.link}>{item.link}</a>
+                                            <a href={item.website}>{item.website}</a>
                                         </p>
                                         <div className='cardlist-item-grid'>
                                             <div>
@@ -120,7 +154,7 @@ class CardList extends React.Component {
                                                     icon1,
                                                     'In-Facility Testing?',
                                                     'hospital icon',
-                                                    item.walkUp
+                                                    item.walkIn
                                                 )}
                                             </div>
                                             <div>
@@ -148,9 +182,9 @@ class CardList extends React.Component {
                                                 )}
                                             </div>
                                         </div>
-                                        {item.description !== null &&
-                                            item.description !== undefined &&
-                                            item.description !== '' && (
+                                        {item.facilities_provided !== null &&
+                                            item.facilities_provided !== undefined &&
+                                            item.facilities_provided !== '' && (
                                                 <>
                                                     <hr />
                                                     <Button color='danger' id={'vm-' + index} size='sm'>
@@ -164,7 +198,7 @@ class CardList extends React.Component {
                                                         target={'vm-' + index}
                                                     >
                                                         <PopoverHeader>View message</PopoverHeader>
-                                                        <PopoverBody>{item.description}</PopoverBody>
+                                                        <PopoverBody>{item.facilities_provided}</PopoverBody>
                                                     </UncontrolledPopover>
                                                 </>
                                             )}

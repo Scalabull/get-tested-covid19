@@ -63,6 +63,8 @@ function tryGeolocation(geocoder, callback) {
             };
 
             console.log('location found: ', pos);
+            console.log('full position: ', JSON.stringify(position, null, '\t'));
+
             geocoder.geocode({ 'location': pos }, (res, status) => {
                 if (status === 'OK') {
                     const isUSLoc = isUSLocation(res[0]);
@@ -133,47 +135,49 @@ class TestSiteList extends React.Component {
         this.filterList(zipStr + "");
     }
 
-    filterList(searchZipStr) {
-        const zipRE = /^[0-9]{5}$/;
-        const zipMatchFlag = zipRE.test(searchZipStr);
+    filterList(searchZipStr, latLngPos) {
+        if(latLngPos && latLngPos.lat && latLngPos.lng){
+            axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/searchByUserLatLng/?latitude=' + latLngPos.lat + '&longitude=' + latLngPos.lng)
+                .then(response => {
+                    console.log('response is: ', JSON.stringify(response));
+                    const coords = {latitude: latLngPos.lat, longitude: latLngPos.lng};
+                    this.setState({items: response.data.testCenters, zipLatLng: coords, searchZip: searchZipStr, isFetching: false});
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({items: []});
+                });
+        } 
+        else {
 
-        if (zipMatchFlag) {
-            axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
-            .then(response => {
-                console.log('response is: ', JSON.stringify(response));
-                this.setState({items: response.data.testCenters, zipLatLng: response.coords, searchZip: searchZipStr, isFetching: false});
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({items: []});
-            });
-        } else {
-            this.setState({
-                items: [],
-            });
-        }
+            const zipRE = /^[0-9]{5}$/;
+            const zipMatchFlag = zipRE.test(searchZipStr);
+
+            if (zipMatchFlag) {
+                axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
+                .then(response => {
+                    console.log('response is: ', JSON.stringify(response));
+                    this.setState({items: response.data.testCenters, zipLatLng: response.data.coords, searchZip: searchZipStr, isFetching: false});
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({items: []});
+                });
+            } else {
+                this.setState({
+                    items: [],
+                });
+            }
+        }   
     }
 
     componentDidMount() {
-        // try to get previously approved location
-        const zipQueryString = getQueryStringValue('zip');
-        if (!zipQueryString && navigator && navigator.permissions) {
-            navigator.permissions.query({ name: 'geolocation' })
-                .then(status => {
-                    if (status && status.state === 'granted') {
-                        this.locateUser();
-                    } else {
-                        this.setDefaultZip();
-                    }
-                })
-        } else {
-            this.setDefaultZip();
-        }
+        this.setDefaultZip();
     }
 
-    setDefaultZip(searchZip = this.state.defaultZip) {
+    setDefaultZip(searchZip = this.state.defaultZip, latLng) {
         this.setState({ searchZip }, () => {
-            this.filterList(this.state.searchZip || searchZip);
+            this.filterList(this.state.searchZip || searchZip, latLng);
         });
     }
 
@@ -183,7 +187,7 @@ class TestSiteList extends React.Component {
             if (err) {
                 this.setDefaultZip();
             } else {
-                this.setDefaultZip(postalCode);
+                this.setDefaultZip(postalCode, pos);
                 if (scrollTo && this.scrollRef) {
                     window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
                 }
@@ -204,6 +208,7 @@ class TestSiteList extends React.Component {
 
         const viewItems = this.state.items.slice(0, 10);
 
+        console.log('zipLatLng is: ', this.state.zipLatLng);
         return (
             <>
                 <Col className='order-lg-1 pt-4' lg='7'>
