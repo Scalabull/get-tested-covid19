@@ -20,8 +20,12 @@ const StyledResultCard = styled.div`
     font-size: 14px;
   }
 
+  .card__meta {
+    margin-top: -5px;
+  }
+
   .card__req {
-    margin: 0 0 5px;
+    margin: 10px 0 5px;
 
     .badge {
       margin-right: 5px;
@@ -29,7 +33,7 @@ const StyledResultCard = styled.div`
   }
 
   .card__actions {
-    margin-top: 10px;
+    margin-top: 15px;
   }
 
   .card__actions-desktop {
@@ -48,12 +52,31 @@ const StyledResultCard = styled.div`
     }
   }
 
-  .card__abilities {
+  .card__features {
     margin-top: 5px;
     font-weight: 500;
 
     .fa {
       margin-right: 5px;
+    }
+  }
+
+  .card__feature {
+    width: 50%;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 300;
+
+    .fa {
+      margin-right: 8px;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    @media screen and (max-width: ${props => props.theme.bpSmall}) {
+      width: 100%;
     }
   }
 
@@ -69,9 +92,9 @@ class ResultCard extends React.Component {
     return (
         <StyledResultCard>
           <h3>{this.props.index + 1}. {name}</h3>
-          {/* <p className="card__meta text-secondary">
-            {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
-          </p> */}
+          <p className="card__meta text-secondary">
+            {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
+          </p>
           <div className="card__req">
             {docScreen === "No" && appReq === "No" && <span class="badge badge-success"><i className="fa fa-check icon-right" /> Walk-in testing available</span>}
             {(docScreen !== "No" || appReq !== "No") && (
@@ -86,17 +109,10 @@ class ResultCard extends React.Component {
                 {description}
             </ReadMore>
           </p>
-          <p className="card__abilities">
-            {walkUp === 'Yes' && (
-              <span><i className="fa fa-hospital-o" />In-facility testing</span>
-            )}
-            {driveThru === 'Yes' && (
-              <span><i className="fa fa-automobile" />Drive through testing</span>
-            )}
-          </p>
-          <p className="card__meta text-secondary">
-            {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}, {city} &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
-          </p>
+          <div className="card__features">
+            <div className="card__feature"><i className="fa fa-hospital-o" />In-facility testing <strong>{walkUp}</strong></div>
+            <div className="card__feature"><i className="fa fa-automobile" />Drive-through testing <strong>{driveThru}</strong></div>
+          </div>
           <div className="card__actions">
             <ButtonGroup className="card__actions-desktop" size="sm">
               <a class="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
