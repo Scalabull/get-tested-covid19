@@ -10,7 +10,8 @@ import {
     Input,
     InputGroup,
     InputGroupAddon,
-    UncontrolledTooltip
+    UncontrolledTooltip,
+    Spinner
 } from 'reactstrap';
 import styled from 'styled-components';
 
@@ -32,6 +33,13 @@ const StyledZipForm = styled.div`
     border-color: ${props => props.theme.colorPurpleDarker};
   }
 
+  .zip__loc {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .btn-outline-secondary {
     border-color: #fff;
     background-color: #fff;
@@ -45,8 +53,6 @@ const StyledZipForm = styled.div`
       font-size: 1.2rem;
       padding: 0 5px;
       color: ${props => props.theme.colorPurpleDarker};
-      position: relative;
-      top: 2px;
     }
 
     &:after {
@@ -130,20 +136,21 @@ class ZipForm extends React.Component {
     constructor(props) {
         super(props);
         console.log(props.location.search);
-        this.state = { value: getQueryStringValue('zip') || '' };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = { 
+          value: getQueryStringValue('zip') || '',
+          gettingLoc: false
+        };
     }
     
-    handleChange(event) {
-        let updateVal = event.target.value;
+    handleChange = e => {
+        let updateVal = e.target.value;
         if (updateVal === '' || isNumeric(updateVal)) {
             this.setState({ value: updateVal });
         }
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
+    handleSubmit = e => {
+        e.preventDefault();
 
         let submitVal = this.state.value;
         if (
@@ -157,16 +164,21 @@ class ZipForm extends React.Component {
     }
 
     locateUser = () => {
-        let geocoder = new this.props.google.maps.Geocoder();
+      this.setState({
+        gettingLoc: true
+      });
+      
+      let geocoder = new this.props.google.maps.Geocoder();
         
-        tryGeolocation(geocoder, (err, pos, postalCode) => {
-            if (err) {
-                //this.setDefaultZip();
-                // Add error state
-            } else {
-                this.props.history.push(`/search?zip=${postalCode}`);
-            }
-        });
+      tryGeolocation(geocoder, (err, pos, postalCode) => {
+        if (err) {
+          this.setState({
+            gettingLoc: false
+          });
+        } else {
+          this.props.history.push(`/search?zip=${postalCode}`);
+        }
+      });
     }
 
     render() {
@@ -182,10 +194,11 @@ class ZipForm extends React.Component {
                     <InputGroup disabled>
                       {showLocate && (
                         <InputGroupAddon addonType="prepend">
-                          <Button id="LocateTooltip" outline onClick={this.locateUser}>
-                            <i className="fa fa-location-arrow" />
+                          <Button className="zip__loc" id="LocateTooltip" outline onClick={this.locateUser}>
+                            {!this.state.gettingLoc && <i className="fa fa-location-arrow" />}
+                            {this.state.gettingLoc && <Spinner size="sm" color="secondary" />}
                           </Button>
-                          <UncontrolledTooltip placement="top" target="LocateTooltip">
+                          <UncontrolledTooltip placement="top" target="LocateTooltip" offset={5}>
                             Find current location
                           </UncontrolledTooltip>
                         </InputGroupAddon>

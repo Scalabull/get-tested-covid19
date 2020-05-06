@@ -60,7 +60,7 @@ const StyledResultCard = styled.div`
   }
 
   .card__features {
-    margin-top: 5px;
+    margin-top: 7px;
     font-weight: 500;
 
     .fa {
