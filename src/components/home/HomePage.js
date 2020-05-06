@@ -1,6 +1,7 @@
 
 import React from 'react';
 import HomeHero from './HomeHero.js';
+import HomeAbout from './HomeAbout.js';
 import NavHeader from '../shared/NavHeader.js';
 import NavFooter from '../shared/NavFooter.js';
 import DocumentMeta from 'react-document-meta';
@@ -21,6 +22,7 @@ class HomePage extends React.Component {
       <DocumentMeta {...meta}>
         <NavHeader minimal hideZipForm />
         <HomeHero />
+        <HomeAbout />
         <NavFooter />
       </DocumentMeta>
     );

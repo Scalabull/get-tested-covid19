@@ -32,7 +32,7 @@ const colors = {
 const theme = {
   ...colors,
   colorPrimary: colors.colorPurple,
-  fontSerif: `'Playfair Display', serif`,
+  fontSerif: `'Merriweather', serif`,
   fontSans: `'Libre Franklin', serif`,
   bpSmall: '576px'
 }
@@ -51,6 +51,10 @@ const GlobalStyle = createGlobalStyle`
   
   h1, h2, h3, h4 {
     font-family: ${props => props.theme.fontSerif};
+  }
+
+  .btn {
+    font-weight: 600;
   }
 
   .btn-primary {
@@ -82,7 +86,7 @@ const GlobalStyle = createGlobalStyle`
 
   .form-control-lg + .input-group-append {
     .btn {
-      padding: 0.375rem 1.25rem;
+      padding: 0.375rem 1.15rem;
       font-size: 1.2rem;
     }
   }

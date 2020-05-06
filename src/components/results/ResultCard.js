@@ -18,10 +18,13 @@ const StyledResultCard = styled.div`
   p {
     margin-bottom: 5px;
     font-size: 14px;
+    line-height: 1.5em;
   }
 
   .card__meta {
     margin-top: -5px;
+    color: #777;
+    font-weight: 400;
   }
 
   .card__req {
@@ -30,6 +33,10 @@ const StyledResultCard = styled.div`
     .badge {
       margin-right: 5px;
     }
+  }
+
+  .card__descr {
+    font-weight: 400;
   }
 
   .card__actions {
@@ -64,8 +71,8 @@ const StyledResultCard = styled.div`
   .card__feature {
     width: 50%;
     display: inline-block;
-    font-size: 13px;
     font-weight: 300;
+    font-size: 14px;
 
     .fa {
       margin-right: 8px;
@@ -88,19 +95,19 @@ const StyledResultCard = styled.div`
 
 class ResultCard extends React.Component {
   render() {
-    const { name, dist, address, city, state, zip, phone, link, description, docScreen, appReq, driveThru, walkUp } = this.props.item;
+    const { name, dist, address, city, state, zip, phone, link, description, docScreen, appReq, driveThru } = this.props.item;
     return (
         <StyledResultCard>
           <h3>{this.props.index + 1}. {name}</h3>
-          <p className="card__meta text-secondary">
+          <p className="card__meta">
             {dist !== null && dist !== undefined && `${dist.toFixed(2)} mi · `}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone.split(')')[0]}) {phone.split(')')[1]}
           </p>
           <div className="card__req">
-            {docScreen === "No" && appReq === "No" && <span class="badge badge-success"><i className="fa fa-check icon-right" /> Walk-in testing available</span>}
+            {docScreen === "No" && appReq === "No" && <span class="badge badge-success"><i className="fa fa-check icon-left" /> Walk-in testing available</span>}
             {(docScreen !== "No" || appReq !== "No") && (
               <>
-                {docScreen === "Yes" && <span className="badge badge-danger"><i className="fa fa-user-md icon-right" /> Doctor's screening required</span>}
-                {appReq === "Yes" && <span className="badge badge-danger"><i className="fa fa-calendar icon-right" /> Appointment required</span>}
+                {docScreen === "Yes" && <span className="badge badge-danger"><i className="fa fa-user-md icon-left" /> Doctor's screening required</span>}
+                {appReq === "Yes" && <span className="badge badge-danger"><i className="fa fa-calendar icon-left" /> Appointment required</span>}
               </>
             )}
           </div>
@@ -110,7 +117,6 @@ class ResultCard extends React.Component {
             </ReadMore>
           </p>
           <div className="card__features">
-            <div className="card__feature"><i className="fa fa-hospital-o" />In-facility testing <strong>{walkUp}</strong></div>
             <div className="card__feature"><i className="fa fa-automobile" />Drive-through testing <strong>{driveThru}</strong></div>
           </div>
           <div className="card__actions">

@@ -10,9 +10,11 @@ const StyledHomeHero = styled.div`
   flex-direction: column;
   padding: 60px 15px 120px;
   text-align: center;
+  color: #fff;
+  background-color: ${props => props.theme.colorPurple};
 
   h1 {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   p {
@@ -23,15 +25,29 @@ const StyledHomeHero = styled.div`
       font-size: 1.1rem;
     }
   }
+
+  .form-inline {
+    justify-content: center;
+
+    .input-group {
+      width: 500px;
+
+      @media screen and (max-width: 500px) {
+        width: auto;
+      }
+    }
+  }
 `
 
 class HomeHero extends React.Component {
   render() {
     return (
-      <StyledHomeHero className="container">
-        <h1>Find a nearby COVID-19 test center</h1>
-        <p>Search over 2,000 verified test centers in the US.</p>
-        <ZipForm large autoFocus />
+      <StyledHomeHero>
+        <div className="container">
+          <h1>Find a nearby COVID-19 test center</h1>
+          <p>Search over 2,000 verified test centers in the US.</p>
+          <ZipForm large autoFocus showLocate />
+        </div>
       </StyledHomeHero>
     );
   }

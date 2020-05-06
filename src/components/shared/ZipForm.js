@@ -9,8 +9,57 @@ import {
     FormGroup,
     Input,
     InputGroup,
-    InputGroupAddon
+    InputGroupAddon,
+    UncontrolledTooltip
 } from 'reactstrap';
+import styled from 'styled-components';
+
+const StyledZipForm = styled.div`
+  .zip__submit {
+    background-color: ${props => props.theme.colorPurpleDarker};
+  }
+
+  .form-control {
+    border-color: #fff;
+
+    &:focus {
+      border-color: #fff;
+      outline: none;
+    }
+  }
+
+  .btn-primary {
+    border-color: ${props => props.theme.colorPurpleDarker};
+  }
+
+  .btn-outline-secondary {
+    border-color: #fff;
+    background-color: #fff;
+    position: relative;
+
+    &:hover {
+      color: #000;
+    }
+
+    .fa {
+      font-size: 1.2rem;
+      padding: 0 5px;
+      color: ${props => props.theme.colorPurpleDarker};
+      position: relative;
+      top: 2px;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      background-color: #AAA;
+      width: 1px;
+      right: 0;
+      top: 10px;
+      bottom: 10px;
+    }
+  }
+`
 
 function isNumeric(s) {
     return !isNaN(s - parseFloat(s));
@@ -121,43 +170,51 @@ class ZipForm extends React.Component {
     }
 
     render() {
+      const { showLocate, large } = this.props;
         return (
+          <StyledZipForm>
             <Form onSubmit={this.handleSubmit} inline>
                 <FormGroup
                     className={classnames({
                         focused: this.state.searchFocused
                     })}
                 >
-                    <InputGroup>
-                        {/* <InputGroupAddon addonType="prepend">
-                          <Button outline onClick={this.locateUser}>
-                            Locate
+                    <InputGroup disabled>
+                      {showLocate && (
+                        <InputGroupAddon addonType="prepend">
+                          <Button id="LocateTooltip" outline onClick={this.locateUser}>
+                            <i className="fa fa-location-arrow" />
                           </Button>
-                        </InputGroupAddon> */}
-                        <Input
-                            className={`mr-0 pr-12 search-input form-control ${this.props.large ? 'form-control-lg' : ''}`}
-                            title='Enter zip code'
-                            placeholder='Enter zip code'
-                            type='text'
-                            maxLength='5'
-                            autoFocus={this.props.autoFocus}
-                            onFocus={(e) =>
-                                this.setState({ searchFocused: true })
-                            }
-                            onBlur={(e) =>
-                                this.setState({ searchFocused: false })
-                            }
-                            value={this.state.value}
-                            onChange={this.handleChange}
-                        />
-                        <InputGroupAddon addonType="append">
-                          <Button type='submit' color="primary">
-                              <i className="fa fa-search" />
-                          </Button>
+                          <UncontrolledTooltip placement="top" target="LocateTooltip">
+                            Find current location
+                          </UncontrolledTooltip>
                         </InputGroupAddon>
+                      )}
+                      <Input
+                        className={`search-input form-control ${large ? 'form-control-lg' : ''} border-0`}
+                        title='Enter zip code'
+                        placeholder='Enter zip code'
+                        type='text'
+                        maxLength='5'
+                        autoFocus={this.props.autoFocus}
+                        onFocus={(e) =>
+                            this.setState({ searchFocused: true })
+                        }
+                        onBlur={(e) =>
+                            this.setState({ searchFocused: false })
+                        }
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                      />
+                      <InputGroupAddon addonType="append">
+                        <Button className="zip__submit" type='submit' color="primary">
+                          <i className="fa fa-search" />
+                        </Button>
+                      </InputGroupAddon>
                     </InputGroup>
                 </FormGroup>
             </Form>
+          </ StyledZipForm>
         );
     }
 }

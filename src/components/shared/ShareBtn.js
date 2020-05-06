@@ -20,7 +20,7 @@ const ShareBtn = props => {
 
   return (
     <>
-      <Button id="tooltip-share" className="d-flex align-items-center" outline size="sm" onClick={copyUrl}><i className="fa fa-share icon-left" /> Share</Button>
+      <Button id="tooltip-share" className="d-flex align-items-center" color="primary" outline size="sm" onClick={copyUrl}><i className="fa fa-share icon-left" /> Share</Button>
       <Tooltip
         placement="top"
         isOpen={tooltipOpen}

@@ -13,8 +13,17 @@ import ZipForm from './ZipForm';
 
 const StyledNavHeader = styled.header`
   font-size: 14px;
-  background: #fff;
-  border-bottom: ${props => !props.minimal && '1px solid #eee'};
+  color: #fff;
+  background-color: ${props => props.theme.colorPurple};
+
+  .navbar-dark .navbar-nav a.nav-link {
+    color: #fff;
+    font-weight: 400;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
   .header__logo {
     height: 50px;
@@ -58,10 +67,10 @@ const NavHeader = (props) => {
 
   return (
     <StyledNavHeader className="sticky-top" minimal={props.minimal}>
-      <Navbar light expand="lg" className={`${props.wide ? '' : 'container'}`}>
+      <Navbar expand="lg" dark className={`${props.wide ? '' : 'container'}`}>
         <div className="header__left d-flex flex-column align-items-start align-items-sm-center flex-sm-row">
           <NavbarBrand href="/">
-            <img className="header__logo" alt='Get Tested Covid Logo' src={require('assets/img/brand/GetTestedCovid19Finallogocolorfinal.png')} />
+            <img className="header__logo" alt='Get Tested Covid Logo' src={require('assets/img/brand/GetTestedCovid19Finallogocolorfinal_white.png')} />
           </NavbarBrand>
           {!props.hideZipForm && (
             <div className="header__search">
