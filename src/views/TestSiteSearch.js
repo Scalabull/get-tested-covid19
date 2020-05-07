@@ -24,7 +24,7 @@ class Landing extends React.Component {
     this.refs.main.scrollTop = 0;
   }
   render() {
-    console.log('REACT APP URL: ', process.env.REACT_APP_GTC_API_URL);
+    // console.log('REACT APP URL: ', process.env.REACT_APP_GTC_API_URL);
     
     const meta = {
       title: 'Search COVID-19 Test Center By Zipcode | Get Tested COVID-19',

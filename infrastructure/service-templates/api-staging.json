@@ -37,6 +37,10 @@
         {
           "name": "API_PUBLIC_ROUTE",
           "value": "public"
+        },
+        {
+          "name": "API_CORS_WHITELIST",
+          "value": "https://staging.get-tested-covid19.org"
         }
     ],
     "secrets": [

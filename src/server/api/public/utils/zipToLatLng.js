@@ -2,7 +2,7 @@ const zipLookup = require('../../../data/zipLookups.js');
 const axios = require('axios');
 const GOOGLE_GEOCODING_KEY = process.env.GOOGLE_GEOCODING_KEY;
 
-console.log('key is: ', GOOGLE_GEOCODING_KEY);
+// console.log('key is: ', GOOGLE_GEOCODING_KEY);
 
 async function zipToLatLng(zip) {
     const cacheLookup = zipLookup.zipLookups[zip + ""];
@@ -15,7 +15,6 @@ async function zipToLatLng(zip) {
     const response = await axios.get("https://maps.googleapis.com/maps/api/geocode/json?address="+zip+'&key=' + GOOGLE_GEOCODING_KEY)
     
     if(!response.data || !response.data.results || !response.data.results[0]){
-        console.log('response: ', JSON.stringify(response.data));
         return null;
     }
 
