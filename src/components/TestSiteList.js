@@ -62,16 +62,16 @@ function tryGeolocation(geocoder, callback) {
                 lng: position.coords.longitude
             };
 
-            console.log('location found: ', pos);
-            console.log('full position: ', JSON.stringify(position, null, '\t'));
+            // console.log('location found: ', pos);
+            // console.log('full position: ', JSON.stringify(position, null, '\t'));
 
             geocoder.geocode({ 'location': pos }, (res, status) => {
                 if (status === 'OK') {
                     const isUSLoc = isUSLocation(res[0]);
                     const postalCode = returnPostalCode(res[0]);
                     if (res[0] && isUSLoc && postalCode !== null) {
-                        console.log('gelocation: ', res[0]);
-                        console.log('postalCode: ', postalCode)
+                        // console.log('gelocation: ', res[0]);
+                        // console.log('postalCode: ', postalCode)
                         callback(null, pos, postalCode);
                     } else {
                         callback(new Error('Geolocated address not in the US, or not valid postal code.'))
@@ -91,25 +91,10 @@ function tryGeolocation(geocoder, callback) {
     }
 }
 
-function codeAddress(zip, geocoder, callback) {
-    geocoder.geocode({ 'address': zip }, function (results, status) {
-        if (status === 'OK') {
-            callback(null, results[0].geometry.location);
-        }
-        else {
-            callback(status, null);
-        }
-    });
-}
-
 const getQueryStringValue = (key, queryString = window.location.search) => {
     const values = qs.parse(queryString);
     return values[key];
 };
-
-function isNumeric(s) {
-    return !isNaN(s - parseFloat(s));
-}
 
 class TestSiteList extends React.Component {
     constructor(props) {
@@ -132,20 +117,22 @@ class TestSiteList extends React.Component {
     }
 
     onSubmit(zipStr) {
-        this.filterList(zipStr + "");
+        this.setState({isFetching: true}, () => {
+            this.filterList(zipStr + "");
+        });
     }
 
     filterList(searchZipStr, latLngPos) {
         if(latLngPos && latLngPos.lat && latLngPos.lng){
             axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/searchByUserLatLng/?latitude=' + latLngPos.lat + '&longitude=' + latLngPos.lng)
                 .then(response => {
-                    console.log('response is: ', JSON.stringify(response));
+                    // console.log('response is: ', JSON.stringify(response));
                     const coords = {latitude: latLngPos.lat, longitude: latLngPos.lng};
                     this.setState({items: response.data.testCenters, zipLatLng: coords, searchZip: searchZipStr, isFetching: false});
                 })
                 .catch(err => {
-                    console.log(err);
-                    this.setState({items: []});
+                    //console.log(err);
+                    this.setState({items: [], searchZip: searchZipStr, isFetching: false});
                 });
         } 
         else {
@@ -156,16 +143,17 @@ class TestSiteList extends React.Component {
             if (zipMatchFlag) {
                 axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
                 .then(response => {
-                    console.log('response is: ', JSON.stringify(response));
+                    // console.log('response is: ', JSON.stringify(response));
                     this.setState({items: response.data.testCenters, zipLatLng: response.data.coords, searchZip: searchZipStr, isFetching: false});
                 })
                 .catch(err => {
-                    console.log(err);
-                    this.setState({items: []});
+                    //console.log(err);
+                    this.setState({items: [], searchZip: searchZipStr, isFetching: false});
                 });
             } else {
                 this.setState({
                     items: [],
+                    isFetching: false
                 });
             }
         }   
@@ -182,17 +170,22 @@ class TestSiteList extends React.Component {
     }
 
     locateUser(scrollTo = false) {
-        let geocoder = new this.props.google.maps.Geocoder();
-        tryGeolocation(geocoder, (err, pos, postalCode) => {
-            if (err) {
-                this.setDefaultZip();
-            } else {
-                this.setDefaultZip(postalCode, pos);
-                if (scrollTo && this.scrollRef) {
-                    window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
+        this.setState({ isFetching: true}, () => {
+            let geocoder = new this.props.google.maps.Geocoder();
+            tryGeolocation(geocoder, (err, pos, postalCode) => {
+                if (err) {
+                    this.setDefaultZip();
+                    if (scrollTo && this.scrollRef) {
+                        window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
+                    }
+                } else {
+                    this.setDefaultZip(postalCode, pos);
+                    if (scrollTo && this.scrollRef) {
+                        window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
+                    }
                 }
-            }
-        });
+            });
+        }); 
     }
 
     renderList() {
@@ -208,7 +201,6 @@ class TestSiteList extends React.Component {
 
         const viewItems = this.state.items.slice(0, 10);
 
-        console.log('zipLatLng is: ', this.state.zipLatLng);
         return (
             <>
                 <Col className='order-lg-1 pt-4' lg='7'>
