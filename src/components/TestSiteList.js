@@ -62,16 +62,16 @@ function tryGeolocation(geocoder, callback) {
                 lng: position.coords.longitude
             };
 
-            // console.log('location found: ', pos);
-            // console.log('full position: ', JSON.stringify(position, null, '\t'));
+             console.log('location found: ', pos);
+             console.log('full position: ', JSON.stringify(position, null, '\t'));
 
             geocoder.geocode({ 'location': pos }, (res, status) => {
                 if (status === 'OK') {
                     const isUSLoc = isUSLocation(res[0]);
                     const postalCode = returnPostalCode(res[0]);
                     if (res[0] && isUSLoc && postalCode !== null) {
-                        // console.log('gelocation: ', res[0]);
-                        // console.log('postalCode: ', postalCode)
+                         console.log('gelocation: ', res[0]);
+                         console.log('postalCode: ', postalCode)
                         callback(null, pos, postalCode);
                     } else {
                         callback(new Error('Geolocated address not in the US, or not valid postal code.'))
@@ -126,12 +126,12 @@ class TestSiteList extends React.Component {
         if(latLngPos && latLngPos.lat && latLngPos.lng){
             axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/searchByUserLatLng/?latitude=' + latLngPos.lat + '&longitude=' + latLngPos.lng)
                 .then(response => {
-                    // console.log('response is: ', JSON.stringify(response));
+                    console.log('response is: ', JSON.stringify(response));
                     const coords = {latitude: latLngPos.lat, longitude: latLngPos.lng};
                     this.setState({items: response.data.testCenters, zipLatLng: coords, searchZip: searchZipStr, isFetching: false});
                 })
                 .catch(err => {
-                    //console.log(err);
+                    console.log(err);
                     this.setState({items: [], searchZip: searchZipStr, isFetching: false});
                 });
         } 
@@ -143,11 +143,11 @@ class TestSiteList extends React.Component {
             if (zipMatchFlag) {
                 axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
                 .then(response => {
-                    // console.log('response is: ', JSON.stringify(response));
+                    console.log('response is: ', JSON.stringify(response));
                     this.setState({items: response.data.testCenters, zipLatLng: response.data.coords, searchZip: searchZipStr, isFetching: false});
                 })
                 .catch(err => {
-                    //console.log(err);
+                    console.log(err);
                     this.setState({items: [], searchZip: searchZipStr, isFetching: false});
                 });
             } else {
@@ -199,7 +199,9 @@ class TestSiteList extends React.Component {
             );
         }
 
-        const viewItems = this.state.items.slice(0, 10);
+        let viewItems = this.state.items || [];
+        const totalLength = viewItems.length;
+        viewItems = viewItems.slice(0, 10);
 
         return (
             <>
@@ -207,7 +209,7 @@ class TestSiteList extends React.Component {
                     <Row className='pl-4'>
                         <Col lg='9'>
                             <p>
-                                {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
+                                {viewItems.length} of {totalLength} results within 40 miles of "{this.state.searchZip}"
                             </p>
                         </Col>
                         <Col lg='3'>
@@ -216,13 +218,13 @@ class TestSiteList extends React.Component {
                             </ShareButton>
                         </Col>
                     </Row>
-                    <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
+                    <CardList style={{ width: '100vw' }} items={viewItems} totalCount={totalLength} />
                 </Col>
                 <Col className='order-lg-2' lg='5'>
                     <TestSiteMap
                         style={{ width: '100vw' }}
                         items={viewItems}
-                        totalCount={this.state.items.length}
+                        totalCount={totalLength}
                         zipLatLng={this.state.zipLatLng}
                         searchZip={this.state.searchZip}
                     />
