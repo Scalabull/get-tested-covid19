@@ -43,7 +43,6 @@ module "fargate" {
 
   vpc_external_public_subnets_ids = module.saas_vpc.public_subnets
   vpc_external_private_subnets_ids = module.saas_vpc.private_subnets
-  default_action = "${local.env_dns_prefix}get-tested-covid19.org"
 
   services = {
     www = {
@@ -82,18 +81,6 @@ module "fargate" {
 resource "aws_route53_record" "www" {
   zone_id = "Z0805372RGZMLZDPFNEH"
   name    = "${local.env_dns_prefix}get-tested-covid19.org"
-  type    = "A"
-
-  alias {
-    name                   = module.fargate.application_load_balancers_dns_names
-    zone_id                = module.fargate.application_load_balancers_zone_ids
-    evaluate_target_health = true
-  }
-}
-
-resource "aws_route53_record" "wwwactual" {
-  zone_id = "Z0805372RGZMLZDPFNEH"
-  name    = "${local.env_dns_prefix}www.get-tested-covid19.org"
   type    = "A"
 
   alias {
