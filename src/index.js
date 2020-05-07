@@ -23,9 +23,11 @@ import AboutPage from './components/content/AboutPage.js';
 
 // Colors
 const colors = {
-  colorRed: 'red',
+  colorRed: '#FA2B56',
   colorPurple: '#4046BB',
-  colorPurpleDarker: '#202028'
+  colorPurpleDarker: '#202028',
+  colorTeal: '#69C5AB',
+  colorYellow: '#EFC05C'
 }
 
 // Shared CSS theme variables
@@ -54,7 +56,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .btn {
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .btn-primary {
