@@ -25,7 +25,7 @@ const StyledResultCard = styled.div`
   }
 
   .card__dist {
-    color: #00a4a6;
+    color: ${props => props.theme.colorTealDark};
     font-weight: 600;
   }
 
@@ -41,6 +41,10 @@ const StyledResultCard = styled.div`
 
     .badge-danger {
       background-color: ${props => props.theme.colorRed};
+    }
+
+    .badge-success {
+      background-color: ${props => props.theme.colorGreen};
     }
   }
 

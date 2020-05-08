@@ -27,7 +27,7 @@ const StyledResultsPage = styled.div`
   }
 
   .results__map {
-    width: 100%;
+    width: calc(100% - 550px);
     position: fixed;
     top: 70px;
     bottom: 0;
@@ -74,127 +74,114 @@ const StyledResultsPage = styled.div`
 class ResultsPage extends React.Component {
     constructor(props) {
         super(props);
-        let zip = getQueryStringValue('zip') || '';
+        this.resultsAll = [];
+        this.resultsZip = [];
+        this.zip = getQueryStringValue('zip');
+        this.zipLatLng = null;
         this.state = {
-            initialItems: [],
-            items: [],
-            searchZip: zip,
-            defaultZip: zip || '10001',
-            zipLatLng: null,
-            isFetching: true,
-            isShareTooltipOpen: false
+          resultsPage: 0,
+          isFetching: true,
+          hasError: null
         };
         this.filterList = this.filterList.bind(this);
     }
 
-    filterList(searchZipStr) {
-        const zipRE = /^[0-9]{5}$/;
-        const zipMatchFlag = zipRE.test(searchZipStr);
-
-        // Only allow numeric inputs.
-        if (isNumeric(searchZipStr) || searchZipStr === '') {
-            if (zipMatchFlag) {
-                let updatedList = this.state.initialItems;
-
-                let geocoder = new this.props.google.maps.Geocoder();
-                codeAddress(searchZipStr, geocoder, (err, googleLatLng) => {
-                    if (!err) {
-                        //Use haversine distance w/ lat, lng
-                        const zipLatLng = {
-                            latitude: googleLatLng.lat(),
-                            longitude: googleLatLng.lng(),
-                        };
-
-                        updatedList = updatedList.map(function (item) {
-                            // return any sites within 40 miles.
-                            const end = {
-                                latitude: item.lat,
-                                longitude: item.lng,
-                            };
-
-                            const dist = haversine(zipLatLng, end, { unit: 'mile' });
-                            let newItem = { ...item };
-                            newItem.dist = dist;
-                            return newItem;
-                        });
-
-                        updatedList = updatedList.filter((item) => {
-                            return item.dist < DISTANCE_THRESH;
-                        });
-
-                        updatedList.sort((item1, item2) => {
-                            return item1.dist - item2.dist;
-                        });
-
-                        this.setState({ items: updatedList, zipLatLng, searchZip: searchZipStr });
-                    }
-                });
-            } else {
-                this.setState({
-                    items: [],
-                });
-            }
-        }
+    componentDidMount() {
+      fetch('https://storage.googleapis.com/covid19-resources/testSites.json')
+        .then(res => res.json())
+        .then(res => {
+          this.resultsAll = res.testSites;
+        })
+        .then(() => {
+          if (this.zip) {
+            this.filterList(this.zip);
+          } else {
+            // No zipcode to search
+            this.setState({
+              isFetching: false,
+              hasError: 'NO_ZIP'
+            });
+          }
+        });
     }
 
     componentDidUpdate() {
       // When zip value changes, then update results
-      if (getQueryStringValue('zip') !== this.state.searchZip) {
-        // TODO: Update this so that whenever filterList is called, it also updates the zip code
-        this.setState({
-          searchZip: getQueryStringValue('zip')
-        });
-        this.filterList(getQueryStringValue('zip'));
+      if (getQueryStringValue('zip') !== this.zip) {
+        this.zip = getQueryStringValue('zip');
+        console.log('componentDidUpdate');
+        this.filterList(this.zip);
         // Scroll to top of page
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
     }
 
-    componentDidMount() {
-        fetch('https://storage.googleapis.com/covid19-resources/testSites.json')
-            .then((res) => res.json())
-            .then(
-                (res) => {
-                    this.setState({
-                        initialItems: res.testSites,
-                        items: res.testSites,
-                    });
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
-            .then(() => {
-                this.setState({
-                    isFetching: false,
-                });
+    filterList(searchZipStr) {
+        if (this.state.isFetching === false) {
+          this.setState({
+            isFetching: true
+          });
+        }
+        const zipRE = /^[0-9]{5}$/;
+        const zipMatchFlag = zipRE.test(searchZipStr);
+        console.log(searchZipStr);
 
-                // try to get previously approved location
-                const zipQueryString = getQueryStringValue('zip');
-                if (!zipQueryString && navigator && navigator.permissions) {
-                    navigator.permissions.query({ name: 'geolocation' })
-                        .then(status => {
-                            // if (status && status.state === 'granted') {
-                            //     this.locateUser();
-                            // } else {
-                                this.setDefaultZip();
-                            //}
-                        })
-                } else {
-                    this.setDefaultZip();
-                }
-            })
-    }
+        // Only allow numeric inputs.
+        if (isNumeric(searchZipStr) && zipMatchFlag) {
+          let updatedList = this.resultsAll;
 
-    setDefaultZip(searchZip = this.state.defaultZip) {
-        this.setState({ searchZip }, () => {
-            this.filterList(this.state.searchZip || searchZip);
-        });
+          let geocoder = new this.props.google.maps.Geocoder();
+          codeAddress(searchZipStr, geocoder, (err, googleLatLng) => {
+              if (!err) {
+                  //Use haversine distance w/ lat, lng
+                  this.zipLatLng = {
+                      latitude: googleLatLng.lat(),
+                      longitude: googleLatLng.lng(),
+                  };
+                  console.log('1: ', this.zipLatLng);
+
+                  updatedList = updatedList.map(function (item) {
+                      // return any sites within 40 miles.
+                      const end = {
+                          latitude: item.lat,
+                          longitude: item.lng,
+                      };
+
+                      const dist = haversine({
+                          latitude: googleLatLng.lat(),
+                          longitude: googleLatLng.lng(),
+                      }, end, { unit: 'mile' });
+                      let newItem = { ...item };
+                      newItem.dist = dist;
+                      return newItem;
+                  });
+
+                  updatedList = updatedList.filter((item) => {
+                      return item.dist < DISTANCE_THRESH;
+                  });
+
+                  updatedList.sort((item1, item2) => {
+                      return item1.dist - item2.dist;
+                  });
+
+                  this.resultsZip = updatedList;
+
+                  this.setState({
+                    isFetching: false
+                  });
+              }
+          });
+        } else {
+          this.setState({
+            isFetching: false,
+            hasError: 'INVALID_ZIP'
+          })
+        }
     }
 
     render() {
       const meta = {
-        title: `COVID-19 test centers near ${this.state.searchZip} | Get Tested COVID-19`,
+        title: `COVID-19 test centers near ${this.zip} | Get Tested COVID-19`,
         description: 'Find the closest COVID-19 test center. Make sure to check requirements and double check that your symptoms match those listed by the CDC.',
         meta: {
           charset: 'utf-8',
@@ -204,7 +191,7 @@ class ResultsPage extends React.Component {
         }
       };
 
-      const viewItems = this.state.items.slice(0, 10);
+      const viewItems = this.resultsZip.slice(0, 10);
 
       return (
           <DocumentMeta {...meta}>
@@ -217,23 +204,33 @@ class ResultsPage extends React.Component {
               )}
               {!this.state.isFetching && (
                 <>
-                  <div className="results__list">
-                    <div className="results__list-header">
-                      <h2>{this.state.items.length} results within 40 miles of {this.state.searchZip}</h2>
-                      <ShareBtn />
-                    </div>
-                    <div className="results__list-cards">
-                      <ResultsListCards items={viewItems} />
-                    </div>
-                  </div>
-                  <div className="results__map">
-                    <TestSiteMap
-                        items={viewItems}
-                        totalCount={this.state.items.length}
-                        zipLatLng={this.state.zipLatLng}
-                        searchZip={this.state.searchZip}
-                    />
-                  </div>
+                  {this.state.hasError && this.state.hasError === 'NO_ZIP' && (
+                    <div>No zip code</div>
+                  )}
+                  {this.state.hasError && this.state.hasError === 'INVALID_ZIP' && (
+                    <div>Invalid zip code</div>
+                  )}
+                  {!this.state.hasError && (
+                    <>
+                      <div className="results__list">
+                        <div className="results__list-header">
+                          <h2>{this.resultsZip.length} results within 40 miles of {this.zip}</h2>
+                          <ShareBtn />
+                        </div>
+                        <div className="results__list-cards">
+                          <ResultsListCards items={viewItems} />
+                        </div>
+                      </div>
+                      <div className="results__map">
+                        <TestSiteMap
+                            items={viewItems}
+                            totalCount={this.resultsZip.length}
+                            zipLatLng={this.zipLatLng}
+                            searchZip={this.zip}
+                        />
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </StyledResultsPage>
@@ -241,16 +238,6 @@ class ResultsPage extends React.Component {
       )
     }
 }
-
-export const RotateAnimation = styled.div`
--webkit-animation:spin 2s linear infinite;
--moz-animation:spin 2s linear infinite;
-animation:spin 2s linear infinite;
-
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-`
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'

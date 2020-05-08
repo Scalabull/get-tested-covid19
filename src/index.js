@@ -27,7 +27,9 @@ const colors = {
   colorPurple: '#4046BB',
   colorPurpleDarker: '#202028',
   colorTeal: '#69C5AB',
-  colorYellow: '#EFC05C'
+  colorTealDark: '#0387A5',
+  colorYellow: '#EFC05C',
+  colorGreen: '#27AE60'
 }
 
 // Shared CSS theme variables
@@ -53,6 +55,14 @@ const GlobalStyle = createGlobalStyle`
   
   h1, h2, h3, h4 {
     font-family: ${props => props.theme.fontSerif};
+  }
+
+  a {
+    color: ${props => props.theme.colorPrimary};
+
+    &:hover {
+      color: ${props => props.theme.colorPrimary};
+    }
   }
 
   .btn {
