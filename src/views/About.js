@@ -89,7 +89,7 @@ class About extends React.Component {
                                                 available, follow us on{' '}
                                                 <a
                                                     className='text-success'
-                                                    href='https://www.instagram.com/get_tested_covid19/'
+                                                    href='https://www.instagram.com/gettestedcovid/'
                                                 >
                                                     Instagram.
                                                 </a>
