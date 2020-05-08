@@ -16,6 +16,10 @@ export default class TestSiteMap extends React.Component {
         items = items.map((item) => {
             item.shortName = item.name.substring(0, 12);
             if (item.name && item.name.length > 12) item.shortName += '...';
+
+            item.latitude = parseFloat(item.latitude);
+            item.longitude = parseFloat(item.longitude);
+
             return item;
         });
 
@@ -31,10 +35,10 @@ export default class TestSiteMap extends React.Component {
             let minLng = MAX_GEO;
             let minLat = MAX_GEO;
             items.forEach(item => {
-                if(item.lat > maxLat) maxLat = item.lat;
-                if(item.lat < minLat) minLat = item.lat;
-                if(item.lng > maxLng) maxLng = item.lng;
-                if(item.lng < minLng) minLng = item.lng;
+                if(item.latitude > maxLat) maxLat = item.latitude;
+                if(item.latitude < minLat) minLat = item.latitude;
+                if(item.longitude > maxLng) maxLng = item.longitude;
+                if(item.longitude < minLng) minLng = item.longitude;
             });
             minLat = minLat + MAP_MARKER_BUFFER;
             maxLat = maxLat + MAP_MARKER_BUFFER;
@@ -61,7 +65,7 @@ export default class TestSiteMap extends React.Component {
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
                 {items.map((item, index) => (
-                    <Marker key={index} position={{ lat: item.lat, lng: item.lng }}>
+                    <Marker key={index} position={{ lat: item.latitude, lng: item.longitude }}>
                         <Tooltip permanent={true}>
                             <h6>{index + 1 }</h6>
                         </Tooltip>
