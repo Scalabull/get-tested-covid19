@@ -4,14 +4,42 @@ import styled from 'styled-components';
 
 const StyledMapPin = styled.div`
     border-radius: 50%;
-    width: 10px;
-    height: 10px;
-    background: red;
+    border: 16px solid ${props => props.theme.colorPurple};
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: -10px;
+
+    &:after {
+        content: '${props => props.num}';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        font-weight: 600;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: ${props => props.theme.fontSans};
+    }
+
+    &:before {
+        position: absolute;
+        content: '';
+        width: 0px;
+        height: 0px;
+        bottom: -35px;
+        left: -10px;
+        border: 10px solid transparent;
+        border-top: 17px solid ${props => props.theme.colorPurple};
+    }
 `
 
 const MAX_GEO = 400;
 const MIN_GEO = -400;
-const MAP_MARKER_BUFFER = 0.001;
 const Map = ReactMapboxGl({
     accessToken: 'pk.eyJ1Ijoic3VtYW5hZ3IxMyIsImEiOiJjazlsbHo2N3kwYmJvM2VuNXl3cTFoMHZvIn0.jfMLv49EhilU0_Xnp2gRKA'
 });
@@ -64,12 +92,8 @@ export default class TestSiteMap extends React.Component {
                     <Feature coordinates={mapCenter} />
                 </Layer>
                 {items.map((item, index) => (
-                    <Marker coordinates={[item.lng, item.lat]} anchor="bottom">
-                        <StyledMapPin />
-                        {/* <Popup coordinates={[item.lng, item.lat]}>
-                            <h6>{index + 1 + '. ' + item.name}</h6>
-                            <p>{item.address}, {item.city}</p>
-                        </Popup> */}
+                    <Marker coordinates={[item.lng, item.lat]} anchor="top">
+                        <StyledMapPin num={index + 1} />
                     </Marker>
                 ))}
             </Map>
