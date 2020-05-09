@@ -65,6 +65,12 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .section {
+    a {
+      text-decoration: underline;
+    }
+  }
+
   .btn {
     font-weight: 400;
   }
@@ -116,14 +122,13 @@ ReactDOM.render(
         <Route path="/" exact render={props => <HomePage {...props} />} />
         <Route path="/search" exact render={props => <ResultsPage {...props} />} />
         <Route path="/about" exact render={props => <AboutPage {...props} />} />
-        <Route path="/old/home" exact render={props => <TestSiteSearch {...props} />} />
         <Route
           path="/resources"
           exact
           render={props => <Resources {...props} />}
         />
         <Route
-          path="/when-should-you-get-tested"
+          path="/when-to-get-tested"
           exact
           render={props => <WhenShouldYouGetTested {...props} />}
         />

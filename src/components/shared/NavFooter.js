@@ -4,9 +4,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 
 const StyledNavFooter = styled.div`
-  background-color: ${props => props.theme.colorPurple};
-  box-shadow: 0 50vh 0 50vh ${props => props.theme.colorPurple};
-  color: rgba(255,255,255,0.75);
+  border-top: 1px solid #eee;
   font-size: 13px;
 
   .container {
@@ -26,7 +24,6 @@ const StyledNavFooter = styled.div`
       padding: 10px;
       text-transform: uppercase;
       font-size: 12px;
-      color: #fff;
       font-weight: 400;
     }
   }
@@ -39,12 +36,10 @@ const StyledNavFooter = styled.div`
 
   .footer__links {
     font-size: 1.25rem;
-    color: #fff;
     margin-right: 1rem;
 
     a {
       padding: 5px;
-      color: #fff;
       margin-left: 3px;
     }
   }
@@ -73,7 +68,7 @@ class NavFooter extends React.Component {
         <div className="container d-flex">
           <div>
             <ul>
-              <li><Link to="/about">Resources</Link></li>
+              <li><Link to="/resources">Resources</Link></li>
               <li><Link to="/when-to-get-tested">When To Get Tested</Link></li>
               <li><Link to="/how-testing-works">How Testing Works</Link></li>
               <li><a href="https://medium.com/@get_tested_covid19">News</a></li>
