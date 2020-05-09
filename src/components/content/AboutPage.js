@@ -40,7 +40,7 @@ class AboutPage extends React.Component {
                                             About
                                         </h1>
                                         <p className='lead'>
-                                            Get-tested-COVID-19 is a project
+                                            Get Tested COVID-19 is a project
                                             started by people like you who
                                             wanted to help support our
                                             broader community.

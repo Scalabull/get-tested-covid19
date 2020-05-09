@@ -12,14 +12,13 @@ import "assets/vendor/font-awesome/css/font-awesome.min.css"; // Need to update 
 // import "assets/vendor/nucleo/css/nucleo.css";
 // import "assets/scss/argon-design-system-react.scss?v1.1.0";
 
-import TestSiteSearch from "views/TestSiteSearch.js";
 import About from "views/About.js";
-import Resources from "views/Resources.js";
 import WhenShouldYouGetTested from "views/WhenShouldYouGetTested.js";
 import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
 import AboutPage from './components/content/AboutPage.js';
+import ResourcesPage from './components/content/ResourcesPage.js';
 
 // Colors
 const colors = {
@@ -125,7 +124,7 @@ ReactDOM.render(
         <Route
           path="/resources"
           exact
-          render={props => <Resources {...props} />}
+          render={props => <ResourcesPage {...props} />}
         />
         <Route
           path="/when-to-get-tested"
