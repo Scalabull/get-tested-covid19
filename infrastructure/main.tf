@@ -56,7 +56,7 @@ module "fargate" {
       logs_retention_days      = 14
       health_check_interval = 30
       health_check_path     = "/"
-      acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/fc031590-82a6-4f62-b0e5-c30b5d2e6996"
+      acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/0713fcea-afdb-4d36-9804-f0ec4a221857"
       auto_scaling_max_replicas = 50
       auto_scaling_requests_per_target = 4000
       host = "${local.env_dns_prefix}get-tested-covid19.org"
@@ -71,7 +71,7 @@ module "fargate" {
       logs_retention_days      = 14
       health_check_interval = 30
       health_check_path     = "/ping"
-      acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/fc031590-82a6-4f62-b0e5-c30b5d2e6996"
+      acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/0713fcea-afdb-4d36-9804-f0ec4a221857"
       auto_scaling_max_replicas = 50
       auto_scaling_requests_per_target = 4000
       host = "${local.env_dns_prefix}api.get-tested-covid19.org"
