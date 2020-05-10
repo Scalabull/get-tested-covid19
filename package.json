@@ -113,7 +113,7 @@
         "gulp": "4.0.2",
         "gulp-append-prepend": "1.0.8",
         "husky": "^4.2.5",
-        "jquery": "3.4.1",
+        "jquery": "3.5.0",
         "nodemon": "^2.0.3",
         "supertest": "^4.0.2",
         "typescript": "3.7.5"
