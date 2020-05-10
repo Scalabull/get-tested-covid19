@@ -4,7 +4,7 @@ import { SourcesWrapper, SourcesUl, SourceLi } from './styles'
 export const DisplayResources = () => {
   return (
     <SourcesWrapper>
-      <h1 className="display-3 mt-3">Resources</h1>
+      <h1 className="display-5 mt-3 mb-3">Resources</h1>
       <SourcesUl>
         <SourceLi>
           <TextLink

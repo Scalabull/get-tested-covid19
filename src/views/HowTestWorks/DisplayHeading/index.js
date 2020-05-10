@@ -4,11 +4,11 @@ import HeroImage from 'assets/img/theme/How_it_works_hero.png'
 
 export const displayHeading = () => (
   <HeadingWrapper>
-    <HeadingText>
-      <h1 className="display-3 text-white mt-3">
+    <HeadingText className="mt-3 mb-3">
+      <h1 className="display-5">
         How Does COVID-19 Testing Work?
           </h1>
-      <p className="text-white">
+      <p>
         In the United States, the availability of COVID-19 testing varies.
         The number of sites differs by state, and the process can be
         different for individual sites. On this page, we’ll be sharing the
