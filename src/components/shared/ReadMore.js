@@ -47,6 +47,7 @@ class ReadMore extends Component {
                 <Truncate
                     lines={!expanded && lines}
                     ellipsis={(
+                        // eslint-disable-next-line jsx-a11y/anchor-is-valid
                         <span>... <a href='#' onClick={this.toggleLines}>{more}</a></span>
                     )}
                     onTruncate={this.handleTruncate}

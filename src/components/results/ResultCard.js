@@ -3,7 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import ReadMore from '../shared/ReadMore.js';
 import { ButtonGroup } from 'reactstrap';
-import { darken } from 'polished';
 
 const StyledResultCard = styled.div`
   border-top: 1px solid #eee;

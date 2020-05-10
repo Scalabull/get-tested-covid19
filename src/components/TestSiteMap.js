@@ -1,5 +1,5 @@
-import React, { Component, useState, useEffect } from "react";
-import ReactMapboxGl, { Marker, Popup, Layer, Feature } from 'react-mapbox-gl';
+import React from "react";
+import ReactMapboxGl, { Marker, Layer, Feature } from 'react-mapbox-gl';
 import styled from 'styled-components';
 
 const StyledMapPin = styled.div`
@@ -53,7 +53,6 @@ export default class TestSiteMap extends React.Component {
 
         if(items && Array.isArray(items) && items.length > 0){
             mapCenter = [items[0].lng, items[0].lat];
-            console.log(mapCenter);
 
             let maxLat = MIN_GEO;
             let maxLng = MIN_GEO;
@@ -77,10 +76,9 @@ export default class TestSiteMap extends React.Component {
             mapCenter = [zipLatLng.longitude, zipLatLng.latitude];
         }
 
-        console.log(bounds);
-        
         return(
             <Map
+                // eslint-disable-next-line react/style-prop-object
                 style="mapbox://styles/mapbox/streets-v9"
                 fitBounds={bounds}
                 fitBoundsOptions={{ padding: 40 }}

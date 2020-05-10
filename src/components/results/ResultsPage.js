@@ -69,6 +69,11 @@ const StyledResultsPage = styled.div`
     width: 100%;
     height: 100%;
   }
+
+  .results__error {
+    text-align: center;
+    padding: 100px 15px;
+  }
 `
 
 class ResultsPage extends React.Component {
@@ -124,7 +129,6 @@ class ResultsPage extends React.Component {
         }
         const zipRE = /^[0-9]{5}$/;
         const zipMatchFlag = zipRE.test(searchZipStr);
-        console.log(searchZipStr);
 
         // Only allow numeric inputs.
         if (isNumeric(searchZipStr) && zipMatchFlag) {
@@ -138,7 +142,6 @@ class ResultsPage extends React.Component {
                       latitude: googleLatLng.lat(),
                       longitude: googleLatLng.lng(),
                   };
-                  console.log('1: ', this.zipLatLng);
 
                   updatedList = updatedList.map(function (item) {
                       // return any sites within 40 miles.
@@ -169,6 +172,13 @@ class ResultsPage extends React.Component {
                   this.setState({
                     isFetching: false
                   });
+              } else {
+                if (err === 'ZERO_RESULTS') {
+                  this.resultsZip = [];
+                  this.setState({
+                    isFetching: false
+                  })
+                }
               }
           });
         } else {
@@ -205,12 +215,26 @@ class ResultsPage extends React.Component {
               {!this.state.isFetching && (
                 <>
                   {this.state.hasError && this.state.hasError === 'NO_ZIP' && (
-                    <div>No zip code</div>
+                    <div className="container results__error">
+                      <h1>No zip code provided</h1>
+                      <p>Please provide a valid US zip code to see test centers.</p>
+                    </div>
                   )}
                   {this.state.hasError && this.state.hasError === 'INVALID_ZIP' && (
-                    <div>Invalid zip code</div>
+                    <div className="container results__error">
+                      <h1>Invalid zip code</h1>
+                      <p>Please provide a valid US zip code to see test centers.</p>
+                    </div>
                   )}
-                  {!this.state.hasError && (
+                  {!this.state.hasError && this.resultsZip.length === 0 && (
+                    <>
+                      <div className="container results__error">
+                        <h1>No test centers for this zip code</h1>
+                        <p>Please try another zip code.</p>
+                      </div>
+                    </>
+                  )}
+                  {!this.state.hasError && this.resultsZip.length > 0 && (
                     <>
                       <div className="results__list">
                         <div className="results__list-header">
