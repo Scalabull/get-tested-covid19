@@ -37,6 +37,10 @@
         {
           "name": "API_PUBLIC_ROUTE",
           "value": "public"
+        },
+        {
+          "name": "API_CORS_WHITELIST",
+          "value": "https://staging.get-tested-covid19.org"
         }
     ],
     "secrets": [
@@ -55,6 +59,10 @@
       {
         "name": "DB_NAME",
         "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/staging/database/DB_NAME"
+      },
+      {
+        "name": "GOOGLE_GEOCODING_KEY",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/staging/GOOGLE_GEOCODING_KEY"
       }
     ]
   }

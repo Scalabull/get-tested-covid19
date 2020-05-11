@@ -43,6 +43,7 @@ module "fargate" {
 
   vpc_external_public_subnets_ids = module.saas_vpc.public_subnets
   vpc_external_private_subnets_ids = module.saas_vpc.private_subnets
+  default_action = "${local.env_dns_prefix}get-tested-covid19.org"
 
   services = {
     www = {
@@ -55,7 +56,7 @@ module "fargate" {
       logs_retention_days      = 14
       health_check_interval = 30
       health_check_path     = "/"
-      acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/fc031590-82a6-4f62-b0e5-c30b5d2e6996"
+      acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/0713fcea-afdb-4d36-9804-f0ec4a221857"
       auto_scaling_max_replicas = 50
       auto_scaling_requests_per_target = 4000
       host = "${local.env_dns_prefix}get-tested-covid19.org"
@@ -70,7 +71,7 @@ module "fargate" {
       logs_retention_days      = 14
       health_check_interval = 30
       health_check_path     = "/ping"
-      acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/fc031590-82a6-4f62-b0e5-c30b5d2e6996"
+      acm_certificate_arn = "arn:aws:acm:us-east-1:${data.aws_caller_identity.current.account_id}:certificate/0713fcea-afdb-4d36-9804-f0ec4a221857"
       auto_scaling_max_replicas = 50
       auto_scaling_requests_per_target = 4000
       host = "${local.env_dns_prefix}api.get-tested-covid19.org"
@@ -81,6 +82,18 @@ module "fargate" {
 resource "aws_route53_record" "www" {
   zone_id = "Z0805372RGZMLZDPFNEH"
   name    = "${local.env_dns_prefix}get-tested-covid19.org"
+  type    = "A"
+
+  alias {
+    name                   = module.fargate.application_load_balancers_dns_names
+    zone_id                = module.fargate.application_load_balancers_zone_ids
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "wwwactual" {
+  zone_id = "Z0805372RGZMLZDPFNEH"
+  name    = "${local.env_dns_prefix}www.get-tested-covid19.org"
   type    = "A"
 
   alias {
@@ -238,6 +251,15 @@ resource "aws_ssm_parameter" "DB_NAME" {
   description = "${var.environment} DB_NAME"
   type        = "String"
   value       = "postgres"
+
+  tags = local.common_tags
+}
+
+resource "aws_ssm_parameter" "GOOGLE_GEOCODING_KEY" {
+  name        = "/${var.environment}/GOOGLE_GEOCODING_KEY"
+  description = "${var.environment} GOOGLE_GEOCODING_KEY"
+  type        = "String"
+  value       = var.google_geocoding_key
 
   tags = local.common_tags
 }

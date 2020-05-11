@@ -1,11 +1,9 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const TestCenter = sequelize.define(
-    'TestCenter',
+    'UnverifiedTestCenter',
     {
-      public: DataTypes.BOOLEAN,
       name: DataTypes.STRING,
-      location: DataTypes.TEXT,
       address: DataTypes.STRING,
       city: DataTypes.STRING,
       state: DataTypes.STRING,
@@ -14,28 +12,44 @@ module.exports = (sequelize, DataTypes) => {
       longitude: DataTypes.DECIMAL(9,6),
       geolocation: DataTypes.GEOMETRY,
       phone_number: DataTypes.STRING,
-      hours_of_operation: DataTypes.STRING,
-      days_of_operation: DataTypes.STRING,
-      operation_period: DataTypes.STRING,
+      phone_number_description: DataTypes.STRING,
+      secondary_phone_number: DataTypes.STRING,
+      secondary_phone_number_description: DataTypes.STRING,
       website: DataTypes.TEXT,
       appointment_required: DataTypes.BOOLEAN,
       doctor_screen_required_beforehand: DataTypes.BOOLEAN,
       drive_thru_site: DataTypes.BOOLEAN,
       walk_in_site: DataTypes.BOOLEAN,
-      facilities_provided: DataTypes.TEXT,
+      public_description: DataTypes.TEXT,
       estimated_daily_test_capacity: DataTypes.INTEGER,
       comments: DataTypes.TEXT,
       address_freetext_blob: DataTypes.TEXT,
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
+      latest_verification_by: DataTypes.STRING,
+      flagged_as_duplicate: DataTypes.BOOLEAN,
+      test_result_turnaround_time: DataTypes.STRING,
+      is_designated_covid_facility: DataTypes.BOOLEAN,
+      facility_wants_to_be_contacted_for_further_help: DataTypes.BOOLEAN,
+      open_hour_mon: DataTypes.INTEGER,
+      open_hour_tues: DataTypes.INTEGER,
+      open_hour_weds: DataTypes.INTEGER,
+      open_hour_thurs: DataTypes.INTEGER,
+      open_hour_fri: DataTypes.INTEGER,
+      open_hour_sat: DataTypes.INTEGER,
+      open_hour_sun: DataTypes.INTEGER,
+      close_hour_mon: DataTypes.INTEGER,
+      close_hour_tues: DataTypes.INTEGER,
+      close_hour_weds: DataTypes.INTEGER,
+      close_hour_thurs: DataTypes.INTEGER,
+      close_hour_fri: DataTypes.INTEGER,
+      close_hour_sat: DataTypes.INTEGER,
+      close_hour_sun: DataTypes.INTEGER,
+      open_24_hours: DataTypes.BOOLEAN,
+      exported_to_crm_at: DataTypes.DATE,
+      verified_at: DataTypes.DATE
     },
     {
-      indexes: [
-        {
-          fields: ['geolocation'],
-          using: 'gist'
-        }
-      ],
       hooks: {
         beforeCreate: (testCenter) => {
           return updateGeolocation(testCenter)

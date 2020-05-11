@@ -16,6 +16,12 @@
         "awslogs-region": "${region}",
         "awslogs-stream-prefix": "ecs"
       }
-    }
+    },
+    "environment": [
+      {
+        "name": "REACT_APP_GTC_API_URL",
+        "value": "https://api.get-tested-covid19.org"
+      }
+    ]
   }
 ]

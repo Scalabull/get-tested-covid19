@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components'
 import CardList from 'components/CardList';
 import TestSiteMap from 'components/TestSiteMap';
-import haversine from 'haversine';
 import qs from 'query-string';
+import axios from 'axios';
 import HomeZipForm from 'components/Forms/HomeZipForm.js';
 import Vector from '../assets/img/icons/map/Vector.png'
 import { Row, Col } from 'reactstrap';
@@ -12,8 +12,7 @@ import hero1 from '../assets/img/hero/Hero1.png';
 import { ShareButton } from '../views/HowTestWorks/sharedStyles'
 import { GoogleApiWrapper } from 'google-maps-react';
 
-// DISTANCE THRESHOLD FOR SEARCH RESULTS (in Miles, Haversine distance)
-const DISTANCE_THRESH = 40;
+const REACT_APP_GTC_API_URL = process.env.REACT_APP_GTC_API_URL;
 
 // Check if GeocoderResult object return form Google Geolocation is a US address.
 function isUSLocation(geocoderResult) {
@@ -63,14 +62,16 @@ function tryGeolocation(geocoder, callback) {
                 lng: position.coords.longitude
             };
 
-            console.log('location found: ', pos);
+             console.log('location found: ', pos);
+             console.log('full position: ', JSON.stringify(position, null, '\t'));
+
             geocoder.geocode({ 'location': pos }, (res, status) => {
                 if (status === 'OK') {
                     const isUSLoc = isUSLocation(res[0]);
                     const postalCode = returnPostalCode(res[0]);
                     if (res[0] && isUSLoc && postalCode !== null) {
-                        console.log('gelocation: ', res[0]);
-                        console.log('postalCode: ', postalCode)
+                         console.log('gelocation: ', res[0]);
+                         console.log('postalCode: ', postalCode)
                         callback(null, pos, postalCode);
                     } else {
                         callback(new Error('Geolocated address not in the US, or not valid postal code.'))
@@ -90,25 +91,10 @@ function tryGeolocation(geocoder, callback) {
     }
 }
 
-function codeAddress(zip, geocoder, callback) {
-    geocoder.geocode({ 'address': zip }, function (results, status) {
-        if (status === 'OK') {
-            callback(null, results[0].geometry.location);
-        }
-        else {
-            callback(status, null);
-        }
-    });
-}
-
 const getQueryStringValue = (key, queryString = window.location.search) => {
     const values = qs.parse(queryString);
     return values[key];
 };
-
-function isNumeric(s) {
-    return !isNaN(s - parseFloat(s));
-}
 
 class TestSiteList extends React.Component {
     constructor(props) {
@@ -131,113 +117,75 @@ class TestSiteList extends React.Component {
     }
 
     onSubmit(zipStr) {
-        this.filterList(zipStr + "");
+        this.setState({isFetching: true}, () => {
+            this.filterList(zipStr + "");
+        });
     }
 
-    filterList(searchZipStr) {
-        const zipRE = /^[0-9]{5}$/;
-        const zipMatchFlag = zipRE.test(searchZipStr);
+    filterList(searchZipStr, latLngPos) {
+        if(latLngPos && latLngPos.lat && latLngPos.lng){
+            axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/searchByUserLatLng/?latitude=' + latLngPos.lat + '&longitude=' + latLngPos.lng)
+                .then(response => {
+                    console.log('response is: ', JSON.stringify(response));
+                    const coords = {latitude: latLngPos.lat, longitude: latLngPos.lng};
+                    this.setState({items: response.data.testCenters, zipLatLng: coords, searchZip: searchZipStr, isFetching: false});
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({items: [], searchZip: searchZipStr, isFetching: false});
+                });
+        } 
+        else {
 
-        // Only allow numeric inputs.
-        if (isNumeric(searchZipStr) || searchZipStr === '') {
+            const zipRE = /^[0-9]{5}$/;
+            const zipMatchFlag = zipRE.test(searchZipStr);
+
             if (zipMatchFlag) {
-                let updatedList = this.state.initialItems;
-
-                let geocoder = new this.props.google.maps.Geocoder();
-                codeAddress(searchZipStr, geocoder, (err, googleLatLng) => {
-                    if (!err) {
-                        //Use haversine distance w/ lat, lng
-                        const zipLatLng = {
-                            latitude: googleLatLng.lat(),
-                            longitude: googleLatLng.lng(),
-                        };
-
-                        updatedList = updatedList.map(function (item) {
-                            // return any sites within 40 miles.
-                            const end = {
-                                latitude: item.lat,
-                                longitude: item.lng,
-                            };
-
-                            const dist = haversine(zipLatLng, end, { unit: 'mile' });
-                            let newItem = { ...item };
-                            newItem.dist = dist;
-                            return newItem;
-                        });
-
-                        updatedList = updatedList.filter((item) => {
-                            return item.dist < DISTANCE_THRESH;
-                        });
-
-                        updatedList.sort((item1, item2) => {
-                            return item1.dist - item2.dist;
-                        });
-
-                        this.setState({ items: updatedList, zipLatLng, searchZip: searchZipStr });
-                    }
+                axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
+                .then(response => {
+                    console.log('response is: ', JSON.stringify(response));
+                    this.setState({items: response.data.testCenters, zipLatLng: response.data.coords, searchZip: searchZipStr, isFetching: false});
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({items: [], searchZip: searchZipStr, isFetching: false});
                 });
             } else {
                 this.setState({
                     items: [],
+                    isFetching: false
                 });
             }
-        }
+        }   
     }
 
     componentDidMount() {
-        fetch('https://storage.googleapis.com/covid19-resources/testSites.json')
-            .then((res) => res.json())
-            .then(
-                (res) => {
-                    this.setState({
-                        initialItems: res.testSites,
-                        items: res.testSites,
-                    });
-                },
-                (error) => {
-                    console.log(error);
-                }
-            )
-            .then(() => {
-                this.setState({
-                    isFetching: false,
-                });
-
-                // try to get previously approved location
-                const zipQueryString = getQueryStringValue('zip');
-                if (!zipQueryString && navigator && navigator.permissions) {
-                    navigator.permissions.query({ name: 'geolocation' })
-                        .then(status => {
-                            if (status && status.state === 'granted') {
-                                this.locateUser();
-                            } else {
-                                this.setDefaultZip();
-                            }
-                        })
-                } else {
-                    this.setDefaultZip();
-                }
-            })
+        this.setDefaultZip();
     }
 
-    setDefaultZip(searchZip = this.state.defaultZip) {
+    setDefaultZip(searchZip = this.state.defaultZip, latLng) {
         this.setState({ searchZip }, () => {
-            this.filterList(this.state.searchZip || searchZip);
+            this.filterList(this.state.searchZip || searchZip, latLng);
         });
     }
 
     locateUser(scrollTo = false) {
-        let geocoder = new this.props.google.maps.Geocoder();
-        tryGeolocation(geocoder, (err, pos, postalCode) => {
-            if (err) {
-                this.setDefaultZip();
-            } else {
-                this.setDefaultZip(postalCode);
-                if (scrollTo && this.scrollRef) {
-                    window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
+        this.setState({ isFetching: true}, () => {
+            let geocoder = new this.props.google.maps.Geocoder();
+            tryGeolocation(geocoder, (err, pos, postalCode) => {
+                if (err) {
+                    this.setDefaultZip();
+                    if (scrollTo && this.scrollRef) {
+                        window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
+                    }
+                } else {
+                    this.setDefaultZip(postalCode, pos);
+                    if (scrollTo && this.scrollRef) {
+                        window.scroll({ left: 0, top: this.scrollRef.current.offsetTop, behavior: 'smooth' })
+                    }
                 }
-            }
-        });
+            });
+        }); 
     }
 
     renderList() {
@@ -251,7 +199,9 @@ class TestSiteList extends React.Component {
             );
         }
 
-        const viewItems = this.state.items.slice(0, 10);
+        let viewItems = this.state.items || [];
+        const totalLength = viewItems.length;
+        viewItems = viewItems.slice(0, 10);
 
         return (
             <>
@@ -259,7 +209,7 @@ class TestSiteList extends React.Component {
                     <Row className='pl-4'>
                         <Col lg='9'>
                             <p>
-                                {viewItems.length} of {this.state.items.length} results within 40 miles of "{this.state.searchZip}"
+                                {viewItems.length} of {totalLength} results within 40 miles of "{this.state.searchZip}"
                             </p>
                         </Col>
                         <Col lg='3'>
@@ -268,13 +218,13 @@ class TestSiteList extends React.Component {
                             </ShareButton>
                         </Col>
                     </Row>
-                    <CardList style={{ width: '100vw' }} items={viewItems} totalCount={this.state.items.length} />
+                    <CardList style={{ width: '100vw' }} items={viewItems} totalCount={totalLength} />
                 </Col>
                 <Col className='order-lg-2' lg='5'>
                     <TestSiteMap
                         style={{ width: '100vw' }}
                         items={viewItems}
-                        totalCount={this.state.items.length}
+                        totalCount={totalLength}
                         zipLatLng={this.state.zipLatLng}
                         searchZip={this.state.searchZip}
                     />

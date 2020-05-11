@@ -6,6 +6,7 @@ const socketio = require('socket.io')
 const compression = require('compression')
 const helmet = require('helmet')
 const db = require('./db/models/index')
+var cors = require('cors')
 
 if(process.env.NODE_ENV !== 'staging' && process.env.NODE_ENV !== 'production'){
   require('dotenv').config(process.cwd(), '.env')
@@ -16,7 +17,10 @@ const port = process.env.API_PORT
 const authRouter = require('./auth/authRoutes')
 const internalRouter = require('./api/internalRoutes')
 const publicRouter = require('./api/publicRoutes')
-
+/*
+const corsOptions = {
+  origin: process.env.API_CORS_WHITELIST
+}*/
 const app = express()
 
 app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common'))
@@ -25,6 +29,7 @@ app.use(bodyParser.json({ limit: '1mb' }))
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(compression())
 app.use(helmet())
+app.use(cors())
 
 app.get('/ping', (req, res) => res.status(200).send('pong'))
 app.use(`/api/v1/${process.env.API_AUTH_ROUTE}`, authRouter)
