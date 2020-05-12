@@ -1,34 +1,58 @@
-import React from 'react';
-import { Map, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
+import React from "react";
+import ReactMapboxGl, { Marker, Layer, Feature } from 'react-mapbox-gl';
+import styled from 'styled-components';
+
+const StyledMapPin = styled.div`
+    border-radius: 50%;
+    border: 16px solid ${props => props.theme.colorPurple};
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: -10px;
+
+    &:after {
+        content: '${props => props.num}';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        font-weight: 600;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: ${props => props.theme.fontSans};
+    }
+
+    &:before {
+        position: absolute;
+        content: '';
+        width: 0px;
+        height: 0px;
+        bottom: -35px;
+        left: -10px;
+        border: 10px solid transparent;
+        border-top: 17px solid ${props => props.theme.colorPurple};
+    }
+`
 
 const MAX_GEO = 400;
 const MIN_GEO = -400;
-const MAP_MARKER_BUFFER = 0.001;
+const Map = ReactMapboxGl({
+    accessToken: 'pk.eyJ1Ijoic3VtYW5hZ3IxMyIsImEiOiJjazlsbHo2N3kwYmJvM2VuNXl3cTFoMHZvIn0.jfMLv49EhilU0_Xnp2gRKA'
+});
 
 export default class TestSiteMap extends React.Component {
     render() {
+        // Mapbox uses [longitude, latitude] instead of [latitude, longitude]
         let { items, zipLatLng } = this.props;
-        let latLng = null;
-        if(zipLatLng && zipLatLng.latitude && zipLatLng.longitude){
-            latLng = [zipLatLng.latitude, zipLatLng.longitude];
-        }
-
-        items = items.map((item) => {
-            item.shortName = item.name.substring(0, 12);
-            if (item.name && item.name.length > 12) item.shortName += '...';
-
-            item.latitude = parseFloat(item.latitude);
-            item.longitude = parseFloat(item.longitude);
-
-            return item;
-        });
-
-        let mapCenterCoords = null;
+        let mapCenter = null;
         let bounds = undefined;
 
-
         if(items && Array.isArray(items) && items.length > 0){
-            mapCenterCoords = items[0];
+            mapCenter = [items[0].lng, items[0].lat];
 
             let maxLat = MIN_GEO;
             let maxLng = MIN_GEO;
@@ -40,41 +64,30 @@ export default class TestSiteMap extends React.Component {
                 if(item.longitude > maxLng) maxLng = item.longitude;
                 if(item.longitude < minLng) minLng = item.longitude;
             });
-            minLat = minLat + MAP_MARKER_BUFFER;
-            maxLat = maxLat + MAP_MARKER_BUFFER;
-            minLng = minLng + MAP_MARKER_BUFFER;
-            maxLng = maxLng + MAP_MARKER_BUFFER;
 
-            bounds = [[maxLat, minLng], [minLat, maxLng]];
+            bounds = [[minLng, minLat], [maxLng, maxLat]];
         }
 
-        if (latLng && Array.isArray(latLng)) {
-            mapCenterCoords = latLng;
+        if(zipLatLng && zipLatLng.latitude && zipLatLng.longitude) {
+            mapCenter = [zipLatLng.longitude, zipLatLng.latitude];
         }
-        return (
+
+        return(
             <Map
-                center={mapCenterCoords}
-                zoom={10}
-                zoomControl={true}
-                dragging={true}
-                bounds={bounds}
-                className='map'
+                // eslint-disable-next-line react/style-prop-object
+                style="mapbox://styles/mapbox/streets-v9"
+                fitBounds={bounds}
+                fitBoundsOptions={{ padding: 40 }}
+                animationOptions={{ animate: false }}
+                containerStyle={{ height: "100%" }}
+                flyToOptions={{ maxDuration: 0.1}}
             >
-                <TileLayer
-                    url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                />
+                <Layer type="symbol" layout={{ "icon-image": "marker-15" }}>
+                    <Feature coordinates={mapCenter} />
+                </Layer>
                 {items.map((item, index) => (
-                    <Marker key={index} position={{ lat: item.latitude, lng: item.longitude }}>
-                        <Tooltip permanent={true}>
-                            <h6>{index + 1 }</h6>
-                        </Tooltip>
-                        <Popup>
-                            <h6>{index + 1 + '. ' + item.name}</h6>
-                            <div>
-                                {item.address}, {item.city}, {item.state}
-                            </div>
-                        </Popup>
+                    <Marker coordinates={[item.lng, item.lat]} anchor="top">
+                        <StyledMapPin num={index + 1} />
                     </Marker>
                 ))}
             </Map>
