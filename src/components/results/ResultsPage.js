@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import TestSiteMap from 'components/TestSiteMap';
 import axios from 'axios';
 import qs from 'query-string';
-import { GoogleApiWrapper } from 'google-maps-react';
 import NavHeader from '../shared/NavHeader.js';
 import ResultsListCards from './ResultsListCards';
 import { Spinner } from 'reactstrap';
@@ -105,7 +104,6 @@ class ResultsPage extends React.Component {
       // When zip value changes, then update results
       if (getQueryStringValue('zip') !== this.zip) {
         this.zip = getQueryStringValue('zip');
-        console.log('componentDidUpdate');
         this.filterList(this.zip);
         // Scroll to top of page
         window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -126,7 +124,7 @@ class ResultsPage extends React.Component {
           // Zip code is valid
           axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
             .then(response => {
-              console.log('response is: ', response);
+              //console.log('response is: ', response);
               this.zipLatLng = response.data.coords;
               this.resultsZip = response.data.testCenters;
               this.setState({
@@ -136,65 +134,18 @@ class ResultsPage extends React.Component {
             })
             .catch(err => {
               console.log(err);
+              this.resultsZip = [];
+              this.setState({
+                isFetching: false
+              })
               //this.setState({items: [], searchZip: searchZipStr, isFetching: false});
             });
+        } else {
+          this.setState({
+            isFetching: false,
+            hasError: 'INVALID_ZIP'
+          })
         }
-
-        //   let updatedList = this.resultsAll;
-
-        //   let geocoder = new this.props.google.maps.Geocoder();
-        //   codeAddress(searchZipStr, geocoder, (err, googleLatLng) => {
-        //       if (!err) {
-        //           //Use haversine distance w/ lat, lng
-        //           this.zipLatLng = {
-        //               latitude: googleLatLng.lat(),
-        //               longitude: googleLatLng.lng(),
-        //           };
-
-        //           updatedList = updatedList.map(function (item) {
-        //               // return any sites within 40 miles.
-        //               const end = {
-        //                   latitude: item.lat,
-        //                   longitude: item.lng,
-        //               };
-
-        //               const dist = haversine({
-        //                   latitude: googleLatLng.lat(),
-        //                   longitude: googleLatLng.lng(),
-        //               }, end, { unit: 'mile' });
-        //               let newItem = { ...item };
-        //               newItem.dist = dist;
-        //               return newItem;
-        //           });
-
-        //           updatedList = updatedList.filter((item) => {
-        //               return item.dist < DISTANCE_THRESH;
-        //           });
-
-        //           updatedList.sort((item1, item2) => {
-        //               return item1.dist - item2.dist;
-        //           });
-
-        //           this.resultsZip = updatedList;
-
-        //           this.setState({
-        //             isFetching: false
-        //           });
-        //       } else {
-        //         if (err === 'ZERO_RESULTS') {
-        //           this.resultsZip = [];
-        //           this.setState({
-        //             isFetching: false
-        //           })
-        //         }
-        //       }
-        //   });
-        // } else {
-        //   this.setState({
-        //     isFetching: false,
-        //     hasError: 'INVALID_ZIP'
-        //   })
-        // }
     }
 
     render() {
@@ -210,8 +161,6 @@ class ResultsPage extends React.Component {
       };
 
       const viewItems = this.resultsZip.slice(0, 10);
-
-      console.log(viewItems);
 
       return (
           <DocumentMeta {...meta}>
@@ -273,20 +222,7 @@ class ResultsPage extends React.Component {
     }
 }
 
-export default GoogleApiWrapper({
-    apiKey: 'AIzaSyCj5wGAsi1ppD8qf6Yi-e6fMChdck7BMVg'
-})(ResultsPage);
-
-function codeAddress(zip, geocoder, callback) {
-    geocoder.geocode({ 'address': zip }, function (results, status) {
-        if (status === 'OK') {
-            callback(null, results[0].geometry.location);
-        }
-        else {
-            callback(status, null);
-        }
-    });
-}
+export default ResultsPage;
 
 const getQueryStringValue = (key, queryString = window.location.search) => {
     const values = qs.parse(queryString);

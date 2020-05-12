@@ -111,7 +111,6 @@ const StyledResultCard = styled.div`
 
 class ResultCard extends React.Component {
   render() {
-    console.log(this.props.item);
     const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
     return (
         <StyledResultCard>
@@ -120,7 +119,7 @@ class ResultCard extends React.Component {
             {distance !== null && distance !== undefined && (<><span className="card__dist">{distance.toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone_number.split(')')[0]}) {phone_number.split(')')[1]}
           </p>
           <div className="card__req">
-            {!doctor_screen_required_beforehand && !appointment_required && <span class="badge badge-success"><i className="fa fa-check icon-left" />Walk-in testing available</span>}
+            {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fa fa-check icon-left" />Walk-in testing available</span>}
             {(doctor_screen_required_beforehand || appointment_required) && (
               <>
                 {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fa fa-stethoscope icon-left" />Doctor's screening required</span>}
@@ -138,14 +137,14 @@ class ResultCard extends React.Component {
           </div>
           <div className="card__actions">
             <ButtonGroup className="card__actions-mobile" size="sm">
-              <a class="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
+              <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
               {website !== '' && <a className="btn btn-outline-primary" href={website} target="_blank" rel="noopener noreferrer">Visit website</a>}
               {phone_number !== '' && (
                 <a className="btn btn-outline-primary card__call" href={`tel: ${phone_number}`}  target="_blank" rel="noopener noreferrer">Call</a>  
               )}
             </ButtonGroup>
             <ButtonGroup className="card__actions-desktop" size="sm">
-              <a class="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer"><i className="fa fa-map-marker" />Get directions</a>
+              <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer"><i className="fa fa-map-marker" />Get directions</a>
               {website !== '' && <a className="btn btn-outline-primary" href={website} target="_blank" rel="noopener noreferrer"><i className="fa fa-external-link-square" />Visit website</a>}
             </ButtonGroup>
           </div>

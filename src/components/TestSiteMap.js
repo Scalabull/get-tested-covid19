@@ -72,8 +72,6 @@ export default class TestSiteMap extends React.Component {
             mapCenter = [parseFloat(zipLatLng.longitude), parseFloat(zipLatLng.latitude)];
         }
 
-        console.log(bounds, mapCenter);
-
         return(
             <Map
                 // eslint-disable-next-line react/style-prop-object
