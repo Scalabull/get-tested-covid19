@@ -116,7 +116,7 @@ class ResultCard extends React.Component {
         <StyledResultCard>
           <h3>{this.props.index + 1}. {name}</h3>
           <p className="card__meta">
-            {distance !== null && distance !== undefined && (<><span className="card__dist">{distance.toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone_number.split(')')[0]}) {phone_number.split(')')[1]}
+            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone_number.split(')')[0]}) {phone_number.split(')')[1]}
           </p>
           <div className="card__req">
             {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fa fa-check icon-left" />Walk-in testing available</span>}
