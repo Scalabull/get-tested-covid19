@@ -59,6 +59,7 @@ export default class TestSiteMap extends React.Component {
             let minLng = MAX_GEO;
             let minLat = MAX_GEO;
             items.forEach(item => {
+                console.log(item);
                 if(item.latitude > maxLat) maxLat = item.latitude;
                 if(item.latitude < minLat) minLat = item.latitude;
                 if(item.longitude > maxLng) maxLng = item.longitude;
