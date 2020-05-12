@@ -256,12 +256,12 @@ class ResultsPage extends React.Component {
                         </div>
                       </div>
                       <div className="results__map">
-                        {/* <TestSiteMap
+                        <TestSiteMap
                             items={viewItems}
                             totalCount={this.resultsZip.length}
                             zipLatLng={this.zipLatLng}
                             searchZip={this.zip}
-                        /> */}
+                        />
                       </div>
                     </>
                   )}

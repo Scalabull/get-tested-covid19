@@ -52,26 +52,27 @@ export default class TestSiteMap extends React.Component {
         let bounds = undefined;
 
         if(items && Array.isArray(items) && items.length > 0){
-            mapCenter = [items[0].lng, items[0].lat];
+            mapCenter = [items[0].longitude, items[0].latitude];
 
             let maxLat = MIN_GEO;
             let maxLng = MIN_GEO;
             let minLng = MAX_GEO;
             let minLat = MAX_GEO;
             items.forEach(item => {
-                console.log(item);
                 if(item.latitude > maxLat) maxLat = item.latitude;
                 if(item.latitude < minLat) minLat = item.latitude;
                 if(item.longitude > maxLng) maxLng = item.longitude;
                 if(item.longitude < minLng) minLng = item.longitude;
             });
 
-            bounds = [[minLng, minLat], [maxLng, maxLat]];
+            bounds = [[parseFloat(minLng), parseFloat(minLat)], [parseFloat(maxLng), parseFloat(maxLat)]];
         }
 
         if(zipLatLng && zipLatLng.latitude && zipLatLng.longitude) {
-            mapCenter = [zipLatLng.longitude, zipLatLng.latitude];
+            mapCenter = [parseFloat(zipLatLng.longitude), parseFloat(zipLatLng.latitude)];
         }
+
+        console.log(bounds, mapCenter);
 
         return(
             <Map
@@ -87,7 +88,7 @@ export default class TestSiteMap extends React.Component {
                     <Feature coordinates={mapCenter} />
                 </Layer>
                 {items.map((item, index) => (
-                    <Marker coordinates={[item.lng, item.lat]} anchor="top">
+                    <Marker key={`map-market-${index}`} coordinates={[parseFloat(item.longitude), parseFloat(item.latitude)]} anchor="top">
                         <StyledMapPin num={index + 1} />
                     </Marker>
                 ))}
