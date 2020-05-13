@@ -80,14 +80,12 @@ function tryGeolocation(geocoder, callback) {
                 lng: position.coords.longitude
             };
 
-            console.log('location found: ', pos);
+            //console.log('location found: ', pos);
             geocoder.geocode({ 'location': pos }, (res, status) => {
                 if (status === 'OK') {
                     const isUSLoc = isUSLocation(res[0]);
                     const postalCode = returnPostalCode(res[0]);
                     if (res[0] && isUSLoc && postalCode !== null) {
-                        console.log('gelocation: ', res[0]);
-                        console.log('postalCode: ', postalCode)
                         callback(null, pos, postalCode);
                     } else {
                         callback(new Error('Geolocated address not in the US, or not valid postal code.'))
@@ -135,7 +133,6 @@ function returnPostalCode(geocoderResult) {
 class ZipForm extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props.location.search);
         this.state = { 
           value: getQueryStringValue('zip') || '',
           gettingLoc: false
