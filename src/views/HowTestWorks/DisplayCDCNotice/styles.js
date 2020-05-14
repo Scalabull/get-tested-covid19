@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const CDCContainer = styled.div`
 background-color: #FFCAA4;
 border-radius: 30px;
-top: 70px;
+top: 90px;
 z-index: 1;
 position: sticky;
 position: -webkit-sticky;
@@ -30,6 +30,5 @@ font-size: smaller;
 @media(max-width: 414px){
   margin: 20px;
   padding: 15px 20px 5px 30px;
-
 };
  `

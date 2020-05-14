@@ -58,8 +58,7 @@ class HomeZipForm extends React.Component {
 
     render() {
         return (
-
-            <Form onSubmit={this.handleSubmit} inline>
+            <Form onSubmit={this.handleSubmit}>
                     <FormGroup
                         className={classnames({
                             focused: this.state.searchFocused
@@ -67,7 +66,7 @@ class HomeZipForm extends React.Component {
                     >
                         <Row form>
                             <Input
-                                className='mr-0 pr-12 search-input form-control form-control-lg'
+                                className='search-input form-control form-control-lg'
                                 title='Enter Zip Code (5 digit)'
                                 placeholder='Enter Zip Code (5 digit)'
                                 type='text'

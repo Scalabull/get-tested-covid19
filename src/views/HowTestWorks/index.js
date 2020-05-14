@@ -1,7 +1,7 @@
 import React from 'react';
 import DocumentMeta from 'react-document-meta';
-import DemoNavbar from 'components/Navbars/DemoNavbar.js';
-import SimpleFooter from 'components/Footers/SimpleFooter.js';
+import NavHeader from '../../components/shared/NavHeader.js';
+import NavFooter from '../../components/shared/NavFooter.js';
 import { ResourcesWrapper, QAWrapper, CDCWrapper } from './sharedStyles'
 import { displayHeading } from './DisplayHeading'
 import { displayCDCNotice } from './DisplayCDCNotice'
@@ -29,21 +29,11 @@ class HowItWorks extends React.Component {
     return (
       <DocumentMeta {...meta}>
         <HowTestingWorksWrapper>
-          <DemoNavbar />
-          <section className="section section-lg section-shaped pb-100">
-            <div className="shape shape-style-1 shape-default">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
+          <NavHeader />
+          <section className="section mt-4 mb-4">
+            <div className="container">
+              {displayHeading()}
             </div>
-
-            {displayHeading()}
           </section>
           <ResourcesWrapper>
             <QAWrapper>
@@ -58,7 +48,7 @@ class HowItWorks extends React.Component {
           </ResourcesWrapper>
           {displayWhyIsTestingImportant()}
           {DisplayResources()}
-          <SimpleFooter />
+          <NavFooter />
         </HowTestingWorksWrapper>
       </DocumentMeta >
     );
