@@ -6,7 +6,7 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import 'normalize.css/normalize.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import "assets/vendor/font-awesome/css/font-awesome.min.css"; // Need to update to latest version
+import "assets/vendor/font-awesome/css/all.min.css"; // Need to update to latest version
 
 // To delete
 // import "assets/vendor/nucleo/css/nucleo.css";

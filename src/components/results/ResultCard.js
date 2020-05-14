@@ -54,7 +54,7 @@ const StyledResultCard = styled.div`
   .card__actions {
     margin-top: 15px;
 
-    .fa {
+    .fas {
       margin-right: 5px;
     }
   }
@@ -78,10 +78,6 @@ const StyledResultCard = styled.div`
   .card__features {
     margin-top: 5px;
     font-weight: 500;
-
-    .fa {
-      margin-right: 5px;
-    }
   }
 
   .card__feature {
@@ -90,7 +86,7 @@ const StyledResultCard = styled.div`
     font-weight: 300;
     font-size: 14px;
 
-    .fa {
+    .fas {
       margin-right: 8px;
     }
 
@@ -119,11 +115,11 @@ class ResultCard extends React.Component {
             {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone_number.split(')')[0]}) {phone_number.split(')')[1]}
           </p>
           <div className="card__req">
-            {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fa fa-check icon-left" />Walk-in testing available</span>}
+            {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fas fa-check icon-left" />Walk-in testing available</span>}
             {(doctor_screen_required_beforehand || appointment_required) && (
               <>
-                {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fa fa-stethoscope icon-left" />Doctor's screening required</span>}
-                {appointment_required && <span className="badge badge-danger"><i className="fa fa-calendar icon-left" />Appointment required</span>}
+                {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fas fa-times icon-left" />Doctor's screening required</span>}
+                {appointment_required && <span className="badge badge-danger"><i className="fas fa-times icon-left" />Appointment required</span>}
               </>
             )}
           </div>
@@ -133,7 +129,7 @@ class ResultCard extends React.Component {
             </ReadMore>
           </p>
           <div className="card__features">
-            <div className="card__feature"><i className="fa fa-automobile" />Drive-through testing <strong>{drive_thru_site ? 'Yes' : 'No'}</strong></div>
+            <div className="card__feature"><i className="fas fa-car-side" />Drive-through testing <strong>{drive_thru_site ? 'Yes' : 'No'}</strong></div>
           </div>
           <div className="card__actions">
             <ButtonGroup className="card__actions-mobile" size="sm">
@@ -144,8 +140,8 @@ class ResultCard extends React.Component {
               )}
             </ButtonGroup>
             <ButtonGroup className="card__actions-desktop" size="sm">
-              <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer"><i className="fa fa-map-marker" />Get directions</a>
-              {website !== '' && <a className="btn btn-outline-primary" href={website} target="_blank" rel="noopener noreferrer"><i className="fa fa-external-link-square" />Visit website</a>}
+              <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer"><i className="fas fa-directions" />Get directions</a>
+              {website !== '' && <a className="btn btn-outline-primary" href={website} target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-square-alt" />Visit website</a>}
             </ButtonGroup>
           </div>
         </StyledResultCard>
