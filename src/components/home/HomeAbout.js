@@ -11,17 +11,21 @@ const StyledHomeAbout = styled.div`
   justify-content: center;
   flex-direction: column;
 
+  .container {
+    padding: 50px 15px;
+  }
+
   .home-about__content {
     p {
       max-width: 600px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
   }
 
   @media screen and (max-width: ${props => props.theme.bpSmall}) {
 
     .container {
-      padding: 60px 15px;
+      padding: 80px 15px;
     }
 
     .home-about__content {
@@ -45,8 +49,9 @@ class HomeAbout extends React.Component {
         <div className="container d-flex align-items-center justify-content-between">
           <div className="home-about__content">
             <h2>Helping beat COVID-19</h2>
-            <p>Testing is key to overcoming COVID-19. We're a team of volunteers working around-the-clock to provide accurate information on test centers. See an issue? Let us know and we'll fix it. Stay safe.</p>
-            <div>
+            <p>Tests are the key to overcoming COVID-19. We're a team of volunteers working around-the-clock to provide accurate information on test centers.</p>
+            <p>See an issue? Let us know and we'll fix it. Stay safe.</p>
+            <div className="mt-3">
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSdr_SEZYn9s6SOahSEGMkrWn4_p-9sCJQf9HtWFyNR9mAPCow/viewform?usp=sf_link" className="btn btn-primary">Contact us</a>
               <Link className="btn btn-outline-primary ml-2" to="/about">Learn more</Link>
             </div>

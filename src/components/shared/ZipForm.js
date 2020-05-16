@@ -49,7 +49,7 @@ const StyledZipForm = styled.div`
       color: #000;
     }
 
-    .fa {
+    .fas {
       font-size: 1.2rem;
       padding: 0 5px;
       color: ${props => props.theme.colorPurpleDarker};
@@ -192,7 +192,7 @@ class ZipForm extends React.Component {
                       {showLocate && (
                         <InputGroupAddon addonType="prepend">
                           <Button className="zip__loc" id="LocateTooltip" outline onClick={this.locateUser}>
-                            {!this.state.gettingLoc && <i className="fa fa-location-arrow" />}
+                            {!this.state.gettingLoc && <i className="fas fa-location-arrow" />}
                             {this.state.gettingLoc && <Spinner size="sm" color="secondary" />}
                           </Button>
                           <UncontrolledTooltip placement="top" target="LocateTooltip" offset={5}>
@@ -218,7 +218,7 @@ class ZipForm extends React.Component {
                       />
                       <InputGroupAddon addonType="append">
                         <Button className="zip__submit" type='submit' color="primary">
-                          <i className="fa fa-search" />
+                          <i className="fas fa-search" />
                         </Button>
                       </InputGroupAddon>
                     </InputGroup>

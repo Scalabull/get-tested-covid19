@@ -6,13 +6,12 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import 'normalize.css/normalize.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import "assets/vendor/font-awesome/css/font-awesome.min.css"; // Need to update to latest version
+import "assets/vendor/font-awesome/css/all.min.css"; // Need to update to latest version
 
 // To delete
 // import "assets/vendor/nucleo/css/nucleo.css";
 // import "assets/scss/argon-design-system-react.scss?v1.1.0";
 
-import About from "views/About.js";
 import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
@@ -37,7 +36,8 @@ const theme = {
   colorPrimary: colors.colorPurple,
   fontSerif: `'Merriweather', serif`,
   fontSans: `'Libre Franklin', serif`,
-  bpSmall: '576px'
+  bpSmall: '576px',
+  bpMed: '768px'
 }
 
 // For CSS styling shared across different components
@@ -135,12 +135,6 @@ ReactDOM.render(
           path="/how-testing-works"
           exact
           render={(props) => <HowTestingWorks {...props} />}
-        />
-
-        <Route
-          path="/about"
-          exact
-          render={props => <About {...props} />}
         />
         <Redirect to="/" />
       </Switch>
