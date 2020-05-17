@@ -24,19 +24,35 @@ HubSpot is treated as our source of truth. Our VerifiedTestCenters table could, 
 
 
 # Development
-Run the scripts locally:
+Pipenv is used to track python packages (similar to Node's NPM or Yarn).
+
+From the /data_pipeline directory, run:
 ```
+#Installs python packages and sets up python
+pipenv install
+
+#Load the python environment
+pipenv shell
+
+#Run a script
 cd bin
 source ./inbound_to_staging_batch.sh
 ```
 
+To exit the python environment, type 'exit' in the shell.
+
 For development, you have two options for running scripts locally:
 
-1. You can use the staging API (https://staging.api.get-tested-covid19.org). This is quick and the best way forward for most uses cases in the data pipeline scripts.
+1. You can use the staging API (https://staging.api.get-tested-covid19.org). This is quick and the best way forward for most uses cases in the data pipeline scripts. Scripts are configured to point to the staging api by default.
 
 2. You can run against a local server, which you can create with 'docker-compose up'. This is helpful for debugging server errors, examining underlying queries, querying the postgresql database to understand changes to data.
 
 There are challenges to using the local server. Basic familiarity with Docker and docker-compose are recommended. You will also need to use sequelize-cli to 'migrate' and 'seed' your local database so that it includes tables and data. You should also have familiarity with postgresql, basic SQL, and psql. 
+
+## Secret keys, environment variables
+Some scripts require secret keys that are not committed to source control. These should be loaded thru environment variables.
+
+TODO: setup dotenv.
 
 # Deployment / Production
 These scripts are currently deployed with serverless.com.
