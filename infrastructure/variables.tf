@@ -27,3 +27,9 @@ variable "google_geocoding_key" {
   description = "Geocoding key for Google"
   default     = "REPLACE_ME"
 }
+
+variable "jwt_secret" {
+  type        = string
+  description = "JWT Secret for home-baked passport-jwt auth"
+  default     = "REPLACE_ME"
+}

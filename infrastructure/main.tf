@@ -264,6 +264,15 @@ resource "aws_ssm_parameter" "GOOGLE_GEOCODING_KEY" {
   tags = local.common_tags
 }
 
+resource "aws_ssm_parameter" "JWT_SECRET" {
+  name        = "/${var.environment}/JWT_SECRET"
+  description = "${var.environment} JWT_SECRET"
+  type        = "SecureString"
+  value       = var.jwt_secret
+
+  tags = local.common_tags
+}
+
 output "rds_cluster_endpoint" {
   value = module.db.this_rds_cluster_endpoint
   sensitive   = true  
