@@ -36,6 +36,7 @@ router.get('/:id', auth, async (req, res) => {
   }
 })
 
+//NOTE: It's not currently recommended to use this endpoint, but we are leaving this in place just in case it becomes relevant
 router.patch('/:id', auth, async (req, res) => {
   const updates = Object.keys(req.body)
   const allowedUpdates = [

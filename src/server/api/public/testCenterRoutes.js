@@ -1,3 +1,5 @@
+//NOTE: This model is soon to be phased-out. Consumers will soon query against the VerifiedTestCenters table.
+
 const router = require('express').Router()
 const db = require('../../db/models')
 const sequelize = require('sequelize');
