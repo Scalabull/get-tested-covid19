@@ -39,6 +39,7 @@ router.get('/', async (req, res) => {
     })
     res.status(200).json(openCenters)
   } catch (error) {
+    console.error(error);
     res.status(500).send()
   }
 })
@@ -121,6 +122,7 @@ router.get('/:id', async (req, res) => {
     }
     res.status(200).json(openCenter)
   } catch (error) {
+    console.error(error);
     res.status(500).send()
   }
 })

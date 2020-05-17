@@ -7,6 +7,7 @@ router.get('/', async (req, res) => {
     const allTestCenters = await db.VerifiedTestCenter.findAll()
     res.status(200).json(allTestCenters)
   } catch (error) {
+    console.error(error);
     res.status(500).send()
   }
 });

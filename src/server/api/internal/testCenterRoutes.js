@@ -7,7 +7,8 @@ router.get('/', auth, async (req, res) => {
     const allTestCenters = await db.TestCenter.findAll()
     res.status(200).json(allTestCenters)
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
@@ -16,7 +17,8 @@ router.post('/', auth, async (req, res) => {
     const testCenter = await db.TestCenter.create(req.body)
     res.status(201).json(testCenter)
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
@@ -29,7 +31,8 @@ router.get('/:id', auth, async (req, res) => {
     }
     res.status(200).json(testCenter)
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
@@ -75,7 +78,8 @@ router.patch('/:id', auth, async (req, res) => {
     await db.TestCenter.update(req.body, { where: { id } })
     res.status(204).send()
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
@@ -85,7 +89,8 @@ router.delete('/:id', auth, async (req, res) => {
     await db.TestCenter.destroy({ where: { id } })
     res.status(204).end()
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
