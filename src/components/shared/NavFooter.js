@@ -77,9 +77,9 @@ class NavFooter extends React.Component {
           </div>
           <div className="footer__right">
             <div className="footer__links">
-              <a href="https://www.instagram.com/gettestedcovid/"><i className="fa fa-instagram" /></a>
-              <a href="https://www.facebook.com/gettestedcovid/"><i className="fa fa-facebook" /></a>
-              <a href="https://twitter.com/gettestedcovid"><i className="fa fa-twitter" /></a>
+              <a href="https://www.instagram.com/gettestedcovid/"><i className="fab fa-instagram" /></a>
+              <a href="https://www.facebook.com/gettestedcovid/"><i className="fab fa-facebook" /></a>
+              <a href="https://twitter.com/gettestedcovid"><i className="fab fa-twitter" /></a>
             </div>
             &copy; Get Tested COVID-19
           </div>
