@@ -43,6 +43,6 @@ for row in rows:
     print('is valid URL? ', valid_url_flag)
     print(row)
 
-
+    #WIP: add rows to TestCenterStagings via POST
 
     break
