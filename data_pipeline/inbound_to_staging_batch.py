@@ -8,18 +8,21 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
+GTC_API_URL = os.getenv('GTC_API_URL')
+
 # Load username and password from environment
 gtc_user = os.getenv('GTC_USERNAME')
 gtc_pass = os.getenv('GTC_PASSWORD')
 
 print("Authenticating with GTC User: ", gtc_user)
+print("Using API URL: ", GTC_API_URL)
 
 # Get Auth Token
-authResponse = requests.post("http://localhost:5000/api/v1/auth/login", data={"email": "test@test.com","password": "testtest"})
+authResponse = requests.post(GTC_API_URL + "/api/v1/auth/login", data={"email": "test@test.com","password": "testtest"})
 authToken = authResponse.json()['token']
 headers = {'Authorization': 'Bearer ' + authToken}
 
-freshInboundRows = requests.get("http://localhost:5000/api/v1/internal/inbound/", headers=headers)
+freshInboundRows = requests.get(GTC_API_URL + "/api/v1/internal/inbound/", headers=headers)
 rows = freshInboundRows.json()
 
 for row in rows:

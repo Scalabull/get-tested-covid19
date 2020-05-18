@@ -6,6 +6,7 @@
 
 export GTC_USERNAME=test@test.com
 export GTC_PASSWORD=testtest
+export GTC_API_URL=https://staging.api.get-tested-covid19.org
 python ../inbound_to_staging_batch.py
 
 
