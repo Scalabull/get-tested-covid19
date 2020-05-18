@@ -1,7 +1,9 @@
 
 import googlemaps
 import re
-gmaps = googlemaps.Client(key='REPLACE_ME')
+import os
+
+gmaps = googlemaps.Client(key=os.getenv("GOOGLE_API_KEY"))
 
 def get_formatted_address(full_address):
     if(full_address == None):

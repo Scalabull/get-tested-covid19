@@ -4,10 +4,13 @@ import requests
 import os
 import importlib
 from helpers import preprocessing_utils
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 # Load username and password from environment
-gtc_user = os.environ['GTC_USERNAME']
-gtc_pass = os.environ['GTC_PASSWORD']
+gtc_user = os.getenv('GTC_USERNAME')
+gtc_pass = os.getenv('GTC_PASSWORD')
 
 print("Authenticating with GTC User: ", gtc_user)
 
@@ -36,4 +39,7 @@ for row in rows:
     print('screen? ', screen_required)
     print('is valid URL? ', valid_url_flag)
     print(row)
+
+
+
     break
