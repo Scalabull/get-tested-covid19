@@ -8,10 +8,6 @@ import 'normalize.css/normalize.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import "assets/vendor/font-awesome/css/all.min.css"; // Need to update to latest version
 
-// To delete
-// import "assets/vendor/nucleo/css/nucleo.css";
-// import "assets/scss/argon-design-system-react.scss?v1.1.0";
-
 import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';

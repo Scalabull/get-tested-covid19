@@ -115,11 +115,11 @@ class ResultCard extends React.Component {
             {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone_number.split(')')[0]}) {phone_number.split(')')[1]}
           </p>
           <div className="card__req">
-            {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fas fa-check icon-left" />Walk-in testing available</span>}
+            {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</span>}
             {(doctor_screen_required_beforehand || appointment_required) && (
               <>
-                {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fas fa-times icon-left" />Doctor's screening required</span>}
-                {appointment_required && <span className="badge badge-danger"><i className="fas fa-times icon-left" />Appointment required</span>}
+                {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Doctor's screening required</span>}
+                {appointment_required && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Appointment required</span>}
               </>
             )}
           </div>

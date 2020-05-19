@@ -41,7 +41,7 @@ const StyledMapPin = styled.div`
 const MAX_GEO = 400;
 const MIN_GEO = -400;
 const Map = ReactMapboxGl({
-    accessToken: 'pk.eyJ1Ijoic3VtYW5hZ3IxMyIsImEiOiJjazlsbHo2N3kwYmJvM2VuNXl3cTFoMHZvIn0.jfMLv49EhilU0_Xnp2gRKA'
+    accessToken: 'pk.eyJ1IjoiZ2V0dGVzdGVkY292aWQiLCJhIjoiY2thNXFzcXNwMDF5ZTNsbXhuNHV5eWU4bSJ9.u23f16gxdfMn6OnifpVBIw'
 });
 
 export default class TestSiteMap extends React.Component {
