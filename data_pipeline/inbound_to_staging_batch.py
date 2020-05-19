@@ -23,7 +23,17 @@ authToken = authResponse.json()['token']
 headers = {'Authorization': 'Bearer ' + authToken}
 
 freshInboundRows = requests.get(GTC_API_URL + "/api/v1/internal/inbound/", headers=headers)
+print('Status: ', freshInboundRows)
+
 rows = freshInboundRows.json()
+
+def push_staging_test_center_obj(test_center_obj):
+    headers = {'Authorization': 'Bearer ' + authToken}
+
+    status = requests.post(GTC_API_URL + "/api/v1/internal/test-centers-staging", data=test_center_obj, headers=headers)
+    print('\nSubmission status: ', status, ': ', status.json(), '\n')
+
+print('Handling: ', len(rows), ' Inbound rows.')
 
 for row in rows:
     #Extract structured fields from full_address
@@ -35,14 +45,23 @@ for row in rows:
     screen_required = preprocessing_utils.is_likely_screen_required(row['description'])
     valid_url_flag = preprocessing_utils.is_valid_URL(row['url'])
     
-    print(address_components)
-    print(formatted_phone)
-    print('drive thru? ', drive_thru)
-    print('appt req? ', app_required)
-    print('screen? ', screen_required)
-    print('is valid URL? ', valid_url_flag)
-    print(row)
+    staging_test_center_obj = {
+        "inbounds_id": row['id'],
+        "public": False,
+        "name": row['name'],
+        "address": address_components['formatted_address'],
+        "latitude": address_components['lat_lng']['lat'],
+        "longitude": address_components['lat_lng']['lng'],
+        "phone_number": formatted_phone,
+        "website": row['url'],
+        "appointment_required": app_required,
+        "drive_thru_site": drive_thru,
+        "doctor_screen_required_beforehand": screen_required,
+        "description": row['description'],
+        "address_freetext_blob": row['full_address']
+    }
 
-    #WIP: add rows to TestCenterStagings via POST
+    print('\norig row: ', row, ' \nStaging obj: ', staging_test_center_obj)
+    push_staging_test_center_obj(staging_test_center_obj)
 
-    break
+print('All rows complete')

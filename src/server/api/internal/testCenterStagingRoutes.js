@@ -14,8 +14,18 @@ router.get('/', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
   try {
-    const testCenter = await db.TestCenterStaging.create(req.body)
-    res.status(201).json(testCenter)
+    if((req.body.inbounds_id || req.body.inbounds_id === 0) && !isNaN(parseInt(req.body.inbounds_id))){
+      const existingTestCenter = await db.TestCenterStaging.findOne({ where: {inbounds_id: parseInt(req.body.inbounds_id)}});
+      if(existingTestCenter){
+        return res.status(201).json({status: 'Row with this inbounds_id already exists, skipping.'});
+      } 
+      else {
+        const testCenter = await db.TestCenterStaging.create(req.body)
+        res.status(201).json(testCenter)
+      }
+    } else {
+      return res.status(400).send('Must include inbounds_id in request.');
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message)

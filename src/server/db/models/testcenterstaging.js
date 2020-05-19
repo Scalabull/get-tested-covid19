@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       address_freetext_blob: DataTypes.TEXT,
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
+      inbounds_id: DataTypes.INTEGER
     },
     {
       hooks: {
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
   TestCenterStaging.associate = function (models) {
     TestCenterStaging.hasOne(models.VerifiedTestCenter);
     TestCenterStaging.hasOne(models.UnverifiedTestCenter);
-    TestCenterStaging.hasOne(models.Inbound);
+
   }
 
   const updateGeolocation = async (testCenterStaging) => {
