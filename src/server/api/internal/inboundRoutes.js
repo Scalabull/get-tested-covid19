@@ -3,9 +3,9 @@ const db = require('../../db/models')
 const { Op } = require('sequelize');
 const TS_RE = /^[0-9]{13}$/;
 
-//const auth = require('../../middleware/auth')
+const auth = require('../../middleware/auth')
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const { scrapedRows } = req.body
 
@@ -13,15 +13,16 @@ router.post('/', async (req, res) => {
       return res.status(400).send('scrapedRows must be an array with at least one object.');
     }
 
-    await db.Inbound.bulkCreate([{full_address: "abc 123"}]);
+    await db.Inbound.bulkCreate(scrapedRows);
 
     res.status(201).send()
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
-router.get('/fresh', async (req, res) => {
+router.get('/fresh', auth, async (req, res) => {
   try {
     const { since } = req.query;
     const sinceTs = parseInt(since);
@@ -39,16 +40,18 @@ router.get('/fresh', async (req, res) => {
     });
     res.status(200).json(freshRows)
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     let scrapedRows = await db.Inbound.findAll({});
     res.status(200).json(scrapedRows);
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 

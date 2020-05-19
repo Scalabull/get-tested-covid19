@@ -18,6 +18,7 @@ services:
       - DB_HOSTNAME=db
       - API_CORS_WHITELIST=http://localhost:3000
       - JWT_SECRET=GetTestedCOVID19
+      - DEBUG=express:*
     links:
       - db
     ports:
@@ -26,6 +27,8 @@ services:
       - ./src:/src
   db:
     image: mdillon/postgis
+    ports:
+      - "9999:5432"
     environment:
       POSTGRES_USER: testing
       POSTGRES_PASSWORD: testing

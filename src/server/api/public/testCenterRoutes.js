@@ -1,3 +1,5 @@
+//NOTE: This model is soon to be phased-out. Consumers will soon query against the VerifiedTestCenters table.
+
 const router = require('express').Router()
 const db = require('../../db/models')
 const sequelize = require('sequelize');
@@ -39,6 +41,7 @@ router.get('/', async (req, res) => {
     })
     res.status(200).json(openCenters)
   } catch (error) {
+    console.error(error);
     res.status(500).send()
   }
 })
@@ -121,6 +124,7 @@ router.get('/:id', async (req, res) => {
     }
     res.status(200).json(openCenter)
   } catch (error) {
+    console.error(error);
     res.status(500).send()
   }
 })
