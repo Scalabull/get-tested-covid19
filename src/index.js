@@ -88,6 +88,17 @@ const GlobalStyle = createGlobalStyle`
       background-color: ${props => props.theme.colorPrimary};
       border-color: ${props => props.theme.colorPrimary};
     }
+
+    &:disabled {
+      border-color: ${props => props.theme.colorPrimary};
+      color: ${props => props.theme.colorPrimary};
+      
+      &:hover {
+        border-color: ${props => props.theme.colorPrimary};
+        color: ${props => props.theme.colorPrimary};
+        background-color: transparent;
+      }
+    }
   }
   
   .form-control {

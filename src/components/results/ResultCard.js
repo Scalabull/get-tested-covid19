@@ -107,10 +107,11 @@ const StyledResultCard = styled.div`
 
 class ResultCard extends React.Component {
   render() {
+    const { num } = this.props;
     const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
     return (
         <StyledResultCard>
-          <h3>{this.props.index + 1}. {name}</h3>
+          <h3>{num}. {name}</h3>
           <p className="card__meta">
             {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone_number.split(')')[0]}) {phone_number.split(')')[1]}
           </p>

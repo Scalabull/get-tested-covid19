@@ -6,7 +6,7 @@ import axios from 'axios';
 import qs from 'query-string';
 import NavHeader from '../shared/NavHeader.js';
 import ResultsListCards from './ResultsListCards';
-import { Spinner } from 'reactstrap';
+import { Spinner, Button } from 'reactstrap';
 import DocumentMeta from 'react-document-meta';
 import ShareBtn from '../shared/ShareBtn.js';
 
@@ -72,6 +72,11 @@ const StyledResultsPage = styled.div`
     text-align: center;
     padding: 100px 15px;
   }
+
+  .results__list-pagination {
+    padding: 15px;
+    border-top: 1px solid #eee;
+  }
 `
 
 class ResultsPage extends React.Component {
@@ -81,7 +86,7 @@ class ResultsPage extends React.Component {
         this.zip = getQueryStringValue('zip');
         this.zipLatLng = null;
         this.state = {
-          resultsPage: 0,
+          currentPage: 0,
           isFetching: true,
           hasError: null
         };
@@ -106,7 +111,7 @@ class ResultsPage extends React.Component {
         this.zip = getQueryStringValue('zip');
         this.filterList(this.zip);
         // Scroll to top of page
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }
 
@@ -130,7 +135,6 @@ class ResultsPage extends React.Component {
               this.setState({
                 isFetching: false
               })
-              //this.setState({items: response.data.testCenters, zipLatLng: response.data.coords, searchZip: searchZipStr, isFetching: false});
             })
             .catch(err => {
               console.log(err);
@@ -138,7 +142,6 @@ class ResultsPage extends React.Component {
               this.setState({
                 isFetching: false
               })
-              //this.setState({items: [], searchZip: searchZipStr, isFetching: false});
             });
         } else {
           this.setState({
@@ -146,6 +149,18 @@ class ResultsPage extends React.Component {
             hasError: 'INVALID_ZIP'
           })
         }
+    }
+
+    handleNextPage = () => {
+      this.setState(prevState => ({
+        currentPage: prevState.currentPage + 1
+      }), () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    handlePrevPage = () => {
+      this.setState(prevState => ({
+        currentPage: prevState.currentPage - 1
+      }), () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
 
     render() {
@@ -160,7 +175,8 @@ class ResultsPage extends React.Component {
         }
       };
 
-      const viewItems = this.resultsZip.slice(0, 10);
+      // Only show results for current page
+      const viewItems = this.resultsZip.slice(0 + this.state.currentPage*10, 10 + this.state.currentPage*10);
 
       return (
           <DocumentMeta {...meta}>
@@ -201,15 +217,20 @@ class ResultsPage extends React.Component {
                           <ShareBtn />
                         </div>
                         <div className="results__list-cards">
-                          <ResultsListCards items={viewItems} />
+                          <ResultsListCards items={viewItems} page={this.state.currentPage} />
+                        </div>
+                        <div className="results__list-pagination d-flex align-items-center justify-content-between">
+                          <Button id="tooltip-share" color="primary" outline disabled={this.state.currentPage === 0} onClick={this.handlePrevPage}><i className="fas fa-arrow-left" /></Button>
+                          <Button id="tooltip-share" color="primary" outline disabled={this.state.currentPage === Math.floor(this.resultsZip.length/10)} onClick={this.handleNextPage}><i className="fas fa-arrow-right" /></Button>
                         </div>
                       </div>
                       <div className="results__map">
                         <ResultsMap
-                            items={viewItems}
-                            totalCount={this.resultsZip.length}
-                            zipLatLng={this.zipLatLng}
-                            searchZip={this.zip}
+                          items={viewItems}
+                          page={this.state.currentPage}
+                          totalCount={this.resultsZip.length}
+                          zipLatLng={this.zipLatLng}
+                          searchZip={this.zip}
                         />
                       </div>
                     </>
