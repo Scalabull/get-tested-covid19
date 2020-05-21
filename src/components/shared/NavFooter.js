@@ -71,15 +71,16 @@ class NavFooter extends React.Component {
               <li><Link to="/resources">Resources</Link></li>
               <li><Link to="/when-to-get-tested">When To Get Tested</Link></li>
               <li><Link to="/how-testing-works">How Testing Works</Link></li>
-              <li><a href="https://medium.com/@get_tested_covid19">News</a></li>
+              <li><a target="_blank" rel="noopener noreferrer" href="https://medium.com/@get_tested_covid19">News</a></li>
               <li><Link to="/about">About</Link></li>
             </ul>
           </div>
           <div className="footer__right">
             <div className="footer__links">
-              <a href="https://www.instagram.com/gettestedcovid/"><i className="fab fa-instagram" /></a>
-              <a href="https://www.facebook.com/gettestedcovid/"><i className="fab fa-facebook" /></a>
-              <a href="https://twitter.com/gettestedcovid"><i className="fab fa-twitter" /></a>
+              <a href="https://www.instagram.com/gettestedcovid/" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram" /></a>
+              <a href="https://www.facebook.com/gettestedcovid/" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook" /></a>
+              <a href="https://twitter.com/gettestedcovid" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter" /></a>
+              <a href="https://www.linkedin.com/company/get-tested-covid19/" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin" /></a>
             </div>
             &copy; Get Tested COVID-19
           </div>
