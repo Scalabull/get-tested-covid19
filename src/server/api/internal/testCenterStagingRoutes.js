@@ -34,6 +34,29 @@ router.post('/', auth, async (req, res) => {
   }
 })
 
+router.get('/fresh', auth, async (req, res) => {
+  try {
+    const { since } = req.query;
+    const sinceTs = parseInt(since);
+
+    if (!TS_RE.test(since) && !isNaN(sinceTs)){
+      return res.status(400).send('Bad timestamp.');
+    }
+
+    let freshRows = await db.TestCenterStaging.findAll({
+      where: {
+        createdAt: {
+          [Op.gt]: new Date(sinceTs)
+        }
+      }
+    });
+    res.status(200).json(freshRows)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message)
+  }
+})
+
 router.get('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params
@@ -101,29 +124,6 @@ router.delete('/:id', auth, async (req, res) => {
     const { id } = req.params
     await db.TestCenterStaging.destroy({ where: { id } })
     res.status(204).end()
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error.message)
-  }
-})
-
-router.get('/fresh', auth, async (req, res) => {
-  try {
-    const { since } = req.query;
-    const sinceTs = parseInt(since);
-
-    if (!TS_RE.test(since) && !isNaN(sinceTs)){
-      return res.status(400).send('Bad timestamp.');
-    }
-
-    let freshRows = await db.TestCenterStaging.findAll({
-      where: {
-        createdAt: {
-          [Op.gt]: new Date(sinceTs)
-        }
-      }
-    });
-    res.status(200).json(freshRows)
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message)
