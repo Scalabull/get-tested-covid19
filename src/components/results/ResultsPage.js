@@ -43,10 +43,20 @@ const StyledResultsPage = styled.div`
   }
 
   .results__list-header {
-    padding: 20px;
+    height: 60px;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #eee;
+
+    max-width: 550px;
+    width: 100%;
+    background-color: #fff;
+    position: fixed;
+    top: 76px;
+    left: 0;
+    z-index: 10;
 
     h2 {
       font-family ${props => props.theme.fontSans};
@@ -55,6 +65,37 @@ const StyledResultsPage = styled.div`
       margin-bottom: 0;
       margin-right: 1rem;
     }
+
+    @media screen and (max-width: ${props => props.theme.bpSmall}) {
+      top: 140px;
+
+      h2 {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .results__list-pagination {
+    height: 60px;
+    padding: 0 20px;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+    font-size: 14px;
+    max-width: 550px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+
+    .btn {
+      padding: 0.25rem 0.7rem;
+    }
+  }
+
+  .results__list-cards {
+    margin-top: 59px;
+    margin-bottom: 60px;
   }
 
   .results__loading {
@@ -71,11 +112,6 @@ const StyledResultsPage = styled.div`
   .results__error {
     text-align: center;
     padding: 100px 15px;
-  }
-
-  .results__list-pagination {
-    padding: 15px;
-    border-top: 1px solid #eee;
   }
 `
 
@@ -154,13 +190,13 @@ class ResultsPage extends React.Component {
     handleNextPage = () => {
       this.setState(prevState => ({
         currentPage: prevState.currentPage + 1
-      }), () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      }), () => window.scrollTo({ top: 0 }));
     }
 
     handlePrevPage = () => {
       this.setState(prevState => ({
         currentPage: prevState.currentPage - 1
-      }), () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      }), () => window.scrollTo({ top: 0 }));
     }
 
     render() {
@@ -220,8 +256,11 @@ class ResultsPage extends React.Component {
                           <ResultsListCards items={viewItems} page={this.state.currentPage} />
                         </div>
                         <div className="results__list-pagination d-flex align-items-center justify-content-between">
-                          <Button id="tooltip-share" color="primary" outline disabled={this.state.currentPage === 0} onClick={this.handlePrevPage}><i className="fas fa-arrow-left" /></Button>
-                          <Button id="tooltip-share" color="primary" outline disabled={this.state.currentPage === Math.floor(this.resultsZip.length/10)} onClick={this.handleNextPage}><i className="fas fa-arrow-right" /></Button>
+                          <div className="pagination-current">Showing results {1 + this.state.currentPage*10} - {this.state.currentPage === Math.floor(this.resultsZip.length/10) ? this.resultsZip.length : 10 + this.state.currentPage*10}</div>
+                          <div>
+                            <Button id="tooltip-share" className="mr-2" color="primary" outline disabled={this.state.currentPage === 0} onClick={this.handlePrevPage}><i className="fas fa-arrow-left" /></Button>
+                            <Button id="tooltip-share" color="primary" outline disabled={this.state.currentPage === Math.floor(this.resultsZip.length/10)} onClick={this.handleNextPage}><i className="fas fa-arrow-right" /></Button>
+                          </div>
                         </div>
                       </div>
                       <div className="results__map">

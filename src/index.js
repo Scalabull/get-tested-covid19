@@ -68,6 +68,10 @@ const GlobalStyle = createGlobalStyle`
 
   .btn {
     font-weight: 400;
+
+    &.disabled, &:disabled {
+      opacity: 0.45;
+    }
   }
 
   .btn-primary {
