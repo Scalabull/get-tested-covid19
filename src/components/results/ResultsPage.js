@@ -249,7 +249,7 @@ class ResultsPage extends React.Component {
                     <>
                       <div className="results__list">
                         <div className="results__list-header">
-                          <h2>{this.resultsZip.length} results within 40 miles of {this.zip}</h2>
+                          <h2>{this.resultsZip.length} result{this.resultsZip.length !== 1 ? 's' : ''} within 40 miles of {this.zip}</h2>
                           <ShareBtn />
                         </div>
                         <div className="results__list-cards">

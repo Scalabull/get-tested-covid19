@@ -80,7 +80,7 @@ class NavFooter extends React.Component {
               <a href="https://www.instagram.com/gettestedcovid/" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram" /></a>
               <a href="https://www.facebook.com/gettestedcovid/" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook" /></a>
               <a href="https://twitter.com/gettestedcovid" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter" /></a>
-              <a href="https://www.linkedin.com/company/get-tested-covid19/" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin" /></a>
+              <a href="https://www.linkedin.com/company/gettestedcovid/" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin" /></a>
             </div>
             &copy; Get Tested COVID-19
           </div>
