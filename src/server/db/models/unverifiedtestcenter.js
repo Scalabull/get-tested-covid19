@@ -26,8 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       address_freetext_blob: DataTypes.TEXT,
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
-      latest_verification_by: DataTypes.STRING,
-      flagged_as_duplicate: DataTypes.BOOLEAN,
       test_result_turnaround_time: DataTypes.STRING,
       is_designated_covid_facility: DataTypes.BOOLEAN,
       facility_wants_to_be_contacted_for_further_help: DataTypes.BOOLEAN,
