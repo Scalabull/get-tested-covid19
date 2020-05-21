@@ -71,7 +71,7 @@ class NavFooter extends React.Component {
               <li><Link to="/resources">Resources</Link></li>
               <li><Link to="/when-to-get-tested">When To Get Tested</Link></li>
               <li><Link to="/how-testing-works">How Testing Works</Link></li>
-              <li><a target="_blank" rel="noopener noreferrer" href="https://medium.com/@get_tested_covid19">News</a></li>
+              <li><a target="_blank" rel="noopener noreferrer" href="https://medium.com/@gettestedcovid/">News</a></li>
               <li><Link to="/about">About</Link></li>
             </ul>
           </div>
