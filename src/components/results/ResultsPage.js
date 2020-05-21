@@ -1,7 +1,7 @@
 
 import React from 'react';
 import styled from 'styled-components'
-import TestSiteMap from 'components/TestSiteMap';
+import ResultsMap from './ResultsMap';
 import axios from 'axios';
 import qs from 'query-string';
 import NavHeader from '../shared/NavHeader.js';
@@ -205,7 +205,7 @@ class ResultsPage extends React.Component {
                         </div>
                       </div>
                       <div className="results__map">
-                        <TestSiteMap
+                        <ResultsMap
                             items={viewItems}
                             totalCount={this.resultsZip.length}
                             zipLatLng={this.zipLatLng}
