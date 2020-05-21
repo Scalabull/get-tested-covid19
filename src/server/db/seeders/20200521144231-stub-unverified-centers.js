@@ -8,7 +8,7 @@ module.exports = {
         {
           public: false,
           name: 'DEV COVID-19 Testing Center Halzeton',
-          full_address: '140 N Sherman Court Halzeton PA, 18201',
+          address: '140 N Sherman Court Halzeton PA, 18201',
           phone: '800-555-1234 (5846)',
           url:'https://www.lvhn.org/locations/lvhn-covid-19-assess-and-test-hazleton',
           open_24_hours: false,
