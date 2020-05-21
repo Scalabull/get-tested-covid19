@@ -3,24 +3,14 @@
 import requests
 import os
 import importlib
-from helpers import preprocessing_utils
+from helpers import preprocessing_utils, authenticate_gtc
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-
 GTC_API_URL = os.getenv('GTC_API_URL')
 
-# Load username and password from environment
-gtc_user = os.getenv('GTC_USERNAME')
-gtc_pass = os.getenv('GTC_PASSWORD')
-
-print("Authenticating with GTC User: ", gtc_user)
-print("Using API URL: ", GTC_API_URL)
-
-# Get Auth Token
-authResponse = requests.post(GTC_API_URL + "/api/v1/auth/login", data={"email": "test@test.com","password": "testtest"})
-authToken = authResponse.json()['token']
-headers = {'Authorization': 'Bearer ' + authToken}
+auth_token = authenticate_gtc()
+headers = {'Authorization': 'Bearer ' + auth_token}
 
 freshInboundRows = requests.get(GTC_API_URL + "/api/v1/internal/inbound/", headers=headers)
 print('Status: ', freshInboundRows)
@@ -28,7 +18,7 @@ print('Status: ', freshInboundRows)
 rows = freshInboundRows.json()
 
 def push_staging_test_center_obj(test_center_obj):
-    headers = {'Authorization': 'Bearer ' + authToken}
+    headers = {'Authorization': 'Bearer ' + auth_token}
 
     status = requests.post(GTC_API_URL + "/api/v1/internal/test-centers-staging", data=test_center_obj, headers=headers)
     print('\nSubmission status: ', status, ': ', status.json(), '\n')
