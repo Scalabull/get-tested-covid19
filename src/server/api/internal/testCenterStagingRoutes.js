@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const auth = require('../../middleware/auth')
 const db = require('../../db/models')
+const { Op } = require('sequelize');
+const TS_RE = /^[0-9]{13}$/;
 
 router.get('/', auth, async (req, res) => {
   try {
@@ -99,6 +101,29 @@ router.delete('/:id', auth, async (req, res) => {
     const { id } = req.params
     await db.TestCenterStaging.destroy({ where: { id } })
     res.status(204).end()
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message)
+  }
+})
+
+router.get('/fresh', auth, async (req, res) => {
+  try {
+    const { since } = req.query;
+    const sinceTs = parseInt(since);
+
+    if (!TS_RE.test(since) && !isNaN(sinceTs)){
+      return res.status(400).send('Bad timestamp.');
+    }
+
+    let freshRows = await db.TestCenterStaging.findAll({
+      where: {
+        createdAt: {
+          [Op.gt]: new Date(sinceTs)
+        }
+      }
+    });
+    res.status(200).json(freshRows)
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message)
