@@ -44,10 +44,10 @@ const Map = ReactMapboxGl({
     accessToken: 'pk.eyJ1IjoiZ2V0dGVzdGVkY292aWQiLCJhIjoiY2thNXFzcXNwMDF5ZTNsbXhuNHV5eWU4bSJ9.u23f16gxdfMn6OnifpVBIw'
 });
 
-export default class TestSiteMap extends React.Component {
+export default class ResultsMap extends React.Component {
     render() {
         // Mapbox uses [longitude, latitude] instead of [latitude, longitude]
-        let { items, zipLatLng } = this.props;
+        let { items, zipLatLng, page } = this.props;
         let mapCenter = null;
         let bounds = undefined;
 
@@ -87,7 +87,7 @@ export default class TestSiteMap extends React.Component {
                 </Layer>
                 {items.map((item, index) => (
                     <Marker key={`map-market-${index}`} coordinates={[parseFloat(item.longitude), parseFloat(item.latitude)]} anchor="top">
-                        <StyledMapPin num={index + 1} />
+                        <StyledMapPin num={(index + 1) + (page * 10)} />
                     </Marker>
                 ))}
             </Map>

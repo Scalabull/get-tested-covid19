@@ -68,6 +68,10 @@ const GlobalStyle = createGlobalStyle`
 
   .btn {
     font-weight: 400;
+
+    &.disabled, &:disabled {
+      opacity: 0.45;
+    }
   }
 
   .btn-primary {
@@ -87,6 +91,17 @@ const GlobalStyle = createGlobalStyle`
     &:hover {
       background-color: ${props => props.theme.colorPrimary};
       border-color: ${props => props.theme.colorPrimary};
+    }
+
+    &:disabled {
+      border-color: ${props => props.theme.colorPrimary};
+      color: ${props => props.theme.colorPrimary};
+      
+      &:hover {
+        border-color: ${props => props.theme.colorPrimary};
+        color: ${props => props.theme.colorPrimary};
+        background-color: transparent;
+      }
     }
   }
   
