@@ -7,16 +7,28 @@ router.get('/', auth, async (req, res) => {
     const allTestCenters = await db.TestCenterStaging.findAll()
     res.status(200).json(allTestCenters)
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
 router.post('/', auth, async (req, res) => {
   try {
-    const testCenter = await db.TestCenterStaging.create(req.body)
-    res.status(201).json(testCenter)
+    if((req.body.inbounds_id || req.body.inbounds_id === 0) && !isNaN(parseInt(req.body.inbounds_id))){
+      const existingTestCenter = await db.TestCenterStaging.findOne({ where: {inbounds_id: parseInt(req.body.inbounds_id)}});
+      if(existingTestCenter){
+        return res.status(201).json({status: 'Row with this inbounds_id already exists, skipping.'});
+      } 
+      else {
+        const testCenter = await db.TestCenterStaging.create(req.body)
+        res.status(201).json(testCenter)
+      }
+    } else {
+      return res.status(400).send('Must include inbounds_id in request.');
+    }
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
@@ -29,10 +41,12 @@ router.get('/:id', auth, async (req, res) => {
     }
     res.status(200).json(testCenter)
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
+//NOTE: It's not currently recommended to use this endpoint, but we are leaving this in place just in case it becomes relevant
 router.patch('/:id', auth, async (req, res) => {
   const updates = Object.keys(req.body)
   const allowedUpdates = [
@@ -75,7 +89,8 @@ router.patch('/:id', auth, async (req, res) => {
     await db.TestCenterStaging.update(req.body, { where: { id } })
     res.status(204).send()
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 
@@ -85,7 +100,8 @@ router.delete('/:id', auth, async (req, res) => {
     await db.TestCenterStaging.destroy({ where: { id } })
     res.status(204).end()
   } catch (error) {
-    res.status(500).send()
+    console.error(error);
+    res.status(500).send(error.message)
   }
 })
 

@@ -8,10 +8,6 @@ import 'normalize.css/normalize.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import "assets/vendor/font-awesome/css/all.min.css"; // Need to update to latest version
 
-// To delete
-// import "assets/vendor/nucleo/css/nucleo.css";
-// import "assets/scss/argon-design-system-react.scss?v1.1.0";
-
 import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
@@ -72,6 +68,10 @@ const GlobalStyle = createGlobalStyle`
 
   .btn {
     font-weight: 400;
+
+    &.disabled, &:disabled {
+      opacity: 0.45;
+    }
   }
 
   .btn-primary {
@@ -91,6 +91,17 @@ const GlobalStyle = createGlobalStyle`
     &:hover {
       background-color: ${props => props.theme.colorPrimary};
       border-color: ${props => props.theme.colorPrimary};
+    }
+
+    &:disabled {
+      border-color: ${props => props.theme.colorPrimary};
+      color: ${props => props.theme.colorPrimary};
+      
+      &:hover {
+        border-color: ${props => props.theme.colorPrimary};
+        color: ${props => props.theme.colorPrimary};
+        background-color: transparent;
+      }
     }
   }
   

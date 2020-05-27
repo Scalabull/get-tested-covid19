@@ -91,7 +91,7 @@ const NavHeader = (props) => {
               <NavLink href="/how-testing-works">How Testing Works</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="https://medium.com/@get_tested_covid19">News</NavLink>
+              <NavLink target="_blank" rel="noopener noreferrer" href="https://medium.com/@gettestedcovid/">News</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/about">About</NavLink>

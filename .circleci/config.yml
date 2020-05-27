@@ -60,7 +60,18 @@ jobs:
                       terraform destroy -auto-approve
                       sleep 30
                       terraform destroy -auto-approve
-    webserver-build:
+    webserver-build-staging:
+        docker:
+            - image: node:12-alpine
+        steps:
+            - checkout
+            - run:
+                  name: yarn-install
+                  command: yarn install --production
+            - run:
+                  name: npm-build
+                  command: CI=false npm run build:staging
+    webserver-build-prod:
         docker:
             - image: node:12-alpine
         steps:
@@ -82,7 +93,20 @@ jobs:
             - run:
                   name: npm-build
                   command: CI=false npm run build
-    docker-webserver-build-push:
+    docker-webserver-build-push-staging:
+        docker:
+            - image: cimg/go:1.13
+        steps:
+            - checkout
+            - setup_remote_docker
+            - run: |
+                  TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+                  docker build -t gettestedcovid19/webserver:$TAG -f docker/Dockerfile.staging .
+                  echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                  docker push gettestedcovid19/webserver:$TAG
+                  docker tag gettestedcovid19/webserver:$TAG gettestedcovid19/webserver:$CIRCLE_BRANCH
+                  docker push gettestedcovid19/webserver:$CIRCLE_BRANCH
+    docker-webserver-build-push-prod:
         docker:
             - image: cimg/go:1.13
         steps:
@@ -127,17 +151,32 @@ workflows:
     version: 2
     terraform_and_build:
         jobs:
-            - webserver-build
+            - webserver-build-staging:
+                  filters:
+                      branches:
+                          ignore:
+                              - master
+            - webserver-build-prod:
+                  filters:
+                      branches:
+                          only:
+                              - master
             - api-build
-            - docker-webserver-build-push:
+            - docker-webserver-build-push-staging:
                   requires:
-                      - webserver-build
+                      - webserver-build-staging
                   filters:
                       branches:
                           only:
                               - staging
-                              - master
                               - /infra-.*/
+            - docker-webserver-build-push-prod:
+                  requires:
+                      - webserver-build-prod
+                  filters:
+                      branches:
+                          only:
+                              - master
             - docker-api-build-push:
                   requires:
                       - api-build
@@ -157,7 +196,7 @@ workflows:
             - terraform-staging-deploy:
                   requires:
                       - terraform
-                      - docker-webserver-build-push
+                      - docker-webserver-build-push-staging
                       - docker-api-build-push
                   filters:
                       branches:
@@ -166,7 +205,7 @@ workflows:
             - terraform-prod-deploy:
                   requires:
                       - terraform
-                      - docker-webserver-build-push
+                      - docker-webserver-build-push-prod
                       - docker-api-build-push
                   filters:
                       branches:
@@ -175,7 +214,7 @@ workflows:
             - terraform-dev-deploy:
                   requires:
                       - terraform
-                      - docker-webserver-build-push
+                      - docker-webserver-build-push-staging
                       - docker-api-build-push
                   filters:
                       branches:

@@ -41,6 +41,10 @@
         {
           "name": "API_CORS_WHITELIST",
           "value": "https://staging.get-tested-covid19.org"
+        },
+        {
+          "name": "DEBUG",
+          "value": "express:*"
         }
     ],
     "secrets": [
@@ -63,6 +67,10 @@
       {
         "name": "GOOGLE_GEOCODING_KEY",
         "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/staging/GOOGLE_GEOCODING_KEY"
+      },
+      {
+        "name": "JWT_SECRET",
+        "valueFrom": "arn:aws:ssm:us-east-1:${account_id}:parameter/staging/JWT_SECRET"
       }
     ]
   }
