@@ -48,8 +48,8 @@ class HomeAbout extends React.Component {
       <StyledHomeAbout>
         <div className="container d-flex align-items-center justify-content-between">
           <div className="home-about__content">
-            <h2>Helping beat COVID-19</h2>
-            <p>Tests are the key to overcoming COVID-19. We're a team of volunteers working around-the-clock to provide accurate information on test centers.</p>
+            <h2>Testing is critical for overcoming COVID-19</h2>
+            <p>Get Tested COVID-19 is a project run by a team of volunteers working to provide accurate information about test centers and testing resources for the US.</p>
             <p>See an issue? Let us know and we'll fix it. Stay safe.</p>
             <div className="mt-3">
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSdr_SEZYn9s6SOahSEGMkrWn4_p-9sCJQf9HtWFyNR9mAPCow/viewform?usp=sf_link" className="btn btn-primary">Contact us</a>
@@ -57,7 +57,8 @@ class HomeAbout extends React.Component {
             </div>
           </div>
           <div className="home-about__img">
-            <img src={footerHero} alt='Contact Get Tested COVID-19' />
+            <h2>Donate</h2>
+            <div dangerouslySetInnerHTML={{ __html: `<script src="https://donorbox.org/widget.js" paypalExpress="false"></script><iframe allowpaymentrequest="" frameborder="0" height="600px" name="donorbox" scrolling="no" seamless="seamless" src="https://donorbox.org/embed/gettestedcovid?default_interval=o&hide_donation_meter=true" style="max-width: 500px; min-width: 350px; max-height:none!important" width="100%"></iframe>`}} />
           </div>
         </div>
       </StyledHomeAbout>
