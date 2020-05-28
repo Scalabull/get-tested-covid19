@@ -146,6 +146,7 @@ class ResultsPage extends React.Component {
       if (getQueryStringValue('zip') !== this.zip) {
         this.zip = getQueryStringValue('zip');
         this.filterList(this.zip);
+
         // Scroll to top of page
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -169,20 +170,23 @@ class ResultsPage extends React.Component {
               this.zipLatLng = response.data.coords;
               this.resultsZip = response.data.testCenters;
               this.setState({
-                isFetching: false
+                isFetching: false,
+                currentPage: 0
               })
             })
             .catch(err => {
-              console.log(err);
+              //console.log(err);
               this.resultsZip = [];
               this.setState({
-                isFetching: false
+                isFetching: false,
+                currentPage: 0
               })
             });
         } else {
           this.setState({
             isFetching: false,
-            hasError: 'INVALID_ZIP'
+            hasError: 'INVALID_ZIP',
+            currentPage: 0
           })
         }
     }
