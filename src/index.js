@@ -13,7 +13,7 @@ import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
 import AboutPage from './components/content/AboutPage.js';
 import ResourcesPage from './components/content/ResourcesPage.js';
-import WhenPage from './components/content/WhenPage.js';
+import PrivacyPage from './components/content/PrivacyPage.js';
 
 // Colors
 const colors = {
@@ -141,6 +141,11 @@ ReactDOM.render(
           path="/how-testing-works"
           exact
           render={(props) => <HowTestingWorks {...props} />}
+        />
+        <Route
+          path="/privacy"
+          exact
+          render={(props) => <PrivacyPage {...props} />}
         />
         <Redirect to="/" />
       </Switch>
