@@ -138,11 +138,6 @@ ReactDOM.render(
           render={props => <ResourcesPage {...props} />}
         />
         <Route
-          path="/when-to-get-tested"
-          exact
-          render={props => <WhenPage {...props} />}
-        />
-        <Route
           path="/how-testing-works"
           exact
           render={(props) => <HowTestingWorks {...props} />}
