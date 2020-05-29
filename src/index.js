@@ -12,7 +12,6 @@ import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
 import AboutPage from './components/content/AboutPage.js';
-import ResourcesPage from './components/content/ResourcesPage.js';
 import PrivacyPage from './components/content/PrivacyPage.js';
 
 // Colors
