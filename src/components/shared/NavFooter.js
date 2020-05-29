@@ -68,9 +68,8 @@ class NavFooter extends React.Component {
         <div className="container d-flex">
           <div>
             <ul>
-              <li><Link to="/resources">Resources</Link></li>
               <li><Link to="/how-testing-works">How Testing Works</Link></li>
-              <li><a target="_blank" rel="noopener noreferrer" href="https://medium.com/@gettestedcovid/">News</a></li>
+              <li><a target="_blank" rel="noopener noreferrer" href="https://medium.com/get-tested-covid-19">Resources</a></li>
               <li><Link to="/about">About</Link></li>
               <li><Link to="/privacy">Privacy</Link></li>
             </ul>

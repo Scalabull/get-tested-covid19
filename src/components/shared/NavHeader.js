@@ -82,9 +82,6 @@ const NavHeader = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav navbar>
             <NavItem>
-              <NavLink href="/resources">Resources</NavLink>
-            </NavItem>
-            <NavItem>
               <NavLink href="/how-testing-works">How Testing Works</NavLink>
             </NavItem>
             <NavItem>
