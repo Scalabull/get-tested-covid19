@@ -8,6 +8,7 @@ from helpers import preprocessing_utils, gtc_auth
 from dotenv import load_dotenv
 import time
 import click
+import json
 
 DAY_IN_MILLIS = 60 * 60 * 24 * 1000
 
@@ -123,7 +124,7 @@ def get_mapping_stats(mapped_rows):
     ver_unver_match_count = 0
     unverified_match_count = 0
     verified_match_count = 0
-    unmatched_count = 0
+    unmatched_rows = []
 
     for row in mapped_rows:
         unver_count = 0
@@ -142,13 +143,14 @@ def get_mapping_stats(mapped_rows):
         elif ver_count > 0:
             verified_match_count = verified_match_count + 1
         else:
-            unmatched_count = unmatched_count + 1
+            unmatched_rows.append(row)
     
     return { 
         'ver_unver_match_count': ver_unver_match_count, 
         'unverified_match_count': unverified_match_count, 
         'verified_match_count': verified_match_count, 
-        'unmatched_count': unmatched_count 
+        'unmatched_rows': unmatched_rows,
+        'unmatched_row_count': len(unmatched_rows)
     }
 
 # Command line interface
@@ -157,7 +159,7 @@ def get_mapping_stats(mapped_rows):
 @click.option('--days', default=7, help='Use staging table rows from up to X days ago.')   
 def map_test_centers(days):
     ms = str(int(round(time.time() * 1000)) - DAY_IN_MILLIS * days)
-    
+
     recent_staged_rows = get_recent_staged_test_center_rows(ms)
     unverified_rows, unverified_dict = get_unverified_test_centers()
     verified_rows, verified_dict = get_verified_test_centers()
@@ -167,10 +169,19 @@ def map_test_centers(days):
     print('Total verified rows: ', len(verified_rows))
 
     #simple brute force for visibility/traceability
-    recent_staged_rows = [check_row_against_ver_unver(staged_row, unverified_rows, verified_rows) for staged_row in recent_staged_rows]
+    processed_rows = [check_row_against_ver_unver(staged_row, unverified_rows, verified_rows) for staged_row in recent_staged_rows]
 
-    stats = get_mapping_stats(recent_staged_rows)
-    print('\n\nStats: ', stats)
+    stats = get_mapping_stats(processed_rows)
+
+    # Dump results of processing, currently dumps to standard I/O and also writes to a file in /logs - for passive analysis.
+    # TODO: write outfiles to S3 bucket instead of local filesys
+    dump_obj = {
+        'stats': stats,
+        'processed_rows': processed_rows
+    }
+    print('results of preprocessing: \n\n', json.dumps(dump_obj, indent=4))
+    with open('./logs/su_' + str(time.time()) + '_report.json', 'w') as outfile:
+        json.dump(dump_obj, outfile, indent=4)
 
 if __name__ == '__main__':
     map_test_centers()
