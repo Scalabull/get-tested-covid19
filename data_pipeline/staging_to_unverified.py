@@ -149,6 +149,13 @@ def group_staging_rows(staging_rows):
 
     return staging_row_groups, deduplicated_staging_rows
 
+# Meant to give quick feedback about status of job during manual usage of tool
+def pretty_print_results(dump_obj):
+    print('Proposed test center rows to be added to UnverifiedTestCenters table: ', dump_obj['post_processing_stats']['unmatched_row_count'])
+    print('Rows: ')
+    unmatched_rows = dump_obj['post_processing_stats']['unmatched_rows']
+    for row in unmatched_rows:
+        print('Staging ID: ', row['id'], ' Name: ', row['name'], ' OrigAddr: ', row['address'], ' FormtAddr: ', row['formatted_address_obj']['formatted_address'])
 
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
@@ -179,7 +186,9 @@ def map_test_centers(days):
         'post_processing_stats': stats,
         'processed_rows': processed_rows
     }
-    print('results of preprocessing: \n\n', json.dumps(dump_obj, indent=4))
+    
+    pretty_print_results(dump_obj)
+
     with open('./logs/su_' + str(time.time()) + '_report.json', 'w') as outfile:
         json.dump(dump_obj, outfile, indent=4)
 
