@@ -22,54 +22,36 @@ def get_recent_staged_test_center_rows(from_timestamp):
     recent_staged_response = requests.get(GTC_API_URL + "/api/v1/internal/test-centers-staging/fresh?since=" + from_timestamp, headers=headers)
     staged_rows = recent_staged_response.json()
 
-    return staged_rows
+    normalized_rows = [normalize_test_center_row(staged_row) for staged_row in staged_rows]
+    return normalized_rows
 
 def get_unverified_test_centers():
     query_response = requests.get(GTC_API_URL + "/api/v1/internal/unverified-test-centers/", headers=headers)
     rows = query_response.json()
-    row_dict = {}
-    for row in rows:
-        row_dict[str(row['id'])] = row
-
-    return rows, row_dict
+    
+    normalized_rows = [normalize_test_center_row(row) for row in rows]
+    return normalized_rows
 
 def get_verified_test_centers():
     query_response = requests.get(GTC_API_URL + "/api/v1/internal/verified-test-centers/", headers=headers)
     rows = query_response.json()
-    row_dict = {}
-    for row in rows:
-        row_dict[str(row['id'])] = row
+    
+    normalized_rows = [normalize_test_center_row(row) for row in rows]
+    return normalized_rows
 
-    return rows, row_dict
-
-# Currently all tables are the same, but formats are shifting.
-# May remove this if formats stabilize and tables are consistent.
-def normalize_test_center_row(row, source):
-    if source == 'STAGING':
-        return {
-            'address': row['address'],
-            'name': row['name']
-        }
-    elif source == 'VERIFIED':
-        return {
-            'address': row['address'],
-            'name': row['name']
-        }
-    elif source == 'UNVERIFIED':
-        return {
-            'address': row['address'],
-            'name': row['name']
-        }
-    else:
-        return None
+# All tables have same 'address' field and 'name' field, so normalization of data
+# is not currently required.
+def normalize_test_center_row(row):
+    row['formatted_address_obj'] = preprocessing_utils.get_formatted_address(row['address'])
+    return row
 
 # Check whether two normalized test center rows refer to the same test center
 def check_test_center_match(row1, row2):
     ident_flags = []
     warn_flags = []
 
-    row1_formatted_address_obj = preprocessing_utils.get_formatted_address(row1['address'])
-    row2_formatted_address_obj = preprocessing_utils.get_formatted_address(row2['address'])
+    row1_formatted_address_obj = row1['formatted_address_obj']
+    row2_formatted_address_obj = row2['formatted_address_obj']
 
     if row1['name'] == row2['name']:
         ident_flags.append('NAME_MATCH')
@@ -100,19 +82,16 @@ def check_test_centers_near(row1_formatted_address_obj, row2_formatted_address_o
     return False
 
 def check_row_against_ver_unver(staged_row, unverified_rows, verified_rows):
-    norm_staged_row = normalize_test_center_row(staged_row, 'STAGING')
     staged_row['matches'] = []
 
     for unverified_row in unverified_rows:
-        norm_unverified_row = normalize_test_center_row(unverified_row, 'UNVERIFIED')
-        ident_flags, warn_flags = check_test_center_match(norm_staged_row, norm_unverified_row)
+        ident_flags, warn_flags = check_test_center_match(staged_row, unverified_row)
 
         if(len(ident_flags) > 0 or len(warn_flags) > 0):
             staged_row['matches'].append({'ident_flags': ident_flags, 'warn_flags': warn_flags, 'type': 'UNVERIFIED', 'unverified_row_id': unverified_row['id'] })
     
     for verified_row in verified_rows:
-        norm_verified_row = normalize_test_center_row(verified_row, 'VERIFIED')
-        ident_flags, warn_flags = check_test_center_match(norm_staged_row, norm_verified_row)
+        ident_flags, warn_flags = check_test_center_match(staged_row, verified_row)
 
         if(len(ident_flags) > 0 or len(warn_flags) > 0):
             staged_row['matches'].append({'ident_flags': ident_flags, 'warn_flags': warn_flags, 'type': 'VERIFIED', 'verified_row_id': verified_row['id'] })
@@ -161,8 +140,8 @@ def map_test_centers(days):
     ms = str(int(round(time.time() * 1000)) - DAY_IN_MILLIS * days)
 
     recent_staged_rows = get_recent_staged_test_center_rows(ms)
-    unverified_rows, unverified_dict = get_unverified_test_centers()
-    verified_rows, verified_dict = get_verified_test_centers()
+    unverified_rows = get_unverified_test_centers()
+    verified_rows = get_verified_test_centers()
 
     print('Staged test centers since: ', ms, '. Row count: ', len(recent_staged_rows))
     print('Total unverified rows: ', len(unverified_rows))
