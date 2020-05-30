@@ -42,6 +42,7 @@ def get_verified_test_centers():
 # All tables have same 'address' field and 'name' field, so normalization of data
 # is not currently required.
 def normalize_test_center_row(row):
+    # TODO: handle formatting failures by discarding row, log bad rows in report.
     row['formatted_address_obj'] = preprocessing_utils.get_formatted_address(row['address'])
     return row
 
@@ -132,6 +133,23 @@ def get_mapping_stats(mapped_rows):
         'unmatched_row_count': len(unmatched_rows)
     }
 
+def group_staging_rows(staging_rows):
+    staging_row_groups = {}
+    for row in staging_rows:
+        google_place_id = row['formatted_address_obj']['google_place_id']
+        if google_place_id in staging_row_groups:
+            staging_row_groups[google_place_id].append(row)
+        else:
+            staging_row_groups[google_place_id] = [row]
+    
+    # For any duplicate staging rows, our selection of which row to use for matching is arbitrary
+    deduplicated_staging_rows = []
+    for row_group in staging_row_groups.values():
+        deduplicated_staging_rows.append(row_group[0])
+
+    return staging_row_groups, deduplicated_staging_rows
+
+
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
 @click.command()
@@ -140,22 +158,25 @@ def map_test_centers(days):
     ms = str(int(round(time.time() * 1000)) - DAY_IN_MILLIS * days)
 
     recent_staged_rows = get_recent_staged_test_center_rows(ms)
+    grouped_staging_row_dict, deduplicated_staging_rows = group_staging_rows(recent_staged_rows)
     unverified_rows = get_unverified_test_centers()
     verified_rows = get_verified_test_centers()
 
     print('Staged test centers since: ', ms, '. Row count: ', len(recent_staged_rows))
+    print('Staged test centers (deduplicated): ', len(deduplicated_staging_rows))
     print('Total unverified rows: ', len(unverified_rows))
     print('Total verified rows: ', len(verified_rows))
 
     #simple brute force for visibility/traceability
-    processed_rows = [check_row_against_ver_unver(staged_row, unverified_rows, verified_rows) for staged_row in recent_staged_rows]
-
+    processed_rows = [check_row_against_ver_unver(staged_row, unverified_rows, verified_rows) for staged_row in deduplicated_staging_rows]
     stats = get_mapping_stats(processed_rows)
 
     # Dump results of processing, currently dumps to standard I/O and also writes to a file in /logs - for passive analysis.
     # TODO: write outfiles to S3 bucket instead of local filesys
     dump_obj = {
-        'stats': stats,
+        'staging_row_deduplication_groups': grouped_staging_row_dict,
+        'staging_row_deduplicated_count': len(deduplicated_staging_rows),
+        'post_processing_stats': stats,
         'processed_rows': processed_rows
     }
     print('results of preprocessing: \n\n', json.dumps(dump_obj, indent=4))
