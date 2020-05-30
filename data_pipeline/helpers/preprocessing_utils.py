@@ -10,13 +10,15 @@ def get_formatted_address(full_address):
         full_address = ''
         
     geocode_result = gmaps.geocode(full_address)
-                
+
     if(len(geocode_result) > 0):
         primary_result = geocode_result[0]
         formatted_address = primary_result['formatted_address']
         lat_lng = primary_result['geometry']['location']
         google_place_id = primary_result['place_id']
         
+        print('geocoded place with google_place_id: ', google_place_id)
+
         #NOTE: We attempted to use google's 'vicinity' for a shortened address, but it doesn't work as advertised.
         #places_data = gmaps.place(google_place_id)
         #print('vicinity: ', places_data['vicinity'])

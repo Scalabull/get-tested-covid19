@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import time
 
 WEEK_IN_MILLIS = 60 * 60 * 24 * 7 * 1000
+ms = str(int(round(time.time() * 1000)) - WEEK_IN_MILLIS)
 
 load_dotenv(override=True)
 GTC_API_URL = os.getenv('GTC_API_URL')
@@ -17,12 +18,9 @@ auth_token = gtc_auth.authenticate_gtc()
 headers = {'Authorization': 'Bearer ' + auth_token}
 
 def get_recent_staged_test_center_rows():
-    ms = str(int(round(time.time() * 1000)) - WEEK_IN_MILLIS)
-
     recent_staged_response = requests.get(GTC_API_URL + "/api/v1/internal/test-centers-staging/fresh?since=" + ms, headers=headers)
     staged_rows = recent_staged_response.json()
 
-    print('Staged test centers since: ', ms, '. Row count: ', len(staged_rows))
     return staged_rows
 
 def get_unverified_test_centers():
@@ -32,8 +30,6 @@ def get_unverified_test_centers():
     for row in rows:
         row_dict[str(row['id'])] = row
 
-    print('Total unverified rows: ', len(rows))
-    #print('unverified dict: ', row_dict)
     return rows, row_dict
 
 def get_verified_test_centers():
@@ -43,8 +39,6 @@ def get_verified_test_centers():
     for row in rows:
         row_dict[str(row['id'])] = row
 
-    print('Total verified rows: ', len(rows))
-    #print('verified dict: ', row_dict)
     return rows, row_dict
 
 # Currently all tables are the same, but formats are shifting.
@@ -90,7 +84,8 @@ def check_test_center_match(row1, row2):
     
     return ident_flags, warn_flags
     
-    
+# This is rough math, may need to revise due to Python's round() behavior
+# Want to return test centers within 100 meters   
 def check_test_centers_near(row1_formatted_address_obj, row2_formatted_address_obj):
     row1_lat = round(row1_formatted_address_obj['lat_lng']['lat'], 3)
     row1_lng = round(row1_formatted_address_obj['lat_lng']['lng'], 3)
@@ -103,6 +98,59 @@ def check_test_centers_near(row1_formatted_address_obj, row2_formatted_address_o
     
     return False
 
+def check_row_against_ver_unver(staged_row, unverified_rows, verified_rows):
+    norm_staged_row = normalize_test_center_row(staged_row, 'STAGING')
+    staged_row['matches'] = []
+
+    for unverified_row in unverified_rows:
+        norm_unverified_row = normalize_test_center_row(unverified_row, 'UNVERIFIED')
+        ident_flags, warn_flags = check_test_center_match(norm_staged_row, norm_unverified_row)
+
+        if(len(ident_flags) > 0 or len(warn_flags) > 0):
+            staged_row['matches'].append({'ident_flags': ident_flags, 'warn_flags': warn_flags, 'type': 'UNVERIFIED', 'unverified_row_id': unverified_row['id'] })
+    
+    for verified_row in verified_rows:
+        norm_verified_row = normalize_test_center_row(verified_row, 'VERIFIED')
+        ident_flags, warn_flags = check_test_center_match(norm_staged_row, norm_verified_row)
+
+        if(len(ident_flags) > 0 or len(warn_flags) > 0):
+            staged_row['matches'].append({'ident_flags': ident_flags, 'warn_flags': warn_flags, 'type': 'VERIFIED', 'verified_row_id': verified_row['id'] })
+    
+    return staged_row
+
+
+def get_mapping_stats(mapped_rows):
+    ver_unver_match_count = 0
+    unverified_match_count = 0
+    verified_match_count = 0
+    unmatched_count = 0
+
+    for row in mapped_rows:
+        unver_count = 0
+        ver_count = 0
+
+        for match in row['matches']:
+            if match['type'] == 'VERIFIED':
+                ver_count = ver_count + 1
+            elif match['type'] == 'UNVERIFIED':
+                unver_count = unver_count + 1
+        
+        if unver_count > 0 and ver_count > 0:
+            ver_unver_match_count = ver_unver_match_count + 1
+        elif unver_count > 0:
+            unverified_match_count = unverified_match_count + 1
+        elif ver_count > 0:
+            verified_match_count = verified_match_count + 1
+        else:
+            unmatched_count = unmatched_count + 1
+    
+    return { 
+        'ver_unver_match_count': ver_unver_match_count, 
+        'unverified_match_count': unverified_match_count, 
+        'verified_match_count': verified_match_count, 
+        'unmatched_count': unmatched_count 
+    }
+
 
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
 def map_test_centers():
@@ -110,17 +158,14 @@ def map_test_centers():
     unverified_rows, unverified_dict = get_unverified_test_centers()
     verified_rows, verified_dict = get_verified_test_centers()
 
+    print('Staged test centers since: ', ms, '. Row count: ', len(recent_staged_rows))
+    print('Total unverified rows: ', len(unverified_rows))
+    print('Total verified rows: ', len(verified_rows))
+
     #simple brute force for visibility/traceability
-    for staged_row in recent_staged_rows:
-        norm_staged_row = normalize_test_center_row(staged_row, 'STAGING')
+    recent_staged_rows = [check_row_against_ver_unver(staged_row, unverified_rows, verified_rows) for staged_row in recent_staged_rows]
 
-        for unverified_row in unverified_rows:
-            norm_unverified_row = normalize_test_center_row(unverified_row, 'UNVERIFIED')
-
-            ident_flags, warn_flags = check_test_center_match(norm_staged_row, norm_unverified_row)
-            if(len(ident_flags) > 0 or len(warn_flags) > 0):
-                print('staged row: ', staged_row, ' MATCH unverified row: ', unverified_row)
-                print('ident_flags: ', ident_flags, ' warn_flags: ', warn_flags)
-
-
+    stats = get_mapping_stats(recent_staged_rows)
+    print('\n\nStats: ', stats)
+            
 map_test_centers()
