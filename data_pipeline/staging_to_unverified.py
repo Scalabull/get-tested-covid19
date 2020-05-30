@@ -7,9 +7,9 @@ import importlib
 from helpers import preprocessing_utils, gtc_auth
 from dotenv import load_dotenv
 import time
+import click
 
-WEEK_IN_MILLIS = 60 * 60 * 24 * 7 * 1000
-ms = str(int(round(time.time() * 1000)) - WEEK_IN_MILLIS)
+DAY_IN_MILLIS = 60 * 60 * 24 * 1000
 
 load_dotenv(override=True)
 GTC_API_URL = os.getenv('GTC_API_URL')
@@ -17,8 +17,8 @@ GTC_API_URL = os.getenv('GTC_API_URL')
 auth_token = gtc_auth.authenticate_gtc()
 headers = {'Authorization': 'Bearer ' + auth_token}
 
-def get_recent_staged_test_center_rows():
-    recent_staged_response = requests.get(GTC_API_URL + "/api/v1/internal/test-centers-staging/fresh?since=" + ms, headers=headers)
+def get_recent_staged_test_center_rows(from_timestamp):
+    recent_staged_response = requests.get(GTC_API_URL + "/api/v1/internal/test-centers-staging/fresh?since=" + from_timestamp, headers=headers)
     staged_rows = recent_staged_response.json()
 
     return staged_rows
@@ -151,10 +151,14 @@ def get_mapping_stats(mapped_rows):
         'unmatched_count': unmatched_count 
     }
 
-
+# Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
-def map_test_centers():
-    recent_staged_rows = get_recent_staged_test_center_rows()
+@click.command()
+@click.option('--days', default=7, help='Use staging table rows from up to X days ago.')   
+def map_test_centers(days):
+    ms = str(int(round(time.time() * 1000)) - DAY_IN_MILLIS * days)
+    
+    recent_staged_rows = get_recent_staged_test_center_rows(ms)
     unverified_rows, unverified_dict = get_unverified_test_centers()
     verified_rows, verified_dict = get_verified_test_centers()
 
@@ -167,5 +171,6 @@ def map_test_centers():
 
     stats = get_mapping_stats(recent_staged_rows)
     print('\n\nStats: ', stats)
-            
-map_test_centers()
+
+if __name__ == '__main__':
+    map_test_centers()

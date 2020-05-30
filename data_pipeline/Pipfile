@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 googlemaps = "*"
 python-dotenv = "*"
+click = "*"
 
 [dev-packages]
 
