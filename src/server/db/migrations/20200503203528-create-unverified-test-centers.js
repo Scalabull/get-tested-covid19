@@ -198,7 +198,7 @@ module.exports = {
       },
       open_24_hours: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         default: false
       },
       exported_to_crm_at: {

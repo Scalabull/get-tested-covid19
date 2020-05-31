@@ -18,6 +18,10 @@ GTC_API_URL = os.getenv('GTC_API_URL')
 auth_token = gtc_auth.authenticate_gtc()
 headers = {'Authorization': 'Bearer ' + auth_token}
 
+def post_unverified_test_center(test_center_obj):
+    res = requests.post(GTC_API_URL + "/api/v1/internal/unverified-test-centers/", test_center_obj, headers=headers)
+    return res
+
 def get_recent_staged_test_center_rows(from_timestamp):
     recent_staged_response = requests.get(GTC_API_URL + "/api/v1/internal/test-centers-staging/fresh?since=" + from_timestamp, headers=headers)
     staged_rows = recent_staged_response.json()
@@ -180,6 +184,8 @@ def load_job_dump_and_push_to_api(commit_job_filename):
 
         for test_center in new_test_center_rows:
             print('Test Center: ', test_center)
+            post_status = post_unverified_test_center(test_center)
+            print('Row POSTed successfully? ', post_status)
 
 
 def map_test_centers(days):
