@@ -150,17 +150,38 @@ def group_staging_rows(staging_rows):
     return staging_row_groups, deduplicated_staging_rows
 
 # Meant to give quick feedback about status of job during manual usage of tool
-def pretty_print_results(dump_obj):
+def pretty_print_results(dump_obj, commit_job_filename):
     print('Proposed test center rows to be added to UnverifiedTestCenters table: ', dump_obj['post_processing_stats']['unmatched_row_count'])
     print('Rows: ')
     unmatched_rows = dump_obj['post_processing_stats']['unmatched_rows']
     for row in unmatched_rows:
         print('Staging ID: ', row['id'], ' Name: ', row['name'], ' OrigAddr: ', row['address'], ' FormtAddr: ', row['formatted_address_obj']['formatted_address'])
 
+    print('\n\nCommit Job Filename: ', commit_job_filename)
+    print('(pass this commit_job back into the tool to upload to Unverified API)')
+
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
 @click.command()
 @click.option('--days', default=7, help='Use staging table rows from up to X days ago.')   
+@click.option('--commit_job', default=None, help='Pass in the file name of a JSON output dump from a prior run of this script.'
++ ' The specified file will be loaded and the results will be pushed to the Unverified API.')
+def exec_tool(days, commit_job):
+
+    if commit_job:
+        load_job_dump_and_push_to_api(commit_job)
+    else:
+        map_test_centers(days)
+
+def load_job_dump_and_push_to_api(commit_job_filename):
+    with open('./logs/' + commit_job_filename) as json_file:
+        dump_obj = json.load(json_file)
+        new_test_center_rows = dump_obj['post_processing_stats']['unmatched_rows']
+
+        for test_center in new_test_center_rows:
+            print('Test Center: ', test_center)
+
+
 def map_test_centers(days):
     ms = str(int(round(time.time() * 1000)) - DAY_IN_MILLIS * days)
 
@@ -186,11 +207,11 @@ def map_test_centers(days):
         'post_processing_stats': stats,
         'processed_rows': processed_rows
     }
+    commit_job_filename = 'su_' + str(time.time()) + '_report.json'
+    pretty_print_results(dump_obj, commit_job_filename)
     
-    pretty_print_results(dump_obj)
-
-    with open('./logs/su_' + str(time.time()) + '_report.json', 'w') as outfile:
+    with open('./logs/' + commit_job_filename, 'w') as outfile:
         json.dump(dump_obj, outfile, indent=4)
 
 if __name__ == '__main__':
-    map_test_centers()
+    exec_tool()
