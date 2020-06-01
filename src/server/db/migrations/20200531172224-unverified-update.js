@@ -11,6 +11,9 @@ module.exports = {
         queryInterface.addColumn('UnverifiedTestCenters', 'google_place_id', {
           type: Sequelize.DataTypes.TEXT
         }, { transaction: t }),
+        queryInterface.addColumn('UnverifiedTestCenters', 'full_formatted_address', {
+          type: Sequelize.DataTypes.TEXT
+        }, { transaction: t }),
         queryInterface.addColumn('UnverifiedTestCenters', 'staging_row_id', {
           type: Sequelize.DataTypes.INTEGER,
           references: {
@@ -31,6 +34,7 @@ module.exports = {
           allowNull: false
         }, { transaction: t }),
         queryInterface.removeColumn('UnverifiedTestCenters', 'google_place_id', { transaction: t }),
+        queryInterface.removeColumn('UnverifiedTestCenters', 'full_formatted_address', { transaction: t }),
         queryInterface.removeColumn('UnverifiedTestCenters', 'staging_row_id', { transaction: t }),
       ]);
     });
