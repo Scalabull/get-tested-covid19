@@ -32,7 +32,7 @@ router.post('/', auth, async (req, res) => {
     });
 
     if(testCenterMatch) {
-      return res.status(409).send('This row is a duplicate of an existing Unverified test center row', testCenterMatch);
+      return res.status(400).send('This row is a duplicate of an existing Unverified test center row');
     }
 
     const testCenter = await db.UnverifiedTestCenter.create(req.body)

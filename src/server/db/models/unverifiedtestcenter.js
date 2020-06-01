@@ -45,7 +45,9 @@ module.exports = (sequelize, DataTypes) => {
       close_hour_sun: DataTypes.INTEGER,
       open_24_hours: DataTypes.BOOLEAN,
       exported_to_crm_at: DataTypes.DATE,
-      verified_at: DataTypes.DATE
+      verified_at: DataTypes.DATE,
+      google_place_id: DataTypes.TEXT,
+      staging_row_id: DataTypes.INTEGER
     },
     {
       hooks: {

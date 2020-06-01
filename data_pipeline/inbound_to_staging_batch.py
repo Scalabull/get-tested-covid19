@@ -3,13 +3,13 @@
 import requests
 import os
 import importlib
-from helpers import preprocessing_utils, authenticate_gtc
+from helpers import preprocessing_utils, gtc_auth
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
 GTC_API_URL = os.getenv('GTC_API_URL')
 
-auth_token = authenticate_gtc()
+auth_token = gtc_auth.authenticate_gtc()
 headers = {'Authorization': 'Bearer ' + auth_token}
 
 freshInboundRows = requests.get(GTC_API_URL + "/api/v1/internal/inbound/", headers=headers)
