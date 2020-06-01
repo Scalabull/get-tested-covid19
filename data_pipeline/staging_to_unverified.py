@@ -50,6 +50,27 @@ def normalize_test_center_row(row):
     row['formatted_address_obj'] = preprocessing_utils.get_formatted_address(row['address'])
     return row
 
+def format_unverified_test_center_row(decorated_staging_row):
+    formatted_address_obj = decorated_staging_row['formatted_address_obj']
+    lat_lng = formatted_address_obj['lat_lng']
+
+    unverified_output_row = {
+        'full_formatted_address': formatted_address_obj['formatted_address'],
+        'latitude': lat_lng['lat'],
+        'longitude': lat_lng['lng'],
+        'google_place_id': formatted_address_obj['google_place_id'],
+        'staging_row_id': decorated_staging_row['id'],
+        'name': decorated_staging_row['name'],
+        'phone_number': decorated_staging_row['phone_number'],
+        'website': decorated_staging_row['website'],
+        'public_description': decorated_staging_row['description'],
+        'appointment_required': decorated_staging_row['appointment_required'],
+        'doctor_screen_required_beforehand': decorated_staging_row['doctor_screen_required_beforehand'],
+        'drive_thru_site': decorated_staging_row['drive_thru_site'],
+        'estimated_daily_test_capacity': decorated_staging_row['estimated_daily_test_capacity']
+    }
+    return unverified_output_row
+
 # Check whether two normalized test center rows refer to the same test center
 def check_test_center_match(row1, row2):
     ident_flags = []
@@ -183,8 +204,9 @@ def load_job_dump_and_push_to_api(commit_job_filename):
         new_test_center_rows = dump_obj['post_processing_stats']['unmatched_rows']
 
         for test_center in new_test_center_rows:
-            print('Test Center: ', test_center)
-            post_status = post_unverified_test_center(test_center)
+            unverified_test_center_row = format_unverified_test_center_row(test_center)
+            print('Formatted test center row: ', unverified_test_center_row)
+            post_status = post_unverified_test_center(unverified_test_center_row)
             print('Row POSTed successfully? ', post_status)
 
 
