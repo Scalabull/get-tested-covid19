@@ -82,16 +82,10 @@ const NavHeader = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav navbar>
             <NavItem>
-              <NavLink href="/resources">Resources</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="/when-to-get-tested">When To Get Tested</NavLink>
-            </NavItem>
-            <NavItem>
               <NavLink href="/how-testing-works">How Testing Works</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink target="_blank" rel="noopener noreferrer" href="https://medium.com/@gettestedcovid/">News</NavLink>
+              <NavLink target="_blank" rel="noopener noreferrer" href="https://medium.com/get-tested-covid-19">Resources</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/about">About</NavLink>

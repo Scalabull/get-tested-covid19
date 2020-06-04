@@ -12,8 +12,7 @@ import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
 import AboutPage from './components/content/AboutPage.js';
-import ResourcesPage from './components/content/ResourcesPage.js';
-import WhenPage from './components/content/WhenPage.js';
+import PrivacyPage from './components/content/PrivacyPage.js';
 
 // Colors
 const colors = {
@@ -133,19 +132,14 @@ ReactDOM.render(
         <Route path="/search" exact render={props => <ResultsPage {...props} />} />
         <Route path="/about" exact render={props => <AboutPage {...props} />} />
         <Route
-          path="/resources"
-          exact
-          render={props => <ResourcesPage {...props} />}
-        />
-        <Route
-          path="/when-to-get-tested"
-          exact
-          render={props => <WhenPage {...props} />}
-        />
-        <Route
           path="/how-testing-works"
           exact
           render={(props) => <HowTestingWorks {...props} />}
+        />
+        <Route
+          path="/privacy"
+          exact
+          render={(props) => <PrivacyPage {...props} />}
         />
         <Redirect to="/" />
       </Switch>
