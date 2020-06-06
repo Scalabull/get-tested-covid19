@@ -9,8 +9,10 @@ from dotenv import load_dotenv
 import time
 import click
 import json
+import boto3
 
 DAY_IN_MILLIS = 60 * 60 * 24 * 1000
+S3_BUCKET = 'staging-gtc-data-batches'
 
 load_dotenv(override=True)
 GTC_API_URL = os.getenv('GTC_API_URL')
@@ -211,6 +213,9 @@ def load_job_dump_and_push_to_api(commit_job_filename):
 
 
 def map_test_centers(days):
+    boto3.client('sts').get_caller_identity().get('Account')
+    s3 = boto3.client('s3')
+
     ms = str(int(round(time.time() * 1000)) - DAY_IN_MILLIS * days)
 
     recent_staged_rows = get_recent_staged_test_center_rows(ms)
@@ -240,6 +245,10 @@ def map_test_centers(days):
     
     with open('./logs/' + commit_job_filename, 'w') as outfile:
         json.dump(dump_obj, outfile, indent=4)
+    
+    s3.put_object(Bucket=S3_BUCKET, 
+                Body=(bytes(json.dumps(dump_obj, indent=4).encode('UTF-8'))),
+                Key='unver-staged-jobs/' + commit_job_filename)
 
 if __name__ == '__main__':
     exec_tool()
