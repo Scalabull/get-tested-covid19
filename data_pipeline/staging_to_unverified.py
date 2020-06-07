@@ -194,6 +194,8 @@ def pretty_print_results(dump_obj, commit_job_filename):
 @click.option('--commit_job', default=None, help='Pass in the file name of a JSON output dump from a prior run of this script.'
 + ' The specified file will be loaded and the results will be pushed to the Unverified API.')
 def exec_tool(days, commit_job):
+    aws_ident = boto3.client('sts').get_caller_identity().get('Account')
+    print('Using AWS Identity: ', aws_ident)
 
     if commit_job:
         load_job_dump_and_push_to_api(commit_job)
@@ -213,7 +215,6 @@ def load_job_dump_and_push_to_api(commit_job_filename):
 
 
 def map_test_centers(days):
-    boto3.client('sts').get_caller_identity().get('Account')
     s3 = boto3.client('s3')
 
     ms = str(int(round(time.time() * 1000)) - DAY_IN_MILLIS * days)
@@ -233,7 +234,6 @@ def map_test_centers(days):
     stats = get_mapping_stats(processed_rows)
 
     # Dump results of processing, currently dumps to standard I/O and also writes to a file in /logs - for passive analysis.
-    # TODO: write outfiles to S3 bucket instead of local filesys
     dump_obj = {
         'staging_row_deduplication_groups': grouped_staging_row_dict,
         'staging_row_deduplicated_count': len(deduplicated_staging_rows),
@@ -246,9 +246,12 @@ def map_test_centers(days):
     with open('./logs/' + commit_job_filename, 'w') as outfile:
         json.dump(dump_obj, outfile, indent=4)
     
+    S3_OBJECT_KEY = 'unver-staged-jobs/' + commit_job_filename
     s3.put_object(Bucket=S3_BUCKET, 
                 Body=(bytes(json.dumps(dump_obj, indent=4).encode('UTF-8'))),
-                Key='unver-staged-jobs/' + commit_job_filename)
+                Key= S3_OBJECT_KEY)
+    S3_OBJECT_URL = 'https://' + S3_BUCKET + '.s3.amazonaws.com/' + S3_OBJECT_KEY
+    print('s3 object URL: ', S3_OBJECT_URL)
 
 if __name__ == '__main__':
     exec_tool()
