@@ -21,16 +21,34 @@ const StyledAbout = styled.div`
             margin-bottom: 1rem;
             font-size: 36px;
         }
+
+        @media screen and (max-width: ${props => props.theme.bpMed}) {
+          flex-direction: column;
+          justify-content: center;
+        }
     }
 
     .about-section__content {
         padding-right: 3rem;
         max-width: 650px;
+
+        @media screen and (max-width: ${props => props.theme.bpMed}) {
+          padding-right: 0;
+        }
     }
 
     .about-section__extra {
         svg {
             max-width: 360px;
+        }
+
+        @media screen and (max-width: ${props => props.theme.bpMed}) {
+          text-align: center;
+          width: 100%;
+
+          svg {
+              width: 80%;
+          }
         }
     }
 
@@ -48,6 +66,12 @@ const StyledAbout = styled.div`
         &:hover {
             text-decoration: none;
             box-shadow: 0 0 0 1px ${props => props.theme.colorPurple};
+        }
+
+        @media screen and (max-width: ${props => props.theme.bpMed}) {
+          text-align: left;
+          width: 100%;
+          min-width: none;
         }
     }
 
@@ -83,6 +107,12 @@ const StyledAbout = styled.div`
 
         .about-section {
             align-items: flex-start;
+        }
+
+        @media screen and (max-width: ${props => props.theme.bpMed}) {
+          .about-section__extra {
+              margin-top: 2rem;
+          }
         }
     }
 
@@ -138,6 +168,16 @@ const StyledAbout = styled.div`
                 font-weight: 600;
                 color: ${props => props.theme.colorBlueLight};
             }
+        }
+
+        @media screen and (max-width: ${props => props.theme.bpMed}) {
+          ul {
+              flex-direction: column;
+          }
+
+          li {
+              margin-right: 0;
+          }
         }
     }
 
@@ -220,7 +260,7 @@ class AboutPage extends React.Component {
                                 <p><strong>We have the most complete database of COVID-19 test centers in the US: 3,000+ sites and growing.</strong></p>
                                 <p>Just search your zip code to find the nearest centers.</p>
                             </div>
-                            <ZipForm large autoFocus />
+                            <ZipForm large />
                         </div>
                     </div>
                     <div className="about__facts">
