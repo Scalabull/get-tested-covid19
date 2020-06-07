@@ -7,6 +7,7 @@ import { ReactComponent as HeroIll } from '../../assets/img/ill/about-hero.svg';
 import { ReactComponent as TeamIll } from '../../assets/img/ill/about-team.svg';
 import { ReactComponent as PartnersIll } from '../../assets/img/ill/about-partners.svg';
 import { Link } from 'react-router-dom';
+import ZipForm from 'components/shared/ZipForm.js';
 
 const StyledAbout = styled.div`
 
@@ -85,6 +86,34 @@ const StyledAbout = styled.div`
         }
     }
 
+    .about__database {
+        .container {
+            padding: 8rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .about__database-content {
+        text-align: center;
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            max-width: 700px;
+
+            strong {
+                font-weight: 500;
+                margin-bottom: 2rem;
+                font-size: 1.5rem;
+            }
+        }
+    }
+
     .about__facts {
         background-color: ${props => props.theme.colorBlueDark};
         color: #fff;
@@ -111,6 +140,8 @@ const StyledAbout = styled.div`
             }
         }
     }
+
+    
 `
 
 class AboutPage extends React.Component {
@@ -182,11 +213,21 @@ class AboutPage extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <div className="about__database">
+                        <div className="container">
+                            <div className="about__database-content">
+                                <h2>Our Database</h2>
+                                <p><strong>We have the most complete database of COVID-19 test centers in the US: 3,000+ sites and growing.</strong></p>
+                                <p>Just search your zip code to find the nearest centers.</p>
+                            </div>
+                            <ZipForm large autoFocus />
+                        </div>
+                    </div>
                     <div className="about__facts">
                         <div className="container">
                             <h2>Fast Facts: Get Tested COVID-19</h2>
                             <ul>
-                                <li><strong>2,000</strong> test centers</li>
+                                <li><strong>3,000</strong> test centers</li>
                                 <li><strong>35</strong> states</li>
                                 <li><strong>57</strong> centers per state</li>
                                 <li><strong>5%</strong> drive thru</li>
