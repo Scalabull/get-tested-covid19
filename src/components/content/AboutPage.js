@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { ReactComponent as HeroIll } from '../../assets/img/ill/about-hero.svg';
 import { ReactComponent as TeamIll } from '../../assets/img/ill/about-team.svg';
 import { ReactComponent as PartnersIll } from '../../assets/img/ill/about-partners.svg';
+import { Link } from 'react-router-dom';
 
 const StyledAbout = styled.div`
 
@@ -32,6 +33,45 @@ const StyledAbout = styled.div`
         }
     }
 
+    .about-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 300px;
+        padding: 1.75rem 1.25rem;
+        color: ${props => props.theme.colorPurple};
+        background-color: #fff;
+        border-radius: 3px;
+        margin-bottom: 1rem;
+
+        &:hover {
+            text-decoration: none;
+            box-shadow: 0 0 0 1px ${props => props.theme.colorPurple};
+        }
+    }
+
+    .about-card__left {
+        display: flex;
+        align-items: center;
+        margin-right: 2rem;
+
+        i {
+            font-size: 32px;
+            margin-right: 10px;
+        }
+
+        strong {
+            font-weight: 600;
+            padding-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+    }
+
     .about__hero, .about__partners {
         background-color: ${props => props.theme.colorPurple};
         color: #fff;
@@ -39,6 +79,10 @@ const StyledAbout = styled.div`
 
     .about__mission {
         background-color: ${props => props.theme.colorGrayLight};
+
+        .about-section {
+            align-items: flex-start;
+        }
     }
 `
 
@@ -84,7 +128,30 @@ class AboutPage extends React.Component {
                                 <p>We believe that knowledge is power and that everyone deserves easy access to COVID-19 resources. In addition to maintaining our testing center database, we also connect test centers with the resources they need, gather helpful information to share, and partner with communities, companies, and institutions on other COVID-19 support projects. </p>
                             </div>
                             <div className="about-section__extra">
-                                CTAs
+                                <Link className="about-card" to="/">
+                                    <div className="about-card__left">
+                                        <i className="fas fa-hospital" />
+                                        <div className="about-card__content">
+                                            <strong>Find</strong>
+                                            <p>Locate COVID-19 testing centers</p>
+                                        </div>
+                                    </div>
+                                    <div className="about-card__right">
+                                        <i className="fas fa-chevron-right" />
+                                    </div>
+                                </Link>
+                                <a className="about-card" href="https://medium.com/get-tested-covid-19" target="_blank" rel="noopener noreferrer">
+                                    <div className="about-card__left">
+                                        <i className="fas fa-info-circle" />
+                                        <div className="about-card__content">
+                                            <strong>Learn</strong>
+                                            <p>Stay informed about COVID-19 testing</p>
+                                        </div>
+                                    </div>
+                                    <div className="about-card__right">
+                                        <i className="fas fa-chevron-right" />
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>
