@@ -84,6 +84,33 @@ const StyledAbout = styled.div`
             align-items: flex-start;
         }
     }
+
+    .about__facts {
+        background-color: ${props => props.theme.colorBlueDark};
+        color: #fff;
+
+        .container {
+            padding: 4rem 1rem 3.8rem;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+        }
+
+        li {
+            margin-right: 2rem;
+            font-size: 1.5rem;
+
+            strong {
+                font-size: 3rem;
+                font-weight: 600;
+                color: ${props => props.theme.colorBlueLight};
+            }
+        }
+    }
 `
 
 class AboutPage extends React.Component {
@@ -153,6 +180,17 @@ class AboutPage extends React.Component {
                                     </div>
                                 </a>
                             </div>
+                        </div>
+                    </div>
+                    <div className="about__facts">
+                        <div className="container">
+                            <h2>Fast Facts: Get Tested COVID-19</h2>
+                            <ul>
+                                <li><strong>2,000</strong> test centers</li>
+                                <li><strong>35</strong> states</li>
+                                <li><strong>57</strong> centers per state</li>
+                                <li><strong>5%</strong> drive thru</li>
+                            </ul>
                         </div>
                     </div>
                     <div className="about__team">
