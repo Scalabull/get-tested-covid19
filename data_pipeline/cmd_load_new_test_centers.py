@@ -3,7 +3,8 @@ import os
 import importlib
 import click
 import sys
-from helpers import preprocessing_utils, gtc_auth, gtc_api_helpers, gmaps_utils, aws_utils, test_center_csv
+import time
+from helpers import preprocessing_utils, gtc_auth, gtc_api_helpers, gmaps_utils, aws_utils, test_center_csv, gtc_merge_logic, file_utils
 from dotenv import load_dotenv
 from termcolor import colored
 
@@ -12,6 +13,8 @@ GTC_API_URL = os.getenv('GTC_API_URL')
 GMAPS_API_KEY = os.getenv('GOOGLE_API_KEY')
 REC_PROD_GTC_API_URL = 'https://api.get-tested-covid19.org'
 GTC_AWS_ACCOUNT_ID = '496778160066'
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+LOGS_PATH = os.path.join(THIS_DIR, 'logs')
 
 def print_startup_messaging():
     print('The following are required to use this utility: \n' +
@@ -37,6 +40,18 @@ def validate_credentials():
         raise Exception('Invalid AWS credentials')
     else:
         print(colored('Your AWS account ID is correct: ' + aws_ident + '\n\n', 'green'))
+
+def pretty_print_results(dump_obj, job_handle, s3_diff_obj_handle, job_local_path):
+    print('Proposed test center rows to be added to UnverifiedTestCenters table: ', dump_obj['post_processing_stats']['unmatched_row_count'])
+    print('Rows: ')
+    
+    unmatched_rows = dump_obj['post_processing_stats']['unmatched_rows']
+    #for row in unmatched_rows:
+    #    print('Staging ID: ', row['id'], ' Name: ', row['name'], ' OrigAddr: ', row['address'], ' FormtAddr: ', row['formatted_address_obj']['formatted_address'])
+
+    print(colored('Full summary can be found on your local filesystem at: ' + job_local_path + ' or on AWS S3 at: ' + s3_diff_obj_handle, 'green'))
+    print(colored('NOTE: These changes have not been added to the database. To upload your changes, add the AWS S3 link to the UPLOAD_FILE', 'red'))
+    
 
 def normalize_test_center_rows(rows):
     normalized_rows = [normalize_test_center_row(row) for row in rows]
@@ -73,10 +88,38 @@ def exec_tool(csv_file, is_preprocessed):
     post_gtc_inbound = gtc_api_helpers.generate_gtc_post_request(GTC_API_URL, "/api/v1/internal/inbound/", gtc_auth_token)
     inbounds_test_center_rows = gtc_api_helpers.submit_test_centers_to_inbounds(test_center_rows, post_gtc_inbound)
 
-    print(colored('Test centers all loaded successfully!\n', 'green'))
+    print(colored('All test centers inserted into Inbounds!\n', 'green'))
 
     # Insert Inbounds to Staging
+    post_gtc_staging = gtc_api_helpers.generate_gtc_post_request(GTC_API_URL, "/api/v1/internal/test-centers-staging", gtc_auth_token)
+    staging_test_center_rows = gtc_api_helpers.submit_inbound_test_center_rows_to_staging(inbounds_test_center_rows, preprocessing_utils.generate_test_center_details, post_gtc_staging)
+
+    print(colored('All test centers inserted to Staging!\n', 'green'))
+
+    # Create diff obj - calculate which new test centers will be added to Unverified table.
+    get_gtc_verified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/verified-test-centers/", gtc_auth_token, normalize_test_center_rows)
+    get_gtc_unverified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/unverified-test-centers/", gtc_auth_token, normalize_test_center_rows)
+    verified_test_center_rows = get_gtc_verified_test_centers()
+    unverified_test_center_rows = get_gtc_unverified_test_centers()
+    normalized_staging_test_center_rows = normalize_test_center_rows(staging_test_center_rows)
+
+    print('Database contains Unverified Test Centers: ', len(unverified_test_center_rows), ' , Verified Test Centers: ', len(verified_test_center_rows))
+    print('Generating diff... (this may take a moment)\n\n')
+
+    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows)
+    job_handle = 'su_' + str(time.time()) + '_report.json'
+
+    # Put results to S3
+    s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
+    
+    # Write results to local /logs folder, for easy access/review
+    job_local_path = os.path.join(LOGS_PATH, job_handle)
+    file_utils.write_json_outfile(job_local_path, merge_diff)
+
+    # Print short summary of results
+    pretty_print_results(merge_diff, job_handle, s3_diff_obj_handle, job_local_path)
     
 
 if __name__ == '__main__':
     exec_tool()
+    
