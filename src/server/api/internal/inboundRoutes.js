@@ -17,8 +17,8 @@ router.post('/', auth, async (req, res) => {
 
     res.status(201).json(newRows)
   } catch (error) {
-    console.error(error);
-    res.status(500).send(error.message)
+    console.error(error + JSON.stringify(req.body));
+    res.status(500).send(error.message + JSON.stringify(req.body))
   }
 })
 

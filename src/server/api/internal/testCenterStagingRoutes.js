@@ -19,7 +19,7 @@ router.post('/', auth, async (req, res) => {
     if((req.body.inbounds_id || req.body.inbounds_id === 0) && !isNaN(parseInt(req.body.inbounds_id))){
       const existingTestCenter = await db.TestCenterStaging.findOne({ where: {inbounds_id: parseInt(req.body.inbounds_id)}});
       if(existingTestCenter){
-        return res.status(201).json({status: 'Row with this inbounds_id already exists, skipping.'});
+        return res.status(201).json(null);
       } 
       else {
         const testCenter = await db.TestCenterStaging.create(req.body)

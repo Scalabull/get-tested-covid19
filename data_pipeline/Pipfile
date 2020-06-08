@@ -10,6 +10,7 @@ googlemaps = "*"
 python-dotenv = "*"
 click = "*"
 boto3 = "*"
+termcolor = "*"
 
 [requires]
 python_version = "3.7"
