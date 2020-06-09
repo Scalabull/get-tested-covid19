@@ -1,7 +1,7 @@
 const path = require('path');
 const MODELS_DIR = path.join(__dirname, '../', 'models')
 const db = require(MODELS_DIR)
-const sequelize = require('sequelize')
+const { Op } = require('sequelize')
 const fs = require('fs').promises;
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
@@ -75,7 +75,7 @@ async function loadNewDiffFromS3(diffS3Key){
 }
 
 async function runDiffInstallationTransaction(unverDiffKey, diffObj){
-    const result = await sequelize.transaction(async (t) => {
+    const result = await db.sequelize.transaction(async (t) => {
 
         let testCenterRows = diffObj['post_processing_stats']['unmatched_rows'];
         const unverifiedTestCenterPromises = testCenterRows.map(async testCenter => {
