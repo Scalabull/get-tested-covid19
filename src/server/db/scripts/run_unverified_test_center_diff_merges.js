@@ -38,20 +38,15 @@ async function loadDiffFile(){
 }
 
 // NOTE: Order of CHRONOLOGICAL_S3_DIFF_KEYS array must be preserved.
-async function identifyNewDiffs(diffObj){
+async function identifyNewDiffs(diffObj, priorDiffs){
     let pendingDiffKeys = diffObj.CHRONOLOGICAL_S3_DIFF_KEYS;
     let newDiffKeys = [];
 
-    const unverDiffRecords = await db.UnverDiff.findAll({});
-    const mappedDiffRecords = unverDiffRecords.map((diff) => {
-        return diff.diff_s3_url
-    });
-    let mappedDiffSet = new Set(mappedDiffRecords);
-    console.log('# of diffs loaded from UnverDiffs table: ', unverDiffRecords.length)
+    let mappedDiffSet = new Set(priorDiffs);
 
     for(let i = 0; i < pendingDiffKeys.length; i++){
         const currDiffKey = pendingDiffKeys[i];
-        if(mappedDiffSet.has(currDiffKey)){
+        if(!mappedDiffSet.has(currDiffKey)){
             newDiffKeys.push(pendingDiffKeys[i])
         }
     }
@@ -59,6 +54,13 @@ async function identifyNewDiffs(diffObj){
     return newDiffKeys;
 }
 
+async function loadPriorDiffs(){
+    const unverDiffRecords = await db.UnverDiff.findAll({});
+    const mappedDiffRecords = unverDiffRecords.map((diff) => {
+        return diff.diff_s3_url
+    });
+    return mappedDiffRecords;
+}
 
 async function loadNewDiffFromS3(diffS3Key){
     // load object from S3
@@ -145,13 +147,18 @@ async function checkAndLoadUnverifiedDiffs(){
     console.log('AWS ident loaded: ', ident);
     console.log('DB MODELS DIR: ', MODELS_DIR);
 
-    diffObj = await loadDiffFile();
-    console.log('diffObj: ', diffObj);
+    let diffFile = await loadDiffFile();
+    console.log('diff file: ', diffFile);
 
-    newDiffs = await identifyNewDiffs(diffObj);
+    let priorDiffs = await loadPriorDiffs();
+    console.log('# of diffs already run on current system: ', priorDiffs.length);
+    console.log('all prior diffs: ', priorDiffs);
+
+    let newDiffs = await identifyNewDiffs(diffFile, priorDiffs);
     console.log('new Diffs: ', newDiffs);
     
-    status = await handleAllNewDiffsSequentially(newDiffs);
+    let status = await handleAllNewDiffsSequentially(newDiffs);
+    return status;
 }
 
 checkAndLoadUnverifiedDiffs();
