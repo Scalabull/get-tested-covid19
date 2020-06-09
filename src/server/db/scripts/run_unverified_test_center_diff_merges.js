@@ -5,7 +5,7 @@ const fs = require('fs').promises;
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 
-const S3_UNVER_DIFFS_PATH = path.join(__dirname, '../../../../', 'unver_s3_diffs.json');
+const S3_UNVER_DIFFS_PATH = path.join(__dirname, '../../../', 'unver_s3_diffs.json');
 
 /*
 NOTE to devs: In order to test this file locally, you must:
