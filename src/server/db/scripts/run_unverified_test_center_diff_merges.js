@@ -1,3 +1,15 @@
+/* 
+TODO: some refactoring would be good:
+1. maybe change the diff file methodology. Consider storing more contextual data like commit date, and a commit message.
+
+2. consider moving the code to a data_pipeline folder in /server, merged with Python pipeline code. All data pipeline code in the same directory.
+
+3. move helper functions into separate files, e.g. AWS, file utilities, DB utilities
+
+4. clean up console logging, reduce some of the excess (but keep the logging, it will be helpful for debugging)
+
+*/
+
 const path = require('path');
 const MODELS_DIR = path.join(__dirname, '../', 'models')
 const db = require(MODELS_DIR)
