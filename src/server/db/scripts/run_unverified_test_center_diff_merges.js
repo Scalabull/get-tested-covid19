@@ -1,6 +1,7 @@
 const path = require('path');
 const MODELS_DIR = path.join(__dirname, '../', 'models')
 const db = require(MODELS_DIR)
+const sequelize = require('sequelize')
 const fs = require('fs').promises;
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
@@ -73,12 +74,63 @@ async function loadNewDiffFromS3(diffS3Key){
     return diff;
 }
 
-// TODO: confirm this logic loops properly.
-async function handleAllNewDiffs(newDiffsArr){
-    for await (diff of newDiffsArr){
-        diffObj = await loadNewDiffFromS3(diff);
-        // start database transaction, upload all Unverified rows, add to UnverDiff table, close transaction
-        console.log('diffObj is: ', diffObj);
+async function runDiffInstallationTransaction(unverDiffKey, diffObj){
+    const result = await sequelize.transaction(async (t) => {
+
+        let testCenterRows = diffObj['processed_rows'];
+        const unverifiedTestCenterPromises = testCenterRows.map(async testCenter => {
+            const testCenterSubmission = await insertUnverifiedTestCenter(testCenter, t);
+            return testCenterSubmission;
+        });
+
+        const unverifiedSubmissionStatus = await Promise.all(unverifiedTestCenterPromises);
+        const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
+        
+        return unverDiffStatus;
+    });
+    return result;
+}
+
+async function insertUnverifiedTestCenter(testCenterObj, transaction){
+    const { staging_row_id, google_place_id } = testCenterObj
+
+    if (!((staging_row_id === 0 || staging_row_id) && google_place_id)) {
+      throw new Error('staging_row_id and google_place_id must both be provided.');
+    }
+
+    const testCenterMatch = await db.UnverifiedTestCenter.findOne(
+    { where: 
+        {
+          [Op.or]: [
+            { staging_row_id },
+            { google_place_id }
+          ]
+        } 
+    }, { transaction: transaction });
+
+    if(testCenterMatch) {
+      throw new Error('This row is a duplicate of an existing Unverified test center row');
+    }
+
+    const testCenter = await db.UnverifiedTestCenter.create(testCenterObj, { transaction: transaction })
+    return testCenter;
+}
+
+async function insertUnverDiff(unverDiffKey, transaction){
+    let unverDiffObj = {
+        diff_s3_url: unverDiffKey
+    };
+    const unverDiff = await db.UnverDiff.create(unverDiffObj, { transaction: transaction })
+    return unverDiff;
+}
+
+// TODO: determine protocol for handling failures.
+async function handleAllNewDiffs(newDiffKeysArr){
+    for(let i = 0; i < newDiffsArr.length; i++){
+        const unverDiffKey = newDiffKeysArr[i];
+        const diffObj = await loadNewDiffFromS3(unverDiffKey);
+        const diffBody = JSON.parse(diffObj['Body']);
+        const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
     }
 }
 
