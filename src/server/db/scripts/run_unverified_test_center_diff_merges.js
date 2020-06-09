@@ -31,36 +31,32 @@ async function checkAWSAccount(callback){
     return ident;
 }
 
-function getSetDifference(setA, setB) {
-    let _difference = new Set(setA)
-    for (let elem of setB) {
-        _difference.delete(elem)
-    }
-    return _difference
-}
-
 async function loadDiffFile(){
     const file = await fs.readFile(S3_UNVER_DIFFS_PATH);
     const jsonData = JSON.parse(file);
     return jsonData;
 }
 
-// TODO: confirm set difference logic works properly.
+// NOTE: Order of CHRONOLOGICAL_S3_DIFF_KEYS array must be preserved.
 async function identifyNewDiffs(diffObj){
-    let pendingDiffs = diffObj.S3_DIFF_KEYS;
+    let pendingDiffKeys = diffObj.CHRONOLOGICAL_S3_DIFF_KEYS;
+    let newDiffKeys = [];
 
     const unverDiffRecords = await db.UnverDiff.findAll({});
-    console.log('# of diffs loaded from UnverDiffs table: ', unverDiffRecords.length)
-
     const mappedDiffRecords = unverDiffRecords.map((diff) => {
         return diff.diff_s3_url
     });
     let mappedDiffSet = new Set(mappedDiffRecords);
-    let pendingDiffSet = new Set(pendingDiffs)
+    console.log('# of diffs loaded from UnverDiffs table: ', unverDiffRecords.length)
 
-    let newDiffs = getSetDifference(pendingDiffSet, mappedDiffSet);
-    let diffArr = Array.from(newDiffs);
-    return diffArr;
+    for(let i = 0; i < pendingDiffKeys.length; i++){
+        const currDiffKey = pendingDiffKeys[i];
+        if(mappedDiffSet.has(currDiffKey)){
+            newDiffKeys.push(pendingDiffKeys[i])
+        }
+    }
+
+    return newDiffKeys;
 }
 
 
@@ -124,15 +120,23 @@ async function insertUnverDiff(unverDiffKey, transaction){
     return unverDiff;
 }
 
-// TODO: determine protocol for handling failures.
-async function handleAllNewDiffs(newDiffKeysArr){
+// NOTE: Sequence of diff application is crucial. Order of original list must be preserved.
+// If a failure occurs, halt in place.
+async function handleAllNewDiffsSequentially(newDiffKeysArr){
     for(let i = 0; i < newDiffKeysArr.length; i++){
         const unverDiffKey = newDiffKeysArr[i];
-        const diffObj = await loadNewDiffFromS3(unverDiffKey);
-        const diffBody = JSON.parse(diffObj['Body']);
-        console.log(JSON.stringify(diffBody, null, '\t'));
 
-        const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
+        try{
+            const diffObj = await loadNewDiffFromS3(unverDiffKey);
+            const diffBody = JSON.parse(diffObj['Body']);
+            console.log(JSON.stringify(diffBody, null, '\t'));
+
+            const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
+        }
+        catch(err){
+            console.log('Failure processing diff with key: ', unverDiffKey, '. This diff and any diffs after this one in the CHRONOLOGICAL_S3_DIFF_KEYS array have not been uploaded.');
+            throw err;
+        }
     }
 }
 
@@ -147,7 +151,7 @@ async function checkAndLoadUnverifiedDiffs(){
     newDiffs = await identifyNewDiffs(diffObj);
     console.log('new Diffs: ', newDiffs);
     
-    status = await handleAllNewDiffs(newDiffs);
+    status = await handleAllNewDiffsSequentially(newDiffs);
 }
 
 checkAndLoadUnverifiedDiffs();
