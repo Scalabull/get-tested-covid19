@@ -77,7 +77,7 @@ async function loadNewDiffFromS3(diffS3Key){
 async function runDiffInstallationTransaction(unverDiffKey, diffObj){
     const result = await sequelize.transaction(async (t) => {
 
-        let testCenterRows = diffObj['processed_rows'];
+        let testCenterRows = diffObj['post_processing_stats']['unmatched_rows'];
         const unverifiedTestCenterPromises = testCenterRows.map(async testCenter => {
             const testCenterSubmission = await insertUnverifiedTestCenter(testCenter, t);
             return testCenterSubmission;
@@ -126,10 +126,12 @@ async function insertUnverDiff(unverDiffKey, transaction){
 
 // TODO: determine protocol for handling failures.
 async function handleAllNewDiffs(newDiffKeysArr){
-    for(let i = 0; i < newDiffsArr.length; i++){
+    for(let i = 0; i < newDiffKeysArr.length; i++){
         const unverDiffKey = newDiffKeysArr[i];
         const diffObj = await loadNewDiffFromS3(unverDiffKey);
         const diffBody = JSON.parse(diffObj['Body']);
+        console.log(JSON.stringify(diffBody, null, '\t'));
+
         const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
     }
 }

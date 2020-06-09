@@ -52,6 +52,22 @@ def check_row_against_ver_unver(staged_row, unverified_rows, verified_rows):
     
     return staged_row
 
+def format_row_to_unverified_schema(row):
+    row['staging_row_id'] = row['id']
+    row['google_place_id'] = row['formatted_address_obj']['google_place_id']
+
+    del row['formatted_address_obj']
+    del row['matches']
+    del row['id']
+    del row['geolocation']
+    del row['createdAt']
+    del row['updatedAt']
+
+    return row
+
+def format_unmatched_rows_to_unverified_schema(rows):
+    formatted_rows = map(format_row_to_unverified_schema, rows)
+    return list(formatted_rows)
 
 def get_mapping_stats(mapped_rows):
     ver_unver_match_count = 0
@@ -108,6 +124,7 @@ def generate_unverified_update_diff_obj(staging_test_centers, unverified_test_ce
     #simple brute force for visibility/traceability
     processed_rows = [check_row_against_ver_unver(staged_row, unverified_test_centers, verified_test_centers) for staged_row in deduplicated_staging_rows]
     stats = get_mapping_stats(processed_rows)
+    stats['unmatched_rows'] = format_unmatched_rows_to_unverified_schema(stats['unmatched_rows'])
 
     dump_obj = {
         'staging_row_deduplication_groups': grouped_staging_row_dict,
