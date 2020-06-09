@@ -11,6 +11,7 @@ def put_diff_dump_to_s3(job_handle, obj):
     S3_OBJECT_KEY = 'unver-staged-jobs/' + job_handle
     s3.put_object(Bucket=S3_BUCKET, 
                 Body=(bytes(json.dumps(obj, indent=4).encode('UTF-8'))),
-                Key= S3_OBJECT_KEY)
+                Key= S3_OBJECT_KEY,
+                ContentType='application/json')
     S3_OBJECT_URL = 'https://' + S3_BUCKET + '.s3.amazonaws.com/' + S3_OBJECT_KEY
     return S3_OBJECT_URL

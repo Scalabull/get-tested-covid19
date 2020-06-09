@@ -44,6 +44,7 @@ async function loadDiffFile(){
     return jsonData;
 }
 
+// TODO: confirm set difference logic works properly.
 async function identifyNewDiffs(diffObj){
     let pendingDiffs = diffObj.S3_DIFF_KEYS;
 
@@ -72,6 +73,7 @@ async function loadNewDiffFromS3(diffS3Key){
     return diff;
 }
 
+// TODO: confirm this logic loops properly.
 async function handleAllNewDiffs(newDiffsArr){
     for await (diff of newDiffsArr){
         diffObj = await loadNewDiffFromS3(diff);
