@@ -3,10 +3,10 @@ import os
 import importlib
 import click
 import sys
-import time
 from helpers import preprocessing_utils, gtc_auth, gtc_api_helpers, gmaps_utils, aws_utils, test_center_csv, gtc_merge_logic, file_utils
 from dotenv import load_dotenv
 from termcolor import colored
+import datetime
 
 load_dotenv(override=True)
 GTC_API_URL = os.getenv('GTC_API_URL')
@@ -61,6 +61,10 @@ def normalize_test_center_row(row):
     row['formatted_address_obj'] = preprocessing_utils.get_formatted_address(row['address'])
     return row
 
+def get_current_datetime_formatted():
+    current_dt = datetime.datetime.now()
+    return current_dt.strftime("%Y%m%d%H%M%S")
+
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
 @click.command()
@@ -107,7 +111,8 @@ def exec_tool(csv_file, is_preprocessed):
     print('Generating diff... (this may take a moment)\n\n')
 
     merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows)
-    job_handle = 'su_' + str(time.time()) + '_report.json'
+    current_dt = get_current_datetime_formatted()
+    job_handle = 'su_' + current_dt + '_report.json'
 
     # Put results to S3
     s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
