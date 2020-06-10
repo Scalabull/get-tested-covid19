@@ -49,10 +49,17 @@ def pretty_print_results(dump_obj, job_handle, s3_diff_obj_handle, job_local_pat
     #for row in unmatched_rows:
     #    print('Staging ID: ', row['id'], ' Name: ', row['name'], ' OrigAddr: ', row['address'], ' FormtAddr: ', row['formatted_address_obj']['formatted_address'])
 
-    print(colored('Full summary can be found on your local filesystem at: ' + job_local_path + ' or on AWS S3 at: ' + s3_diff_obj_handle, 'green'))
-    print(colored('NOTE: These changes have not been added to the database. To upload your changes, add the AWS S3 link to the UPLOAD_FILE', 'red'))
-    
+    print(colored('The full diff object can be found on your local filesystem at: ' + job_local_path, 'green'))
+    print('Please examine this local file. The test centers to be added to the database are in post_processing_stats.unmatched_rows. Please ensure these look correct.\n')
 
+    print('NOTE: The diff object is also uploaded to S3, where it will be loaded by our system when your code is merged to staging/master branches.')
+    print('During the code review process, your reviewer should access this file on S3 and review the contents to make sure the merge is reasonable.\n\n')
+
+    print(colored('NOTE: These changes have not been added to the database. To upload your changes, do the following:', 'red'))
+    print('1. Create a new branch on the main repository (not a fork), and create a pull request called "WIP: Data Merge"')
+    print('2. Add the following key to the BOTTOM of the array in the CHRONOLOGICAL_DIFF_KEYS file: ', colored(job_handle, 'green'))
+    print('3. Request a code review from a project maintainer. Once your PR is merged to staging/master, the data will be deployed to those respective environments in the UnverifiedTestCenters table.')
+    
 def normalize_test_center_rows(rows):
     normalized_rows = [normalize_test_center_row(row) for row in rows]
     return normalized_rows
