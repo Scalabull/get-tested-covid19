@@ -5,18 +5,39 @@ import os
 
 gmaps = googlemaps.Client(key=os.getenv("GOOGLE_API_KEY"))
 
+def generate_test_center_details(full_address, phone, url, description):
+    address_components = get_formatted_address(full_address)
+    formatted_phone = get_formatted_phone(phone)
+    drive_thru = is_likely_drive_thru(description)
+    app_required = is_likely_appointment_required(description)
+    screen_required = is_likely_screen_required(description)
+    valid_url_flag = is_valid_URL(url)
+
+    details = {
+        'address_components': address_components,
+        'formatted_phone': formatted_phone,
+        'drive_thru': drive_thru,
+        'app_required': app_required,
+        'screen_required': screen_required,
+        'valid_url_flag': valid_url_flag
+    }
+
+    return details
+
 def get_formatted_address(full_address):
     if(full_address == None):
         full_address = ''
         
     geocode_result = gmaps.geocode(full_address)
-                
+
     if(len(geocode_result) > 0):
         primary_result = geocode_result[0]
         formatted_address = primary_result['formatted_address']
         lat_lng = primary_result['geometry']['location']
         google_place_id = primary_result['place_id']
         
+        print('geocoded place with google_place_id: ', google_place_id)
+
         #NOTE: We attempted to use google's 'vicinity' for a shortened address, but it doesn't work as advertised.
         #places_data = gmaps.place(google_place_id)
         #print('vicinity: ', places_data['vicinity'])

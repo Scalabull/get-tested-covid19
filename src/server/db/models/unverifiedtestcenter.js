@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       address: DataTypes.STRING,
+      full_formatted_address: DataTypes.TEXT,
       city: DataTypes.STRING,
       state: DataTypes.STRING,
       zipcode: DataTypes.INTEGER,
@@ -26,8 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       address_freetext_blob: DataTypes.TEXT,
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
-      latest_verification_by: DataTypes.STRING,
-      flagged_as_duplicate: DataTypes.BOOLEAN,
       test_result_turnaround_time: DataTypes.STRING,
       is_designated_covid_facility: DataTypes.BOOLEAN,
       facility_wants_to_be_contacted_for_further_help: DataTypes.BOOLEAN,
@@ -47,7 +46,9 @@ module.exports = (sequelize, DataTypes) => {
       close_hour_sun: DataTypes.INTEGER,
       open_24_hours: DataTypes.BOOLEAN,
       exported_to_crm_at: DataTypes.DATE,
-      verified_at: DataTypes.DATE
+      verified_at: DataTypes.DATE,
+      google_place_id: DataTypes.TEXT,
+      staging_row_id: DataTypes.INTEGER
     },
     {
       hooks: {

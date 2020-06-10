@@ -38,9 +38,6 @@ module.exports = (sequelize, DataTypes) => {
   )
   
   TestCenterStaging.associate = function (models) {
-    TestCenterStaging.hasOne(models.VerifiedTestCenter);
-    TestCenterStaging.hasOne(models.UnverifiedTestCenter);
-
   }
 
   const updateGeolocation = async (testCenterStaging) => {
