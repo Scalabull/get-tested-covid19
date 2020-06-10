@@ -11,14 +11,14 @@ TODO: some refactoring would be good:
 */
 
 const path = require('path');
-const MODELS_DIR = path.join(__dirname, '../', 'models')
+const MODELS_DIR = path.join(__dirname, '../server/db', 'models')
 const db = require(MODELS_DIR)
 const { Op } = require('sequelize')
 const fs = require('fs').promises;
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 
-const S3_UNVER_DIFFS_PATH = path.join(__dirname, '../../../', 'unver_s3_diffs.json');
+const S3_UNVER_DIFFS_PATH = path.join(__dirname, 'CHRONOLOGICAL_DIFF_KEYS.json');
 
 /*
 NOTE to devs: In order to test this file locally, you must:
