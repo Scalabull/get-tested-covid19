@@ -1,5 +1,28 @@
 import csv
 
+TARGET_CSV_HEADER = [
+    'NAME',
+    'FULL_ADDRESS',
+    'PHONE',
+    'URL',
+    'DESCRIPTION'
+]
+
+TARGET_PREPROCESSED_CSV_HEADER = [
+    'EXTERNAL_ID',
+    'NAME',
+    'STREET_ADDRESS',
+    'CITY',
+    'STATE',
+    'ZIP_CODE',
+    'PHONE_NUMBER',
+    'WEBSITE',
+    'APPOINTMENT_REQUIRED',
+    'DOCTOR_SCREEN_REQUIRED',
+    'DRIVE_THRU_SITE',
+    'DESCRIPTION'
+]
+
 def load_valid_csv_rows(csv_file, is_preprocessed = False):
     valid_test_centers = []
 
@@ -10,10 +33,10 @@ def load_valid_csv_rows(csv_file, is_preprocessed = False):
         valid_test_centers = []
 
         if is_preprocessed:
-            check_if_valid_preprocessed_header_row(header)
+            check_if_valid_header_row(header, TARGET_PREPROCESSED_CSV_HEADER)
             valid_test_centers = extract_valid_rows(test_center_reader, extract_preprocessed_test_center_row) 
         else:
-            check_if_valid_header_row(header)
+            check_if_valid_header_row(header, TARGET_CSV_HEADER)
             valid_test_centers = extract_valid_rows(test_center_reader, extract_test_center_row)
         
         return valid_test_centers
@@ -21,7 +44,7 @@ def load_valid_csv_rows(csv_file, is_preprocessed = False):
 
 def extract_valid_rows(test_center_reader, row_extractor):
     valid_test_centers = []
-    
+
     for test_center in test_center_reader:
         valid_test_center = row_extractor(test_center)
         if(valid_test_center != None):
@@ -29,11 +52,23 @@ def extract_valid_rows(test_center_reader, row_extractor):
         
     return valid_test_centers
 
-def check_if_valid_header_row(header):
-    if(header[0] != 'NAME' or header[1] != 'FULL_ADDRESS' or header[2] != 'PHONE' or header[3] != 'URL' or header[4] != 'DESCRIPTION'):
-        raise Exception('CSV_HEADER_FORMAT_INVALID', 'Proper CSV header (and format): NAME,FULL_ADDRESS,PHONE,URL,DESCRIPTION')
+def check_if_valid_header_row(header, target_header):
+    if header != target_header:
+        raise Exception('CSV_HEADER_FORMAT_INVALID', 'Proper CSV header (and format): ' + target_header)
 
-# Expects a list of strings: name, full address, phone, URL, description
+    return True  
+
+def yes_no_to_bool(col_val):
+    upper_col_val = str(col_val).upper()
+    if upper_col_val == 'YES':
+        return True
+    elif upper_col_val == 'NO':
+        return False
+    else:
+        return None
+
+# The standard scraped CSV should have 5 columns, as follows:
+# This format mirrors the Inbounds table.
 def extract_test_center_row(csv_row):
     if(len(csv_row) != 5):
         return None
@@ -51,20 +86,32 @@ def extract_test_center_row(csv_row):
 
     return test_center
 
-# TODO: configure properly
+# For bypassing our preprocessing tools (rare circumstance), the CSV should have 12 columns:
+# This is a hybrid format. It closely matches to TestCenterStagings table, but requires some additional
+# adjustments before it can be uploaded (namely, the address needs to be processed w/ Google API)
 def extract_preprocessed_test_center_row(csv_row):
-    if(len(csv_row) != 5):
+    if(len(csv_row) != 12):
         return None
+    
+    # Normalize data
+    app_req_flag = yes_no_to_bool(csv_row[8])
+    doc_screen_flag = yes_no_to_bool(csv_row[9])
+    drive_thru_flag = yes_no_to_bool(csv_row[10])
 
-    if(csv_row[0] == '' or csv_row[1] == '' or csv_row[2] == ''):
-        return None
-        
     test_center = {
-        'name': csv_row[0],
-        'full_address': csv_row[1],
-        'phone': csv_row[2],
-        'url': csv_row[3],
-        'description': csv_row[4]
+        'external_id': csv_row[0],
+        'name': csv_row[1],
+        'street_address': csv_row[2],
+        'city': csv_row[3],
+        'state': csv_row[4],
+        'zip_code': csv_row[5],
+        'phone_number': csv_row[6],
+        'website': csv_row[7],
+        'appointment_required': app_req_flag,
+        'doctor_screen_required_beforehand': doc_screen_flag,
+        'drive_thru_site': drive_thru_flag,
+        'description': csv_row[11]
     }
 
     return test_center
+
