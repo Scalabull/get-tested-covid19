@@ -9,10 +9,15 @@ from termcolor import colored
 import datetime
 
 load_dotenv(override=True)
-GTC_API_URL = os.getenv('GTC_API_URL')
-GMAPS_API_KEY = os.getenv('GOOGLE_API_KEY')
 REC_PROD_GTC_API_URL = 'https://api.get-tested-covid19.org'
 GTC_AWS_ACCOUNT_ID = '496778160066'
+
+GTC_API_URL = REC_PROD_GTC_API_URL
+if os.getenv('GTC_API_URL') != None:
+    GTC_API_URL = os.getenv('GTC_API_URL')
+
+GMAPS_API_KEY = os.getenv('GOOGLE_API_KEY')
+
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGS_PATH = os.path.join(THIS_DIR, 'logs')
 
@@ -23,10 +28,13 @@ def print_startup_messaging():
     '3. Valid credentials for the GTC production API\n\n')
 
 def validate_credentials(): 
-    print('You are currently using API URL: ', GTC_API_URL)
+    
     if(GTC_API_URL != REC_PROD_GTC_API_URL):
-        print(colored('If you are uploading new test centers, this too must be run against our production API: ' + REC_PROD_GTC_API_URL, 'yellow'))
+        print(colored('WARNING: You are currently using API URL: ' + GTC_API_URL, 'yellow'))
+        print(colored('If you are uploading new test centers, use the production API: ' + REC_PROD_GTC_API_URL, 'yellow'))
         print(colored('If you are developing new code, it is OK to use a localhost or staging API for testing purposes.', 'yellow'))
+    else:
+        print(colored('You are using the correct API URL: ' + GTC_API_URL, 'green'))
 
     gmaps_key_valid = gmaps_utils.check_gmaps_key_valid(GMAPS_API_KEY)
     if(gmaps_key_valid == False):
@@ -80,11 +88,12 @@ def get_current_datetime_formatted():
 def exec_tool(csv_file, is_preprocessed):
     print_startup_messaging()
 
-    # Token is good for 15 minutes. If process takes longer than 15 minutes, it may fail prematurely.
-    gtc_auth_token = gtc_auth.authenticate_gtc()
-
     # Help user identify correctness of API URL, Google key, and AWS account credentials
     validate_credentials()
+
+    # Token is good for 15 minutes. If process takes longer than 15 minutes, it may fail prematurely.
+    gtc_auth_token = gtc_auth.authenticate_gtc(GTC_API_URL)
+
     proceed_yes = input('Do you want to proceed using these credentials? (only \'yes\' is accepted)')
     if(proceed_yes != 'yes'):
         raise Exception('Closing due to user input.')
