@@ -69,20 +69,25 @@ def pretty_print_results(dump_obj, job_handle, s3_diff_obj_handle, job_local_pat
     print('1. Create a new branch on the main repository (not a fork), and create a pull request called "WIP: Data Merge"')
     print('2. Add the following key to the BOTTOM of the array in the CHRONOLOGICAL_DIFF_KEYS file: ', colored(job_handle, 'green'))
     print('3. Request a code review from a project maintainer. Once your PR is merged to staging/master, the data will be deployed to those respective environments in the UnverifiedTestCenters table.')
-    
-def normalize_test_center_rows(rows):
-    normalized_rows = [normalize_test_center_row(row) for row in rows]
-    return normalized_rows
-
-def normalize_test_center_row(row):
-    row['formatted_address_obj'] = preprocessing_utils.get_formatted_address(row['address'])
-    return row
 
 def get_current_datetime_formatted():
     current_dt = datetime.datetime.now()
     return current_dt.strftime("%Y%m%d%H%M%S")
 
 def run_diff(staging_test_center_rows, gtc_auth_token, app_cache):
+
+    def normalize_test_center_rows(rows):
+        normalized_rows = [normalize_test_center_row(row) for row in rows]
+        return normalized_rows
+
+    def normalize_test_center_row(row):
+        google_place_id = None
+        if 'google_place_id' in row:
+            google_place_id = row['google_place_id']
+
+        row['formatted_address_obj'] = preprocessing_utils.get_formatted_address(row['address'], app_cache=app_cache, google_place_id=google_place_id)
+        return row
+
     # Create diff obj - calculate which new test centers will be added to Unverified table.
     get_gtc_verified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/verified-test-centers/", gtc_auth_token, normalize_test_center_rows)
     get_gtc_unverified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/unverified-test-centers/", gtc_auth_token, normalize_test_center_rows)
@@ -182,6 +187,7 @@ def exec_tool(csv_file, is_preprocessed):
         app_cache.write_cache_file()
         sys.exit()
 
+    # Catch kill signals and dump cache before exiting
     signal.signal(signal.SIGTERM, terminateProcess)
     signal.signal(signal.SIGINT, terminateProcess)
 

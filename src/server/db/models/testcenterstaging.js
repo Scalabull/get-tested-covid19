@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       address_freetext_blob: DataTypes.TEXT,
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
-      inbounds_id: DataTypes.INTEGER
+      inbounds_id: DataTypes.INTEGER,
+      google_place_id: DataTypes.TEXT
     },
     {
       hooks: {

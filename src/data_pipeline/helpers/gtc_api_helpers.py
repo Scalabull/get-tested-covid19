@@ -54,7 +54,8 @@ def generate_staging_test_center_object(*ignore, name, phone, website, descripti
         "doctor_screen_required_beforehand": doc_screen_flag,
         "description": description,
         "address_freetext_blob": address_freetext,
-        "external_id": external_id
+        "external_id": external_id,
+        "google_place_id": formatted_address_obj['google_place_id']
     }
 
     return staging_test_center_obj

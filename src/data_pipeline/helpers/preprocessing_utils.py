@@ -24,14 +24,18 @@ def generate_test_center_details(full_address, phone, url, description, app_cach
 
     return details
 
-def get_formatted_address(full_address, app_cache=None):
+def get_formatted_address(full_address, app_cache=None, google_place_id=None):
     if(full_address == None):
         full_address = ''
 
     cache_result = None
     geocode_result = None
-    if app_cache != None:   
-        cache_result = app_cache.lookup_item_in_cache(bucket='addresstext', key=full_address)
+    if app_cache != None:
+        if google_place_id != None:
+            cache_result = app_cache.lookup_item_in_cache(bucket='googleplaceids', key=google_place_id, is_hex_key=True)
+
+        if cache_result == None:
+            cache_result = app_cache.lookup_item_in_cache(bucket='addresstext', key=full_address)
         
     if cache_result == None:
         geocode_result = gmaps.geocode(full_address)
@@ -39,6 +43,7 @@ def get_formatted_address(full_address, app_cache=None):
     # Cache results for future lookup
     if(geocode_result != None and len(geocode_result) > 0 and cache_result == None and app_cache):
         app_cache.add_item_to_cache(bucket='addresstext', key=full_address, value=geocode_result)
+        app_cache.add_item_to_cache(bucket='googleplaceids', key=geocode_result[0]['place_id'], value=geocode_result, is_hex_key=True)
 
     location_obj = cache_result
     if location_obj == None:
