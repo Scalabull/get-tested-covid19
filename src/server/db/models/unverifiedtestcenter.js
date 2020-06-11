@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const TestCenter = sequelize.define(
     'UnverifiedTestCenter',
     {
+      external_id: DataTypes.INTEGER,
       name: DataTypes.STRING,
       address: DataTypes.STRING,
       full_formatted_address: DataTypes.TEXT,

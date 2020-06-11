@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const TestCenterStaging = sequelize.define(
     'TestCenterStaging',
     {
+      external_id: DataTypes.INTEGER,
       public: DataTypes.BOOLEAN,
       name: DataTypes.STRING,
       address: DataTypes.STRING,
