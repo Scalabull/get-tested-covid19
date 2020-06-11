@@ -60,10 +60,10 @@ def generate_staging_test_center_object(*ignore, name, phone, website, descripti
     return staging_test_center_obj
 
 # 5-column format
-def convert_inbound_row_to_staging_row(inbound_test_center_row, preprocessor):
+def convert_inbound_row_to_staging_row(inbound_test_center_row, preprocessor, app_cache=None):
     inbound_row_id, name, full_address, phone, url, description = itemgetter('id', 'name', 'full_address', 'phone', 'url', 'description')(inbound_test_center_row)
     
-    details_obj = preprocessor(full_address, phone, url, description)
+    details_obj = preprocessor(full_address, phone, url, description, app_cache=app_cache)
     formatted_address, app_req_flag, drive_thru_flag, doc_screen_flag, formatted_phone = itemgetter('address_components', 'app_required', 'drive_thru', 'screen_required','formatted_phone')(details_obj)
 
     staging_test_center_obj = None
@@ -73,10 +73,10 @@ def convert_inbound_row_to_staging_row(inbound_test_center_row, preprocessor):
     return staging_test_center_obj
 
 # 12-column format
-def convert_preprocessed_row_to_staging_row(test_center_row, formatted_address_preprocessor):
+def convert_preprocessed_row_to_staging_row(test_center_row, formatted_address_preprocessor, app_cache=None):
     external_id, name, street_address, city, state, zip_code, phone, url, app_req_flag, doc_screen_flag, drive_thru_flag, description = itemgetter('external_id', 'name', 'street_address', 'city', 'state', 'zip_code', 'phone', 'website', 'app_req_flag', 'doc_screen_flag', 'drive_thru_flag', 'description')(test_center_row)
     full_address = street_address + ' ' + city + ', ' + state + ' ' + zip_code
-    formatted_address = formatted_address_preprocessor(full_address)
+    formatted_address = formatted_address_preprocessor(full_address, app_cache=app_cache)
 
     staging_test_center_obj = None
     if formatted_address != None:
@@ -84,11 +84,11 @@ def convert_preprocessed_row_to_staging_row(test_center_row, formatted_address_p
     
     return staging_test_center_obj
 
-def submit_rows_to_staging(test_center_rows, format_converter, preprocessor, post_staging_test_center):
+def submit_rows_to_staging(test_center_rows, format_converter, preprocessor, post_staging_test_center, app_cache=None):
     staging_test_centers = []
     for test_center in test_center_rows:
 
-        staging_test_center_obj = format_converter(test_center, preprocessor)
+        staging_test_center_obj = format_converter(test_center, preprocessor, app_cache)
         if staging_test_center_obj != None:
 
             submitted_staging_test_center = post_staging_test_center(staging_test_center_obj)

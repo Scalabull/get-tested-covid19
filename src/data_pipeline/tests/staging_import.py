@@ -39,7 +39,7 @@ class TestStagingImportMethods(unittest.TestCase):
     # This test is more akin to an integration test - verifies the inbound to staging conversion process is working properly
     def test_inbound_to_staging_row_conversion_valid(self):
 
-        def stubbed_preprocessor(*ignore):
+        def stubbed_preprocessor(*ignore, app_cache=None):
             return {
                 "address_components": {
                     "formatted_address": "addr-1",
@@ -87,7 +87,7 @@ class TestStagingImportMethods(unittest.TestCase):
     # This test is more akin to an integration test - verifies the preprocessed to staging conversion process is working properly
     def test_preprocessed_to_staging_row_conversion_valid(self):
 
-        def stubbed_formatted_address_preprocessor(*ignore):
+        def stubbed_formatted_address_preprocessor(*ignore, app_cache=None):
             return {
                 "formatted_address": "addr-1",
                 "lat_lng": {

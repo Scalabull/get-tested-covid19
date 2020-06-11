@@ -3,7 +3,9 @@ import os
 import importlib
 import click
 import sys
+import signal
 from helpers import preprocessing_utils, gtc_auth, gtc_api_helpers, gmaps_utils, aws_utils, test_center_csv, gtc_merge_logic, file_utils
+from helpers.cache import Cache
 from dotenv import load_dotenv
 from termcolor import colored
 import datetime
@@ -80,7 +82,7 @@ def get_current_datetime_formatted():
     current_dt = datetime.datetime.now()
     return current_dt.strftime("%Y%m%d%H%M%S")
 
-def run_diff(staging_test_center_rows, gtc_auth_token):
+def run_diff(staging_test_center_rows, gtc_auth_token, app_cache):
     # Create diff obj - calculate which new test centers will be added to Unverified table.
     get_gtc_verified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/verified-test-centers/", gtc_auth_token, normalize_test_center_rows)
     get_gtc_unverified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/unverified-test-centers/", gtc_auth_token, normalize_test_center_rows)
@@ -105,7 +107,7 @@ def run_diff(staging_test_center_rows, gtc_auth_token):
     # Print short summary of results
     pretty_print_results(merge_diff, job_handle, s3_diff_obj_handle, job_local_path)
 
-def run_standard_workflow(csv_file, gtc_auth_token):
+def run_standard_workflow(csv_file, gtc_auth_token, app_cache):
 
     # Load and process CSV:
     test_center_rows = test_center_csv.load_valid_csv_rows(csv_file)
@@ -124,12 +126,12 @@ def run_standard_workflow(csv_file, gtc_auth_token):
     format_converter = gtc_api_helpers.convert_inbound_row_to_staging_row
     preprocessor = preprocessing_utils.generate_test_center_details
 
-    staging_test_center_rows = gtc_api_helpers.submit_rows_to_staging(test_center_rows=inbounds_test_center_rows, format_converter=format_converter, preprocessor=preprocessor, post_staging_test_center=post_gtc_staging)
+    staging_test_center_rows = gtc_api_helpers.submit_rows_to_staging(test_center_rows=inbounds_test_center_rows, format_converter=format_converter, preprocessor=preprocessor, post_staging_test_center=post_gtc_staging, app_cache=app_cache)
 
     return staging_test_center_rows
     
     
-def run_preprocessed_workflow(csv_file, gtc_auth_token):
+def run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache):
 
     # Load and process CSV:
     test_center_rows = test_center_csv.load_valid_csv_rows(csv_file, is_preprocessed=True)
@@ -139,16 +141,11 @@ def run_preprocessed_workflow(csv_file, gtc_auth_token):
     format_converter = gtc_api_helpers.convert_preprocessed_row_to_staging_row
     preprocessor = preprocessing_utils.get_formatted_address
 
-    staging_test_center_rows = gtc_api_helpers.submit_rows_to_staging(test_center_rows=test_center_rows, format_converter=format_converter, preprocessor=preprocessor, post_staging_test_center=post_gtc_staging)
+    staging_test_center_rows = gtc_api_helpers.submit_rows_to_staging(test_center_rows=test_center_rows, format_converter=format_converter, preprocessor=preprocessor, post_staging_test_center=post_gtc_staging, app_cache=app_cache)
 
     return staging_test_center_rows
 
-# Command line interface
-# Get all recent staged test center rows that aren't already in our verified or unverified datasets
-@click.command()
-@click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
-@click.option('--is_preprocessed', default=False, type=bool, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
-def exec_tool(csv_file, is_preprocessed):
+def main_tool_process(csv_file, is_preprocessed, app_cache):
     print_startup_messaging()
 
     # Help user identify correctness of API URL, Google key, and AWS account credentials
@@ -163,13 +160,38 @@ def exec_tool(csv_file, is_preprocessed):
     
     staging_test_center_rows = []
     if is_preprocessed:
-        staging_test_center_rows = run_preprocessed_workflow(csv_file, gtc_auth_token)
+        staging_test_center_rows = run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache)
     else:
-        staging_test_center_rows = run_standard_workflow(csv_file, gtc_auth_token)
+        staging_test_center_rows = run_standard_workflow(csv_file, gtc_auth_token, app_cache)
     
     print(colored('All test centers inserted to Staging!\n', 'green'))
 
-    run_diff(staging_test_center_rows, gtc_auth_token)
+    run_diff(staging_test_center_rows, gtc_auth_token, app_cache)
+
+# Command line interface
+# Get all recent staged test center rows that aren't already in our verified or unverified datasets
+@click.command()
+@click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
+@click.option('--is_preprocessed', default=False, type=bool, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
+def exec_tool(csv_file, is_preprocessed):
+    app_cache = Cache()
+    app_cache.load_cache_file()
+
+    def terminateProcess(signalNumber, frame):
+        print ('SIG-', signalNumber, ': Dumping cache, then terminating process...')
+        app_cache.write_cache_file()
+        sys.exit()
+
+    signal.signal(signal.SIGTERM, terminateProcess)
+    signal.signal(signal.SIGINT, terminateProcess)
+
+    try:
+        main_tool_process(csv_file, is_preprocessed, app_cache)
+    except:
+        app_cache.write_cache_file()
+        raise
+    else:
+        app_cache.write_cache_file()
 
 if __name__ == '__main__':
     exec_tool()

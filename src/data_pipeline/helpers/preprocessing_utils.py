@@ -5,8 +5,8 @@ import os
 
 gmaps = googlemaps.Client(key=os.getenv("GOOGLE_API_KEY"))
 
-def generate_test_center_details(full_address, phone, url, description):
-    address_components = get_formatted_address(full_address)
+def generate_test_center_details(full_address, phone, url, description, app_cache=None):
+    address_components = get_formatted_address(full_address, app_cache=app_cache)
     formatted_phone = get_formatted_phone(phone)
     drive_thru = is_likely_drive_thru(description)
     app_required = is_likely_appointment_required(description)
@@ -24,19 +24,37 @@ def generate_test_center_details(full_address, phone, url, description):
 
     return details
 
-def get_formatted_address(full_address):
+def get_formatted_address(full_address, app_cache=None):
     if(full_address == None):
         full_address = ''
-        
-    geocode_result = gmaps.geocode(full_address)
 
-    if(len(geocode_result) > 0):
-        primary_result = geocode_result[0]
+    cache_result = None
+    geocode_result = None
+    if app_cache != None:   
+        cache_result = app_cache.lookup_item_in_cache(bucket='addresstext', key=full_address)
+        
+    if cache_result == None:
+        geocode_result = gmaps.geocode(full_address)
+
+    # Cache results for future lookup
+    if(geocode_result != None and len(geocode_result) > 0 and cache_result == None and app_cache):
+        app_cache.add_item_to_cache(bucket='addresstext', key=full_address, value=geocode_result)
+
+    location_obj = cache_result
+    if location_obj == None:
+        location_obj = geocode_result
+
+    if(len(location_obj) > 0):
+        primary_result = location_obj[0]
         formatted_address = primary_result['formatted_address']
         lat_lng = primary_result['geometry']['location']
         google_place_id = primary_result['place_id']
         
-        print('geocoded place with google_place_id: ', google_place_id)
+        if cache_result == None:
+            print('geocoded place with google_place_id: ', google_place_id) 
+        else:
+            print('geolocation loaded from local cache. google_place_id: ', google_place_id)
+            
 
         #NOTE: We attempted to use google's 'vicinity' for a shortened address, but it doesn't work as advertised.
         #places_data = gmaps.place(google_place_id)
