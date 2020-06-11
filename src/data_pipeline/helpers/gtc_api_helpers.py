@@ -88,5 +88,7 @@ def submit_rows_to_staging(test_center_rows, format_converter, preprocessor, pos
         staging_test_center_obj = format_converter(test_center, preprocessor)
 
         submitted_staging_test_center = post_staging_test_center(staging_test_center_obj)
-        staging_test_centers.append(submitted_staging_test_center)
+        if submitted_staging_test_center:
+            staging_test_centers.append(submitted_staging_test_center)
+            
     return staging_test_centers

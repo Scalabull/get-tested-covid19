@@ -93,6 +93,8 @@ def extract_preprocessed_test_center_row(csv_row):
     if(len(csv_row) != 12):
         return None
     
+    csv_row = [field.replace('"', '') for field in csv_row]
+    
     # Normalize data
     app_req_flag = yes_no_to_bool(csv_row[8])
     doc_screen_flag = yes_no_to_bool(csv_row[9])
