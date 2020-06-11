@@ -13,4 +13,4 @@ source
 *.tfvars.backup
 connection.txt
 /src/data_pipeline/logs/*.json
-
+/src/data_pipeline/tmp_data/*.csv

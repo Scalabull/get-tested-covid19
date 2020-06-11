@@ -39,8 +39,6 @@ def generate_gtc_get_request(base_api_url, request_path, auth_token, normalizati
 
     return get_request
 
-# TEST ME
-# TODO: add external_id (needs to be added to database model as well)
 def generate_staging_test_center_object(*ignore, name, phone, website, description, formatted_address_obj, app_req_flag = None, drive_thru_flag = None, doc_screen_flag = None, inbound_row_id = None, external_id = None, address_freetext = None):
     staging_test_center_obj = {
         "inbounds_id": inbound_row_id,
@@ -61,7 +59,6 @@ def generate_staging_test_center_object(*ignore, name, phone, website, descripti
 
     return staging_test_center_obj
 
-# TEST ME
 # 5-column format
 def convert_inbound_row_to_staging_row(inbound_test_center_row, preprocessor):
     inbound_row_id, name, full_address, phone, url, description = itemgetter('id', 'name', 'full_address', 'phone', 'url', 'description')(inbound_test_center_row)
@@ -69,26 +66,33 @@ def convert_inbound_row_to_staging_row(inbound_test_center_row, preprocessor):
     details_obj = preprocessor(full_address, phone, url, description)
     formatted_address, app_req_flag, drive_thru_flag, doc_screen_flag, formatted_phone = itemgetter('address_components', 'app_required', 'drive_thru', 'screen_required','formatted_phone')(details_obj)
 
-    staging_test_center_obj = generate_staging_test_center_object(name=name, phone=formatted_phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, inbound_row_id=inbound_row_id, address_freetext=full_address)
+    staging_test_center_obj = None
+    if formatted_address != None:
+        staging_test_center_obj = generate_staging_test_center_object(name=name, phone=formatted_phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, inbound_row_id=inbound_row_id, address_freetext=full_address)
+    
     return staging_test_center_obj
 
-# TEST ME
 # 12-column format
 def convert_preprocessed_row_to_staging_row(test_center_row, formatted_address_preprocessor):
     external_id, name, street_address, city, state, zip_code, phone, url, app_req_flag, doc_screen_flag, drive_thru_flag, description = itemgetter('external_id', 'name', 'street_address', 'city', 'state', 'zip_code', 'phone', 'website', 'app_req_flag', 'doc_screen_flag', 'drive_thru_flag', 'description')(test_center_row)
     full_address = street_address + ' ' + city + ', ' + state + ' ' + zip_code
     formatted_address = formatted_address_preprocessor(full_address)
 
-    staging_test_center_obj = generate_staging_test_center_object(name=name, phone=phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, external_id=external_id, address_freetext=full_address)
+    staging_test_center_obj = None
+    if formatted_address != None:
+        staging_test_center_obj = generate_staging_test_center_object(name=name, phone=phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, external_id=external_id, address_freetext=full_address)
+    
     return staging_test_center_obj
 
 def submit_rows_to_staging(test_center_rows, format_converter, preprocessor, post_staging_test_center):
     staging_test_centers = []
     for test_center in test_center_rows:
-        staging_test_center_obj = format_converter(test_center, preprocessor)
 
-        submitted_staging_test_center = post_staging_test_center(staging_test_center_obj)
-        if submitted_staging_test_center:
-            staging_test_centers.append(submitted_staging_test_center)
+        staging_test_center_obj = format_converter(test_center, preprocessor)
+        if staging_test_center_obj != None:
+
+            submitted_staging_test_center = post_staging_test_center(staging_test_center_obj)
+            if submitted_staging_test_center:
+                staging_test_centers.append(submitted_staging_test_center)
             
     return staging_test_centers
