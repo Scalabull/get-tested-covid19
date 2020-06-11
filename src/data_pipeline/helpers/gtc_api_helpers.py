@@ -36,6 +36,7 @@ def generate_gtc_get_request(base_api_url, request_path, auth_token, normalizati
     return get_request
 
 # TEST ME
+# TODO: add external_id (needs to be added to database model as well)
 def generate_staging_test_center_object(*ignore, name, phone, website, description, formatted_address_obj, app_req_flag = None, drive_thru_flag = None, doc_screen_flag = None, inbound_row_id = None, external_id = None, address_freetext = None):
     staging_test_center_obj = {
         "inbounds_id": inbound_row_id,
@@ -61,15 +62,15 @@ def convert_inbound_row_to_staging_row(inbound_test_center_row, preprocessor):
     inbound_row_id, name, full_address, phone, url, description = itemgetter('id', 'name', 'full_address', 'phone', 'url', 'description')(inbound_test_center_row)
     
     details_obj = preprocessor(full_address, phone, url, description)
-    formatted_address, app_req_flag, drive_thru_flag, doc_screen_flag, lat_lng, formatted_phone = itemgetter('address_components', 'app_required', 'drive_thru', 'screen_required', 'lat_lng', 'formatted_phone')
+    formatted_address, app_req_flag, drive_thru_flag, doc_screen_flag, formatted_phone = itemgetter('address_components', 'app_required', 'drive_thru', 'screen_required','formatted_phone')(details_obj)
 
-    staging_test_center_obj = generate_staging_test_center_object(name=name, phone=phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, inbound_row_id=inbound_row_id, address_freetext=full_address)
+    staging_test_center_obj = generate_staging_test_center_object(name=name, phone=formatted_phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, inbound_row_id=inbound_row_id, address_freetext=full_address)
     return staging_test_center_obj
 
 # TEST ME
 # 12-column format
 def convert_preprocessed_row_to_staging_row(test_center_row, formatted_address_preprocessor):
-    external_id, name, street_address, city, state, zip_code, phone, url, app_req_flag, doc_screen_flag, drive_thru_flag, description = itemgetter('external_id', 'name', 'street_address', 'city', 'state', 'zip_code', 'phone', 'app_req_flag', 'doc_screen_flag', 'drive_thru_flag', 'description')(test_center_row)
+    external_id, name, street_address, city, state, zip_code, phone, url, app_req_flag, doc_screen_flag, drive_thru_flag, description = itemgetter('external_id', 'name', 'street_address', 'city', 'state', 'zip_code', 'phone', 'website', 'app_req_flag', 'doc_screen_flag', 'drive_thru_flag', 'description')(test_center_row)
     full_address = street_address + ' ' + city + ', ' + state + ' ' + zip_code
     formatted_address = formatted_address_preprocessor(full_address)
 
