@@ -80,24 +80,8 @@ def get_current_datetime_formatted():
     current_dt = datetime.datetime.now()
     return current_dt.strftime("%Y%m%d%H%M%S")
 
-# Command line interface
-# Get all recent staged test center rows that aren't already in our verified or unverified datasets
-@click.command()
-@click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
-@click.option('--is_preprocessed', default=False, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
-def exec_tool(csv_file, is_preprocessed):
-    print_startup_messaging()
+def run_standard_workflow(csv_file, gtc_auth_token):
 
-    # Help user identify correctness of API URL, Google key, and AWS account credentials
-    validate_credentials()
-
-    # Token is good for 15 minutes. If process takes longer than 15 minutes, it may fail prematurely.
-    gtc_auth_token = gtc_auth.authenticate_gtc(GTC_API_URL)
-
-    proceed_yes = input('Do you want to proceed using these credentials? (only \'yes\' is accepted)')
-    if(proceed_yes != 'yes'):
-        raise Exception('Closing due to user input.')
-    
     # Load and process CSV:
     test_center_rows = test_center_csv.load_valid_csv_rows(csv_file)
     print(colored('loaded: ' + str(len(test_center_rows)) + ' test center rows from CSV.\n', 'green'))
@@ -112,7 +96,10 @@ def exec_tool(csv_file, is_preprocessed):
 
     # Insert Inbounds to Staging
     post_gtc_staging = gtc_api_helpers.generate_gtc_post_request(GTC_API_URL, "/api/v1/internal/test-centers-staging", gtc_auth_token)
-    staging_test_center_rows = gtc_api_helpers.submit_inbound_test_center_rows_to_staging(inbounds_test_center_rows, preprocessing_utils.generate_test_center_details, post_gtc_staging)
+    format_converter = gtc_api_helpers.convert_inbound_row_to_staging_row
+    preprocessor = preprocessing_utils.generate_test_center_details
+
+    staging_test_center_rows = gtc_api_helpers.submit_rows_to_staging(test_center_rows=inbounds_test_center_rows, format_converter=format_converter, preprocessor=preprocessor, post_staging_test_center=post_gtc_staging)
 
     print(colored('All test centers inserted to Staging!\n', 'green'))
 
@@ -140,6 +127,65 @@ def exec_tool(csv_file, is_preprocessed):
     # Print short summary of results
     pretty_print_results(merge_diff, job_handle, s3_diff_obj_handle, job_local_path)
     
+def run_preprocessed_workflow(csv_file, gtc_auth_token):
+
+    # Load and process CSV:
+    test_center_rows = test_center_csv.load_valid_csv_rows(csv_file, is_preprocessed=True)
+    print(colored('loaded: ' + str(len(test_center_rows)) + ' test center rows from CSV.\n', 'green'))
+
+    post_gtc_staging = gtc_api_helpers.generate_gtc_post_request(GTC_API_URL, "/api/v1/internal/test-centers-staging", gtc_auth_token)
+    format_converter = gtc_api_helpers.convert_preprocessed_row_to_staging_row
+    preprocessor = preprocessing_utils.get_formatted_address
+
+    staging_test_center_rows = gtc_api_helpers.submit_rows_to_staging(test_center_rows=test_center_rows, format_converter=format_converter, preprocessor=preprocessor, post_staging_test_center=post_gtc_staging)
+    print(colored('All test centers inserted to Staging!\n', 'green'))
+
+    # Create diff obj - calculate which new test centers will be added to Unverified table.
+    get_gtc_verified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/verified-test-centers/", gtc_auth_token, normalize_test_center_rows)
+    get_gtc_unverified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/unverified-test-centers/", gtc_auth_token, normalize_test_center_rows)
+    verified_test_center_rows = get_gtc_verified_test_centers()
+    unverified_test_center_rows = get_gtc_unverified_test_centers()
+    normalized_staging_test_center_rows = normalize_test_center_rows(staging_test_center_rows)
+
+    print('Database contains Unverified Test Centers: ', len(unverified_test_center_rows), ' , Verified Test Centers: ', len(verified_test_center_rows))
+    print('Generating diff... (this may take a moment)\n\n')
+
+    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows)
+    current_dt = get_current_datetime_formatted()
+    job_handle = 'su_' + current_dt + '_report.json'
+
+    # Put results to S3
+    s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
+    
+    # Write results to local /logs folder, for easy access/review
+    job_local_path = os.path.join(LOGS_PATH, job_handle)
+    file_utils.write_json_outfile(job_local_path, merge_diff)
+
+    # Print short summary of results
+    pretty_print_results(merge_diff, job_handle, s3_diff_obj_handle, job_local_path)
+
+# Command line interface
+# Get all recent staged test center rows that aren't already in our verified or unverified datasets
+@click.command()
+@click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
+@click.option('--is_preprocessed', default=False, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
+def exec_tool(csv_file, is_preprocessed):
+    print_startup_messaging()
+
+    # Help user identify correctness of API URL, Google key, and AWS account credentials
+    validate_credentials()
+
+    # Token is good for 15 minutes. If process takes longer than 15 minutes, it may fail prematurely.
+    gtc_auth_token = gtc_auth.authenticate_gtc(GTC_API_URL)
+
+    proceed_yes = input('Do you want to proceed using these credentials? (only \'yes\' is accepted)')
+    if(proceed_yes != 'yes'):
+        raise Exception('Closing due to user input.')
+    
+    if is_preprocessed:
+        run_preprocssed_workflow(csv_file, gtc_auth_token)
+    else:
+        run_standard_workflow(csv_file, gtc_auth_token)
 
 if __name__ == '__main__':
     exec_tool()

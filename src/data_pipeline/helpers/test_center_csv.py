@@ -105,11 +105,11 @@ def extract_preprocessed_test_center_row(csv_row):
         'city': csv_row[3],
         'state': csv_row[4],
         'zip_code': csv_row[5],
-        'phone_number': csv_row[6],
+        'phone': csv_row[6],
         'website': csv_row[7],
-        'appointment_required': app_req_flag,
-        'doctor_screen_required_beforehand': doc_screen_flag,
-        'drive_thru_site': drive_thru_flag,
+        'app_req_flag': app_req_flag,
+        'doc_screen_flag': doc_screen_flag,
+        'drive_thru_flag': drive_thru_flag,
         'description': csv_row[11]
     }
 

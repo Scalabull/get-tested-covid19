@@ -35,38 +35,52 @@ def generate_gtc_get_request(base_api_url, request_path, auth_token, normalizati
 
     return get_request
 
-
-# test_center_details_obj to be loaded from preprocessing utils.
-def submit_inbounds_test_center_to_staging(inbounds_test_center_obj, test_center_details_obj, post_staging_test_center):
-    
+# TEST ME
+def generate_staging_test_center_object(*ignore, name, phone, website, description, formatted_address_obj, app_req_flag = None, drive_thru_flag = None, doc_screen_flag = None, inbound_row_id = None, external_id = None, address_freetext = None):
     staging_test_center_obj = {
-        "inbounds_id": inbounds_test_center_obj['id'],
+        "inbounds_id": inbound_row_id,
         "public": False,
-        "name": inbounds_test_center_obj['name'],
-        "address": test_center_details_obj['address_components']['formatted_address'],
-        "latitude": test_center_details_obj['address_components']['lat_lng']['lat'],
-        "longitude": test_center_details_obj['address_components']['lat_lng']['lng'],
-        "phone_number": test_center_details_obj['formatted_phone'],
-        "website": inbounds_test_center_obj['url'],
-        "appointment_required": test_center_details_obj['app_required'],
-        "drive_thru_site": test_center_details_obj['drive_thru'],
-        "doctor_screen_required_beforehand": test_center_details_obj['screen_required'],
-        "description": inbounds_test_center_obj['description'],
-        "address_freetext_blob": inbounds_test_center_obj['full_address']
+        "name": name,
+        "address": formatted_address_obj['formatted_address'],
+        "latitude": formatted_address_obj['lat_lng']['lat'],
+        "longitude": formatted_address_obj['lat_lng']['lng'],
+        "phone_number": phone,
+        "website": website,
+        "appointment_required": app_req_flag,
+        "drive_thru_site": drive_thru_flag,
+        "doctor_screen_required_beforehand": doc_screen_flag,
+        "description": description,
+        "address_freetext_blob": address_freetext
     }
 
-    print('prepped test center: ', staging_test_center_obj, '\n\n')
+    return staging_test_center_obj
 
-    staging_test_center = post_staging_test_center(staging_test_center_obj)
-    return staging_test_center
+# TEST ME
+# 5-column format
+def convert_inbound_row_to_staging_row(inbound_test_center_row, preprocessor):
+    inbound_row_id, name, full_address, phone, url, description = itemgetter('id', 'name', 'full_address', 'phone', 'url', 'description')(inbound_test_center_row)
+    
+    details_obj = preprocessor(full_address, phone, url, description)
+    formatted_address, app_req_flag, drive_thru_flag, doc_screen_flag, lat_lng, formatted_phone = itemgetter('address_components', 'app_required', 'drive_thru', 'screen_required', 'lat_lng', 'formatted_phone')
 
-#intended preprocessor function is: preprocessing_utils.generate_test_center_details
-def submit_inbound_test_center_rows_to_staging(inbound_test_center_rows, preprocessor, post_staging_test_center):
+    staging_test_center_obj = generate_staging_test_center_object(name=name, phone=phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, inbound_row_id=inbound_row_id, address_freetext=full_address)
+    return staging_test_center_obj
+
+# TEST ME
+# 12-column format
+def convert_preprocessed_row_to_staging_row(test_center_row, formatted_address_preprocessor):
+    external_id, name, street_address, city, state, zip_code, phone, url, app_req_flag, doc_screen_flag, drive_thru_flag, description = itemgetter('external_id', 'name', 'street_address', 'city', 'state', 'zip_code', 'phone', 'app_req_flag', 'doc_screen_flag', 'drive_thru_flag', 'description')(test_center_row)
+    full_address = street_address + ' ' + city + ', ' + state + ' ' + zip_code
+    formatted_address = formatted_address_preprocessor(full_address)
+
+    staging_test_center_obj = generate_staging_test_center_object(name=name, phone=phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, external_id=external_id, address_freetext=full_address)
+    return staging_test_center_obj
+
+def submit_rows_to_staging(test_center_rows, format_converter, preprocessor, post_staging_test_center):
     staging_test_centers = []
-    for test_center in inbound_test_center_rows:
-        full_address, phone, url, description = itemgetter('full_address', 'phone', 'url', 'description')(test_center)
-        details_obj = preprocessor(full_address, phone, url, description)
+    for test_center in test_center_rows:
+        staging_test_center_obj = format_converter(test_center, preprocessor)
 
-        staging_test_center = submit_inbounds_test_center_to_staging(test_center, details_obj, post_staging_test_center)
-        staging_test_centers.append(staging_test_center)
+        submitted_staging_test_center = post_staging_test_center(staging_test_center_obj)
+        staging_test_centers.append(submitted_staging_test_center)
     return staging_test_centers
