@@ -58,3 +58,12 @@ TODO: setup dotenv.
 These scripts are currently deployed with serverless.com.
 
 NOTE: Environment variables containing sensitive credentails (username, password) are set on the serverless deployment.
+
+## Useful snippets
+```
+# If you are performing a code review of a new merged dataset (a key in the CHRONOLOGICAL_DIFF_KEYS file),
+# It will be useful to access the diff object on S3 for examination.
+aws s3 cp s3://staging-gtc-data-batches/unver-staged-jobs/su_XYZ_report.json ./
+# NOTE: Do not commit these files to source control.
+
+```
