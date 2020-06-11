@@ -32,11 +32,11 @@ class TestCSVMethods(unittest.TestCase):
             'city': 'four',
             'state': 'five',
             'zip_code': 'six',
-            'phone_number': 'seven',
+            'phone': 'seven',
             'website': 'eight',
-            'appointment_required': True,
-            'doctor_screen_required_beforehand': False,
-            'drive_thru_site': True,
+            'app_req_flag': True,
+            'doc_screen_flag': False,
+            'drive_thru_flag': True,
             'description': 'twelve'
         }
         self.assertEqual(test_center_csv.extract_preprocessed_test_center_row(['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'yes', 'no', 'yes', 'twelve']), target_extract)
