@@ -29,7 +29,8 @@ class TestStagingImportMethods(unittest.TestCase):
             "drive_thru_site": "7",
             "doctor_screen_required_beforehand": "8",
             "description": "4",
-            "address_freetext_blob": "11"
+            "address_freetext_blob": "11",
+            "external_id": "10"
         }
 
         staging_obj = gtc_api_helpers.generate_staging_test_center_object(name="1", phone="2", website="3", description="4", formatted_address_obj=stubbed_formatted_address_obj, app_req_flag="6", drive_thru_flag="7", doc_screen_flag="8", inbound_row_id="9", external_id="10", address_freetext="11")
@@ -76,7 +77,8 @@ class TestStagingImportMethods(unittest.TestCase):
             "drive_thru_site": "pp-3",
             "doctor_screen_required_beforehand": "pp-4",
             "description": "6",
-            "address_freetext_blob": "3"
+            "address_freetext_blob": "3",
+            "external_id": None
         }
 
         staging_obj = gtc_api_helpers.convert_inbound_row_to_staging_row(inbound_row, stubbed_preprocessor)
@@ -109,7 +111,6 @@ class TestStagingImportMethods(unittest.TestCase):
             "description": "12"
         }
 
-        # TODO: add external_id
         expected_staging_obj_format = {
             "inbounds_id": None,
             "public": False,
@@ -124,6 +125,7 @@ class TestStagingImportMethods(unittest.TestCase):
             "doctor_screen_required_beforehand": "10",
             "description": "12",
             "address_freetext_blob": "3 4, 5 6",
+            "external_id": "1"
         }
 
         staging_obj = gtc_api_helpers.convert_preprocessed_row_to_staging_row(preprocessed_row, stubbed_formatted_address_preprocessor)
