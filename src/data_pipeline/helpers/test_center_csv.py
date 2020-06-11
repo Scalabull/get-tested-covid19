@@ -54,7 +54,7 @@ def extract_valid_rows(test_center_reader, row_extractor):
 
 def check_if_valid_header_row(header, target_header):
     if header != target_header:
-        raise Exception('CSV_HEADER_FORMAT_INVALID', 'Proper CSV header (and format): ' + target_header)
+        raise Exception('CSV_HEADER_FORMAT_INVALID', 'Proper CSV header (and format): ' + str(target_header) + '\n\nYour header: ' + str(header))
 
     return True  
 

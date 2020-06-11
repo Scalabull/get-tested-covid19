@@ -80,6 +80,31 @@ def get_current_datetime_formatted():
     current_dt = datetime.datetime.now()
     return current_dt.strftime("%Y%m%d%H%M%S")
 
+def run_diff(staging_test_center_rows, gtc_auth_token):
+    # Create diff obj - calculate which new test centers will be added to Unverified table.
+    get_gtc_verified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/verified-test-centers/", gtc_auth_token, normalize_test_center_rows)
+    get_gtc_unverified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/unverified-test-centers/", gtc_auth_token, normalize_test_center_rows)
+    verified_test_center_rows = get_gtc_verified_test_centers()
+    unverified_test_center_rows = get_gtc_unverified_test_centers()
+    normalized_staging_test_center_rows = normalize_test_center_rows(staging_test_center_rows)
+
+    print('Database contains Unverified Test Centers: ', len(unverified_test_center_rows), ' , Verified Test Centers: ', len(verified_test_center_rows))
+    print('Generating diff... (this may take a moment)\n\n')
+
+    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows)
+    current_dt = get_current_datetime_formatted()
+    job_handle = 'su_' + current_dt + '_report.json'
+
+    # Put results to S3
+    s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
+    
+    # Write results to local /logs folder, for easy access/review
+    job_local_path = os.path.join(LOGS_PATH, job_handle)
+    file_utils.write_json_outfile(job_local_path, merge_diff)
+
+    # Print short summary of results
+    pretty_print_results(merge_diff, job_handle, s3_diff_obj_handle, job_local_path)
+
 def run_standard_workflow(csv_file, gtc_auth_token):
 
     # Load and process CSV:
@@ -101,31 +126,8 @@ def run_standard_workflow(csv_file, gtc_auth_token):
 
     staging_test_center_rows = gtc_api_helpers.submit_rows_to_staging(test_center_rows=inbounds_test_center_rows, format_converter=format_converter, preprocessor=preprocessor, post_staging_test_center=post_gtc_staging)
 
-    print(colored('All test centers inserted to Staging!\n', 'green'))
-
-    # Create diff obj - calculate which new test centers will be added to Unverified table.
-    get_gtc_verified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/verified-test-centers/", gtc_auth_token, normalize_test_center_rows)
-    get_gtc_unverified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/unverified-test-centers/", gtc_auth_token, normalize_test_center_rows)
-    verified_test_center_rows = get_gtc_verified_test_centers()
-    unverified_test_center_rows = get_gtc_unverified_test_centers()
-    normalized_staging_test_center_rows = normalize_test_center_rows(staging_test_center_rows)
-
-    print('Database contains Unverified Test Centers: ', len(unverified_test_center_rows), ' , Verified Test Centers: ', len(verified_test_center_rows))
-    print('Generating diff... (this may take a moment)\n\n')
-
-    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows)
-    current_dt = get_current_datetime_formatted()
-    job_handle = 'su_' + current_dt + '_report.json'
-
-    # Put results to S3
-    s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
+    return staging_test_center_rows
     
-    # Write results to local /logs folder, for easy access/review
-    job_local_path = os.path.join(LOGS_PATH, job_handle)
-    file_utils.write_json_outfile(job_local_path, merge_diff)
-
-    # Print short summary of results
-    pretty_print_results(merge_diff, job_handle, s3_diff_obj_handle, job_local_path)
     
 def run_preprocessed_workflow(csv_file, gtc_auth_token):
 
@@ -138,37 +140,14 @@ def run_preprocessed_workflow(csv_file, gtc_auth_token):
     preprocessor = preprocessing_utils.get_formatted_address
 
     staging_test_center_rows = gtc_api_helpers.submit_rows_to_staging(test_center_rows=test_center_rows, format_converter=format_converter, preprocessor=preprocessor, post_staging_test_center=post_gtc_staging)
-    print(colored('All test centers inserted to Staging!\n', 'green'))
 
-    # Create diff obj - calculate which new test centers will be added to Unverified table.
-    get_gtc_verified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/verified-test-centers/", gtc_auth_token, normalize_test_center_rows)
-    get_gtc_unverified_test_centers = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL,  "/api/v1/internal/unverified-test-centers/", gtc_auth_token, normalize_test_center_rows)
-    verified_test_center_rows = get_gtc_verified_test_centers()
-    unverified_test_center_rows = get_gtc_unverified_test_centers()
-    normalized_staging_test_center_rows = normalize_test_center_rows(staging_test_center_rows)
-
-    print('Database contains Unverified Test Centers: ', len(unverified_test_center_rows), ' , Verified Test Centers: ', len(verified_test_center_rows))
-    print('Generating diff... (this may take a moment)\n\n')
-
-    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows)
-    current_dt = get_current_datetime_formatted()
-    job_handle = 'su_' + current_dt + '_report.json'
-
-    # Put results to S3
-    s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
-    
-    # Write results to local /logs folder, for easy access/review
-    job_local_path = os.path.join(LOGS_PATH, job_handle)
-    file_utils.write_json_outfile(job_local_path, merge_diff)
-
-    # Print short summary of results
-    pretty_print_results(merge_diff, job_handle, s3_diff_obj_handle, job_local_path)
+    return staging_test_center_rows
 
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
 @click.command()
 @click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
-@click.option('--is_preprocessed', default=False, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
+@click.option('--is_preprocessed', default=False, type=bool, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
 def exec_tool(csv_file, is_preprocessed):
     print_startup_messaging()
 
@@ -182,10 +161,15 @@ def exec_tool(csv_file, is_preprocessed):
     if(proceed_yes != 'yes'):
         raise Exception('Closing due to user input.')
     
+    staging_test_center_rows = []
     if is_preprocessed:
-        run_preprocssed_workflow(csv_file, gtc_auth_token)
+        staging_test_center_rows = run_preprocessed_workflow(csv_file, gtc_auth_token)
     else:
-        run_standard_workflow(csv_file, gtc_auth_token)
+        staging_test_center_rows = run_standard_workflow(csv_file, gtc_auth_token)
+    
+    print(colored('All test centers inserted to Staging!\n', 'green'))
+
+    run_diff(staging_test_center_rows, gtc_auth_token)
 
 if __name__ == '__main__':
     exec_tool()

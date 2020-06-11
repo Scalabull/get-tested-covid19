@@ -14,6 +14,10 @@ def generate_gtc_post_request(base_api_url, request_path, auth_token):
     def post_request(data):
         headers = {'Authorization': 'Bearer ' + auth_token}
         r = requests.post(base_api_url + request_path, json=data, headers=headers)
+
+        if r.status_code == 400 or r.status_code == 500:
+            print('Request failed with submit body: ', str(data))
+            print('Response: ', str(r.content))
         r.raise_for_status()
 
         body = r.json()
