@@ -1,6 +1,7 @@
 FROM node:12-alpine
 COPY . .
 RUN yarn install --production
+RUN echo 'export $(strings /proc/1/environ | grep AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)' >> /root/.profile
 
 EXPOSE 5000
 

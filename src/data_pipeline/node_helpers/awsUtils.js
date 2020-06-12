@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
 
 async function checkAWSAccount(callback){
     const sts = new AWS.STS();
@@ -8,6 +7,8 @@ async function checkAWSAccount(callback){
 }
 
 async function loadNewDiffFromS3(diffS3Key){
+    const s3 = new AWS.S3();
+    
     const params = {
         Bucket: 'staging-gtc-data-batches',
         Key: 'unver-staged-jobs/' + diffS3Key
