@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const auth = require('../../middleware/auth')
 const db = require('../../db/models')
+const { Op } = require('sequelize');
+const TS_RE = /^[0-9]{13}$/;
 
 router.get('/', auth, async (req, res) => {
   try {
@@ -14,18 +16,42 @@ router.get('/', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
   try {
-    if((req.body.inbounds_id || req.body.inbounds_id === 0) && !isNaN(parseInt(req.body.inbounds_id))){
+    if(req.body.inbounds_id && isNaN(parseInt(req.body.inbounds_id))){
+      return res.status(400).send('if provided, inbounds_id must be an Integer');
+    }
+
+    if(req.body.inbounds_id || req.body.inbounds_id === 0){
       const existingTestCenter = await db.TestCenterStaging.findOne({ where: {inbounds_id: parseInt(req.body.inbounds_id)}});
       if(existingTestCenter){
-        return res.status(201).json({status: 'Row with this inbounds_id already exists, skipping.'});
+        return res.status(201).json(null);
       } 
-      else {
-        const testCenter = await db.TestCenterStaging.create(req.body)
-        res.status(201).json(testCenter)
-      }
-    } else {
-      return res.status(400).send('Must include inbounds_id in request.');
     }
+
+    const testCenter = await db.TestCenterStaging.create(req.body)
+    res.status(201).json(testCenter)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message)
+  }
+})
+
+router.get('/fresh', auth, async (req, res) => {
+  try {
+    const { since } = req.query;
+    const sinceTs = parseInt(since);
+
+    if (!TS_RE.test(since) && !isNaN(sinceTs)){
+      return res.status(400).send('Bad timestamp.');
+    }
+
+    let freshRows = await db.TestCenterStaging.findAll({
+      where: {
+        createdAt: {
+          [Op.gt]: new Date(sinceTs)
+        }
+      }
+    });
+    res.status(200).json(freshRows)
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message)

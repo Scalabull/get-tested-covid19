@@ -115,7 +115,7 @@ resource "aws_route53_record" "api" {
   }
 }
 
-resource "aws_iam_policy" "ecs_ssm_task_policy" {
+resource "aws_iam_policy" "ecs_task_policy" {
   path        = "/"
 
   policy = <<EOF
@@ -131,16 +131,26 @@ resource "aws_iam_policy" "ecs_ssm_task_policy" {
       ],
       "Effect": "Allow",
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": "arn:aws:s3:::*"
     }
   ]
 }
 EOF
 }
 
-resource "aws_iam_policy_attachment" "ecs_ssm_task_atttachment" {
+resource "aws_iam_policy_attachment" "ecs_task_atttachment" {
   name       = "gtcv-${var.environment}-attachment"
   roles      = ["gtcv-${var.environment}-task-execution-role"]
-  policy_arn = "${aws_iam_policy.ecs_ssm_task_policy.arn}"
+  policy_arn = "${aws_iam_policy.ecs_task_policy.arn}"
   depends_on = [module.fargate]
 }
 
@@ -217,6 +227,17 @@ data "template_file" "connection_txt" {
 resource "local_file" "connection_txt" {
   sensitive_content = data.template_file.connection_txt.rendered
   filename = "./connection.txt"
+}
+
+resource "aws_s3_bucket" "data_pipe_batches" {
+  bucket = "${var.environment}-gtc-data-batches"
+  acl = "private"
+
+  tags = local.common_tags
+}
+
+resource "aws_s3_bucket_public_access_block" "data_pipe_batches" {
+  bucket = aws_s3_bucket.data_pipe_batches.id
 }
 
 resource "aws_ssm_parameter" "DB_USERNAME" {

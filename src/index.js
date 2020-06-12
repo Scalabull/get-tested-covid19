@@ -22,7 +22,10 @@ const colors = {
   colorTeal: '#69C5AB',
   colorTealDark: '#0387A5',
   colorYellow: '#EFC05C',
-  colorGreen: '#27AE60'
+  colorGreen: '#27AE60',
+  colorGrayLight: '#F6F6F4',
+  colorBlueDark: '#162B4D',
+  colorBlueLight: '#9AF6FC'
 }
 
 // Shared CSS theme variables

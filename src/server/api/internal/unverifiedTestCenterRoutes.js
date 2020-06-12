@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const auth = require('../../middleware/auth')
 const db = require('../../db/models')
+const { Op } = require('sequelize')
 
 router.get('/', auth, async (req, res) => {
   try {
@@ -14,6 +15,26 @@ router.get('/', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
   try {
+    const { staging_row_id, google_place_id } = req.body
+
+    if (!((staging_row_id === 0 || staging_row_id) && google_place_id)) {
+      return res.status(400).send('staging_row_id and google_place_id must both be provided.');
+    }
+
+    const testCenterMatch = await db.UnverifiedTestCenter.findOne(
+    { where: 
+        {
+          [Op.or]: [
+            { staging_row_id },
+            { google_place_id }
+          ]
+        } 
+    });
+
+    if(testCenterMatch) {
+      return res.status(400).send('This row is a duplicate of an existing Unverified test center row');
+    }
+
     const testCenter = await db.UnverifiedTestCenter.create(req.body)
     res.status(201).json(testCenter)
   } catch (error) {

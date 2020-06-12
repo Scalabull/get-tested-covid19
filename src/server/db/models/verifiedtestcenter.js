@@ -47,7 +47,8 @@ module.exports = (sequelize, DataTypes) => {
       close_hour_fri: DataTypes.INTEGER,
       close_hour_sat: DataTypes.INTEGER,
       close_hour_sun: DataTypes.INTEGER,
-      open_24_hours: DataTypes.BOOLEAN
+      open_24_hours: DataTypes.BOOLEAN,
+      google_place_id: DataTypes.TEXT
     },
     {
       hooks: {
