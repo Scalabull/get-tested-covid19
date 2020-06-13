@@ -137,8 +137,6 @@ async function handleAllNewDiffsSequentially(newDiffKeysArr){
 }
 
 async function checkAndLoadUnverifiedDiffs(){
-    const ident = await awsUtils.checkAWSAccount();
-    console.log('AWS ident loaded: ', ident);
     console.log('DB MODELS DIR: ', MODELS_DIR);
 
     let diffFile = await fileUtils.loadDiffFile();
