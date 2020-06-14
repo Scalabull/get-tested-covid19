@@ -231,13 +231,9 @@ resource "local_file" "connection_txt" {
 
 resource "aws_s3_bucket" "data_pipe_batches" {
   bucket = "${var.environment}-gtc-data-batches"
-  acl = "private"
+  acl    = "public-read"
 
   tags = local.common_tags
-}
-
-resource "aws_s3_bucket_public_access_block" "data_pipe_batches" {
-  bucket = aws_s3_bucket.data_pipe_batches.id
 }
 
 resource "aws_ssm_parameter" "DB_USERNAME" {

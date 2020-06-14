@@ -125,7 +125,6 @@ async function handleAllNewDiffsSequentially(newDiffKeysArr){
         try{
             const diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
             const diffBody = JSON.parse(diffObj['Body']);
-            console.log(JSON.stringify(diffBody, null, '\t'));
 
             const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
         }
@@ -140,7 +139,6 @@ async function checkAndLoadUnverifiedDiffs(){
     console.log('DB MODELS DIR: ', MODELS_DIR);
 
     let diffFile = await fileUtils.loadDiffFile();
-    console.log('diff file: ', diffFile);
 
     let priorDiffs = await loadPriorDiffs();
     console.log('# of diffs already run on current system: ', priorDiffs.length);
