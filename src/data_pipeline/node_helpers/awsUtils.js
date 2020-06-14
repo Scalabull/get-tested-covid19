@@ -1,10 +1,13 @@
 const AWS = require('aws-sdk');
 AWS.config.logger = console;
-AWS.config.credentials = new AWS.ECSCredentials({
-    httpOptions: { timeout: 5000 },
-    maxRetries: 3,
-    retryDelayOptions: { base: 200 }
-});
+
+if(process.env.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI || process.env.AWS_CONTAINER_CREDENTIALS_FULL_URI){
+    AWS.config.credentials = new AWS.ECSCredentials({
+        httpOptions: { timeout: 5000 },
+        maxRetries: 3,
+        retryDelayOptions: { base: 200 }
+    });
+}
 
 async function loadNewDiffFromS3(diffS3Key){
     const s3 = new AWS.S3();
