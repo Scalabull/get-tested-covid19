@@ -2,6 +2,8 @@ const AWS = require('aws-sdk');
 AWS.config.logger = console;
 
 if(process.env.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI || process.env.AWS_CONTAINER_CREDENTIALS_FULL_URI){
+    console.log('Loading ECS Credentials. REL URI: ', process.env.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI, ' FULL URI: ', process.env.AWS_CONTAINER_CREDENTIALS_FULL_URI);
+    
     AWS.config.credentials = new AWS.ECSCredentials({
         httpOptions: { timeout: 5000 },
         maxRetries: 3,
