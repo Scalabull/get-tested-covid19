@@ -33,11 +33,16 @@ for i in range(len(STATE_LIST)):
     browser.find_element_by_xpath("//input[@class='select2-search__field']").send_keys(Keys.ENTER)
     result_div=browser.find_elements_by_class_name('result_box')
     address = []
+    name=[]
+    full_data=[]
+    phone=[]
     for r in result_div:
         try:
-            address=r.text
-            if address != '' : 
-                data.append({"full_address":address})    
+            full_data=r.text
+            name=full_data.split('\n',1)[0]
+            address= full_data.split('\n')[4]
+            phone=full_data.split('\n')[5]
+            data.append({"full_address":address,"name":name,"phone":phone})    
         except:
             continue
 df=pd.DataFrame(data)
