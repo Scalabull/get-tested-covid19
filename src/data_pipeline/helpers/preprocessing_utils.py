@@ -38,10 +38,12 @@ def get_formatted_address(full_address, app_cache=None, google_place_id=None):
             cache_result = app_cache.lookup_item_in_cache(bucket='addresstext', key=full_address)
         
     if cache_result == None:
+        print('using Google Geocode API for address: ', full_address)
         geocode_result = gmaps.geocode(full_address)
 
     # Cache results for future lookup
     if(geocode_result != None and len(geocode_result) > 0 and cache_result == None and app_cache):
+        print('stashing Geocoded address info in local app cache')
         app_cache.add_item_to_cache(bucket='addresstext', key=full_address, value=geocode_result)
         app_cache.add_item_to_cache(bucket='googleplaceids', key=geocode_result[0]['place_id'], value=geocode_result, is_hex_key=True)
 
