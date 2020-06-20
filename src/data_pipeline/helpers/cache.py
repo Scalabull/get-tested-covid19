@@ -2,7 +2,7 @@
 
 import json
 from os import path, pardir
-from hashlib import blake2b
+import re
 THIS_DIR = path.dirname(path.abspath(__file__))
 
 class Cache:
@@ -30,24 +30,22 @@ class Cache:
         
         cache_key = key
         if not is_hex_key:
-            cache_key = self.__generate_key_hash(key=key)
+            cache_key = self.__generate_quick_hash(key=key)
 
         self.__cache[bucket][cache_key] = value
 
     def lookup_item_in_cache(self, *ignore, bucket, key, is_hex_key=False):
         cache_key = key
         if not is_hex_key:
-            cache_key = self.__generate_key_hash(key=key)
+            cache_key = self.__generate_quick_hash(key=key)
 
         if bucket in self.__cache and cache_key in self.__cache[bucket]:
             return self.__cache[bucket][cache_key]
 
         return None
     
-    def __generate_key_hash(self, *ignore, key):
-        hash_key = blake2b(digest_size=48)
+    def __generate_quick_hash(self, *ignore, key):
+        hash_key = key.lower()
+        hash_key = re.sub(r'[^a-z0-9]', '', hash_key)
 
-        hash_key.update(bytes(key, encoding='utf-8'))
-        hex_key = hash_key.hexdigest()
-
-        return hex_key
+        return hash_key
