@@ -1,0 +1,2126 @@
+{
+	"info": {
+		"_postman_id": "379e3de1-ecdf-4947-a058-e52f9957306e",
+		"name": "GetTestedCovid19",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Internal",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user@users.com\",\n\t\"password\": \"passwords\"\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/auth/add",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "33a994d9-6ea5-48de-8ebc-430433418a2d",
+										"exec": [
+											"if (pm.response.code === 200) {",
+											"    pm.environment.set('authToken', pm.response.json().token);",
+											"    pm.environment.set('yesterday', new Date().getTime())",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"test@test.com\",\n\t\"password\": \"testtest\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "33a994d9-6ea5-48de-8ebc-430433418a2d",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/v1/auth/logout",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "33a994d9-6ea5-48de-8ebc-430433418a2d",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"user@user.com\",\n\t\"password\": \"passwords\",\n\t\"password_confirmation\": \"passwords\",\n\t\"disabled\": \"true\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/auth/me",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "33a994d9-6ea5-48de-8ebc-430433418a2d",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/v1/auth/me",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Test Centers",
+					"item": [
+						{
+							"name": "Create Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"public\": \"false\",\n\t\"name\":\"Bevery Hills Testing Center\",\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center is located in downtown Beverly Hills.\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers/12",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read All Test Centers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"public\": \"true\",\n    \"name\": \"Bevery Hills Testing Center\",\n    \"address\": \"123 Main Street\",\n    \"city\": \"Beverly Hills\",\n    \"state\": \"CA\",\n    \"zipcode\": 90210,\n    \"location\": null,\n    \"latitude\": null,\n    \"longitude\": null,\n    \"phone_number\": null,\n    \"hours_of_operation\": null,\n    \"days_of_operation\": null,\n    \"operation_period\": null,\n    \"website\": null,\n    \"appointment_required\": null,\n    \"doctor_screen_required_beforehand\": null,\n    \"drive_thru_site\": null,\n    \"walk_in_site\": null,\n    \"facilities_provided\": null,\n    \"estimated_daily_test_capacity\": null,\n    \"comments\": null,\n    \"address_freetext_blob\": null,\n    \"closed\": false,\n    \"date_closed\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers/12",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers",
+										"12"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f9b20a2a-88c9-4651-90a9-13ca6d69efb5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a2f9aeb-d3ba-40bc-a6dc-b768c0edee3c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Unverified Test Centers",
+					"item": [
+						{
+							"name": "Create Unverified Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\":\"Bevery Hills Testing Center\",\n\t\"full_formatted_address\": \"123 Main Street\",\n\t\"phone_number\":\"323.123.4567\",\n\t\"website\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"public_description\":\"Bevery Hills Testing Center is located in downtown Beverly Hills.\",\n\t\"staging_row_id\": \"2\",\n\t\"google_place_id\": \"kjaksjdfkjjkhsk\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/unverified-test-centers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"unverified-test-centers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read Unverified Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/unverified-test-centers/12",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"unverified-test-centers",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read All Unverified Test Centers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/unverified-test-centers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"unverified-test-centers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Unverified Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"public\": \"true\",\n    \"name\": \"Bevery Hills Testing Center\",\n    \"address\": \"123 Main Street\",\n    \"city\": \"Beverly Hills\",\n    \"state\": \"CA\",\n    \"zipcode\": 90210,\n    \"location\": null,\n    \"latitude\": null,\n    \"longitude\": null,\n    \"phone_number\": null,\n    \"hours_of_operation\": null,\n    \"days_of_operation\": null,\n    \"operation_period\": null,\n    \"website\": null,\n    \"appointment_required\": null,\n    \"doctor_screen_required_beforehand\": null,\n    \"drive_thru_site\": null,\n    \"walk_in_site\": null,\n    \"facilities_provided\": null,\n    \"estimated_daily_test_capacity\": null,\n    \"comments\": null,\n    \"address_freetext_blob\": null,\n    \"closed\": false,\n    \"date_closed\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/unverified-test-centers/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"unverified-test-centers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Unverified Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/unverified-test-centers/12",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"unverified-test-centers",
+										"12"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f9b20a2a-88c9-4651-90a9-13ca6d69efb5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a2f9aeb-d3ba-40bc-a6dc-b768c0edee3c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Verified Test Centers",
+					"item": [
+						{
+							"name": "Create Verified Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"public\": \"false\",\n\t\"name\":\"Bevery Hills Testing Center\",\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center is located in downtown Beverly Hills.\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/verified-test-centers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"verified-test-centers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read Verified Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/verified-test-centers/12",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"verified-test-centers",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read All Verified Test Centers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/verified-test-centers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"verified-test-centers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Verified Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"public\": \"true\",\n    \"name\": \"Bevery Hills Testing Center\",\n    \"address\": \"123 Main Street\",\n    \"city\": \"Beverly Hills\",\n    \"state\": \"CA\",\n    \"zipcode\": 90210,\n    \"location\": null,\n    \"latitude\": null,\n    \"longitude\": null,\n    \"phone_number\": null,\n    \"hours_of_operation\": null,\n    \"days_of_operation\": null,\n    \"operation_period\": null,\n    \"website\": null,\n    \"appointment_required\": null,\n    \"doctor_screen_required_beforehand\": null,\n    \"drive_thru_site\": null,\n    \"walk_in_site\": null,\n    \"facilities_provided\": null,\n    \"estimated_daily_test_capacity\": null,\n    \"comments\": null,\n    \"address_freetext_blob\": null,\n    \"closed\": false,\n    \"date_closed\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/verified-test-centers/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"verified-test-centers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Verified Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/verified-test-centers/12",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"verified-test-centers",
+										"12"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f9b20a2a-88c9-4651-90a9-13ca6d69efb5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a2f9aeb-d3ba-40bc-a6dc-b768c0edee3c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Test Centers Staging",
+					"item": [
+						{
+							"name": "Create Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers-staging",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers-staging"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers-staging/12",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers-staging",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read All Test Centers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers-staging",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers-staging"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Test Centers since timestamp",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers-staging/fresh",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers-staging",
+										"fresh"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"accepted\": 123,\n    \"location\": null,\n    \"address\": \"123 Main Street\",\n    \"city\": \"Beverly Hills\",\n    \"state\": \"CA\",\n    \"zipcode\": 90210,\n    \"latitude\": null,\n    \"longitude\": null,\n    \"phone_number\": null,\n    \"hours_of_operation\": null,\n    \"days_of_operation\": null,\n    \"operation_period\": null,\n    \"website\": null,\n    \"appointment_required\": null,\n    \"doctor_screen_required_beforehand\": null,\n    \"drive_thru_site\": \"true\",\n    \"walk_in_site\": null,\n    \"facilities_provided\": null,\n    \"estimated_daily_test_capacity\": null,\n    \"comments\": null,\n    \"address_freetext_blob\": null,\n    \"closed\": false,\n    \"date_closed\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers-staging/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers-staging",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers-staging/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers-staging",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ff152d2d-ea7d-41e3-a042-58f67c2e6374",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "02e0ad56-15ea-4d8c-8a23-6cbcc3b7225d",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Inbound",
+					"item": [
+						{
+							"name": "Submit Scraped Rows",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"scrapedRows\": [\n\t{\n\t\"name\":\"Test Center Alpha\",\n\t\"full_address\": \"123 Main Street, Anytown, ST, 12345\",\n\t\"phone\":\"123.456.7890\",\n\t\"url\":\"http://www.testcenteralpha\",\n\t\"description\":\"Test Center Alpha has a UGE description.\"\n\t},\n\t{\n\t\"name\":\"Test Center Beta\",\n\t\"full_address\": \"125 Main Street, Anytown, ST, 12345\",\n\t\"phone\":\"123.456.7891\",\n\t\"url\":\"http://www.testcenterbeta\",\n\t\"description\":\"Test Center Beta has a HUGE description\"\n\t}\n]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/inbound",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"inbound"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Fresh Inbound Scraped Rows",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "563c4086-4f7e-4206-b1be-af36a8797b1f",
+										"exec": [
+											"var yesterday = new Date(new Date() - 24 * 60 * 60 * 1000).getTime();",
+											"postman.setEnvironmentVariable(\"yesterday\", yesterday);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/inbound/fresh?since={{yesterday}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"inbound",
+										"fresh"
+									],
+									"query": [
+										{
+											"key": "since",
+											"value": "{{yesterday}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all inbound scraped rows (old and new)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/internal/inbound/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"inbound",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "User Searches",
+					"item": [
+						{
+							"name": "Create User Search",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"zip_code\": \"90210\",\n\t\"user_latitude\": \"34.0736\",\n\t\"user_longitude\": \"118.4004\",\n\t\"user_ip\": \"192.168.0.100\",\n\t\"search_timestamp\": \"2020-04-25 17:56:23.025-04\"\n}\n\n\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/user-searches",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"user-searches"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/user-searches",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"user-searches"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All User Searches",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/user-searches/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"user-searches",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Test Center",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6aad8b35-e2fc-4e53-84e7-9c6311df801b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/test-centers/12",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"test-centers",
+										"12"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f9b20a2a-88c9-4651-90a9-13ca6d69efb5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a2f9aeb-d3ba-40bc-a6dc-b768c0edee3c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "UnverDiffs",
+					"item": [
+						{
+							"name": "Read All UnverDiff Records",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "80e49941-ea99-49a1-9266-28e3ca0bef15",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"accepted\":\"123\",\n\t\"address\": \"123 Main Street\",\n\t\"city\":\"Beverly Hills\",\n\t\"state\":\"CA\",\n\t\"zipcode\":\"90210\",\n\t\"phone\":\"323.123.4567\",\n\t\"url\":\"http://www.beverlyhillstestingcenter.com\",\n\t\"description\":\"Bevery Hills Testing Center\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/unver-diff-routes/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"unver-diff-routes",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "TestCenters",
+					"item": [
+						{
+							"name": "Read All Public Test Centers",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/public/test-centers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"public",
+										"test-centers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read Public Test Centers",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/public/test-centers/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"public",
+										"test-centers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Test Centers In Radius of Zip Code",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/public/test-centers/zip/18951",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"public",
+										"test-centers",
+										"zip",
+										"18951"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Test Centers In Radius of Lat, Lng Coords",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/public/test-centers/searchByUserLatLng?latitude=40.445203&longitude=-75.34838",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"public",
+										"test-centers",
+										"searchByUserLatLng"
+									],
+									"query": [
+										{
+											"key": "latitude",
+											"value": "40.445203"
+										},
+										{
+											"key": "longitude",
+											"value": "-75.34838"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "VerifiedTestCenters",
+					"item": [
+						{
+							"name": "Read All Public Test Centers",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/public/verified-test-centers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"public",
+										"verified-test-centers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Read Public Test Centers",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/public/verified-test-centers/10",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"public",
+										"verified-test-centers",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Test Centers In Radius of Zip Code",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/public/verified-test-centers/zip/18951",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"public",
+										"verified-test-centers",
+										"zip",
+										"18951"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Test Centers In Radius of Lat, Lng Coords",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/v1/public/verified-test-centers/searchByUserLatLng?latitude=40.445203&longitude=-75.34838",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"public",
+										"verified-test-centers",
+										"searchByUserLatLng"
+									],
+									"query": [
+										{
+											"key": "latitude",
+											"value": "40.445203"
+										},
+										{
+											"key": "longitude",
+											"value": "-75.34838"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/ping",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"ping"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "4be9f608-710c-4a91-98af-664ec4d042cf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6fcfbe00-f217-4b0f-815c-0b7dd1e9b425",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
