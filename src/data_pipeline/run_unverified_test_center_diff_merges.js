@@ -151,4 +151,8 @@ async function checkAndLoadUnverifiedDiffs(){
     return status;
 }
 
-checkAndLoadUnverifiedDiffs();
+if(process.env.NODE_ENV === 'development' && process.env.AWS_ACCESS_KEY_ID === ''){
+    console.log('Skipping UnverDiff merge process. To run this procedure, load AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY into your local environment.')
+} else {
+    checkAndLoadUnverifiedDiffs();
+}

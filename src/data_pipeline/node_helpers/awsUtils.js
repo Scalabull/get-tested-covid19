@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 AWS.config.logger = console;
+const NODE_ENV = process.env.NODE_ENV;
 
 if(process.env.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI || process.env.AWS_CONTAINER_CREDENTIALS_FULL_URI){
     console.log('Loading ECS Credentials. REL URI: ', process.env.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI, ' FULL URI: ', process.env.AWS_CONTAINER_CREDENTIALS_FULL_URI);
@@ -13,9 +14,14 @@ if(process.env.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI || process.env.AWS_CONTAIN
 
 async function loadNewDiffFromS3(diffS3Key){
     const s3 = new AWS.S3();
+    
+    let bucket = 'staging-gtc-data-batches';
+    if(NODE_ENV === 'production'){
+        bucket = 'master-gtc-data-batches';
+    }
 
     const params = {
-        Bucket: 'staging-gtc-data-batches',
+        Bucket: bucket,
         Key: 'unver-staged-jobs/' + diffS3Key
     }
 
