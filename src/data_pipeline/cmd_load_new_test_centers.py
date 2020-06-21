@@ -51,7 +51,7 @@ def validate_credentials():
     else:
         print(colored('Your AWS account ID is correct: ' + aws_ident + '\n\n', 'green'))
 
-def pretty_print_results(dump_obj, job_handle, s3_diff_obj_handle, job_local_path):
+def pretty_print_results(dump_obj, job_handle, staging_s3_diff_obj_handle, master_s3_diff_obj_handle, job_local_path):
     print('Proposed test center rows to be added to UnverifiedTestCenters table: ', dump_obj['post_processing_stats']['unmatched_row_count'])
     print('Rows: ')
     
@@ -103,14 +103,14 @@ def run_diff(staging_test_center_rows, gtc_auth_token, app_cache):
     job_handle = 'su_' + current_dt + '_report.json'
 
     # Put results to S3
-    s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
+    staging_s3_diff_obj_handle, master_s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
     
     # Write results to local /logs folder, for easy access/review
     job_local_path = os.path.join(LOGS_PATH, job_handle)
     file_utils.write_json_outfile(job_local_path, merge_diff)
 
     # Print short summary of results
-    pretty_print_results(merge_diff, job_handle, s3_diff_obj_handle, job_local_path)
+    pretty_print_results(merge_diff, job_handle, staging_s3_diff_obj_handle, master_s3_diff_obj_handle, job_local_path)
 
 def run_standard_workflow(csv_file, gtc_auth_token, app_cache):
 

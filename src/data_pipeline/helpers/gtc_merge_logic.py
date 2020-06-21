@@ -1,3 +1,4 @@
+GTC_DIFF_TOOLING_VERSION = '1.0'
 
 # Check whether two normalized test center rows refer to the same test center
 def check_test_center_match(row1, row2):
@@ -127,6 +128,7 @@ def generate_unverified_update_diff_obj(staging_test_centers, unverified_test_ce
     stats['unmatched_rows'] = format_unmatched_rows_to_unverified_schema(stats['unmatched_rows'])
 
     dump_obj = {
+        'diff_tooling_version': GTC_DIFF_TOOLING_VERSION,
         'staging_row_deduplication_groups': grouped_staging_row_dict,
         'staging_row_deduplicated_count': len(deduplicated_staging_rows),
         'post_processing_stats': stats,

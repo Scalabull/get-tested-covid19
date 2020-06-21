@@ -125,7 +125,6 @@ async function handleAllNewDiffsSequentially(newDiffKeysArr){
         try{
             const diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
             const diffBody = JSON.parse(diffObj['Body']);
-            console.log(JSON.stringify(diffBody, null, '\t'));
 
             const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
         }
@@ -137,12 +136,9 @@ async function handleAllNewDiffsSequentially(newDiffKeysArr){
 }
 
 async function checkAndLoadUnverifiedDiffs(){
-    const ident = await awsUtils.checkAWSAccount();
-    console.log('AWS ident loaded: ', ident);
     console.log('DB MODELS DIR: ', MODELS_DIR);
 
     let diffFile = await fileUtils.loadDiffFile();
-    console.log('diff file: ', diffFile);
 
     let priorDiffs = await loadPriorDiffs();
     console.log('# of diffs already run on current system: ', priorDiffs.length);
@@ -155,4 +151,8 @@ async function checkAndLoadUnverifiedDiffs(){
     return status;
 }
 
-checkAndLoadUnverifiedDiffs();
+if(process.env.NODE_ENV === 'development' && process.env.AWS_ACCESS_KEY_ID === ''){
+    console.log('Skipping UnverDiff merge process. To run this procedure, load AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY into your local environment.')
+} else {
+    checkAndLoadUnverifiedDiffs();
+}
