@@ -1,4 +1,5 @@
 //NOTE: This model is soon to be phased-out. Consumers will soon query against the VerifiedTestCenters table.
+//TODO: after staging merge, add 'symptoms_required' to attributes on Verified table
 
 const router = require('express').Router()
 const db = require('../../db/models')
@@ -27,6 +28,7 @@ const attributes = [
   'doctor_screen_required_beforehand',
   'drive_thru_site',
   'walk_in_site',
+  'symptoms_required',
   'facilities_provided',
   'estimated_daily_test_capacity',
   'comments',
