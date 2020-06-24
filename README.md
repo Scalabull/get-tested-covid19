@@ -1,4 +1,5 @@
-# About Us
+# Our project
+https://gettestedcovid.org 
 
 **Our mission: Drive the use of designated testing centers for COVID-19 testing in the US.**
 
