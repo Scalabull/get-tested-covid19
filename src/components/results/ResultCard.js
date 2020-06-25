@@ -103,12 +103,12 @@ const StyledResultCard = styled.div`
     height: 20px;
     margin-right: 5px;
   }
-`
+` 
 
 class ResultCard extends React.Component {
   render() {
     const { num } = this.props;
-    const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
+    const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, symptoms_required, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
     return (
         <StyledResultCard>
           <h3>{num}. {name}</h3>
@@ -117,12 +117,14 @@ class ResultCard extends React.Component {
           </p>
           <div className="card__req">
             {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</span>}
-            {(doctor_screen_required_beforehand || appointment_required) && (
+            {(doctor_screen_required_beforehand || appointment_required || symptoms_required) && (
               <>
                 {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Doctor's screening required</span>}
                 {appointment_required && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Appointment required</span>}
+                {symptoms_required && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Symptoms required for testing</span>}
               </>
             )}
+            {!symptoms_required && symptoms_required != null && <span className="badge badge-success"><i className="fas fa-check-circle icon-left" />No symptoms required for testing</span>}
           </div>
           <p className="card__descr">
             <ReadMore lines={2}>
