@@ -28,7 +28,7 @@ const attributes = [
   'doctor_screen_required_beforehand',
   'drive_thru_site',
   'walk_in_site',
-  'symptoms_required',
+  'me_dhhs_status',
   'facilities_provided',
   'estimated_daily_test_capacity',
   'comments',
