@@ -126,11 +126,17 @@ class ResultCard extends React.Component {
   render() {
     const { num } = this.props;
     const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
+    
+    let phoneStr = "";
+    if(phone_number !== "" && phone_number !== null){
+      phoneStr = phone_number.split(')')[0] + ") " + phone_number.split(')')[1]
+    }
+
     return (
         <StyledResultCard>
           <h3>{num}. {name}</h3>
           <p className="card__meta">
-            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone_number.split(')')[0]}) {phone_number.split(')')[1]}
+            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phoneStr}
           </p>
           <div className="card__req">
             {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</span>}
@@ -156,7 +162,7 @@ class ResultCard extends React.Component {
             <ButtonGroup className="card__actions-mobile" size="sm">
               <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
               {website !== '' && <a className="btn btn-outline-primary" href={website} target="_blank" rel="noopener noreferrer">Visit website</a>}
-              {phone_number !== '' && (
+              {phone_number !== '' && phone_number !== null && (
                 <a className="btn btn-outline-primary card__call" href={`tel: ${phone_number}`}  target="_blank" rel="noopener noreferrer">Call</a>  
               )}
             </ButtonGroup>
