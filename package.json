@@ -63,7 +63,7 @@
         "helmet": "^3.22.0",
         "jsonwebtoken": "^8.5.1",
         "lodash.debounce": "^4.0.8",
-        "mapbox-gl": "^1.10.0",
+        "mapbox-gl": "^1.10.1",
         "mkdirp": "^1.0.4",
         "moment": "2.26.0",
         "morgan": "^1.10.0",
