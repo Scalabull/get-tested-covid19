@@ -44,6 +44,23 @@ const StyledResultCard = styled.div`
 
     .badge-success {
       background-color: ${props => props.theme.colorGreen};
+
+      a {
+        color: ${props => props.theme.colorBlueDark};
+        text-decoration: underline;
+
+      }
+    }
+
+    .badge-warning {
+      color: #fff;
+      background-color: ${props => props.theme.colorYellow};
+
+      a {
+        color: ${props => props.theme.colorBlueDark};
+        text-decoration: underline;
+
+      }
     }
   }
 
@@ -108,7 +125,7 @@ const StyledResultCard = styled.div`
 class ResultCard extends React.Component {
   render() {
     const { num } = this.props;
-    const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, symptoms_required, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
+    const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
     return (
         <StyledResultCard>
           <h3>{num}. {name}</h3>
@@ -117,14 +134,15 @@ class ResultCard extends React.Component {
           </p>
           <div className="card__req">
             {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</span>}
-            {(doctor_screen_required_beforehand || appointment_required || symptoms_required) && (
+            {(doctor_screen_required_beforehand || appointment_required || me_dhhs_status === 0 || me_dhhs_status === 1 || me_dhhs_status === 2) && (
               <>
                 {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Doctor's screening required</span>}
                 {appointment_required && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Appointment required</span>}
-                {symptoms_required && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Symptoms required for testing</span>}
+                {me_dhhs_status === 1 && <span className="badge badge-success"><i className="fas fa-exclamation-circle icon-left" />Testing available to people at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" target="_blank">elevated risk</a>, even without symptoms</span>}
+                {me_dhhs_status === 2 && <span className="badge badge-warning"><i className="fas fa-exclamation-circle icon-left" />Testing available to <em>existing patients</em> at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" target="_blank">elevated risk</a>, even without symptoms</span>}
+                {me_dhhs_status === 0 && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Testing may be limited to people with symptoms or known exposure</span>}
               </>
             )}
-            {!symptoms_required && symptoms_required != null && <span className="badge badge-success"><i className="fas fa-check-circle icon-left" />No symptoms required for testing</span>}
           </div>
           <p className="card__descr">
             <ReadMore lines={2}>
