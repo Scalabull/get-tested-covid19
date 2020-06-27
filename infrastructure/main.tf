@@ -21,6 +21,10 @@ resource "aws_s3_bucket" "data_pipe_batches" {
   bucket = "${var.environment}-gtc-data-batches"
   acl = "private"
 
+  versioning {
+    enabled = true
+  }
+
   tags = local.common_tags
 }
 
