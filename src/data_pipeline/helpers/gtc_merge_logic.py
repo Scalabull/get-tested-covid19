@@ -8,8 +8,8 @@ def check_test_center_match(row1, row2):
     row1_formatted_address_obj = row1['formatted_address_obj']
     row2_formatted_address_obj = row2['formatted_address_obj']
 
-    if row1['name'] == row2['name']:
-        ident_flags.append('NAME_MATCH')
+    #if row1['name'] == row2['name']:
+    #    ident_flags.append('NAME_MATCH')
     
     if(row1_formatted_address_obj['google_place_id'] == row2_formatted_address_obj['google_place_id']):
         ident_flags.append('GOOG_PLACEID_MATCH')
