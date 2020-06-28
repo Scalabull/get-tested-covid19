@@ -31,11 +31,11 @@ class TestStagingImportMethods(unittest.TestCase):
             "doctor_screen_required_beforehand": "8",
             "description": "4",
             "address_freetext_blob": "11",
-            "external_id": "10",
+            "external_id": None,
             "google_place_id": "addr-4"
         }
 
-        staging_obj = gtc_api_helpers.generate_staging_test_center_object(name="1", phone="2", website="3", description="4", formatted_address_obj=stubbed_formatted_address_obj, app_req_flag="6", drive_thru_flag="7", doc_screen_flag="8", inbound_row_id="9", external_id="10", address_freetext="11")
+        staging_obj = gtc_api_helpers.generate_staging_test_center_object(name="1", phone="2", website="3", description="4", formatted_address_obj=stubbed_formatted_address_obj, app_req_flag="6", drive_thru_flag="7", doc_screen_flag="8", inbound_row_id="9", external_id="", address_freetext="11")
         self.assertEqual(expected_staging_obj_format, staging_obj)
     
     # This test is more akin to an integration test - verifies the inbound to staging conversion process is working properly

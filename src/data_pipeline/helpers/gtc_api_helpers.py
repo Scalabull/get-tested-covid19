@@ -40,6 +40,10 @@ def generate_gtc_get_request(base_api_url, request_path, auth_token, normalizati
     return get_request
 
 def generate_staging_test_center_object(*ignore, name, phone, website, description, formatted_address_obj, app_req_flag = None, drive_thru_flag = None, doc_screen_flag = None, inbound_row_id = None, external_id = None, address_freetext = None):
+    formatted_ext_id = None
+    if(external_id != ''):
+        formatted_ext_id = external_id
+
     staging_test_center_obj = {
         "inbounds_id": inbound_row_id,
         "public": False,
@@ -54,7 +58,7 @@ def generate_staging_test_center_object(*ignore, name, phone, website, descripti
         "doctor_screen_required_beforehand": doc_screen_flag,
         "description": description,
         "address_freetext_blob": address_freetext,
-        "external_id": external_id,
+        "external_id": formatted_ext_id,
         "google_place_id": formatted_address_obj['google_place_id']
     }
 
