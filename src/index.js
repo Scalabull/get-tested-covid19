@@ -22,7 +22,9 @@ const colors = {
   colorTeal: '#69C5AB',
   colorTealDark: '#0387A5',
   colorYellow: '#EFC05C',
+  colorYellowDark: '#75672D',
   colorGreen: '#27AE60',
+  colorGreenDark: '#1F593F',
   colorGrayLight: '#F6F6F4',
   colorBlueDark: '#162B4D',
   colorBlueLight: '#9AF6FC'

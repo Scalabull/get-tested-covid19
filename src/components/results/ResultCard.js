@@ -34,8 +34,16 @@ const StyledResultCard = styled.div`
 
     .badge {
       margin-right: 5px;
+      margin-bottom: 4px;
       font-size: 13px;
       padding: 0.4em 0.6em;
+      white-space: normal;
+      text-align: left;
+      line-height: 1.25em;
+
+      a {
+        text-decoration: underline;
+      }
     }
 
     .badge-danger {
@@ -46,9 +54,7 @@ const StyledResultCard = styled.div`
       background-color: ${props => props.theme.colorGreen};
 
       a {
-        color: ${props => props.theme.colorBlueDark};
-        text-decoration: underline;
-
+        color: ${props => props.theme.colorGreenDark};
       }
     }
 
@@ -57,9 +63,7 @@ const StyledResultCard = styled.div`
       background-color: ${props => props.theme.colorYellow};
 
       a {
-        color: ${props => props.theme.colorBlueDark};
-        text-decoration: underline;
-
+        color: ${props => props.theme.colorYellowDark};
       }
     }
   }
@@ -136,17 +140,17 @@ class ResultCard extends React.Component {
         <StyledResultCard>
           <h3>{num}. {name}</h3>
           <p className="card__meta">
-            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phoneStr}
+            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span>{phoneStr ? `· ${phoneStr}` : ''}
           </p>
           <div className="card__req">
-            {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</span>}
+            {!doctor_screen_required_beforehand && !appointment_required && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</div>}
             {(doctor_screen_required_beforehand || appointment_required || me_dhhs_status === 0 || me_dhhs_status === 1 || me_dhhs_status === 2) && (
               <>
-                {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Doctor's screening required</span>}
-                {appointment_required && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Appointment required</span>}
-                {me_dhhs_status === 1 && <span className="badge badge-success"><i className="fas fa-exclamation-circle icon-left" />Testing available to people at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" target="_blank">elevated risk</a>, even without symptoms</span>}
-                {me_dhhs_status === 2 && <span className="badge badge-warning"><i className="fas fa-exclamation-circle icon-left" />Testing available to <em>existing patients</em> at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" target="_blank">elevated risk</a>, even without symptoms</span>}
-                {me_dhhs_status === 0 && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Testing may be limited to people with symptoms or known exposure</span>}
+                {doctor_screen_required_beforehand && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Doctor's screening required</div>}
+                {appointment_required && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Appointment required</div>}
+                {me_dhhs_status === 1 && <div className="badge badge-success"><i className="fas fa-exclamation-circle icon-left" />Testing available to people at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
+                {me_dhhs_status === 2 && <div className="badge badge-warning"><i className="fas fa-exclamation-circle icon-left" />Testing available to <em>existing patients</em> at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
+                {me_dhhs_status === 0 && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Testing may be limited to people with symptoms or known exposure</div>}
               </>
             )}
           </div>
