@@ -1,4 +1,5 @@
 import csv
+import re
 
 TARGET_CSV_HEADER = [
     'NAME',
@@ -67,6 +68,13 @@ def yes_no_to_bool(col_val):
     else:
         return None
 
+# The VA has asked not to have their test centers displayed publicly
+def is_VA_test_center(name):
+    va_flag = re.search('^VA | VA ', name)
+    if(va_flag != None):
+        return True
+    return False
+
 # The standard scraped CSV should have 5 columns, as follows:
 # This format mirrors the Inbounds table.
 def extract_test_center_row(csv_row):
@@ -74,6 +82,9 @@ def extract_test_center_row(csv_row):
         return None
 
     if(csv_row[0] == '' or csv_row[1] == '' or csv_row[2] == ''):
+        return None
+    
+    if(is_VA_test_center(csv_row[0])):
         return None
         
     test_center = {
