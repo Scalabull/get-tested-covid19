@@ -11,6 +11,7 @@ python-dotenv = "*"
 click = "*"
 boto3 = "*"
 termcolor = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.7"
