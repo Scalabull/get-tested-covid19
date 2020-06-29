@@ -75,6 +75,16 @@ const StyledResultsPage = styled.div`
     }
   }
 
+  .results__list-note {
+    padding: 15px 20px;
+    font-size: 14px;
+    background-color: ${props => props.theme.colorGray};
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
   .results__list-pagination {
     height: 60px;
     padding: 0 20px;
@@ -257,6 +267,11 @@ class ResultsPage extends React.Component {
                           <ShareBtn />
                         </div>
                         <div className="results__list-cards">
+                          {this.state.currentPage === 0 && (
+                            <div className="results__list-note">
+                              Test centers are for <strong>viral tests only</strong>. While some test centers may have antibody tests, they are not accurate enough yet to be recommended.
+                            </div>
+                          )}
                           <ResultsListCards items={viewItems} page={this.state.currentPage} />
                         </div>
                         <div className="results__list-pagination d-flex align-items-center justify-content-between">

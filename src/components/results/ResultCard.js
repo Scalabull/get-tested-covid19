@@ -148,7 +148,7 @@ class ResultCard extends React.Component {
               <>
                 {doctor_screen_required_beforehand && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Doctor's screening required</div>}
                 {appointment_required && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Appointment required</div>}
-                {me_dhhs_status === 1 && <div className="badge badge-success"><i className="fas fa-exclamation-circle icon-left" />Testing available to people at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
+                {me_dhhs_status === 1 && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Testing available to people at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
                 {me_dhhs_status === 2 && <div className="badge badge-warning"><i className="fas fa-exclamation-circle icon-left" />Testing available to <em>existing patients</em> at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
                 {me_dhhs_status === 0 && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Testing may be limited to people with symptoms or known exposure</div>}
               </>
@@ -161,6 +161,7 @@ class ResultCard extends React.Component {
           </p>
           <div className="card__features">
             <div className="card__feature"><i className="fas fa-car-side" />Drive-through testing <strong>{drive_thru_site ? 'Yes' : 'No'}</strong></div>
+            <div className="card__feature"><i className="fas fa-check-circle" />Verified <strong title="June 15, 2020">3 days ago</strong></div>
           </div>
           <div className="card__actions">
             <ButtonGroup className="card__actions-mobile" size="sm">

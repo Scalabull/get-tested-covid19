@@ -26,6 +26,7 @@ const colors = {
   colorGreen: '#27AE60',
   colorGreenDark: '#1F593F',
   colorGrayLight: '#F6F6F4',
+  colorGray: '#CCCCCC',
   colorBlueDark: '#162B4D',
   colorBlueLight: '#9AF6FC'
 }
