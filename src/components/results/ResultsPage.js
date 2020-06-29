@@ -78,7 +78,7 @@ const StyledResultsPage = styled.div`
   .results__list-note {
     padding: 15px 20px;
     font-size: 14px;
-    background-color: ${props => props.theme.colorGray};
+    background-color: ${props => props.theme.colorGrayLight};
 
     strong {
       font-weight: 600;
