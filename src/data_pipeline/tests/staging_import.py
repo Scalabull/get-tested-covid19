@@ -29,13 +29,16 @@ class TestStagingImportMethods(unittest.TestCase):
             "appointment_required": "6",
             "drive_thru_site": "7",
             "doctor_screen_required_beforehand": "8",
+            "physician_referral_required": "12",
+            "verified_by_phone_external_party": "13",
             "description": "4",
+            "hours_of_operation": "14",
             "address_freetext_blob": "11",
             "external_id": None,
             "google_place_id": "addr-4"
         }
 
-        staging_obj = gtc_api_helpers.generate_staging_test_center_object(name="1", phone="2", website="3", description="4", formatted_address_obj=stubbed_formatted_address_obj, app_req_flag="6", drive_thru_flag="7", doc_screen_flag="8", inbound_row_id="9", external_id="", address_freetext="11")
+        staging_obj = gtc_api_helpers.generate_staging_test_center_object(name="1", phone="2", website="3", description="4", formatted_address_obj=stubbed_formatted_address_obj, app_req_flag="6", drive_thru_flag="7", doc_screen_flag="8", phys_ref_flag="12", verif_phone_ext_flag="13", inbound_row_id="9", external_id="", address_freetext="11", hours_of_operation="14")
         self.assertEqual(expected_staging_obj_format, staging_obj)
     
     # This test is more akin to an integration test - verifies the inbound to staging conversion process is working properly
@@ -79,7 +82,10 @@ class TestStagingImportMethods(unittest.TestCase):
             "appointment_required": "pp-2",
             "drive_thru_site": "pp-3",
             "doctor_screen_required_beforehand": "pp-4",
+            "physician_referral_required": None,
+            "verified_by_phone_external_party": None,
             "description": "6",
+            "hours_of_operation": None,
             "address_freetext_blob": "3",
             "external_id": None,
             "google_place_id": "addr-4"
@@ -113,7 +119,10 @@ class TestStagingImportMethods(unittest.TestCase):
             "app_req_flag": "9",
             "doc_screen_flag": "10",
             "drive_thru_flag": "11",
-            "description": "12"
+            "phys_ref_flag": "13",
+            "verif_phone_ext_flag": "14",
+            "description": "12",
+            "hours_of_operation": "15"
         }
 
         expected_staging_obj_format = {
@@ -128,7 +137,10 @@ class TestStagingImportMethods(unittest.TestCase):
             "appointment_required": "9",
             "drive_thru_site": "11",
             "doctor_screen_required_beforehand": "10",
+            "physician_referral_required": "13",
+            "verified_by_phone_external_party": "14",
             "description": "12",
+            "hours_of_operation": "15",
             "address_freetext_blob": "3 4, 5 6",
             "external_id": "1",
             "google_place_id": "addr-4"

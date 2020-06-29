@@ -74,7 +74,7 @@ def get_current_datetime_formatted():
     current_dt = datetime.datetime.now()
     return current_dt.strftime("%Y%m%d%H%M%S")
 
-def run_diff(staging_test_center_rows, gtc_auth_token, app_cache):
+def run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache):
 
     def normalize_test_center_rows(rows):
         normalized_rows = [normalize_test_center_row(row) for row in rows]
@@ -98,7 +98,7 @@ def run_diff(staging_test_center_rows, gtc_auth_token, app_cache):
     print('Database contains Unverified Test Centers: ', len(unverified_test_center_rows), ' , Verified Test Centers: ', len(verified_test_center_rows))
     print('Generating diff... (this may take a moment)\n\n')
 
-    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows)
+    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows, merge_fill_blanks)
     current_dt = get_current_datetime_formatted()
     job_handle = 'su_' + current_dt + '_report.json'
 
@@ -150,7 +150,7 @@ def run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache):
 
     return staging_test_center_rows
 
-def main_tool_process(csv_file, is_preprocessed, app_cache):
+def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, app_cache):
     print_startup_messaging()
 
     # Help user identify correctness of API URL, Google key, and AWS account credentials
@@ -171,14 +171,15 @@ def main_tool_process(csv_file, is_preprocessed, app_cache):
     
     print(colored('All test centers inserted to Staging!\n', 'green'))
 
-    run_diff(staging_test_center_rows, gtc_auth_token, app_cache)
+    run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache)
 
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
 @click.command()
 @click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
 @click.option('--is_preprocessed', default=False, type=bool, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
-def exec_tool(csv_file, is_preprocessed):
+@click.option('--merge_fill_blanks', default=False, type=bool, help='Set to True to propose updates to existing UnverifiedTestCenter records. This only shows proposed additions of data where existing records have empty columns (no overwriting).')
+def exec_tool(csv_file, is_preprocessed, merge_fill_blanks):
     app_cache = Cache()
     app_cache.load_cache_file()
 
@@ -192,7 +193,7 @@ def exec_tool(csv_file, is_preprocessed):
     signal.signal(signal.SIGINT, terminateProcess)
 
     try:
-        main_tool_process(csv_file, is_preprocessed, app_cache)
+        main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, app_cache)
     except:
         app_cache.write_cache_file()
         raise
