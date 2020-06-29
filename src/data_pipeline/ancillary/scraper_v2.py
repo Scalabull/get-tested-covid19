@@ -36,7 +36,7 @@ def init():
     return browser
 
 def page_is_loaded(browser):
-    return browser.find_element_by_id("state") != None
+    return EC.element_to_be_clickable((By.XPATH, "//span[@id='select2-state-container']"))
 
 def load_browser_page(browser, state_str):
     wait=WebDriverWait(browser,20)
@@ -45,9 +45,14 @@ def load_browser_page(browser, state_str):
     browser.find_element_by_xpath("//span[@id='select2-state-container']").click()
     browser.find_element_by_xpath("//input[@class='select2-search__field']").send_keys(state_str)
     browser.find_element_by_xpath("//input[@class='select2-search__field']").send_keys(Keys.ENTER)
+
     wait = WebDriverWait(browser, 10)
     wait.until(EC.element_to_be_clickable((By.XPATH, "//span[@id='select2-county-container']")))
+
     browser.find_element_by_xpath("//span[@id='select2-county-container']").click()
+    wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@class='select2-search__field']")))
+
+    browser.find_element_by_xpath("//input[@class='select2-search__field']").click()
     browser.find_element_by_xpath("//input[@class='select2-search__field']").send_keys("All")
     browser.find_element_by_xpath("//input[@class='select2-search__field']").send_keys(Keys.ENTER)
 
