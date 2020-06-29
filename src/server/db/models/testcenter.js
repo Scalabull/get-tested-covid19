@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       doctor_screen_required_beforehand: DataTypes.BOOLEAN,
       drive_thru_site: DataTypes.BOOLEAN,
       walk_in_site: DataTypes.BOOLEAN,
+      me_dhhs_status: DataTypes.INTEGER,
       facilities_provided: DataTypes.TEXT,
       estimated_daily_test_capacity: DataTypes.INTEGER,
       comments: DataTypes.TEXT,

@@ -20,7 +20,7 @@ const StyledZipForm = styled.div`
     background-color: ${props => props.theme.colorPurpleDarker};
   }
 
-  .form-control {
+  .form-control.border-0 {
     border-color: #fff;
 
     &:focus {
@@ -201,7 +201,7 @@ class ZipForm extends React.Component {
                         </InputGroupAddon>
                       )}
                       <Input
-                        className={`search-input form-control ${large ? 'form-control-lg' : ''} border-0`}
+                        className={`search-input form-control ${large ? 'form-control-lg' : ''} ${showLocate ? 'border-0' : ''}`}
                         title='Enter zip code'
                         placeholder='Enter zip code'
                         type='text'

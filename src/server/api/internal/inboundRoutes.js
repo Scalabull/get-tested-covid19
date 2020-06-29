@@ -13,12 +13,12 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).send('scrapedRows must be an array with at least one object.');
     }
 
-    await db.Inbound.bulkCreate(scrapedRows);
+    let newRows = await db.Inbound.bulkCreate(scrapedRows);
 
-    res.status(201).send()
+    res.status(201).json(newRows)
   } catch (error) {
-    console.error(error);
-    res.status(500).send(error.message)
+    console.error(error + JSON.stringify(req.body));
+    res.status(500).send(error.message + JSON.stringify(req.body))
   }
 })
 

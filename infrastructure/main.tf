@@ -17,6 +17,21 @@ locals {
   }
 }
 
+resource "aws_s3_bucket" "data_pipe_batches" {
+  bucket = "${var.environment}-gtc-data-batches"
+  acl = "private"
+
+  versioning {
+    enabled = true
+  }
+
+  tags = local.common_tags
+}
+
+resource "aws_s3_bucket_public_access_block" "data_pipe_batches" {
+  bucket = aws_s3_bucket.data_pipe_batches.id
+}
+
 module "saas_vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
@@ -32,6 +47,39 @@ module "saas_vpc" {
   single_nat_gateway   = true
 
   tags = local.common_tags
+}
+
+resource "aws_iam_role" "api_task_role" {
+  name               = "gtcv-${var.environment}-api-task-role"
+  assume_role_policy = file("${path.module}/policies/ecs-task-execution-role.json")
+}
+
+resource "aws_iam_policy" "api_task_policy" {
+  path        = "/"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "${aws_s3_bucket.data_pipe_batches.arn}"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": "${aws_s3_bucket.data_pipe_batches.arn}/*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "api_task_atttachment" {
+  name       = "gtcv-${var.environment}-api-task-attachment"
+  roles      = [aws_iam_role.api_task_role.name]
+  policy_arn = aws_iam_policy.api_task_policy.arn
 }
 
 module "fargate" {
@@ -75,6 +123,7 @@ module "fargate" {
       auto_scaling_max_replicas = 50
       auto_scaling_requests_per_target = 4000
       host = "${local.env_dns_prefix}api.get-tested-covid19.org"
+      task_role_arn = aws_iam_role.api_task_role.arn
     }
   }
 }
@@ -115,7 +164,7 @@ resource "aws_route53_record" "api" {
   }
 }
 
-resource "aws_iam_policy" "ecs_ssm_task_policy" {
+resource "aws_iam_policy" "ecs_task_policy" {
   path        = "/"
 
   policy = <<EOF
@@ -131,16 +180,26 @@ resource "aws_iam_policy" "ecs_ssm_task_policy" {
       ],
       "Effect": "Allow",
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": "arn:aws:s3:::*"
     }
   ]
 }
 EOF
 }
 
-resource "aws_iam_policy_attachment" "ecs_ssm_task_atttachment" {
+resource "aws_iam_policy_attachment" "ecs_task_atttachment" {
   name       = "gtcv-${var.environment}-attachment"
   roles      = ["gtcv-${var.environment}-task-execution-role"]
-  policy_arn = "${aws_iam_policy.ecs_ssm_task_policy.arn}"
+  policy_arn = aws_iam_policy.ecs_task_policy.arn
   depends_on = [module.fargate]
 }
 
@@ -223,7 +282,7 @@ resource "aws_ssm_parameter" "DB_USERNAME" {
   name        = "/${var.environment}/database/DB_USERNAME"
   description = "${var.environment} DB_USERNAME"
   type        = "String"
-  value       = "${module.db.this_rds_cluster_master_username}"
+  value       = module.db.this_rds_cluster_master_username
 
   tags = local.common_tags
 }
@@ -232,7 +291,7 @@ resource "aws_ssm_parameter" "DB_PASSWORD" {
   name        = "/${var.environment}/database/DB_PASSWORD"
   description = "${var.environment} DB_PASSWORD"
   type        = "SecureString"
-  value       = "${module.db.this_rds_cluster_master_password}"
+  value       = module.db.this_rds_cluster_master_password
 
   tags = local.common_tags
 }
@@ -241,7 +300,7 @@ resource "aws_ssm_parameter" "DB_HOSTNAME" {
   name        = "/${var.environment}/database/DB_HOSTNAME"
   description = "${var.environment} DB_HOSTNAME"
   type        = "String"
-  value       = "${module.db.this_rds_cluster_endpoint}"
+  value       = module.db.this_rds_cluster_endpoint
 
   tags = local.common_tags
 }

@@ -44,6 +44,23 @@ const StyledResultCard = styled.div`
 
     .badge-success {
       background-color: ${props => props.theme.colorGreen};
+
+      a {
+        color: ${props => props.theme.colorBlueDark};
+        text-decoration: underline;
+
+      }
+    }
+
+    .badge-warning {
+      color: #fff;
+      background-color: ${props => props.theme.colorYellow};
+
+      a {
+        color: ${props => props.theme.colorBlueDark};
+        text-decoration: underline;
+
+      }
     }
   }
 
@@ -103,24 +120,33 @@ const StyledResultCard = styled.div`
     height: 20px;
     margin-right: 5px;
   }
-`
+` 
 
 class ResultCard extends React.Component {
   render() {
     const { num } = this.props;
-    const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
+    const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
+    
+    let phoneStr = "";
+    if(phone_number !== "" && phone_number !== null){
+      phoneStr = phone_number.split(')')[0] + ") " + phone_number.split(')')[1]
+    }
+
     return (
         <StyledResultCard>
           <h3>{num}. {name}</h3>
           <p className="card__meta">
-            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phone_number.split(')')[0]}) {phone_number.split(')')[1]}
+            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span> &middot; {phoneStr}
           </p>
           <div className="card__req">
             {!doctor_screen_required_beforehand && !appointment_required && <span className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</span>}
-            {(doctor_screen_required_beforehand || appointment_required) && (
+            {(doctor_screen_required_beforehand || appointment_required || me_dhhs_status === 0 || me_dhhs_status === 1 || me_dhhs_status === 2) && (
               <>
                 {doctor_screen_required_beforehand && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Doctor's screening required</span>}
                 {appointment_required && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Appointment required</span>}
+                {me_dhhs_status === 1 && <span className="badge badge-success"><i className="fas fa-exclamation-circle icon-left" />Testing available to people at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" target="_blank">elevated risk</a>, even without symptoms</span>}
+                {me_dhhs_status === 2 && <span className="badge badge-warning"><i className="fas fa-exclamation-circle icon-left" />Testing available to <em>existing patients</em> at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" target="_blank">elevated risk</a>, even without symptoms</span>}
+                {me_dhhs_status === 0 && <span className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Testing may be limited to people with symptoms or known exposure</span>}
               </>
             )}
           </div>
@@ -136,7 +162,7 @@ class ResultCard extends React.Component {
             <ButtonGroup className="card__actions-mobile" size="sm">
               <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
               {website !== '' && <a className="btn btn-outline-primary" href={website} target="_blank" rel="noopener noreferrer">Visit website</a>}
-              {phone_number !== '' && (
+              {phone_number !== '' && phone_number !== null && (
                 <a className="btn btn-outline-primary card__call" href={`tel: ${phone_number}`}  target="_blank" rel="noopener noreferrer">Call</a>  
               )}
             </ButtonGroup>
