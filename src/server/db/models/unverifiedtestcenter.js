@@ -53,7 +53,9 @@ module.exports = (sequelize, DataTypes) => {
       exported_to_crm_at: DataTypes.DATE,
       verified_at: DataTypes.DATE,
       google_place_id: DataTypes.TEXT,
-      staging_row_id: DataTypes.INTEGER
+      staging_row_id: DataTypes.INTEGER,
+      source_unver_diff_key: DataTypes.STRING,
+      latest_unver_diff_key: DataTypes.STRING
     },
     {
       hooks: {
