@@ -66,6 +66,16 @@ async function loadPriorDiffs(){
     return mappedDiffRecords;
 }
 
+async function runResetDiffTransaction(unverDiffKey){
+    const result = await db.sequelize.transaction(async (t) => {
+        const testCenter = await db.UnverifiedTestCenter.destroy({ truncate: true, transaction: t})
+        const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
+        
+        return unverDiffStatus;
+    });
+    return result;
+}
+
 async function runDiffInstallationTransaction(unverDiffKey, diffObj){
     const result = await db.sequelize.transaction(async (t) => {
 
@@ -134,15 +144,19 @@ async function handleAllNewDiffsSequentially(newDiffKeysArr){
     for(let i = 0; i < newDiffKeysArr.length; i++){
         const unverDiffKey = newDiffKeysArr[i];
 
-        try{
-            const diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
-            const diffBody = JSON.parse(diffObj['Body']);
-
-            const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
-        }
-        catch(err){
-            console.log('Failure processing diff with key: ', unverDiffKey, '. This diff and any diffs after this one in the CHRONOLOGICAL_S3_DIFF_KEYS array have not been uploaded.');
-            throw err;
+        if(unverDiffKey.includes('reset')){
+            const diffInsertStatus = await runResetDiffTransaction(unverDiffKey);
+        } else {
+            try{
+                const diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
+                const diffBody = JSON.parse(diffObj['Body']);
+    
+                const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
+            }
+            catch(err){
+                console.log('Failure processing diff with key: ', unverDiffKey, '. This diff and any diffs after this one in the CHRONOLOGICAL_S3_DIFF_KEYS array have not been uploaded.');
+                throw err;
+            }
         }
     }
 }
