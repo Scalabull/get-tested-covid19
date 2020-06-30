@@ -13,6 +13,17 @@ router.get('/', auth, async (req, res) => {
   }
 })
 
+router.get('/sourceDiffKey/:diffKeyStr', async (req, res)=>{
+  try {
+    const { diffKeyStr } = req.params
+    const allTestCenters = await db.UnverifiedTestCenter.findAll({where: {source_unver_diff_key: diffKeyStr}})
+    res.status(200).json(allTestCenters)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message)
+  }
+})
+
 router.post('/', auth, async (req, res) => {
   try {
     const { staging_row_id, google_place_id } = req.body

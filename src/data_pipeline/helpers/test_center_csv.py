@@ -1,4 +1,5 @@
 import csv
+import re
 
 TARGET_CSV_HEADER = [
     'NAME',
@@ -20,7 +21,10 @@ TARGET_PREPROCESSED_CSV_HEADER = [
     'APPOINTMENT_REQUIRED',
     'DOCTOR_SCREEN_REQUIRED',
     'DRIVE_THRU_SITE',
-    'DESCRIPTION'
+    'PHYSICIAN_REFERRAL_REQUIRED',
+    'VERIFIED_BY_EXTERNAL_PARTY',
+    'DESCRIPTION',
+    'HOURS_FREETEXT'
 ]
 
 def load_valid_csv_rows(csv_file, is_preprocessed = False):
@@ -67,6 +71,13 @@ def yes_no_to_bool(col_val):
     else:
         return None
 
+# The VA has asked not to have their test centers displayed publicly
+def is_VA_test_center(name):
+    va_flag = re.search('^VA | VA ', name)
+    if(va_flag != None):
+        return True
+    return False
+
 # The standard scraped CSV should have 5 columns, as follows:
 # This format mirrors the Inbounds table.
 def extract_test_center_row(csv_row):
@@ -74,6 +85,9 @@ def extract_test_center_row(csv_row):
         return None
 
     if(csv_row[0] == '' or csv_row[1] == '' or csv_row[2] == ''):
+        return None
+    
+    if(is_VA_test_center(csv_row[0])):
         return None
         
     test_center = {
@@ -86,11 +100,10 @@ def extract_test_center_row(csv_row):
 
     return test_center
 
-# For bypassing our preprocessing tools (rare circumstance), the CSV should have 12 columns:
-# This is a hybrid format. It closely matches to TestCenterStagings table, but requires some additional
-# adjustments before it can be uploaded (namely, the address needs to be processed w/ Google API)
+# For inbound data that is heavily formatted, we use a 15-column format.
+# If utilizing this input format, we aim for completeness. But missing fields are OK. 
 def extract_preprocessed_test_center_row(csv_row):
-    if(len(csv_row) != 12):
+    if(len(csv_row) != 15):
         return None
     
     csv_row = [field.replace('"', '') for field in csv_row]
@@ -99,6 +112,8 @@ def extract_preprocessed_test_center_row(csv_row):
     app_req_flag = yes_no_to_bool(csv_row[8])
     doc_screen_flag = yes_no_to_bool(csv_row[9])
     drive_thru_flag = yes_no_to_bool(csv_row[10])
+    phys_ref_flag = yes_no_to_bool(csv_row[11])
+    verif_phone_ext_flag = yes_no_to_bool(csv_row[12])
 
     test_center = {
         'external_id': csv_row[0],
@@ -112,7 +127,10 @@ def extract_preprocessed_test_center_row(csv_row):
         'app_req_flag': app_req_flag,
         'doc_screen_flag': doc_screen_flag,
         'drive_thru_flag': drive_thru_flag,
-        'description': csv_row[11]
+        'phys_ref_flag': phys_ref_flag,
+        'verif_phone_ext_flag': verif_phone_ext_flag,
+        'description': csv_row[13],
+        'hours_of_operation': csv_row[14]
     }
 
     return test_center

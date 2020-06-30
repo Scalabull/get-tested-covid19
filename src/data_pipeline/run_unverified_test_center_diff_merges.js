@@ -70,17 +70,36 @@ async function runDiffInstallationTransaction(unverDiffKey, diffObj){
     const result = await db.sequelize.transaction(async (t) => {
 
         let testCenterRows = diffObj['post_processing_stats']['unmatched_rows'];
+        let processedRows = diffObj['processed_rows'];
+
         const unverifiedTestCenterPromises = testCenterRows.map(async testCenter => {
+            testCenter.source_unver_diff_key = unverDiffKey;
             const testCenterSubmission = await insertUnverifiedTestCenter(testCenter, t);
             return testCenterSubmission;
         });
 
+        const updatePromises = processedRows.map(async testCenter => {
+            if(testCenter.matches && testCenter.matches.length > 0 && testCenter.matches[0].proposed_updates){
+                testCenter.latest_unver_diff_key = unverDiffKey
+                const testCenterUpdate = await patchUnverifiedTestCenter(testCenter.matches[0].unverified_row_id, testCenter.matches[0].proposed_updates, t)
+                return testCenterUpdate;
+            }
+
+            return null;
+        });
+
         const unverifiedSubmissionStatus = await Promise.all(unverifiedTestCenterPromises);
+        const updateStatuses = await Promise.all(updatePromises);
         const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
         
         return unverDiffStatus;
     });
     return result;
+}
+
+async function patchUnverifiedTestCenter(unverifiedTestCenterID, proposedUpdates, transaction){
+    const updates = await db.UnverifiedTestCenter.update(proposedUpdates, { where: { id: unverifiedTestCenterID }, transaction: transaction })
+    return updates;
 }
 
 async function insertUnverifiedTestCenter(testCenterObj, transaction){
@@ -91,14 +110,7 @@ async function insertUnverifiedTestCenter(testCenterObj, transaction){
     }
 
     const testCenterMatch = await db.UnverifiedTestCenter.findOne(
-    { where: 
-        {
-          [Op.or]: [
-            { staging_row_id },
-            { google_place_id }
-          ]
-        } 
-    }, { transaction: transaction });
+    { where: { google_place_id } }, { transaction: transaction });
 
     if(testCenterMatch) {
       throw new Error('This row is a duplicate of an existing Unverified test center row');

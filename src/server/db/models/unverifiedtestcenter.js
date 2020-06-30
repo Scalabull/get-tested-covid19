@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       appointment_required: DataTypes.BOOLEAN,
       doctor_screen_required_beforehand: DataTypes.BOOLEAN,
       drive_thru_site: DataTypes.BOOLEAN,
+      physician_referral_required: DataTypes.BOOLEAN,
+      verified_by_phone_external_party: DataTypes.BOOLEAN,
       walk_in_site: DataTypes.BOOLEAN,
       me_dhhs_status: DataTypes.INTEGER,
       public_description: DataTypes.TEXT,
@@ -47,10 +49,13 @@ module.exports = (sequelize, DataTypes) => {
       close_hour_sat: DataTypes.INTEGER,
       close_hour_sun: DataTypes.INTEGER,
       open_24_hours: DataTypes.BOOLEAN,
+      hours_of_operation: DataTypes.TEXT,
       exported_to_crm_at: DataTypes.DATE,
       verified_at: DataTypes.DATE,
       google_place_id: DataTypes.TEXT,
-      staging_row_id: DataTypes.INTEGER
+      staging_row_id: DataTypes.INTEGER,
+      source_unver_diff_key: DataTypes.STRING,
+      latest_unver_diff_key: DataTypes.STRING
     },
     {
       hooks: {
