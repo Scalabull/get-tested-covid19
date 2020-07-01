@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
       inbounds_id: DataTypes.INTEGER,
-      google_place_id: DataTypes.TEXT
+      google_place_id: DataTypes.TEXT,
+      me_dhhs_status: DataTypes.INTEGER
     },
     {
       hooks: {

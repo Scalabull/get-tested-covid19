@@ -1,35 +1,13 @@
 import csv
 import re
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-TARGET_DELETIONS_CSV_HEADER = [
-    'PUBLIC_TEST_CENTER_ID'
-]
+import reference_constants
 
-TARGET_CSV_HEADER = [
-    'NAME',
-    'FULL_ADDRESS',
-    'PHONE',
-    'URL',
-    'DESCRIPTION'
-]
-
-TARGET_PREPROCESSED_CSV_HEADER = [
-    'EXTERNAL_ID',
-    'NAME',
-    'STREET_ADDRESS',
-    'CITY',
-    'STATE',
-    'ZIP_CODE',
-    'PHONE_NUMBER',
-    'WEBSITE',
-    'APPOINTMENT_REQUIRED',
-    'DOCTOR_SCREEN_REQUIRED',
-    'DRIVE_THRU_SITE',
-    'PHYSICIAN_REFERRAL_REQUIRED',
-    'VERIFIED_BY_EXTERNAL_PARTY',
-    'DESCRIPTION',
-    'HOURS_FREETEXT'
-]
+TARGET_DELETIONS_CSV_HEADER = reference_constants.TARGET_DELETIONS_CSV_HEADER
+TARGET_CSV_HEADER = reference_constants.TARGET_CSV_HEADER
+TARGET_PREPROCESSED_CSV_HEADER = reference_constants.TARGET_PREPROCESSED_CSV_HEADER
 
 def load_valid_csv_rows(csv_file, is_preprocessed = False, is_delete = False):
     valid_test_centers = []
@@ -113,10 +91,10 @@ def extract_deletion_test_center_row(csv_row):
 
     return csv_row[0]
 
-# For inbound data that is heavily formatted, we use a 15-column format.
+# For inbound data that is heavily formatted, we use a 16-column format.
 # If utilizing this input format, we aim for completeness. But missing fields are OK. 
 def extract_preprocessed_test_center_row(csv_row):
-    if(len(csv_row) != 15):
+    if(len(csv_row) != 16):
         return None
     
     csv_row = [field.replace('"', '') for field in csv_row]
@@ -143,7 +121,8 @@ def extract_preprocessed_test_center_row(csv_row):
         'phys_ref_flag': phys_ref_flag,
         'verif_phone_ext_flag': verif_phone_ext_flag,
         'description': csv_row[13],
-        'hours_of_operation': csv_row[14]
+        'hours_of_operation': csv_row[14],
+        'me_dhhs_status': csv_row[15]
     }
 
     return test_center
