@@ -673,6 +673,59 @@
 							"response": []
 						},
 						{
+							"name": "Read All Test Centers by Source Diff Key",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f7d3b75d-76e7-4807-b22f-6069395f0000",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/internal/unverified-test-centers/sourceDiffKey/su_20200629192152_report.json",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"internal",
+										"unverified-test-centers",
+										"sourceDiffKey",
+										"su_20200629192152_report.json"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Update Unverified Test Center",
 							"event": [
 								{

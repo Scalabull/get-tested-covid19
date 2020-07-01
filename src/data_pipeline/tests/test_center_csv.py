@@ -37,9 +37,13 @@ class TestCSVMethods(unittest.TestCase):
             'app_req_flag': True,
             'doc_screen_flag': False,
             'drive_thru_flag': True,
-            'description': 'twelve'
+            'phys_ref_flag': False,
+            'verif_phone_ext_flag': True,
+            'description': 'twelve',
+            'hours_of_operation': 'hourstest',
+            'me_dhhs_status': '0'
         }
-        self.assertEqual(test_center_csv.extract_preprocessed_test_center_row(['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'yes', 'no', 'yes', 'twelve']), target_extract)
+        self.assertEqual(test_center_csv.extract_preprocessed_test_center_row(['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'yes', 'no', 'yes', 'no', 'yes', 'twelve', 'hourstest', '0']), target_extract)
 
     def test_csv_load_no_header(self):
         with self.assertRaises(Exception):
@@ -62,7 +66,11 @@ class TestCSVMethods(unittest.TestCase):
             'APPOINTMENT_REQUIRED',
             'DOCTOR_SCREEN_REQUIRED',
             'DRIVE_THRU_SITE',
-            'DESCRIPTION'
+            'PHYSICIAN_REFERRAL_REQUIRED',
+            'VERIFIED_BY_EXTERNAL_PARTY',
+            'DESCRIPTION',
+            'HOURS_FREETEXT',
+            'CUSTOM_QUESTION_1_STATUS'
         ]
 
         self.assertEqual(test_center_csv.check_if_valid_header_row(accepted_header, test_center_csv.TARGET_PREPROCESSED_CSV_HEADER), True)
@@ -80,7 +88,11 @@ class TestCSVMethods(unittest.TestCase):
             'APPOINTMENT_REQUIRED',
             'DOCTOR_SCREEN_REQUIRED',
             'DRIVE_THRU_SITE',
-            'DESCRIPTION'
+            'PHYSICIAN_REFERRAL_REQUIRED',
+            'VERIFIED_BY_EXTERNAL_PARTY',
+            'DESCRIPTION',
+            'HOURS_FREETEXT',
+            'CUSTOM_QUESTION_1_STATUS'
         ]
         with self.assertRaises(Exception):
             test_center_csv.check_if_valid_header_row(rejected_header, test_center_csv.TARGET_PREPROCESSED_CSV_HEADER)

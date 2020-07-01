@@ -1,5 +1,11 @@
 {
     "CHRONOLOGICAL_S3_DIFF_KEYS": [
-        "su_20200620125014_report.json"
+        "su_20200620125014_report.json",
+        "su_20200628090003_report.json",
+        "su_20200629211419_report.json",
+        "20200630035100_reset",
+        "su_20200630184420_report.json",
+        "su_20200630203530_report.json",
+        "su_20200701140928_report.json"
     ]
 }

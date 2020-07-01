@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       doctor_screen_required_beforehand: DataTypes.BOOLEAN,
       drive_thru_site: DataTypes.BOOLEAN,
       walk_in_site: DataTypes.BOOLEAN,
-      symptoms_required: DataTypes.BOOLEAN,
+      me_dhhs_status: DataTypes.INTEGER,
       facilities_provided: DataTypes.TEXT,
       estimated_daily_test_capacity: DataTypes.INTEGER,
       comments: DataTypes.TEXT,
@@ -49,7 +49,8 @@ module.exports = (sequelize, DataTypes) => {
       close_hour_sat: DataTypes.INTEGER,
       close_hour_sun: DataTypes.INTEGER,
       open_24_hours: DataTypes.BOOLEAN,
-      google_place_id: DataTypes.TEXT
+      google_place_id: DataTypes.TEXT,
+      hubspot_company_id: DataTypes.STRING
     },
     {
       hooks: {

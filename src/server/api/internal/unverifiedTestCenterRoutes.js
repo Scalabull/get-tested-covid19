@@ -5,8 +5,46 @@ const { Op } = require('sequelize')
 
 router.get('/', auth, async (req, res) => {
   try {
-    const allTestCenters = await db.UnverifiedTestCenter.findAll()
+    const allTestCenters = await db.PublicTestCenter.findAll()
     res.status(200).json(allTestCenters)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message)
+  }
+})
+
+router.get('/sourceDiffKey/:diffKeyStr', async (req, res)=>{
+  try {
+    const { diffKeyStr } = req.params
+    const allTestCenters = await db.PublicTestCenter.findAll({where: {source_unver_diff_key: diffKeyStr}})
+    res.status(200).json(allTestCenters)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.message)
+  }
+})
+
+router.get('/addressTextSearch/:searchStr', async (req, res)=>{
+  try {
+    const { searchStr } = req.params
+    const decodedSearchStr = decodeURI(searchStr);
+
+    const matchedTestCenters = await db.PublicTestCenter.findAll({
+      where: {
+        address: {
+          [Op.like]: '%' + decodedSearchStr + '%'
+        }
+      }
+    });
+
+    let resObj = {
+      matchedTestCenters
+    };
+    if(matchedTestCenters && matchedTestCenters.length > 0){
+      resObj.numRows = matchedTestCenters.length;
+    }
+
+    res.status(200).json(resObj)
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message)
@@ -21,7 +59,7 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).send('staging_row_id and google_place_id must both be provided.');
     }
 
-    const testCenterMatch = await db.UnverifiedTestCenter.findOne(
+    const testCenterMatch = await db.PublicTestCenter.findOne(
     { where: 
         {
           [Op.or]: [
@@ -32,10 +70,10 @@ router.post('/', auth, async (req, res) => {
     });
 
     if(testCenterMatch) {
-      return res.status(400).send('This row is a duplicate of an existing Unverified test center row');
+      return res.status(400).send('This row is a duplicate of an existing Public test center row');
     }
 
-    const testCenter = await db.UnverifiedTestCenter.create(req.body)
+    const testCenter = await db.PublicTestCenter.create(req.body)
     res.status(201).json(testCenter)
   } catch (error) {
     console.error(error);
@@ -46,7 +84,7 @@ router.post('/', auth, async (req, res) => {
 router.get('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params
-    const testCenter = await db.UnverifiedTestCenter.findOne({ where: { id } })
+    const testCenter = await db.PublicTestCenter.findOne({ where: { id } })
     if (!testCenter) {
       return res.status(404).send()
     }
@@ -96,7 +134,7 @@ router.patch('/:id', auth, async (req, res) => {
 
   try {
     const { id } = req.params
-    await db.UnverifiedTestCenter.update(req.body, { where: { id } })
+    await db.PublicTestCenter.update(req.body, { where: { id } })
     res.status(204).send()
   } catch (error) {
     console.error(error);
@@ -107,7 +145,7 @@ router.patch('/:id', auth, async (req, res) => {
 router.delete('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params
-    await db.UnverifiedTestCenter.update({public: false}, { where: { id } })
+    await db.PublicTestCenter.update({public: false}, { where: { id } })
     res.status(204).end()
   } catch (error) {
     console.error(error);

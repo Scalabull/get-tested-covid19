@@ -1,29 +1,15 @@
 import csv
+import re
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-TARGET_CSV_HEADER = [
-    'NAME',
-    'FULL_ADDRESS',
-    'PHONE',
-    'URL',
-    'DESCRIPTION'
-]
+import reference_constants
 
-TARGET_PREPROCESSED_CSV_HEADER = [
-    'EXTERNAL_ID',
-    'NAME',
-    'STREET_ADDRESS',
-    'CITY',
-    'STATE',
-    'ZIP_CODE',
-    'PHONE_NUMBER',
-    'WEBSITE',
-    'APPOINTMENT_REQUIRED',
-    'DOCTOR_SCREEN_REQUIRED',
-    'DRIVE_THRU_SITE',
-    'DESCRIPTION'
-]
+TARGET_DELETIONS_CSV_HEADER = reference_constants.TARGET_DELETIONS_CSV_HEADER
+TARGET_CSV_HEADER = reference_constants.TARGET_CSV_HEADER
+TARGET_PREPROCESSED_CSV_HEADER = reference_constants.TARGET_PREPROCESSED_CSV_HEADER
 
-def load_valid_csv_rows(csv_file, is_preprocessed = False):
+def load_valid_csv_rows(csv_file, is_preprocessed = False, is_delete = False):
     valid_test_centers = []
 
     with open(csv_file) as test_centers_file:
@@ -35,6 +21,9 @@ def load_valid_csv_rows(csv_file, is_preprocessed = False):
         if is_preprocessed:
             check_if_valid_header_row(header, TARGET_PREPROCESSED_CSV_HEADER)
             valid_test_centers = extract_valid_rows(test_center_reader, extract_preprocessed_test_center_row) 
+        elif is_delete:
+            check_if_valid_header_row(header, TARGET_DELETIONS_CSV_HEADER)
+            valid_test_centers = extract_valid_rows(test_center_reader, extract_deletion_test_center_row)
         else:
             check_if_valid_header_row(header, TARGET_CSV_HEADER)
             valid_test_centers = extract_valid_rows(test_center_reader, extract_test_center_row)
@@ -67,6 +56,13 @@ def yes_no_to_bool(col_val):
     else:
         return None
 
+# The VA has asked not to have their test centers displayed publicly
+def is_VA_test_center(name):
+    va_flag = re.search('^VA | VA ', name)
+    if(va_flag != None):
+        return True
+    return False
+
 # The standard scraped CSV should have 5 columns, as follows:
 # This format mirrors the Inbounds table.
 def extract_test_center_row(csv_row):
@@ -74,6 +70,9 @@ def extract_test_center_row(csv_row):
         return None
 
     if(csv_row[0] == '' or csv_row[1] == '' or csv_row[2] == ''):
+        return None
+    
+    if(is_VA_test_center(csv_row[0])):
         return None
         
     test_center = {
@@ -86,11 +85,16 @@ def extract_test_center_row(csv_row):
 
     return test_center
 
-# For bypassing our preprocessing tools (rare circumstance), the CSV should have 12 columns:
-# This is a hybrid format. It closely matches to TestCenterStagings table, but requires some additional
-# adjustments before it can be uploaded (namely, the address needs to be processed w/ Google API)
+def extract_deletion_test_center_row(csv_row):
+    if(len(csv_row) != 1):
+        return None
+
+    return csv_row[0]
+
+# For inbound data that is heavily formatted, we use a 16-column format.
+# If utilizing this input format, we aim for completeness. But missing fields are OK. 
 def extract_preprocessed_test_center_row(csv_row):
-    if(len(csv_row) != 12):
+    if(len(csv_row) != 16):
         return None
     
     csv_row = [field.replace('"', '') for field in csv_row]
@@ -99,6 +103,8 @@ def extract_preprocessed_test_center_row(csv_row):
     app_req_flag = yes_no_to_bool(csv_row[8])
     doc_screen_flag = yes_no_to_bool(csv_row[9])
     drive_thru_flag = yes_no_to_bool(csv_row[10])
+    phys_ref_flag = yes_no_to_bool(csv_row[11])
+    verif_phone_ext_flag = yes_no_to_bool(csv_row[12])
 
     test_center = {
         'external_id': csv_row[0],
@@ -112,7 +118,11 @@ def extract_preprocessed_test_center_row(csv_row):
         'app_req_flag': app_req_flag,
         'doc_screen_flag': doc_screen_flag,
         'drive_thru_flag': drive_thru_flag,
-        'description': csv_row[11]
+        'phys_ref_flag': phys_ref_flag,
+        'verif_phone_ext_flag': verif_phone_ext_flag,
+        'description': csv_row[13],
+        'hours_of_operation': csv_row[14],
+        'me_dhhs_status': csv_row[15]
     }
 
     return test_center

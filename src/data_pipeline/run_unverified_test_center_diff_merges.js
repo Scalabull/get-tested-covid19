@@ -2,13 +2,13 @@
 This script is intended to be run on startup of our APIDockerfile. It's called from the dockerfile's ENTRYPOINT,
 via entrypoint.sh.
 
-The script is comparable to a database seed operation, and seeds the UnverifiedTestCenters table with new data. 
+The script is comparable to a database seed operation, and seeds the PublicTestCenters table with new data. 
 The data originally comes from a variety of sources, is dumped to CSV files, and merged to the system using the cmd_load_new_test_centers.py tool.
 
 The seed process in this script does the following:
 1. It loads the CHRONOLOGICAL_DIFF_KEYS JSON object
 2. It checks against the UnverDiff database table. If any of the keys aren't present in the database, those keys will be processed, in order.
-3. To process a key, a 'diff' file is downloaded from S3. The file contains prepared objects to be inserted into the UnverifiedTestCenters table.
+3. To process a key, a 'diff' file is downloaded from S3. The file contains prepared objects to be inserted into the PublicTestCenters table.
 4. The objects are inserted into the database. This process repeats for each new key. If any key fails, the process terminates and the deployment fails.
 
 Deployment failure due to this process should be fatal. The quick fix is to remove the aggrevating key from the CHRONOLOGICAL_DIFF_KEYS file.
@@ -66,16 +66,18 @@ async function loadPriorDiffs(){
     return mappedDiffRecords;
 }
 
-async function runDiffInstallationTransaction(unverDiffKey, diffObj){
+// Handles deletions of lists of PublicTestCenter Ids, and also has full table wipe capability (keys with 'reset' in name)
+async function runDiffDeletionTransaction(unverDiffKey, deleteIDs = null){
     const result = await db.sequelize.transaction(async (t) => {
+        let deletionParams = { transaction: t };
 
-        let testCenterRows = diffObj['post_processing_stats']['unmatched_rows'];
-        const unverifiedTestCenterPromises = testCenterRows.map(async testCenter => {
-            const testCenterSubmission = await insertUnverifiedTestCenter(testCenter, t);
-            return testCenterSubmission;
-        });
+        if(deleteIDs){
+            deletionParams.where = {id: deleteIDs}
+        } else {
+            deletionParams.truncate = true
+        }
 
-        const unverifiedSubmissionStatus = await Promise.all(unverifiedTestCenterPromises);
+        const testCenter = await db.PublicTestCenter.destroy(deletionParams)
         const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
         
         return unverDiffStatus;
@@ -83,28 +85,57 @@ async function runDiffInstallationTransaction(unverDiffKey, diffObj){
     return result;
 }
 
-async function insertUnverifiedTestCenter(testCenterObj, transaction){
+async function runDiffInstallationTransaction(unverDiffKey, diffObj){
+    const result = await db.sequelize.transaction(async (t) => {
+
+        let testCenterRows = diffObj['post_processing_stats']['unmatched_rows'];
+        let processedRows = diffObj['processed_rows'];
+
+        const unverifiedTestCenterPromises = testCenterRows.map(async testCenter => {
+            testCenter.source_unver_diff_key = unverDiffKey;
+            const testCenterSubmission = await insertPublicTestCenter(testCenter, t);
+            return testCenterSubmission;
+        });
+
+        const updatePromises = processedRows.map(async testCenter => {
+            if(testCenter.matches && testCenter.matches.length > 0 && testCenter.matches[0].proposed_updates){
+                testCenter.latest_unver_diff_key = unverDiffKey
+                const testCenterUpdate = await patchPublicTestCenter(testCenter.matches[0].unverified_row_id, testCenter.matches[0].proposed_updates, t)
+                return testCenterUpdate;
+            }
+
+            return null;
+        });
+
+        const unverifiedSubmissionStatus = await Promise.all(unverifiedTestCenterPromises);
+        const updateStatuses = await Promise.all(updatePromises);
+        const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
+        
+        return unverDiffStatus;
+    });
+    return result;
+}
+
+async function patchPublicTestCenter(unverifiedTestCenterID, proposedUpdates, transaction){
+    const updates = await db.PublicTestCenter.update(proposedUpdates, { where: { id: unverifiedTestCenterID }, transaction: transaction })
+    return updates;
+}
+
+async function insertPublicTestCenter(testCenterObj, transaction){
     const { staging_row_id, google_place_id } = testCenterObj
 
     if (!((staging_row_id === 0 || staging_row_id) && google_place_id)) {
       throw new Error('staging_row_id and google_place_id must both be provided.');
     }
 
-    const testCenterMatch = await db.UnverifiedTestCenter.findOne(
-    { where: 
-        {
-          [Op.or]: [
-            { staging_row_id },
-            { google_place_id }
-          ]
-        } 
-    }, { transaction: transaction });
+    const testCenterMatch = await db.PublicTestCenter.findOne(
+    { where: { google_place_id } }, { transaction: transaction });
 
     if(testCenterMatch) {
-      throw new Error('This row is a duplicate of an existing Unverified test center row');
+      throw new Error('This row is a duplicate of an existing Public test center row');
     }
 
-    const testCenter = await db.UnverifiedTestCenter.create(testCenterObj, { transaction: transaction })
+    const testCenter = await db.PublicTestCenter.create(testCenterObj, { transaction: transaction })
     return testCenter;
 }
 
@@ -121,12 +152,18 @@ async function insertUnverDiff(unverDiffKey, transaction){
 async function handleAllNewDiffsSequentially(newDiffKeysArr){
     for(let i = 0; i < newDiffKeysArr.length; i++){
         const unverDiffKey = newDiffKeysArr[i];
+        let diffObj = {};
 
         try{
-            const diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
-            const diffBody = JSON.parse(diffObj['Body']);
-
-            const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
+            if(!unverDiffKey.includes('reset')){
+                diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
+            }
+                
+            if(diffObj['test_center_ids_for_deletion'] || unverDiffKey.includes('reset')){
+                const diffInsertStatus = await runDiffDeletionTransaction(unverDiffKey, diffObj['test_center_ids_for_deletion']);
+            } else{
+                const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffObj);
+            }
         }
         catch(err){
             console.log('Failure processing diff with key: ', unverDiffKey, '. This diff and any diffs after this one in the CHRONOLOGICAL_S3_DIFF_KEYS array have not been uploaded.');

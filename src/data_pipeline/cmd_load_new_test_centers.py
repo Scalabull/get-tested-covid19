@@ -52,13 +52,9 @@ def validate_credentials():
         print(colored('Your AWS account ID is correct: ' + aws_ident + '\n\n', 'green'))
 
 def pretty_print_results(dump_obj, job_handle, staging_s3_diff_obj_handle, master_s3_diff_obj_handle, job_local_path):
-    print('Proposed test center rows to be added to UnverifiedTestCenters table: ', dump_obj['post_processing_stats']['unmatched_row_count'])
-    print('Rows: ')
+    if('post_processing_stats' in dump_obj):
+        print('Proposed test center rows to be added to UnverifiedTestCenters table: ', dump_obj['post_processing_stats']['unmatched_row_count'])
     
-    unmatched_rows = dump_obj['post_processing_stats']['unmatched_rows']
-    #for row in unmatched_rows:
-    #    print('Staging ID: ', row['id'], ' Name: ', row['name'], ' OrigAddr: ', row['address'], ' FormtAddr: ', row['formatted_address_obj']['formatted_address'])
-
     print(colored('The full diff object can be found on your local filesystem at: ' + job_local_path, 'green'))
     print('Please examine this local file. The test centers to be added to the database are in post_processing_stats.unmatched_rows. Please ensure these look correct.\n')
 
@@ -74,7 +70,22 @@ def get_current_datetime_formatted():
     current_dt = datetime.datetime.now()
     return current_dt.strftime("%Y%m%d%H%M%S")
 
-def run_diff(staging_test_center_rows, gtc_auth_token, app_cache):
+def generate_and_upload_deletion_diff(test_center_ids):
+    diff = gtc_merge_logic.generate_deletion_diff_obj(test_center_ids)
+    current_dt = get_current_datetime_formatted()
+    job_handle = 'su_' + current_dt + '_report.json'
+
+    # Put results to S3
+    staging_s3_diff_obj_handle, master_s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, diff)
+    
+    # Write results to local /logs folder, for easy access/review
+    job_local_path = os.path.join(LOGS_PATH, job_handle)
+    file_utils.write_json_outfile(job_local_path, diff)
+
+    # Print short summary of results
+    pretty_print_results(diff, job_handle, staging_s3_diff_obj_handle, master_s3_diff_obj_handle, job_local_path)
+
+def run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache):
 
     def normalize_test_center_rows(rows):
         normalized_rows = [normalize_test_center_row(row) for row in rows]
@@ -98,7 +109,7 @@ def run_diff(staging_test_center_rows, gtc_auth_token, app_cache):
     print('Database contains Unverified Test Centers: ', len(unverified_test_center_rows), ' , Verified Test Centers: ', len(verified_test_center_rows))
     print('Generating diff... (this may take a moment)\n\n')
 
-    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows)
+    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows, merge_fill_blanks)
     current_dt = get_current_datetime_formatted()
     job_handle = 'su_' + current_dt + '_report.json'
 
@@ -111,6 +122,14 @@ def run_diff(staging_test_center_rows, gtc_auth_token, app_cache):
 
     # Print short summary of results
     pretty_print_results(merge_diff, job_handle, staging_s3_diff_obj_handle, master_s3_diff_obj_handle, job_local_path)
+
+def run_deletion_workflow(csv_file, gtc_auth_token):
+     # Load and process CSV:
+    test_center_ids = test_center_csv.load_valid_csv_rows(csv_file, is_delete=True)
+    print(colored('loaded: ' + str(len(test_center_ids)) + ' test center rows from CSV.\n', 'green'))
+    print(test_center_ids)
+
+    generate_and_upload_deletion_diff(test_center_ids)
 
 def run_standard_workflow(csv_file, gtc_auth_token, app_cache):
 
@@ -150,7 +169,7 @@ def run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache):
 
     return staging_test_center_rows
 
-def main_tool_process(csv_file, is_preprocessed, app_cache):
+def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_cache):
     print_startup_messaging()
 
     # Help user identify correctness of API URL, Google key, and AWS account credentials
@@ -163,22 +182,27 @@ def main_tool_process(csv_file, is_preprocessed, app_cache):
     if(proceed_yes != 'yes'):
         raise Exception('Closing due to user input.')
     
-    staging_test_center_rows = []
-    if is_preprocessed:
-        staging_test_center_rows = run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache)
+    if delete:
+        run_deletion_workflow(csv_file, gtc_auth_token)
     else:
-        staging_test_center_rows = run_standard_workflow(csv_file, gtc_auth_token, app_cache)
-    
-    print(colored('All test centers inserted to Staging!\n', 'green'))
+        staging_test_center_rows = []
+        if is_preprocessed:
+            staging_test_center_rows = run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache)
+        else:
+            staging_test_center_rows = run_standard_workflow(csv_file, gtc_auth_token, app_cache)
+        
+        print(colored('All test centers inserted to Staging!\n', 'green'))
 
-    run_diff(staging_test_center_rows, gtc_auth_token, app_cache)
+        run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache)
 
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
 @click.command()
 @click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
 @click.option('--is_preprocessed', default=False, type=bool, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
-def exec_tool(csv_file, is_preprocessed):
+@click.option('--merge_fill_blanks', default=False, type=bool, help='Set to True to propose updates to existing PublicTestCenter records. This only shows proposed additions of data where existing records have empty columns (no overwriting).')
+@click.option('--delete', default=False, type=bool, help='Set this flag to True to delete target PublicTestCenter rows. Input format is a CSV file with one column (ID of row).')
+def exec_tool(csv_file, is_preprocessed, merge_fill_blanks, delete):
     app_cache = Cache()
     app_cache.load_cache_file()
 
@@ -192,7 +216,7 @@ def exec_tool(csv_file, is_preprocessed):
     signal.signal(signal.SIGINT, terminateProcess)
 
     try:
-        main_tool_process(csv_file, is_preprocessed, app_cache)
+        main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_cache)
     except:
         app_cache.write_cache_file()
         raise

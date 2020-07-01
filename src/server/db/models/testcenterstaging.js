@@ -12,10 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       longitude: DataTypes.DECIMAL(9,6),
       geolocation: DataTypes.GEOMETRY,
       phone_number: DataTypes.STRING,
-      hours_of_operation: DataTypes.STRING,
+      hours_of_operation: DataTypes.TEXT,
       days_of_operation: DataTypes.STRING,
       website: DataTypes.TEXT,
       appointment_required: DataTypes.BOOLEAN,
+      physician_referral_required: DataTypes.BOOLEAN,
+      verified_by_phone_external_party: DataTypes.BOOLEAN,
       doctor_screen_required_beforehand: DataTypes.BOOLEAN,
       drive_thru_site: DataTypes.BOOLEAN,
       description: DataTypes.TEXT,
@@ -25,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
       closed: DataTypes.BOOLEAN,
       date_closed: DataTypes.DATE,
       inbounds_id: DataTypes.INTEGER,
-      google_place_id: DataTypes.TEXT
+      google_place_id: DataTypes.TEXT,
+      me_dhhs_status: DataTypes.INTEGER
     },
     {
       hooks: {
