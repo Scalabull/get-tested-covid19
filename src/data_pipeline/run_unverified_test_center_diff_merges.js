@@ -66,9 +66,18 @@ async function loadPriorDiffs(){
     return mappedDiffRecords;
 }
 
-async function runResetDiffTransaction(unverDiffKey){
+// Handles deletions of lists of PublicTestCenter Ids, and also has full table wipe capability (keys with 'reset' in name)
+async function runDiffDeletionTransaction(unverDiffKey, deleteIDs = null){
     const result = await db.sequelize.transaction(async (t) => {
-        const testCenter = await db.PublicTestCenter.destroy({ truncate: true, transaction: t})
+        let deletionParams = { transaction: t };
+
+        if(deleteIDs){
+            deletionParams.where = {id: deleteIDs}
+        } else {
+            deletionParams.truncate = true
+        }
+
+        const testCenter = await db.PublicTestCenter.destroy(deletionParams)
         const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
         
         return unverDiffStatus;
@@ -143,20 +152,22 @@ async function insertUnverDiff(unverDiffKey, transaction){
 async function handleAllNewDiffsSequentially(newDiffKeysArr){
     for(let i = 0; i < newDiffKeysArr.length; i++){
         const unverDiffKey = newDiffKeysArr[i];
+        let diffObj = {};
 
-        if(unverDiffKey.includes('reset')){
-            const diffInsertStatus = await runResetDiffTransaction(unverDiffKey);
-        } else {
-            try{
-                const diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
-                const diffBody = JSON.parse(diffObj['Body']);
-    
-                const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffBody);
+        try{
+            if(!unverDiffKey.includes('reset')){
+                diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
             }
-            catch(err){
-                console.log('Failure processing diff with key: ', unverDiffKey, '. This diff and any diffs after this one in the CHRONOLOGICAL_S3_DIFF_KEYS array have not been uploaded.');
-                throw err;
+                
+            if(diffObj['test_center_ids_for_deletion'] || unverDiffKey.includes('reset')){
+                const diffInsertStatus = await runDiffDeletionTransaction(unverDiffKey, diffObj['test_center_ids_for_deletion']);
+            } else{
+                const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffObj);
             }
+        }
+        catch(err){
+            console.log('Failure processing diff with key: ', unverDiffKey, '. This diff and any diffs after this one in the CHRONOLOGICAL_S3_DIFF_KEYS array have not been uploaded.');
+            throw err;
         }
     }
 }
