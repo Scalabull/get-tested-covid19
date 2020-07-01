@@ -1,6 +1,10 @@
 import csv
 import re
 
+TARGET_DELETIONS_CSV_HEADER = [
+    'PUBLIC_TEST_CENTER_ID'
+]
+
 TARGET_CSV_HEADER = [
     'NAME',
     'FULL_ADDRESS',
@@ -27,7 +31,7 @@ TARGET_PREPROCESSED_CSV_HEADER = [
     'HOURS_FREETEXT'
 ]
 
-def load_valid_csv_rows(csv_file, is_preprocessed = False):
+def load_valid_csv_rows(csv_file, is_preprocessed = False, is_delete = False):
     valid_test_centers = []
 
     with open(csv_file) as test_centers_file:
@@ -39,6 +43,9 @@ def load_valid_csv_rows(csv_file, is_preprocessed = False):
         if is_preprocessed:
             check_if_valid_header_row(header, TARGET_PREPROCESSED_CSV_HEADER)
             valid_test_centers = extract_valid_rows(test_center_reader, extract_preprocessed_test_center_row) 
+        elif is_delete:
+            check_if_valid_header_row(header, TARGET_DELETIONS_CSV_HEADER)
+            valid_test_centers = extract_valid_rows(test_center_reader, extract_deletion_test_center_row)
         else:
             check_if_valid_header_row(header, TARGET_CSV_HEADER)
             valid_test_centers = extract_valid_rows(test_center_reader, extract_test_center_row)
@@ -99,6 +106,12 @@ def extract_test_center_row(csv_row):
     }
 
     return test_center
+
+def extract_deletion_test_center_row(csv_row):
+    if(len(csv_row) != 1):
+        return None
+
+    return csv_row[0]
 
 # For inbound data that is heavily formatted, we use a 15-column format.
 # If utilizing this input format, we aim for completeness. But missing fields are OK. 

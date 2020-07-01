@@ -166,6 +166,14 @@ def group_staging_rows(staging_rows):
 
     return staging_row_groups, deduplicated_staging_rows
 
+def generate_deletion_diff_obj(test_center_ids):
+    dump_obj = {
+        'diff_tooling_version': GTC_DIFF_TOOLING_VERSION,
+        'test_center_ids_for_deletion': test_center_ids
+    }
+    
+    return dump_obj
+
 def generate_unverified_update_diff_obj(staging_test_centers, unverified_test_centers, verified_test_centers, merge_fill_blanks):
     grouped_staging_row_dict, deduplicated_staging_rows = group_staging_rows(staging_test_centers)
 
