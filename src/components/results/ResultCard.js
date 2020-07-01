@@ -126,6 +126,8 @@ const StyledResultCard = styled.div`
   }
 ` 
 
+//<div className="card__feature"><i className="fas fa-check-circle" />Verified <strong title="June 15, 2020">3 days ago</strong></div>
+
 class ResultCard extends React.Component {
   render() {
     const { num } = this.props;
@@ -161,7 +163,6 @@ class ResultCard extends React.Component {
           </p>
           <div className="card__features">
             <div className="card__feature"><i className="fas fa-car-side" />Drive-through testing <strong>{drive_thru_site ? 'Yes' : 'No'}</strong></div>
-            <div className="card__feature"><i className="fas fa-check-circle" />Verified <strong title="June 15, 2020">3 days ago</strong></div>
           </div>
           <div className="card__actions">
             <ButtonGroup className="card__actions-mobile" size="sm">
