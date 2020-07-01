@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       walk_in_site: DataTypes.BOOLEAN,
       me_dhhs_status: DataTypes.INTEGER,
       public_description: DataTypes.TEXT,
+      description: DataTypes.TEXT,
       estimated_daily_test_capacity: DataTypes.INTEGER,
       comments: DataTypes.TEXT,
       address_freetext_blob: DataTypes.TEXT,

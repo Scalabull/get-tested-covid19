@@ -15,16 +15,18 @@ const PUBLIC_ATTRIBUTES = [
   'longitude',
   'phone_number',
   'website',  
+  'description',
+  'hours_of_operation',
   'appointment_required',
   'doctor_screen_required_beforehand',
   'drive_thru_site',
-  'facilities_provided'
+  'me_dhhs_status',
+  'verified_by_phone_external_party'
 ]
 
 router.get('/', async (req, res) => {
   try {
-    const openCenters = await db.VerifiedTestCenter.findAll({
-      where: { public: true },
+    const openCenters = await db.PublicTestCenter.findAll({
       attributes: PUBLIC_ATTRIBUTES,
     })
     res.status(200).json(openCenters)
@@ -103,8 +105,8 @@ router.get('/searchByUserLatLng', async (req, res)=>{
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const openCenter = await db.VerifiedTestCenter.findOne({
-      where: { id, public: true },
+    const openCenter = await db.PublicTestCenter.findOne({
+      where: { id },
       attributes: PUBLIC_ATTRIBUTES,
     })
     if (!openCenter) {
@@ -122,7 +124,7 @@ async function performLatLngLookup(latitude, longitude) {
   const distance = sequelize.fn('ST_DistanceSphere', sequelize.col('geolocation'), location)
 
   const ATTRS = PUBLIC_ATTRIBUTES.concat([[distance, 'distance']])
-  let testCenters = await db.VerifiedTestCenter.findAll({
+  let testCenters = await db.PublicTestCenter.findAll({
     attributes: ATTRS,
     order: distance,
     where: sequelize.where(distance, { [Op.lt]: SEARCH_RADIUS }),
