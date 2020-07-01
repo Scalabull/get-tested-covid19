@@ -52,12 +52,9 @@ def validate_credentials():
         print(colored('Your AWS account ID is correct: ' + aws_ident + '\n\n', 'green'))
 
 def pretty_print_results(dump_obj, job_handle, staging_s3_diff_obj_handle, master_s3_diff_obj_handle, job_local_path):
-    print('Proposed test center rows to be added to UnverifiedTestCenters table: ', dump_obj['post_processing_stats']['unmatched_row_count'])
-    print('Rows: ')
+    if('post_processing_stats' in dump_obj):
+        print('Proposed test center rows to be added to UnverifiedTestCenters table: ', dump_obj['post_processing_stats']['unmatched_row_count'])
     
-    #for row in unmatched_rows:
-    #    print('Staging ID: ', row['id'], ' Name: ', row['name'], ' OrigAddr: ', row['address'], ' FormtAddr: ', row['formatted_address_obj']['formatted_address'])
-
     print(colored('The full diff object can be found on your local filesystem at: ' + job_local_path, 'green'))
     print('Please examine this local file. The test centers to be added to the database are in post_processing_stats.unmatched_rows. Please ensure these look correct.\n')
 

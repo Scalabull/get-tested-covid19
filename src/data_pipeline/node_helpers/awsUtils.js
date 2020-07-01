@@ -27,7 +27,7 @@ async function loadNewDiffFromS3(diffS3Key){
 
     console.log('Getting diff with s3 params: ', JSON.stringify(params))
     const diff = await s3.getObject(params).promise();
-    return diff;
+    return JSON.parse(diff['Body'])
 }
 
 module.exports = {

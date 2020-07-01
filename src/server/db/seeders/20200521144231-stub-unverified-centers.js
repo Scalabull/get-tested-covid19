@@ -3,7 +3,7 @@ const db = require('../models')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await db.UnverifiedTestCenter.bulkCreate(
+    return await db.PublicTestCenter.bulkCreate(
       [
         {
           public: false,
@@ -20,6 +20,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return await queryInterface.bulkDelete('UnverifiedTestCenters', null, {})
+    return await queryInterface.bulkDelete('PublicTestCenters', null, {})
   },
 }

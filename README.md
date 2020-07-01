@@ -103,6 +103,8 @@ docker-compose exec api npx sequelize-cli db:migrate
 docker-compose exec api npx sequelize-cli db:seed:all
 ```
 
+Note that order is very important here. We change table names during the migrations processes, and the seeds are aligned with the most recent table namings. Therefore, the seed undo process should run before the migration undo process, and re-migration should happen before re-seeding.
+
 ## CI/CD
 
 We are leveraging Circle CI for CI/CD. PRs will be merged to the 'staging' branch, which deploys to [https://staging.get-tested-covid19.org/](https://staging.get-tested-covid19.org/). We will do quick manual QA, then merge to 'master' to deploy to production.
