@@ -1,7 +1,7 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const TestCenter = sequelize.define(
-    'UnverifiedTestCenter',
+    'PublicTestCenter',
     {
       external_id: DataTypes.INTEGER,
       name: DataTypes.STRING,
