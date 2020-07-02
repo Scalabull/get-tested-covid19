@@ -126,23 +126,16 @@ const StyledResultCard = styled.div`
   }
 ` 
 
-//<div className="card__feature"><i className="fas fa-check-circle" />Verified <strong title="June 15, 2020">3 days ago</strong></div>
-
 class ResultCard extends React.Component {
   render() {
     const { num } = this.props;
-    const { name, distance, address, phone_number, website, description, hours_of_operation, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
-
-    let phoneStr = "";
-    if(phone_number !== "" && phone_number !== null){
-      phoneStr = phone_number.split(')')[0] + ") " + phone_number.split(')')[1]
-    }
+    const { name, distance, address, phone_number, website, description, hours_of_operation, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site, verified_by_phone_external_party } = this.props.item;
 
     return (
         <StyledResultCard>
           <h3>{num}. {name}</h3>
           <p className="card__meta">
-            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}{phoneStr ? `· ${phoneStr}` : ''}
+            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}{phone_number ? `· ${phone_number}` : ''}
           </p>
           <div className="card__req">
             {!doctor_screen_required_beforehand && !appointment_required && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</div>}
@@ -174,6 +167,9 @@ class ResultCard extends React.Component {
           </p>
           <div className="card__features">
             <div className="card__feature"><i className="fas fa-car-side" />Drive-through testing <strong>{drive_thru_site ? 'Yes' : 'No'}</strong></div>
+            {verified_by_phone_external_party == true &&
+              <div className="card__feature"><i className="fas fa-check-circle" />Verified recently</div>
+            }
           </div>
           <div className="card__actions">
             <ButtonGroup className="card__actions-mobile" size="sm">
