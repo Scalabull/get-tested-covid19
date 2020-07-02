@@ -41,8 +41,11 @@ def generate_gtc_get_request(base_api_url, request_path, auth_token, normalizati
 
 def generate_staging_test_center_object(*ignore, name, phone, website, description, formatted_address_obj, app_req_flag = None, drive_thru_flag = None, doc_screen_flag = None, phys_ref_flag = None, verif_phone_ext_flag = None, inbound_row_id = None, external_id = None, address_freetext = None, hours_of_operation = None, custom_question_1 = None):
     formatted_ext_id = None
+    formatted_cust_quest_1 = None
     if(external_id != ''):
         formatted_ext_id = external_id
+    if(custom_question_1 != ''):
+        formatted_cust_quest_1 = custom_question_1
 
     staging_test_center_obj = {
         "inbounds_id": inbound_row_id,
@@ -63,7 +66,7 @@ def generate_staging_test_center_object(*ignore, name, phone, website, descripti
         "address_freetext_blob": address_freetext,
         "external_id": formatted_ext_id,
         "google_place_id": formatted_address_obj['google_place_id'],
-        "me_dhhs_status": custom_question_1
+        "me_dhhs_status": formatted_cust_quest_1
     }
 
     return staging_test_center_obj

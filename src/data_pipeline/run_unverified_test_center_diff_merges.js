@@ -122,10 +122,10 @@ async function patchPublicTestCenter(google_place_id, proposedUpdates, transacti
 }
 
 async function insertPublicTestCenter(testCenterObj, transaction){
-    const { staging_row_id, google_place_id } = testCenterObj
+    const { google_place_id } = testCenterObj
 
-    if (!((staging_row_id === 0 || staging_row_id) && google_place_id)) {
-      throw new Error('staging_row_id and google_place_id must both be provided.');
+    if (!google_place_id) {
+      throw new Error('google_place_id must be provided.');
     }
 
     const testCenterMatch = await db.PublicTestCenter.findOne(
