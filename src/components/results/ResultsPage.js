@@ -174,7 +174,7 @@ class ResultsPage extends React.Component {
 
         if (isNumeric(searchZipStr) && zipMatchFlag) {
           // Zip code is valid
-          axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
+          axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/public-test-centers/zip/' + searchZipStr)
             .then(response => {
               //console.log('response is: ', response);
               this.zipLatLng = response.data.coords;
@@ -269,7 +269,7 @@ class ResultsPage extends React.Component {
                         <div className="results__list-cards">
                           {this.state.currentPage === 0 && (
                             <div className="results__list-note">
-                              Test centers are for <strong>viral tests only</strong>. While some test centers may have antibody tests, they are not accurate enough yet to be recommended.
+                              Test centers are for <strong>viral tests only</strong>. While some test centers may offer antibody tests, they are not yet accurate enough to be recommended.
                             </div>
                           )}
                           <ResultsListCards items={viewItems} page={this.state.currentPage} />
