@@ -77,7 +77,7 @@ class HomeHero extends React.Component {
       <StyledHomeHero>
         <div className="container">
           <h1>Find a nearby COVID-19 test center</h1>
-          <p>Search over 2,000 verified test centers in the US.</p>
+          <p>Search over 8,000 verified test centers in the US.</p>
           <ZipForm large autoFocus showLocate />
         </div>
         <div className="home__bg">

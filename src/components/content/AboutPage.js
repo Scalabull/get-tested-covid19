@@ -267,10 +267,10 @@ class AboutPage extends React.Component {
                         <div className="container">
                             <h2>Fast Facts: Get Tested COVID-19</h2>
                             <ul>
-                                <li><strong>3,000</strong> test centers</li>
-                                <li><strong>35</strong> states</li>
-                                <li><strong>57</strong> centers per state</li>
-                                <li><strong>5%</strong> drive thru</li>
+                                <li><strong>8,163</strong> test centers</li>
+                                <li><strong>50</strong> states</li>
+                                <li><strong>163</strong> centers per state</li>
+                                <li><strong>31%</strong> drive thru</li>
                             </ul>
                         </div>
                     </div>
