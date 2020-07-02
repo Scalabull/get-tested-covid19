@@ -85,7 +85,7 @@ def check_row_against_ver_unver(staged_row, unverified_rows, verified_rows, merg
     return staged_row
 
 def format_row_to_unverified_schema(row):
-    row['staging_row_id'] = row['id']
+    row['staging_row_id'] = None
     row['google_place_id'] = row['formatted_address_obj']['google_place_id']
 
     del row['formatted_address_obj']

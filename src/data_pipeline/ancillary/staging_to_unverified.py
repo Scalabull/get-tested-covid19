@@ -61,7 +61,7 @@ def format_unverified_test_center_row(decorated_staging_row):
         'latitude': lat_lng['lat'],
         'longitude': lat_lng['lng'],
         'google_place_id': formatted_address_obj['google_place_id'],
-        'staging_row_id': decorated_staging_row['id'],
+        'staging_row_id': None,
         'name': decorated_staging_row['name'],
         'phone_number': decorated_staging_row['phone_number'],
         'website': decorated_staging_row['website'],

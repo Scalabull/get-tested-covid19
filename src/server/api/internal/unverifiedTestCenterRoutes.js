@@ -53,21 +53,14 @@ router.get('/addressTextSearch/:searchStr', async (req, res)=>{
 
 router.post('/', auth, async (req, res) => {
   try {
-    const { staging_row_id, google_place_id } = req.body
+    const { google_place_id } = req.body
 
-    if (!((staging_row_id === 0 || staging_row_id) && google_place_id)) {
-      return res.status(400).send('staging_row_id and google_place_id must both be provided.');
+    if (!google_place_id) {
+      return res.status(400).send('google_place_id must be provided.');
     }
 
     const testCenterMatch = await db.PublicTestCenter.findOne(
-    { where: 
-        {
-          [Op.or]: [
-            { staging_row_id },
-            { google_place_id }
-          ]
-        } 
-    });
+    { where: { google_place_id } });
 
     if(testCenterMatch) {
       return res.status(400).send('This row is a duplicate of an existing Public test center row');
