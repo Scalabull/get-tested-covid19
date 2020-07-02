@@ -1,4 +1,4 @@
-GTC_DIFF_TOOLING_VERSION = '1.1'
+GTC_DIFF_TOOLING_VERSION = '1.2'
 
 # Check whether two normalized test center rows refer to the same test center
 def check_test_center_match(row1, row2):
@@ -64,8 +64,8 @@ def check_row_against_ver_unver(staged_row, unverified_rows, verified_rows, merg
         if(len(ident_flags) > 0):
             match_obj = {
                 'ident_flags': ident_flags, 
-                'type': 'UNVERIFIED', 
-                'unverified_row_id': unverified_row['id'] 
+                'type': 'UNVERIFIED',
+                'google_place_id': unverified_row['google_place_id']
             }
             if(merge_fill_blanks):
                 match_obj['proposed_updates'] = extract_proposed_row_updates(unverified_row, staged_row)
@@ -85,7 +85,7 @@ def check_row_against_ver_unver(staged_row, unverified_rows, verified_rows, merg
     return staged_row
 
 def format_row_to_unverified_schema(row):
-    row['staging_row_id'] = row['id']
+    row['staging_row_id'] = None
     row['google_place_id'] = row['formatted_address_obj']['google_place_id']
 
     del row['formatted_address_obj']
@@ -166,10 +166,10 @@ def group_staging_rows(staging_rows):
 
     return staging_row_groups, deduplicated_staging_rows
 
-def generate_deletion_diff_obj(test_center_ids):
+def generate_deletion_diff_obj(google_place_ids):
     dump_obj = {
         'diff_tooling_version': GTC_DIFF_TOOLING_VERSION,
-        'test_center_ids_for_deletion': test_center_ids
+        'google_place_ids_for_deletion': google_place_ids
     }
     
     return dump_obj

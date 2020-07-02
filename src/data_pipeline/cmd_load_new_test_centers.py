@@ -70,8 +70,8 @@ def get_current_datetime_formatted():
     current_dt = datetime.datetime.now()
     return current_dt.strftime("%Y%m%d%H%M%S")
 
-def generate_and_upload_deletion_diff(test_center_ids):
-    diff = gtc_merge_logic.generate_deletion_diff_obj(test_center_ids)
+def generate_and_upload_deletion_diff(google_place_ids):
+    diff = gtc_merge_logic.generate_deletion_diff_obj(google_place_ids)
     current_dt = get_current_datetime_formatted()
     job_handle = 'su_' + current_dt + '_report.json'
 
@@ -125,11 +125,11 @@ def run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_ca
 
 def run_deletion_workflow(csv_file, gtc_auth_token):
      # Load and process CSV:
-    test_center_ids = test_center_csv.load_valid_csv_rows(csv_file, is_delete=True)
-    print(colored('loaded: ' + str(len(test_center_ids)) + ' test center rows from CSV.\n', 'green'))
-    print(test_center_ids)
+    google_place_ids = test_center_csv.load_valid_csv_rows(csv_file, is_delete=True)
+    print(colored('loaded: ' + str(len(google_place_ids)) + ' test center rows from CSV.\n', 'green'))
+    print(google_place_ids)
 
-    generate_and_upload_deletion_diff(test_center_ids)
+    generate_and_upload_deletion_diff(google_place_ids)
 
 def run_standard_workflow(csv_file, gtc_auth_token, app_cache):
 
