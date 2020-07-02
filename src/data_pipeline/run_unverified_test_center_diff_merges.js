@@ -72,7 +72,7 @@ async function runDiffDeletionTransaction(unverDiffKey, deleteIDs = null){
         let deletionParams = { transaction: t };
 
         if(deleteIDs){
-            deletionParams.where = {id: deleteIDs}
+            deletionParams.where = {google_place_id: deleteIDs}
         } else {
             deletionParams.truncate = true
         }
@@ -100,7 +100,7 @@ async function runDiffInstallationTransaction(unverDiffKey, diffObj){
         const updatePromises = processedRows.map(async testCenter => {
             if(testCenter.matches && testCenter.matches.length > 0 && testCenter.matches[0].proposed_updates){
                 testCenter.latest_unver_diff_key = unverDiffKey
-                const testCenterUpdate = await patchPublicTestCenter(testCenter.matches[0].unverified_row_id, testCenter.matches[0].proposed_updates, t)
+                const testCenterUpdate = await patchPublicTestCenter(testCenter.matches[0].google_place_id, testCenter.matches[0].proposed_updates, t)
                 return testCenterUpdate;
             }
 
@@ -116,8 +116,8 @@ async function runDiffInstallationTransaction(unverDiffKey, diffObj){
     return result;
 }
 
-async function patchPublicTestCenter(unverifiedTestCenterID, proposedUpdates, transaction){
-    const updates = await db.PublicTestCenter.update(proposedUpdates, { where: { id: unverifiedTestCenterID }, transaction: transaction })
+async function patchPublicTestCenter(google_place_id, proposedUpdates, transaction){
+    const updates = await db.PublicTestCenter.update(proposedUpdates, { where: { google_place_id: google_place_id }, transaction: transaction })
     return updates;
 }
 
@@ -159,8 +159,8 @@ async function handleAllNewDiffsSequentially(newDiffKeysArr){
                 diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
             }
                 
-            if(diffObj['test_center_ids_for_deletion'] || unverDiffKey.includes('reset')){
-                const diffInsertStatus = await runDiffDeletionTransaction(unverDiffKey, diffObj['test_center_ids_for_deletion']);
+            if(diffObj['google_place_ids_for_deletion'] || unverDiffKey.includes('reset')){
+                const diffInsertStatus = await runDiffDeletionTransaction(unverDiffKey, diffObj['google_place_ids_for_deletion']);
             } else{
                 const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffObj);
             }
