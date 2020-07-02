@@ -174,7 +174,7 @@ class ResultsPage extends React.Component {
 
         if (isNumeric(searchZipStr) && zipMatchFlag) {
           // Zip code is valid
-          axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/test-centers/zip/' + searchZipStr)
+          axios.get(REACT_APP_GTC_API_URL + '/api/v1/public/public-test-centers/zip/' + searchZipStr)
             .then(response => {
               //console.log('response is: ', response);
               this.zipLatLng = response.data.coords;

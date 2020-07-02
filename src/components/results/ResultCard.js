@@ -131,8 +131,8 @@ const StyledResultCard = styled.div`
 class ResultCard extends React.Component {
   render() {
     const { num } = this.props;
-    const { name, distance, address, city, state, zip, phone_number, website, facilities_provided, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
-    
+    const { name, distance, address, phone_number, website, description, hours_of_operation, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site } = this.props.item;
+
     let phoneStr = "";
     if(phone_number !== "" && phone_number !== null){
       phoneStr = phone_number.split(')')[0] + ") " + phone_number.split(')')[1]
@@ -142,7 +142,7 @@ class ResultCard extends React.Component {
         <StyledResultCard>
           <h3>{num}. {name}</h3>
           <p className="card__meta">
-            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}<span className="d-none d-sm-inline">, {city}</span>{phoneStr ? `· ${phoneStr}` : ''}
+            {distance !== null && distance !== undefined && (<><span className="card__dist">{(distance/1609).toFixed(2)} mi</span> &middot; </>)}{address}{phoneStr ? `· ${phoneStr}` : ''}
           </p>
           <div className="card__req">
             {!doctor_screen_required_beforehand && !appointment_required && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</div>}
@@ -158,7 +158,18 @@ class ResultCard extends React.Component {
           </div>
           <p className="card__descr">
             <ReadMore lines={2}>
-                {facilities_provided}
+                {description}
+                {hours_of_operation &&
+                  <>
+                    {description &&
+                      <>
+                        <br /> <br />
+                      </>
+                    }
+                    <strong>Hours: </strong>
+                    {hours_of_operation}
+                  </>
+                }
             </ReadMore>
           </p>
           <div className="card__features">
@@ -166,14 +177,14 @@ class ResultCard extends React.Component {
           </div>
           <div className="card__actions">
             <ButtonGroup className="card__actions-mobile" size="sm">
-              <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
+              <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}/`} target="_blank" rel="noopener noreferrer">Get directions</a>
               {website !== '' && <a className="btn btn-outline-primary" href={website} target="_blank" rel="noopener noreferrer">Visit website</a>}
               {phone_number !== '' && phone_number !== null && (
                 <a className="btn btn-outline-primary card__call" href={`tel: ${phone_number}`}  target="_blank" rel="noopener noreferrer">Call</a>  
               )}
             </ButtonGroup>
             <ButtonGroup className="card__actions-desktop" size="sm">
-              <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}+${city}+${state}+${zip}/`} target="_blank" rel="noopener noreferrer"><i className="fas fa-directions" />Get directions</a>
+              <a className="btn btn-outline-primary" href={`https://www.google.com/maps/dir/current+location/${address}/`} target="_blank" rel="noopener noreferrer"><i className="fas fa-directions" />Get directions</a>
               {website !== '' && <a className="btn btn-outline-primary" href={website} target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-square-alt" />Visit website</a>}
             </ButtonGroup>
           </div>
