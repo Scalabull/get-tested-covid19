@@ -9,6 +9,7 @@ from helpers.cache import Cache
 from dotenv import load_dotenv
 from termcolor import colored
 import datetime
+import urllib.parse
 
 load_dotenv(override=True)
 REC_PROD_GTC_API_URL = 'https://api.get-tested-covid19.org'
@@ -123,12 +124,42 @@ def run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_ca
     # Print short summary of results
     pretty_print_results(merge_diff, job_handle, staging_s3_diff_obj_handle, master_s3_diff_obj_handle, job_local_path)
 
-def run_deletion_workflow(csv_file, gtc_auth_token):
-     # Load and process CSV:
-    test_center_ids = test_center_csv.load_valid_csv_rows(csv_file, is_delete=True)
-    print(colored('loaded: ' + str(len(test_center_ids)) + ' test center rows from CSV.\n', 'green'))
-    print(test_center_ids)
+def run_state_deletion_workflow(state_flag, gtc_auth_token, ignore):
+    def normalize_test_center_rows(body):
+        rows = body['matchedTestCenters']
+        normalized_rows = [normalize_test_center_row(row) for row in rows]
+        return normalized_rows
 
+    def normalize_test_center_row(row):
+        return row['google_place_id']
+    
+    search_strings = {
+        'maine': ' ME '
+    }
+    me_search_str = search_strings[state_flag]
+
+    req_path = '/api/v1/internal/unverified-test-centers/addressTextSearch/'
+    uri_string = urllib.parse.quote(req_path + me_search_str)
+    
+    get_gtc_test_centers_by_address_search = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL, uri_string, gtc_auth_token, normalize_test_center_rows)
+    test_centers = get_gtc_test_centers_by_address_search()
+
+    return test_centers
+
+def run_csv_deletion_workflow(ignore, gtc_auth_token, csv_file):
+    test_center_ids = test_center_csv.load_valid_csv_rows(csv_file, is_delete=True)
+    return test_center_ids
+
+def run_deletion_workflow(deletion_type, gtc_auth_token, csv_file=None):
+    options = {
+        'csv_ids': run_csv_deletion_workflow,
+        'maine': run_state_deletion_workflow
+    }
+
+    test_center_ids = options[deletion_type](deletion_type, gtc_auth_token, csv_file)
+    print(colored('will delete: ' + str(len(test_center_ids)) + ' total public test centers.', 'green'))
+    print(test_center_ids)
+    
     generate_and_upload_deletion_diff(test_center_ids)
 
 def run_standard_workflow(csv_file, gtc_auth_token, app_cache):
@@ -183,7 +214,7 @@ def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_
         raise Exception('Closing due to user input.')
     
     if delete:
-        run_deletion_workflow(csv_file, gtc_auth_token)
+        run_deletion_workflow(delete, gtc_auth_token, csv_file)
     else:
         staging_test_center_rows = []
         if is_preprocessed:
@@ -201,7 +232,7 @@ def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_
 @click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
 @click.option('--is_preprocessed', default=False, type=bool, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
 @click.option('--merge_fill_blanks', default=False, type=bool, help='Set to True to propose updates to existing PublicTestCenter records. This only shows proposed additions of data where existing records have empty columns (no overwriting).')
-@click.option('--delete', default=False, type=bool, help='Set this flag to True to delete target PublicTestCenter rows. Input format is a CSV file with one column (ID of row).')
+@click.option('--delete', default=None, help='If this parameter is set, test centers will be deleted rather than added. Options: csv_ids, maine')
 def exec_tool(csv_file, is_preprocessed, merge_fill_blanks, delete):
     app_cache = Cache()
     app_cache.load_cache_file()
