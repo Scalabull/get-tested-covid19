@@ -219,14 +219,14 @@ def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, enti
         raise Exception('Closing due to user input.')
         
     if delete:
-        diff = run_deletion_workflow('csv_ids', gtc_auth_token, csv_file)
+        diff = run_deletion_workflow(delete, gtc_auth_token, csv_file)
         upload_deletion_diff(diff)
     else:
         staging_test_center_rows = []
         deletion_diff = None
 
         if entity:
-            deletion_diff = run_deletion_workflow(entity, gtc_auth_token, csv_file)
+            deletion_diff = [run_deletion_workflow(entity, gtc_auth_token, csv_file)]
 
         if is_preprocessed:
             staging_test_center_rows = run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache)
@@ -235,7 +235,7 @@ def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, enti
         
         print(colored('All test centers inserted to Staging!\n', 'green'))
 
-        run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache, prior_diffs=[deletion_diff])
+        run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache, prior_diffs=deletion_diff)
 
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
@@ -243,7 +243,7 @@ def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, enti
 @click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
 @click.option('--is_preprocessed', default=False, type=bool, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
 @click.option('--merge_fill_blanks', default=False, type=bool, help='Set to True to propose updates to existing PublicTestCenter records. This only shows proposed additions of data where existing records have empty columns (no overwriting).')
-@click.option('--delete', default=False, help='Set to true to run a csv-based deletion')
+@click.option('--delete', default=None, help='Set to "csv_ids" to delete based on an input CSV. Otherwise, set to an entity name, e.g. "maine". ')
 @click.option('--entity', default=None, help='This parameter must be set when running entity-level operations. Options: maine')
 
 def exec_tool(csv_file, is_preprocessed, merge_fill_blanks, delete, entity):

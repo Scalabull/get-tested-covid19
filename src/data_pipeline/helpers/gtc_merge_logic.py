@@ -178,9 +178,12 @@ def apply_prior_diffs(public_test_centers, prior_diffs=None):
     mod_public_test_centers = []
     deletion_ids = []
 
+    if(prior_diffs == None or len(prior_diffs) == 0 or prior_diffs[0] == None):
+        return public_test_centers
+
     #currently only applies deletions from prior diffs
     for prior_diff in prior_diffs:
-        deletion_ids += prior_diff['test_center_ids_for_deletion']
+        deletion_ids += prior_diff['google_place_ids_for_deletion']
 
     for test_center in public_test_centers:
         if test_center['google_place_id'] not in deletion_ids:
