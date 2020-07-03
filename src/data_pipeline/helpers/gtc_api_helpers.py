@@ -25,10 +25,11 @@ def generate_gtc_post_request(base_api_url, request_path, auth_token):
     
     return post_request
 
-def generate_gtc_get_request(base_api_url, request_path, auth_token, normalization_func=None):
+def generate_gtc_get_request(base_api_url, request_path, auth_token, normalization_func=None, qs_params=None):
     def get_request():
         headers = {'Authorization': 'Bearer ' + auth_token}
-        query_response = requests.get(base_api_url + request_path, headers=headers)
+
+        query_response = requests.get(base_api_url + request_path, headers=headers, params=qs_params)
         body = query_response.json()
 
         if(normalization_func != None):

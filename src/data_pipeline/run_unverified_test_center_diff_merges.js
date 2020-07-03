@@ -36,7 +36,7 @@ It is not recommended to run this code locally unless you are developing a new f
 const path = require('path');
 const MODELS_DIR = path.join(__dirname, '../server/db', 'models')
 const db = require(MODELS_DIR)
-const { Op } = require('sequelize')
+const { Op, Transaction } = require('sequelize')
 const awsUtils = require('./node_helpers/awsUtils')
 const fileUtils = require('./node_helpers/fileUtils')
 
@@ -67,53 +67,42 @@ async function loadPriorDiffs(){
 }
 
 // Handles deletions of lists of PublicTestCenter Ids, and also has full table wipe capability (keys with 'reset' in name)
-async function runDiffDeletionTransaction(unverDiffKey, deleteIDs = null){
-    const result = await db.sequelize.transaction(async (t) => {
-        let deletionParams = { transaction: t };
+async function runDiffDeletionTransaction(unverDiffKey, deleteIDs = null, transaction){
+    let deletionParams = { transaction: transaction };
 
-        if(deleteIDs){
-            deletionParams.where = {google_place_id: deleteIDs}
-        } else {
-            deletionParams.truncate = true
-        }
+    if(deleteIDs){
+        deletionParams.where = {google_place_id: deleteIDs}
+    } else {
+        deletionParams.truncate = true
+    }
 
-        const testCenter = await db.PublicTestCenter.destroy(deletionParams)
-        const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
-        
-        return unverDiffStatus;
-    });
-    return result;
+    const testCenter = await db.PublicTestCenter.destroy(deletionParams);
+    return testCenter;
 }
 
-async function runDiffInstallationTransaction(unverDiffKey, diffObj){
-    const result = await db.sequelize.transaction(async (t) => {
+async function runDiffInstallationTransaction(unverDiffKey, diffObj, transaction){
+    let testCenterRows = diffObj['post_processing_stats']['unmatched_rows'];
+    let processedRows = diffObj['processed_rows'];
 
-        let testCenterRows = diffObj['post_processing_stats']['unmatched_rows'];
-        let processedRows = diffObj['processed_rows'];
 
-        const unverifiedTestCenterPromises = testCenterRows.map(async testCenter => {
-            testCenter.source_unver_diff_key = unverDiffKey;
-            const testCenterSubmission = await insertPublicTestCenter(testCenter, t);
-            return testCenterSubmission;
-        });
-
-        const updatePromises = processedRows.map(async testCenter => {
-            if(testCenter.matches && testCenter.matches.length > 0 && testCenter.matches[0].proposed_updates){
-                testCenter.latest_unver_diff_key = unverDiffKey
-                const testCenterUpdate = await patchPublicTestCenter(testCenter.matches[0].google_place_id, testCenter.matches[0].proposed_updates, t)
-                return testCenterUpdate;
-            }
-
-            return null;
-        });
-
-        const unverifiedSubmissionStatus = await Promise.all(unverifiedTestCenterPromises);
-        const updateStatuses = await Promise.all(updatePromises);
-        const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
-        
-        return unverDiffStatus;
+    const unverifiedTestCenterPromises = testCenterRows.map(async testCenter => {
+        testCenter.source_unver_diff_key = unverDiffKey;
+        const testCenterSubmission = await insertPublicTestCenter(testCenter, transaction);
+        return testCenterSubmission;
     });
-    return result;
+
+    const updatePromises = processedRows.map(async testCenter => {
+        if(testCenter.matches && testCenter.matches.length > 0 && testCenter.matches[0].proposed_updates){
+            testCenter.latest_unver_diff_key = unverDiffKey
+            const testCenterUpdate = await patchPublicTestCenter(testCenter.matches[0].google_place_id, testCenter.matches[0].proposed_updates, transaction)
+            return testCenterUpdate;
+        }
+    });
+
+    const unverifiedSubmissionStatus = await Promise.all(unverifiedTestCenterPromises);
+    const updateStatuses = await Promise.all(updatePromises);
+    
+    return updateStatuses;
 }
 
 async function patchPublicTestCenter(google_place_id, proposedUpdates, transaction){
@@ -132,7 +121,8 @@ async function insertPublicTestCenter(testCenterObj, transaction){
     { where: { google_place_id } }, { transaction: transaction });
 
     if(testCenterMatch) {
-      throw new Error('This row is a duplicate of an existing Public test center row');
+        console.log('google_place_id: ', google_place_id, ' test center obj: ', JSON.stringify(testCenterMatch));
+        throw new Error('This row is a duplicate of an existing Public test center row');
     }
 
     const testCenter = await db.PublicTestCenter.create(testCenterObj, { transaction: transaction })
@@ -147,6 +137,39 @@ async function insertUnverDiff(unverDiffKey, transaction){
     return unverDiff;
 }
 
+async function handleSingleDiffSubTransaction(unverDiffKey, diffObj, transaction){
+    if(diffObj['google_place_ids_for_deletion'] || unverDiffKey.includes('reset')){
+        console.log('running deletions');
+        const diffInsertStatus = await runDiffDeletionTransaction(unverDiffKey, diffObj['google_place_ids_for_deletion'], transaction);
+        return diffInsertStatus;
+    } else{
+        console.log('running insertion');
+        const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffObj, transaction);
+        return diffInsertStatus;
+    }
+}
+
+async function runDiffTransaction(unverDiffKey, diffObj){
+    const result = await db.sequelize.transaction({
+        isolationLevel: Transaction.ISOLATION_LEVELS.REPEATABLE_READ
+    },
+    async (t) => {
+        // TODO: multistep diff processing is broken due to underlying postgres transaction isolations. Need to research further.
+        if(diffObj.multistep_diff){
+            for(let i = 0; i < diffObj.multistep_diff.length; i++){
+                currDiffObj = diffObj.multistep_diff[i];
+                const diffStatus = await handleSingleDiffSubTransaction(unverDiffKey, currDiffObj, t);
+                console.log('step complete: ', i);
+            }
+        } else {
+            const diffStatus = await handleSingleDiffSubTransaction(unverDiffKey, diffObj, t);
+        }
+
+        const unverDiffStatus = await insertUnverDiff(unverDiffKey, t);
+    });
+    return result;
+}
+
 // Sequence of diff application is important. Order of original list must be preserved.
 // If a failure occurs, halt in place.
 async function handleAllNewDiffsSequentially(newDiffKeysArr){
@@ -158,12 +181,7 @@ async function handleAllNewDiffsSequentially(newDiffKeysArr){
             if(!unverDiffKey.includes('reset')){
                 diffObj = await awsUtils.loadNewDiffFromS3(unverDiffKey);
             }
-                
-            if(diffObj['google_place_ids_for_deletion'] || unverDiffKey.includes('reset')){
-                const diffInsertStatus = await runDiffDeletionTransaction(unverDiffKey, diffObj['google_place_ids_for_deletion']);
-            } else{
-                const diffInsertStatus = await runDiffInstallationTransaction(unverDiffKey, diffObj);
-            }
+            const status = await runDiffTransaction(unverDiffKey, diffObj);
         }
         catch(err){
             console.log('Failure processing diff with key: ', unverDiffKey, '. This diff and any diffs after this one in the CHRONOLOGICAL_S3_DIFF_KEYS array have not been uploaded.');
