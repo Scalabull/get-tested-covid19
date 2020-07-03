@@ -71,8 +71,7 @@ def get_current_datetime_formatted():
     current_dt = datetime.datetime.now()
     return current_dt.strftime("%Y%m%d%H%M%S")
 
-def generate_and_upload_deletion_diff(test_center_ids):
-    diff = gtc_merge_logic.generate_deletion_diff_obj(test_center_ids)
+def upload_deletion_diff(diff):
     current_dt = get_current_datetime_formatted()
     job_handle = 'su_' + current_dt + '_report.json'
 
@@ -86,7 +85,7 @@ def generate_and_upload_deletion_diff(test_center_ids):
     # Print short summary of results
     pretty_print_results(diff, job_handle, staging_s3_diff_obj_handle, master_s3_diff_obj_handle, job_local_path)
 
-def run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache):
+def run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache, prior_diffs=None):
 
     def normalize_test_center_rows(rows):
         normalized_rows = [normalize_test_center_row(row) for row in rows]
@@ -110,9 +109,14 @@ def run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_ca
     print('Database contains Unverified Test Centers: ', len(unverified_test_center_rows), ' , Verified Test Centers: ', len(verified_test_center_rows))
     print('Generating diff... (this may take a moment)\n\n')
 
-    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows, merge_fill_blanks)
+    merge_diff = gtc_merge_logic.generate_unverified_update_diff_obj(normalized_staging_test_center_rows, unverified_test_center_rows, verified_test_center_rows, merge_fill_blanks, prior_diffs=prior_diffs)
     current_dt = get_current_datetime_formatted()
     job_handle = 'su_' + current_dt + '_report.json'
+
+    if(prior_diffs):
+        merge_diff = {
+            'multistep_diff': prior_diffs + [merge_diff]
+        }
 
     # Put results to S3
     staging_s3_diff_obj_handle, master_s3_diff_obj_handle = aws_utils.put_diff_dump_to_s3(job_handle, merge_diff)
@@ -160,7 +164,8 @@ def run_deletion_workflow(deletion_type, gtc_auth_token, csv_file=None):
     print(colored('will delete: ' + str(len(test_center_ids)) + ' total public test centers.', 'green'))
     print(test_center_ids)
     
-    generate_and_upload_deletion_diff(test_center_ids)
+    diff = gtc_merge_logic.generate_deletion_diff_obj(test_center_ids)
+    return diff
 
 def run_standard_workflow(csv_file, gtc_auth_token, app_cache):
 
@@ -200,7 +205,7 @@ def run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache):
 
     return staging_test_center_rows
 
-def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_cache):
+def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, entity, app_cache):
     print_startup_messaging()
 
     # Help user identify correctness of API URL, Google key, and AWS account credentials
@@ -212,11 +217,17 @@ def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_
     proceed_yes = input('Do you want to proceed using these credentials? (only \'yes\' is accepted)')
     if(proceed_yes != 'yes'):
         raise Exception('Closing due to user input.')
-    
+        
     if delete:
-        run_deletion_workflow(delete, gtc_auth_token, csv_file)
+        diff = run_deletion_workflow('csv_ids', gtc_auth_token, csv_file)
+        upload_deletion_diff(diff)
     else:
         staging_test_center_rows = []
+        deletion_diff = None
+
+        if entity:
+            deletion_diff = run_deletion_workflow(entity, gtc_auth_token, csv_file)
+
         if is_preprocessed:
             staging_test_center_rows = run_preprocessed_workflow(csv_file, gtc_auth_token, app_cache)
         else:
@@ -224,7 +235,7 @@ def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_
         
         print(colored('All test centers inserted to Staging!\n', 'green'))
 
-        run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache)
+        run_diff(staging_test_center_rows, merge_fill_blanks, gtc_auth_token, app_cache, prior_diffs=[deletion_diff])
 
 # Command line interface
 # Get all recent staged test center rows that aren't already in our verified or unverified datasets
@@ -232,8 +243,10 @@ def main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_
 @click.option('--csv_file', default=None, help='CSV file containing scraped test center rows.')
 @click.option('--is_preprocessed', default=False, type=bool, help='Set to True if providing a spreadsheet with preprocessed details like is_drivethru, appointment_required, ... In practice, this should almost always be False.')
 @click.option('--merge_fill_blanks', default=False, type=bool, help='Set to True to propose updates to existing PublicTestCenter records. This only shows proposed additions of data where existing records have empty columns (no overwriting).')
-@click.option('--delete', default=None, help='If this parameter is set, test centers will be deleted rather than added. Options: csv_ids, maine')
-def exec_tool(csv_file, is_preprocessed, merge_fill_blanks, delete):
+@click.option('--delete', default=False, help='Set to true to run a csv-based deletion')
+@click.option('--entity', default=None, help='This parameter must be set when running entity-level operations. Options: maine')
+
+def exec_tool(csv_file, is_preprocessed, merge_fill_blanks, delete, entity):
     app_cache = Cache()
     app_cache.load_cache_file()
 
@@ -247,7 +260,7 @@ def exec_tool(csv_file, is_preprocessed, merge_fill_blanks, delete):
     signal.signal(signal.SIGINT, terminateProcess)
 
     try:
-        main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, app_cache)
+        main_tool_process(csv_file, is_preprocessed, merge_fill_blanks, delete, entity, app_cache)
     except:
         app_cache.write_cache_file()
         raise

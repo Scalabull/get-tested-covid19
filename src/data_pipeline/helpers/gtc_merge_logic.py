@@ -174,11 +174,30 @@ def generate_deletion_diff_obj(test_center_ids):
     
     return dump_obj
 
-def generate_unverified_update_diff_obj(staging_test_centers, unverified_test_centers, verified_test_centers, merge_fill_blanks):
+def apply_prior_diffs(public_test_centers, prior_diffs=None):
+    mod_public_test_centers = []
+    deletion_ids = []
+
+    #currently only applies deletions from prior diffs
+    for prior_diff in prior_diffs:
+        deletion_ids += prior_diff['test_center_ids_for_deletion']
+
+    for test_center in public_test_centers:
+        if test_center['google_place_id'] not in deletion_ids:
+            mod_public_test_centers.append(test_center)
+        else:
+            print('blocking: ', test_center['google_place_id'])
+    
+    return mod_public_test_centers
+
+def generate_unverified_update_diff_obj(staging_test_centers, unverified_test_centers, verified_test_centers, merge_fill_blanks, prior_diffs=None):
+    #apply any prior diff steps that are part of this diff transaction
+    mod_public_test_centers = apply_prior_diffs(unverified_test_centers, prior_diffs)
+    
     grouped_staging_row_dict, deduplicated_staging_rows = group_staging_rows(staging_test_centers)
 
     #simple brute force for visibility/traceability
-    processed_rows = [check_row_against_ver_unver(staged_row, unverified_test_centers, verified_test_centers, merge_fill_blanks) for staged_row in deduplicated_staging_rows]
+    processed_rows = [check_row_against_ver_unver(staged_row, mod_public_test_centers, verified_test_centers, merge_fill_blanks) for staged_row in deduplicated_staging_rows]
     stats = get_mapping_stats(processed_rows)
     stats['unmatched_rows'] = format_unmatched_rows_to_unverified_schema(stats['unmatched_rows'])
 
