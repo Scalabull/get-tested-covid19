@@ -40,7 +40,8 @@ def preprocess_csv(row_obj):
 
     drive_thru_flag = clean_yes_no_field(row_obj['Drive through?'])
     app_req_flag = clean_yes_no_field(row_obj['Appt Required?'])
-    doc_screen_flag = clean_yes_no_field(row_obj['Provider Screening or Referral Required?  '])
+    provider_ref_flag = clean_yes_no_field(row_obj['Provider  referral required?  '])
+    doc_screen_flag = clean_yes_no_field(row_obj['Provider screening required?'])
     me_dhhs_status = cast_me_dhhs_status(row_obj['Testing available consistent with ME DHHS Standing Order issued 6/18/2020'])
 
     street_address = row_obj['Street address']
@@ -65,7 +66,7 @@ def preprocess_csv(row_obj):
         app_req_flag,
         doc_screen_flag,
         drive_thru_flag,
-        None,
+        provider_ref_flag,
         'Yes',
         description,
         None,
