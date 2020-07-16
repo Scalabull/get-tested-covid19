@@ -20,6 +20,7 @@ const PUBLIC_ATTRIBUTES = [
   'appointment_required',
   'doctor_screen_required_beforehand',
   'drive_thru_site',
+  'physician_referral_required',
   'me_dhhs_status',
   'verified_by_phone_external_party'
 ]
