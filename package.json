@@ -41,7 +41,7 @@
         "not op_mini all"
     ],
     "dependencies": {
-        "aws-sdk": "^2.692.0",
+        "aws-sdk": "^2.699.0",
         "axios": "^0.19.2",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
@@ -60,7 +60,7 @@
         "google-maps-react": "~2.0.6",
         "haversine": "~1.1.1",
         "headroom.js": "0.11.0",
-        "helmet": "^3.22.0",
+        "helmet": "^3.23.1",
         "jsonwebtoken": "^8.5.1",
         "lodash.debounce": "^4.0.8",
         "mapbox-gl": "^1.10.1",
@@ -78,7 +78,7 @@
         "polished": "^3.6.4",
         "prerender-node": "~3.2.5",
         "prettier": "^2.0.5",
-        "query-string": "~6.11.1",
+        "query-string": "~6.13.1",
         "react": "16.13.1",
         "react-datetime": "2.16.3",
         "react-document-meta": "~3.0.0-beta.2",
@@ -94,7 +94,7 @@
         "sequelize-cli": "^5.5.1",
         "socket.io": "^2.3.0",
         "socket.io-mock": "^1.2.4",
-        "styled-components": "^5.1.0",
+        "styled-components": "^5.1.1",
         "utf-8-validate": "^5.0.2"
     },
     "devDependencies": {
