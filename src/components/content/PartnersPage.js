@@ -29,6 +29,10 @@ const StyledPartners = styled.div`
         padding-right: 3rem;
         max-width: 650px;
 
+        svg {
+          max-width: 100%;
+        }
+
         @media screen and (max-width: ${props => props.theme.bpMed}) {
           padding-right: 0;
         }
@@ -42,10 +46,6 @@ const StyledPartners = styled.div`
         @media screen and (max-width: ${props => props.theme.bpMed}) {
           text-align: center;
           width: 100%;
-
-          svg {
-              width: 80%;
-          }
         }
     }
 
@@ -73,6 +73,11 @@ const StyledPartners = styled.div`
         @media screen and (max-width: ${props => props.theme.bpMed}) {
           .partners-section__extra {
               margin-top: 2rem;
+              max-width: none;
+
+              img {
+                max-width: 220px;
+              }
           }
         }
     }
