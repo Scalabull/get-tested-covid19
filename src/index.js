@@ -12,6 +12,7 @@ import HowTestingWorks from './views/HowTestWorks/index.js';
 import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
 import AboutPage from './components/content/AboutPage.js';
+import PartnersPage from './components/content/PartnersPage.js';
 import PrivacyPage from './components/content/PrivacyPage.js';
 
 // Colors
@@ -137,6 +138,7 @@ ReactDOM.render(
         <Route path="/" exact render={props => <HomePage {...props} />} />
         <Route path="/search" exact render={props => <ResultsPage {...props} />} />
         <Route path="/about" exact render={props => <AboutPage {...props} />} />
+        <Route path="/partners" exact render={props => <PartnersPage {...props} />} />
         <Route
           path="/how-testing-works"
           exact
