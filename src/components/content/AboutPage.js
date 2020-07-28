@@ -293,6 +293,7 @@ class AboutPage extends React.Component {
                                 <h2>Our Partners</h2>
                                 <p>Beyond our amazing team of volunteers, we’ve received incredible and much-needed support from tech providers, developers, clinical laboratories, and platforms.</p>
                                 <p>We’ve also partnered up with other COVID-19 relief initiatives and nonprofits to support communities and testing centers around the US. As we communicate with test centers to validate the information in our database, we’re able to offer them much-needed resources and connect them with our partner organizations.</p>
+                                <Link className="btn btn-outline-light ml-2" to="/partners">Learn more</Link>
                             </div>
                             <div className="about-section__extra">
                                 <PartnersIll />
