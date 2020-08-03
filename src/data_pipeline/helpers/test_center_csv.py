@@ -127,3 +127,35 @@ def extract_preprocessed_test_center_row(csv_row):
 
     return test_center
 
+def extract_csv_row_from_public_test_center_obj(test_center_obj):
+    #Format matches TARGET_PREPROCESSED_CSV_HEADER
+
+    csv_row = [
+        '',
+        test_center_obj['name'],
+        test_center_obj['address'],
+        '',
+        '',
+        '',
+        test_center_obj['phone_number'],
+        test_center_obj['website'],
+        test_center_obj['appointment_required'],
+        test_center_obj['doctor_screen_required_beforehand'],
+        test_center_obj['drive_thru_site'],
+        test_center_obj['physician_referral_required'],
+        test_center_obj['verified_by_phone_external_party'],
+        test_center_obj['description'],
+        test_center_obj['hours_of_operation'],
+        ''
+    ]
+    
+    return csv_row
+
+def write_test_center_array_to_csv(test_center_objs, csv_outfile_name):
+    with open(csv_outfile_name, 'w') as out_file:
+        out_writer = csv.writer(out_file, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+        out_writer.writerow(TARGET_PREPROCESSED_CSV_HEADER)
+
+        for test_center in test_center_objs:
+            test_center_row = extract_csv_row_from_public_test_center_obj(test_center)
+            out_writer.writerow(test_center_row)
