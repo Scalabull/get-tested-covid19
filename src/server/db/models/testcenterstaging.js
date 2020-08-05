@@ -28,7 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       date_closed: DataTypes.DATE,
       inbounds_id: DataTypes.INTEGER,
       google_place_id: DataTypes.TEXT,
-      me_dhhs_status: DataTypes.INTEGER
+      me_dhhs_status: DataTypes.INTEGER,
+      confirmed_result_days_min: DataTypes.INTEGER,
+      confirmed_result_days_max: DataTypes.INTEGER,
+      free_testing_for_all: DataTypes.BOOLEAN
     },
     {
       hooks: {
