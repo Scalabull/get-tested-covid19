@@ -40,13 +40,21 @@ def generate_gtc_get_request(base_api_url, request_path, auth_token, normalizati
 
     return get_request
 
-def generate_staging_test_center_object(*ignore, name, phone, website, description, formatted_address_obj, app_req_flag = None, drive_thru_flag = None, doc_screen_flag = None, phys_ref_flag = None, verif_phone_ext_flag = None, inbound_row_id = None, external_id = None, address_freetext = None, hours_of_operation = None, custom_question_1 = None):
+def generate_staging_test_center_object(*ignore, name, phone, website, description, formatted_address_obj, app_req_flag = None, drive_thru_flag = None, doc_screen_flag = None, phys_ref_flag = None, verif_phone_ext_flag = None, inbound_row_id = None, external_id = None, address_freetext = None, hours_of_operation = None, custom_question_1 = None, free_testing_for_all=None, confirmed_result_days_min=None, confirmed_result_days_max=None):
     formatted_ext_id = None
     formatted_cust_quest_1 = None
+    formatted_conf_result_days_min = None
+    formatted_conf_result_days_max = None
+
     if(external_id != ''):
         formatted_ext_id = external_id
     if(custom_question_1 != ''):
         formatted_cust_quest_1 = custom_question_1
+    if(confirmed_result_days_min != '' and confirmed_result_days_min != None):
+        formatted_conf_result_days_min = int(str(confirmed_result_days_min))
+    if(confirmed_result_days_max != '' and confirmed_result_days_max != None):
+        formatted_conf_result_days_max = int(str(confirmed_result_days_max))
+    
 
     staging_test_center_obj = {
         "inbounds_id": inbound_row_id,
@@ -67,7 +75,10 @@ def generate_staging_test_center_object(*ignore, name, phone, website, descripti
         "address_freetext_blob": address_freetext,
         "external_id": formatted_ext_id,
         "google_place_id": formatted_address_obj['google_place_id'],
-        "me_dhhs_status": formatted_cust_quest_1
+        "me_dhhs_status": formatted_cust_quest_1,
+        "free_testing_for_all": free_testing_for_all,
+        "confirmed_result_days_min": formatted_conf_result_days_min,
+        "confirmed_result_days_max": formatted_conf_result_days_max
     }
 
     return staging_test_center_obj
@@ -87,13 +98,13 @@ def convert_inbound_row_to_staging_row(inbound_test_center_row, preprocessor, ap
 
 # 12-column format (with optional extra columns)
 def convert_preprocessed_row_to_staging_row(test_center_row, formatted_address_preprocessor, app_cache=None):
-    external_id, name, street_address, city, state, zip_code, phone, url, app_req_flag, doc_screen_flag, drive_thru_flag, phys_ref_flag, verif_phone_ext_flag, description, hours_of_operation, me_dhhs_status = itemgetter('external_id', 'name', 'street_address', 'city', 'state', 'zip_code', 'phone', 'website', 'app_req_flag', 'doc_screen_flag', 'drive_thru_flag', 'phys_ref_flag', 'verif_phone_ext_flag', 'description', 'hours_of_operation', 'me_dhhs_status')(test_center_row)
+    external_id, name, street_address, city, state, zip_code, phone, url, app_req_flag, doc_screen_flag, drive_thru_flag, phys_ref_flag, verif_phone_ext_flag, description, hours_of_operation, me_dhhs_status, free_testing_for_all, confirmed_result_days_min, confirmed_result_days_max = itemgetter('external_id', 'name', 'street_address', 'city', 'state', 'zip_code', 'phone', 'website', 'app_req_flag', 'doc_screen_flag', 'drive_thru_flag', 'phys_ref_flag', 'verif_phone_ext_flag', 'description', 'hours_of_operation', 'me_dhhs_status', 'free_testing_for_all', 'confirmed_result_days_min', 'confirmed_result_days_max' )(test_center_row)
     full_address = street_address + ' ' + city + ', ' + state + ' ' + zip_code
     formatted_address = formatted_address_preprocessor(full_address, app_cache=app_cache)
 
     staging_test_center_obj = None
     if formatted_address != None:
-        staging_test_center_obj = generate_staging_test_center_object(name=name, phone=phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, phys_ref_flag=phys_ref_flag, verif_phone_ext_flag=verif_phone_ext_flag, external_id=external_id, address_freetext=full_address, hours_of_operation=hours_of_operation, custom_question_1=me_dhhs_status)
+        staging_test_center_obj = generate_staging_test_center_object(name=name, phone=phone, website=url, description=description, formatted_address_obj=formatted_address, app_req_flag=app_req_flag, drive_thru_flag=drive_thru_flag, doc_screen_flag=doc_screen_flag, phys_ref_flag=phys_ref_flag, verif_phone_ext_flag=verif_phone_ext_flag, external_id=external_id, address_freetext=full_address, hours_of_operation=hours_of_operation, custom_question_1=me_dhhs_status, free_testing_for_all=free_testing_for_all, confirmed_result_days_min=confirmed_result_days_min, confirmed_result_days_max=confirmed_result_days_max)
     
     return staging_test_center_obj
 
