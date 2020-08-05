@@ -38,11 +38,21 @@ def clean_yes_no_field(field):
 
 def preprocess_csv(row_obj):
 
+    free_testing_for_all = None 
+    est_result_days_min = None
+    est_result_days_max = None
+
     drive_thru_flag = clean_yes_no_field(row_obj['Drive through?'])
     app_req_flag = clean_yes_no_field(row_obj['Appt Required?'])
     provider_ref_flag = clean_yes_no_field(row_obj['Provider  referral required?  '])
     doc_screen_flag = clean_yes_no_field(row_obj['Provider screening required?'])
     me_dhhs_status = cast_me_dhhs_status(row_obj['Testing available consistent with ME DHHS Standing Order issued 6/18/2020'])
+
+    me_state_contracted_facility = clean_yes_no_field(row_obj['State Contracted Swab & Send'])
+    if me_state_contracted_facility == 'Yes':
+        free_testing_for_all = 'Yes'
+        est_result_days_min = 2
+        est_result_days_max = 3
 
     street_address = row_obj['Street address']
     city = row_obj['Municipality']
@@ -70,7 +80,10 @@ def preprocess_csv(row_obj):
         'Yes',
         description,
         None,
-        me_dhhs_status
+        me_dhhs_status,
+        free_testing_for_all,
+        est_result_days_min,
+        est_result_days_max
     ]
     
     return out_row
