@@ -147,7 +147,7 @@ class ResultCard extends React.Component {
                 {me_dhhs_status === 1 && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Testing available to people at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
                 {me_dhhs_status === 2 && <div className="badge badge-warning"><i className="fas fa-exclamation-circle icon-left" />Testing available to <em>existing patients</em> at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
                 {me_dhhs_status === 0 && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Testing may be limited to people with symptoms or known exposure</div>}
-                {free_testing_for_all && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Free testing for all</div>}
+                {free_testing_for_all && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />All testing free</div>}
                 {confirmed_result_days_min && confirmed_result_days_max && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Results in {confirmed_result_days_min} - {confirmed_result_days_max} days</div>}
               </>
             )}
