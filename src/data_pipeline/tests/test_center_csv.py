@@ -41,9 +41,12 @@ class TestCSVMethods(unittest.TestCase):
             'verif_phone_ext_flag': True,
             'description': 'twelve',
             'hours_of_operation': 'hourstest',
-            'me_dhhs_status': '0'
+            'me_dhhs_status': '0',
+            'free_testing_for_all': True,
+            'confirmed_result_days_min': '1',
+            'confirmed_result_days_max': '2'
         }
-        self.assertEqual(test_center_csv.extract_preprocessed_test_center_row(['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'yes', 'no', 'yes', 'no', 'yes', 'twelve', 'hourstest', '0']), target_extract)
+        self.assertEqual(test_center_csv.extract_preprocessed_test_center_row(['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'yes', 'no', 'yes', 'no', 'yes', 'twelve', 'hourstest', '0', 'yes', '1', '2']), target_extract)
 
     def test_csv_load_no_header(self):
         with self.assertRaises(Exception):
@@ -70,7 +73,10 @@ class TestCSVMethods(unittest.TestCase):
             'VERIFIED_BY_EXTERNAL_PARTY',
             'DESCRIPTION',
             'HOURS_FREETEXT',
-            'CUSTOM_QUESTION_1_STATUS'
+            'CUSTOM_QUESTION_1_STATUS',
+            'FREE_TESTING_FOR_ALL',
+            'EST_RESULT_DAYS_MIN',
+            'EST_RESULT_DAYS_MAX'
         ]
 
         self.assertEqual(test_center_csv.check_if_valid_header_row(accepted_header, test_center_csv.TARGET_PREPROCESSED_CSV_HEADER), True)
@@ -92,7 +98,10 @@ class TestCSVMethods(unittest.TestCase):
             'VERIFIED_BY_EXTERNAL_PARTY',
             'DESCRIPTION',
             'HOURS_FREETEXT',
-            'CUSTOM_QUESTION_1_STATUS'
+            'CUSTOM_QUESTION_1_STATUS',
+            'FREE_TESTING_FOR_ALL',
+            'EST_RESULT_DAYS_MIN',
+            'EST_RESULT_DAYS_MAX'
         ]
         with self.assertRaises(Exception):
             test_center_csv.check_if_valid_header_row(rejected_header, test_center_csv.TARGET_PREPROCESSED_CSV_HEADER)

@@ -22,7 +22,10 @@ const PUBLIC_ATTRIBUTES = [
   'drive_thru_site',
   'physician_referral_required',
   'me_dhhs_status',
-  'verified_by_phone_external_party'
+  'verified_by_phone_external_party',
+  'confirmed_result_days_min',
+  'confirmed_result_days_max',
+  'free_testing_for_all'
 ]
 
 router.get('/', async (req, res) => {

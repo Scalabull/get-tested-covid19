@@ -129,7 +129,7 @@ const StyledResultCard = styled.div`
 class ResultCard extends React.Component {
   render() {
     const { num } = this.props;
-    const { name, distance, address, phone_number, website, description, hours_of_operation, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site, physician_referral_required, verified_by_phone_external_party } = this.props.item;
+    const { name, distance, address, phone_number, website, description, hours_of_operation, me_dhhs_status, doctor_screen_required_beforehand, appointment_required, drive_thru_site, physician_referral_required, verified_by_phone_external_party, free_testing_for_all, confirmed_result_days_min, confirmed_result_days_max } = this.props.item;
 
     return (
         <StyledResultCard>
@@ -139,7 +139,7 @@ class ResultCard extends React.Component {
           </p>
           <div className="card__req">
             {!doctor_screen_required_beforehand && !appointment_required && !physician_referral_required && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Walk-in testing available</div>}
-            {(doctor_screen_required_beforehand || appointment_required || physician_referral_required || me_dhhs_status === 0 || me_dhhs_status === 1 || me_dhhs_status === 2) && (
+            {(doctor_screen_required_beforehand || appointment_required || physician_referral_required || me_dhhs_status === 0 || me_dhhs_status === 1 || me_dhhs_status === 2 || free_testing_for_all || confirmed_result_days_min || confirmed_result_days_max ) && (
               <>
                 {doctor_screen_required_beforehand && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Doctor's screening required</div>}
                 {appointment_required && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Appointment required</div>}
@@ -147,6 +147,8 @@ class ResultCard extends React.Component {
                 {me_dhhs_status === 1 && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Testing available to people at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
                 {me_dhhs_status === 2 && <div className="badge badge-warning"><i className="fas fa-exclamation-circle icon-left" />Testing available to <em>existing patients</em> at <a href="https://www.maine.gov/dhhs/mecdc/infectious-disease/epi/airborne/documents/MEDHHS_StandingOrder_COVID19testing_06-08-2020.pdf" rel="noopener noreferrer" target="_blank">elevated risk</a>, even without symptoms</div>}
                 {me_dhhs_status === 0 && <div className="badge badge-danger"><i className="fas fa-exclamation-circle icon-left" />Testing may be limited to people with symptoms or known exposure</div>}
+                {free_testing_for_all && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />All testing free</div>}
+                {confirmed_result_days_min && confirmed_result_days_max && <div className="badge badge-success"><i className="fas fa-check-circle icon-left" />Results in {confirmed_result_days_min} - {confirmed_result_days_max} days</div>}
               </>
             )}
           </div>

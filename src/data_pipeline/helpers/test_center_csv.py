@@ -91,10 +91,10 @@ def extract_deletion_test_center_row(csv_row):
 
     return csv_row[0]
 
-# For inbound data that is heavily formatted, we use a 16-column format.
+# For inbound data that is heavily formatted, we use a 19-column format.
 # If utilizing this input format, we aim for completeness. But missing fields are OK. 
 def extract_preprocessed_test_center_row(csv_row):
-    if(len(csv_row) != 16):
+    if(len(csv_row) != 19):
         return None
     
     csv_row = [field.replace('"', '') for field in csv_row]
@@ -105,6 +105,7 @@ def extract_preprocessed_test_center_row(csv_row):
     drive_thru_flag = yes_no_to_bool(csv_row[10])
     phys_ref_flag = yes_no_to_bool(csv_row[11])
     verif_phone_ext_flag = yes_no_to_bool(csv_row[12])
+    free_testing_flag = yes_no_to_bool(csv_row[16])
 
     test_center = {
         'external_id': csv_row[0],
@@ -122,8 +123,46 @@ def extract_preprocessed_test_center_row(csv_row):
         'verif_phone_ext_flag': verif_phone_ext_flag,
         'description': csv_row[13],
         'hours_of_operation': csv_row[14],
-        'me_dhhs_status': csv_row[15]
+        'me_dhhs_status': csv_row[15],
+        'free_testing_for_all': free_testing_flag,
+        'confirmed_result_days_min': csv_row[17],
+        'confirmed_result_days_max': csv_row[18]
     }
 
     return test_center
 
+def extract_csv_row_from_public_test_center_obj(test_center_obj):
+    #Format matches TARGET_PREPROCESSED_CSV_HEADER
+
+    csv_row = [
+        '',
+        test_center_obj['name'],
+        test_center_obj['address'],
+        '',
+        '',
+        '',
+        test_center_obj['phone_number'],
+        test_center_obj['website'],
+        test_center_obj['appointment_required'],
+        test_center_obj['doctor_screen_required_beforehand'],
+        test_center_obj['drive_thru_site'],
+        test_center_obj['physician_referral_required'],
+        test_center_obj['verified_by_phone_external_party'],
+        test_center_obj['description'],
+        test_center_obj['hours_of_operation'],
+        '',
+        '',
+        '',
+        ''
+    ]
+    
+    return csv_row
+
+def write_test_center_array_to_csv(test_center_objs, csv_outfile_name):
+    with open(csv_outfile_name, 'w') as out_file:
+        out_writer = csv.writer(out_file, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+        out_writer.writerow(TARGET_PREPROCESSED_CSV_HEADER)
+
+        for test_center in test_center_objs:
+            test_center_row = extract_csv_row_from_public_test_center_obj(test_center)
+            out_writer.writerow(test_center_row)
