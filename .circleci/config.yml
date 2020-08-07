@@ -71,6 +71,7 @@ jobs:
             - run:
                   name: npm-build
                   command: CI=false npm run build:staging
+        parallelism: 4
     webserver-build-prod:
         docker:
             - image: node:12-alpine
@@ -82,6 +83,7 @@ jobs:
             - run:
                   name: npm-build
                   command: CI=false npm run build
+        parallelism: 4
     api-build:
         docker:
             - image: node:12-alpine
@@ -93,6 +95,7 @@ jobs:
             - run:
                   name: npm-build
                   command: CI=false npm run build
+        parallelism: 4
     docker-webserver-build-push-staging:
         docker:
             - image: cimg/go:1.13
@@ -106,6 +109,7 @@ jobs:
                   docker push gettestedcovid19/webserver:$TAG
                   docker tag gettestedcovid19/webserver:$TAG gettestedcovid19/webserver:$CIRCLE_BRANCH
                   docker push gettestedcovid19/webserver:$CIRCLE_BRANCH
+        parallelism: 4
     docker-webserver-build-push-prod:
         docker:
             - image: cimg/go:1.13
@@ -119,6 +123,7 @@ jobs:
                   docker push gettestedcovid19/webserver:$TAG
                   docker tag gettestedcovid19/webserver:$TAG gettestedcovid19/webserver:$CIRCLE_BRANCH
                   docker push gettestedcovid19/webserver:$CIRCLE_BRANCH
+        parallelism: 4
     docker-api-build-push:
         docker:
             - image: cimg/go:1.13
@@ -132,6 +137,7 @@ jobs:
                   docker push gettestedcovid19/api:$TAG
                   docker tag gettestedcovid19/api:$TAG gettestedcovid19/api:$CIRCLE_BRANCH
                   docker push gettestedcovid19/api:$CIRCLE_BRANCH
+        parallelism: 4
     update-service:
         docker:
             - image: zboldyga/terraform-aws:latest
