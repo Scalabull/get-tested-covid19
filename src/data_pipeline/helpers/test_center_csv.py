@@ -49,9 +49,9 @@ def check_if_valid_header_row(header, target_header):
 
 def yes_no_to_bool(col_val):
     upper_col_val = str(col_val).upper()
-    if upper_col_val == 'YES':
+    if upper_col_val == 'YES' or upper_col_val == 'TRUE':
         return True
-    elif upper_col_val == 'NO':
+    elif upper_col_val == 'NO' or upper_col_val == 'FALSE':
         return False
     else:
         return None
