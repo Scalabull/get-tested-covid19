@@ -138,12 +138,13 @@ def run_state_deletion_workflow(state_flag, gtc_auth_token, ignore):
         return row['google_place_id']
     
     search_strings = {
-        'maine': ' ME '
+        'maine': ' ME ',
+        'idaho': ' ID '
     }
-    me_search_str = search_strings[state_flag]
+    st_search_str = search_strings[state_flag]
 
     req_path = '/api/v1/internal/unverified-test-centers/addressTextSearch/'
-    uri_string = urllib.parse.quote(req_path + me_search_str)
+    uri_string = urllib.parse.quote(req_path + st_search_str)
     
     get_gtc_test_centers_by_address_search = gtc_api_helpers.generate_gtc_get_request(GTC_API_URL, uri_string, gtc_auth_token, normalize_test_center_rows)
     test_centers = get_gtc_test_centers_by_address_search()
@@ -157,7 +158,8 @@ def run_csv_deletion_workflow(ignore, gtc_auth_token, csv_file):
 def run_deletion_workflow(deletion_type, gtc_auth_token, csv_file=None):
     options = {
         'csv_ids': run_csv_deletion_workflow,
-        'maine': run_state_deletion_workflow
+        'maine': run_state_deletion_workflow,
+        'idaho': run_state_deletion_workflow
     }
 
     test_center_ids = options[deletion_type](deletion_type, gtc_auth_token, csv_file)
