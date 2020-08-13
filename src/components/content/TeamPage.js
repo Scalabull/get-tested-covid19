@@ -71,6 +71,14 @@ const StyledTeam = styled.div`
 
     .diverse-content {
       display: flex;
+
+      @media screen and (max-width: ${props => props.theme.bpMed}) {
+        flex-direction: column;
+
+        .diverse-section {
+          width: 100%;
+        }
+      }
     }
 
     .diverse-section {
