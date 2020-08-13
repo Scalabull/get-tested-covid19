@@ -114,6 +114,7 @@ const StyledTeam = styled.div`
       background-color: ${props => props.theme.colorGrayLight};
       padding: 3rem;
       text-align: center;
+      margin-bottom: 3rem;
 
       h3 {
         margin-bottom: 3rem;
@@ -237,61 +238,295 @@ class TeamPage extends React.Component {
                             </div>
                             <div className="list-card">
                               <img
-                                alt="Zach Boldyga"
-                                src={require("assets/img/team/Zach.png")}
+                                alt="Burton Ye"
+                                src={require("assets/img/team/Burton.png")}
                                 className="list-card__avatar"
                               />
-                              <h4 className="list-card__name">Zach Boldyga</h4>
-                              <p className="list-card__city">Seattle, WA</p>
+                              <h4 className="list-card__name">Burton Ye</h4>
+                              <p className="list-card__city">San Francisco, CA</p>
                               <div className="list-card__hr"></div>
-                              <p className="list-card__role">Co-Founder</p>
+                              <p className="list-card__role">Front-end Developer</p>
                             </div>
                             <div className="list-card">
                               <img
-                                alt="Zach Boldyga"
-                                src={require("assets/img/team/Zach.png")}
+                                alt="Kevin Genus"
+                                src={require("assets/img/team/Kevin.png")}
                                 className="list-card__avatar"
                               />
-                              <h4 className="list-card__name">Zach Boldyga</h4>
-                              <p className="list-card__city">Seattle, WA</p>
+                              <h4 className="list-card__name">Kevin Genus</h4>
+                              <p className="list-card__city">Metuchen, NJ</p>
                               <div className="list-card__hr"></div>
-                              <p className="list-card__role">Co-Founder</p>
+                              <p className="list-card__role">Full Stack Developer</p>
                             </div>
                             <div className="list-card">
                               <img
-                                alt="Zach Boldyga"
-                                src={require("assets/img/team/Zach.png")}
+                                alt="Patrick Pierson"
+                                src={require("assets/img/team/Patrick.png")}
                                 className="list-card__avatar"
                               />
-                              <h4 className="list-card__name">Zach Boldyga</h4>
-                              <p className="list-card__city">Seattle, WA</p>
+                              <h4 className="list-card__name">Patrick Pierson</h4>
+                              <p className="list-card__city">Frederick, MD</p>
                               <div className="list-card__hr"></div>
-                              <p className="list-card__role">Co-Founder</p>
+                              <p className="list-card__role">Infrastructure Lead</p>
                             </div>
                             <div className="list-card">
                               <img
-                                alt="Zach Boldyga"
-                                src={require("assets/img/team/Zach.png")}
+                                alt="Siddharth Raja"
+                                src={require("assets/img/team/Siddharth.png")}
                                 className="list-card__avatar"
                               />
-                              <h4 className="list-card__name">Zach Boldyga</h4>
-                              <p className="list-card__city">Seattle, WA</p>
+                              <h4 className="list-card__name">Siddharth Raja</h4>
+                              <p className="list-card__city">Navi Mumbai, India</p>
                               <div className="list-card__hr"></div>
-                              <p className="list-card__role">Co-Founder</p>
+                              <p className="list-card__role">Back-End Developer</p>
                             </div>
                             <div className="list-card">
                               <img
-                                alt="Zach Boldyga"
-                                src={require("assets/img/team/Zach.png")}
+                                alt="Steve Bonifas"
+                                src={require("assets/img/team/Steve.png")}
                                 className="list-card__avatar"
                               />
-                              <h4 className="list-card__name">Zach Boldyga</h4>
-                              <p className="list-card__city">Seattle, WA</p>
+                              <h4 className="list-card__name">Steve Bonifas</h4>
+                              <p className="list-card__city">Chicago, IL</p>
                               <div className="list-card__hr"></div>
-                              <p className="list-card__role">Co-Founder</p>
+                              <p className="list-card__role">Business Analyst</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Suman Agrawal"
+                                src={require("assets/img/team/Suman.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Suman Agrawal</h4>
+                              <p className="list-card__city">Davie, FL</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Full Stack Developer</p>
                             </div>
                           </div>
-                          
+                        </div>
+                        <div className="list__section">
+                          <h3>Design</h3>
+                          <div className="list__cards">
+                            <div className="list-card">
+                              <img
+                                alt="Jono Lee"
+                                src={require("assets/img/team/Jono.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Jono Lee</h4>
+                              <p className="list-card__city">San Francisco, CA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Product Designer &amp; Engineer</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Lindsay George"
+                                src={require("assets/img/team/Lindsay.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Lindsay George</h4>
+                              <p className="list-card__city">New York, NY</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Product Designer</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Tejal Shah"
+                                src={require("assets/img/team/Tejal.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Tejal Shah</h4>
+                              <p className="list-card__city">Orlando, FL</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">UX Designer</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="list__section">
+                          <h3>Marketing</h3>
+                          <div className="list__cards">
+                            <div className="list-card">
+                              <img
+                                alt="Tarryn Marcus"
+                                src={require("assets/img/team/Tarryn.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Tarryn Marcus</h4>
+                              <p className="list-card__city">Seattle, WA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Co-Founder</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Annika"
+                                src={require("assets/img/team/Annika.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Annika Lin</h4>
+                              <p className="list-card__city">United States</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Digital Marketer</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Jaclyn"
+                                src={require("assets/img/team/Jaclyn.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Jaclyn Thomas</h4>
+                              <p className="list-card__city">Los Angeles, CA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">AV Producer</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Katherine"
+                                src={require("assets/img/team/Katherine.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Katherine Conaway</h4>
+                              <p className="list-card__city">Fort Worth, TX</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Director of Content</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Lauren"
+                                src={require("assets/img/team/Lauren.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Lauren Kohler</h4>
+                              <p className="list-card__city">Seattle, WA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Video Editor</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Makya"
+                                src={require("assets/img/team/Makya.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Makya McBee</h4>
+                              <p className="list-card__city">Los Angeles, CA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Video Script Writer</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Mike"
+                                src={require("assets/img/team/Mike.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Mike Lovett</h4>
+                              <p className="list-card__city">Somerville, MA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Copywriter</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Shachi"
+                                src={require("assets/img/team/Shachi.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Shachi Arkatkar</h4>
+                              <p className="list-card__city">Pune, India</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Digital Marketer</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Staveta"
+                                src={require("assets/img/team/Staveta.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Staveta Parashar</h4>
+                              <p className="list-card__city">Delhi, India</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Public Relations</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="list__section">
+                          <h3>Analysis</h3>
+                          <div className="list__cards">
+                            <div className="list-card">
+                              <img
+                                alt="Amanda"
+                                src={require("assets/img/team/Amanda.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Amanda Zhang</h4>
+                              <p className="list-card__city">New Haven, CT</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Data Analyst</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Jaclyn Xiao"
+                                src={require("assets/img/team/Jaclyn_Xiao.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Jaclyn Xiao</h4>
+                              <p className="list-card__city">Durham, NC</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Data Analyst</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Jaclyn"
+                                src={require("assets/img/team/Jaclyn.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Kasey Alderete</h4>
+                              <p className="list-card__city">United States</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Product Management</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Robert"
+                                src={require("assets/img/team/Robert.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Robert Güth</h4>
+                              <p className="list-card__city">Germany</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Post-Doctoral Research Fellow</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Shwetha"
+                                src={require("assets/img/team/Shwetha.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Shwetha Hariharan</h4>
+                              <p className="list-card__city">New York, NY</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Analyst &amp; Operations Manager</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Makya"
+                                src={require("assets/img/team/Makya.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Makya McBee</h4>
+                              <p className="list-card__city">Los Angeles, CA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Video Script Writer</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Yashi"
+                                src={require("assets/img/team/Yashi.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Yashi Sanghvi</h4>
+                              <p className="list-card__city">Johns Creek, GA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Data Analyst</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
