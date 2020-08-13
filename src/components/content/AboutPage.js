@@ -281,6 +281,7 @@ class AboutPage extends React.Component {
                                 <p>Get Tested COVID-19 is run by a team of volunteers, distributed across four countries and seven time zones.</p>
                                 <p>Since establishing the project, the founders have received 120+ volunteer requests and currently have 45+ active volunteers, including developers, designers, data scientists, content writers, social media producers, and marketers.</p>
                                 <p>Some volunteers work full time for larger tech companies, some are freelancers, and others have been recently laid off and are choosing to spend their time on COVID-19 related projects. The common theme is a desire to help and contribute something during this crisis, and this project is an opportunity to use our skills and expertise.</p>
+                                <Link className="btn btn-primary" to="/team">Learn more</Link>
                             </div>
                             <div className="about-section__extra">
                                 <TeamIll />
@@ -293,7 +294,7 @@ class AboutPage extends React.Component {
                                 <h2>Our Partners</h2>
                                 <p>Beyond our amazing team of volunteers, we’ve received incredible and much-needed support from tech providers, developers, clinical laboratories, and platforms.</p>
                                 <p>We’ve also partnered up with other COVID-19 relief initiatives and nonprofits to support communities and testing centers around the US. As we communicate with test centers to validate the information in our database, we’re able to offer them much-needed resources and connect them with our partner organizations.</p>
-                                <Link className="btn btn-outline-light ml-2" to="/partners">Learn more</Link>
+                                <Link className="btn btn-outline-light" to="/partners">Learn more</Link>
                             </div>
                             <div className="about-section__extra">
                                 <PartnersIll />
