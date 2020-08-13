@@ -19,6 +19,7 @@ import PrivacyPage from './components/content/PrivacyPage.js';
 // Colors
 const colors = {
   colorRed: '#FA2B56',
+  colorPink: '#FF6F61',
   colorPurple: '#4046BB',
   colorPurpleDarker: '#202028',
   colorTeal: '#69C5AB',

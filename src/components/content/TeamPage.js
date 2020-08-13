@@ -86,6 +86,84 @@ const StyledTeam = styled.div`
         max-width: 350px;
       }
     }
+
+    .team__list {
+
+      .container {
+        padding: 6rem 1rem;
+      }
+    }
+
+    .list__header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 3rem;
+
+      h2 {
+        margin-bottom: 1rem;
+      }
+
+      p {
+        max-width: 600px;
+      }
+    }
+
+    .list__section {
+      background-color: ${props => props.theme.colorGrayLight};
+      padding: 3rem;
+      text-align: center;
+
+      h3 {
+        margin-bottom: 3rem;
+        color: ${props => props.theme.colorPurple};
+        font-family: ${props => props.theme.fontSans};
+        font-weight: 600;
+      }
+    }
+
+    .list__cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .list-card {
+      background-color: #fff;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 1rem 1rem 0;
+    }
+
+    .list-card__avatar {
+      border-radius: 50%;
+      width: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .list-card__name {
+      font-weight: 600;
+      font-family: ${props => props.theme.fontSans};
+    }
+
+    .list-card__city {
+    }
+
+    .list-card__role {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    .list-card__hr {
+      background-color: ${props => props.theme.colorPink};
+      width: 30px;
+      height: 3px;
+      margin: -5px 0 10px 0;
+    }
 `
 
 class TeamPage extends React.Component {
@@ -138,6 +216,84 @@ class TeamPage extends React.Component {
                         </div>
                     </div>
                     <div className="team__list">
+                      <div className="container">
+                        <div className="list__header">
+                          <h2>Meet the Volunteers</h2>
+                          <p>Our volunteers come from a range of backgrounds — from experienced experts in their fields to current students — to collaborate together to build our database of COVID-19 testing centers, share data insights, and connect with partners & communities to provide support & resources. </p>
+                        </div>
+                        <div className="list__section">
+                          <h3>Development</h3>
+                          <div className="list__cards">
+                            <div className="list-card">
+                              <img
+                                alt="Zach Boldyga"
+                                src={require("assets/img/team/Zach.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Zach Boldyga</h4>
+                              <p className="list-card__city">Seattle, WA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Co-Founder</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Zach Boldyga"
+                                src={require("assets/img/team/Zach.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Zach Boldyga</h4>
+                              <p className="list-card__city">Seattle, WA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Co-Founder</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Zach Boldyga"
+                                src={require("assets/img/team/Zach.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Zach Boldyga</h4>
+                              <p className="list-card__city">Seattle, WA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Co-Founder</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Zach Boldyga"
+                                src={require("assets/img/team/Zach.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Zach Boldyga</h4>
+                              <p className="list-card__city">Seattle, WA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Co-Founder</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Zach Boldyga"
+                                src={require("assets/img/team/Zach.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Zach Boldyga</h4>
+                              <p className="list-card__city">Seattle, WA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Co-Founder</p>
+                            </div>
+                            <div className="list-card">
+                              <img
+                                alt="Zach Boldyga"
+                                src={require("assets/img/team/Zach.png")}
+                                className="list-card__avatar"
+                              />
+                              <h4 className="list-card__name">Zach Boldyga</h4>
+                              <p className="list-card__city">Seattle, WA</p>
+                              <div className="list-card__hr"></div>
+                              <p className="list-card__role">Co-Founder</p>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
                     </div>
                 </StyledTeam>
                 <NavFooter/>
