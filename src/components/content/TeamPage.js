@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { ReactComponent as HeroIll } from '../../assets/img/ill/team-hero.svg';
 import { ReactComponent as PieIll } from '../../assets/img/ill/team-pie.svg';
 import { ReactComponent as WorldIll } from '../../assets/img/ill/team-world.svg';
+import { ReactComponent as EmailIcon } from '../../assets/img/icons/common/email.svg';
+import { ReactComponent as LinkedInIcon } from '../../assets/img/icons/common/linkedin.svg';
 
 const StyledTeam = styled.div`
     .team-section {
@@ -165,6 +167,13 @@ const StyledTeam = styled.div`
       height: 3px;
       margin: -5px 0 10px 0;
     }
+
+    .list-card__links {
+      margin-top: 1rem;
+      a {
+        padding: 0 5px;
+      }
+    }
 `
 
 class TeamPage extends React.Component {
@@ -235,6 +244,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Seattle, WA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Co-Founder</p>
+                              <div className="list-card__links">
+                                <a href="mailtio:zach@get-tested-covid19.org" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/zach-boldyga/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -246,6 +259,9 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">San Francisco, CA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Front-end Developer</p>
+                              <div className="list-card__links">
+                                <a href="https://www.linkedin.com/in/burton-ye " target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -257,6 +273,9 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Metuchen, NJ</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Full Stack Developer</p>
+                              <div className="list-card__links">
+                                <a href="https://www.linkedin.com/in/kevingenus" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -268,6 +287,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Frederick, MD</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Infrastructure Lead</p>
+                              <div className="list-card__links">
+                                <a href="mailto:patrick.c.pierson@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/piersonpatrick/ " target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -279,6 +302,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Navi Mumbai, India</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Back-End Developer</p>
+                              <div className="list-card__links">
+                                <a href="mailto:siddharthraja9849@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/siddharth-raja/  " target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -290,6 +317,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Chicago, IL</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Business Analyst</p>
+                              <div className="list-card__links">
+                                <a href="mailto:stevenbonifas@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/stevebonifas/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -301,6 +332,9 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Davie, FL</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Full Stack Developer</p>
+                              <div className="list-card__links">
+                                <a href="mailto:agrawal.suman7@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -317,6 +351,9 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">San Francisco, CA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Product Designer &amp; Engineer</p>
+                              <div className="list-card__links">
+                                <a href="https://www.linkedin.com/in/jonolee/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -328,6 +365,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">New York, NY</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Product Designer</p>
+                              <div className="list-card__links">
+                                <a href="mailto:lindsaygeo42@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/lindsay-george-b1732a75/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -339,6 +380,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Orlando, FL</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">UX Designer</p>
+                              <div className="list-card__links">
+                                <a href="mailto:tamalejar@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/tejalashah/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -355,6 +400,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Seattle, WA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Co-Founder</p>
+                              <div className="list-card__links">
+                                <a href="mailto:tarryn@get-tested-covid19.org" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/tarryn-marcus/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -366,6 +415,9 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">United States</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Digital Marketer</p>
+                              <div className="list-card__links">
+                                <a href="https://www.linkedin.com/in/annika-lin/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -377,6 +429,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Los Angeles, CA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">AV Producer</p>
+                              <div className="list-card__links">
+                                <a href="mailto:jaclyn.thomas@ignitioncreative.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/jaclyn-thomas-384b2517/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -388,6 +444,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Fort Worth, TX</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Director of Content</p>
+                              <div className="list-card__links">
+                                <a href="mailto:katherine@conawaycreative.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/katherineconaway/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -399,6 +459,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Seattle, WA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Video Editor</p>
+                              <div className="list-card__links">
+                                <a href="mailto:lokomotionfilms@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/lauren-kohler/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -410,6 +474,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Los Angeles, CA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Video Script Writer</p>
+                              <div className="list-card__links">
+                                <a href="mailto:makya.mcbee@ignitioncreative.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/makya-mcbee-08a9306a/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -421,6 +489,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Somerville, MA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Copywriter</p>
+                              <div className="list-card__links">
+                                <a href="mailto:mike9lovett@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/mike-lovett-2045043b/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -432,6 +504,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Pune, India</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Digital Marketer</p>
+                              <div className="list-card__links">
+                                <a href="mailto:shachi.arkatkar@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/shachi-arkatkar-a290ba59/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -443,6 +519,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Delhi, India</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Public Relations</p>
+                              <div className="list-card__links">
+                                <a href="mailto:staveta.parashar19@st.niituniversity.in" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/staveta-parashar-9530a419b" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -459,6 +539,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">New Haven, CT</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Data Analyst</p>
+                              <div className="list-card__links">
+                                <a href="mailto:amanda.zhang@yale.edu" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/amanda-w-zhang/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -470,6 +554,9 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Durham, NC</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Data Analyst</p>
+                              <div className="list-card__links">
+                                <a href="mailto:jaclyn.xiao@duke.edu" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -481,6 +568,9 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">United States</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Product Management</p>
+                              <div className="list-card__links">
+                                <a href="https://www.linkedin.com/in/kaseyda/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -492,6 +582,9 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Germany</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Post-Doctoral Research Fellow</p>
+                              <div className="list-card__links">
+                                <a href="http://www.linkedin.com/in/roguth" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -503,17 +596,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">New York, NY</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Analyst &amp; Operations Manager</p>
-                            </div>
-                            <div className="list-card">
-                              <img
-                                alt="Makya"
-                                src={require("assets/img/team/Makya.png")}
-                                className="list-card__avatar"
-                              />
-                              <h4 className="list-card__name">Makya McBee</h4>
-                              <p className="list-card__city">Los Angeles, CA</p>
-                              <div className="list-card__hr"></div>
-                              <p className="list-card__role">Video Script Writer</p>
+                              <div className="list-card__links">
+                                <a href="mailto:hariharan.shwetha@gmail.com" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/shwetha-hariharan/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                             <div className="list-card">
                               <img
@@ -525,6 +611,10 @@ class TeamPage extends React.Component {
                               <p className="list-card__city">Johns Creek, GA</p>
                               <div className="list-card__hr"></div>
                               <p className="list-card__role">Data Analyst</p>
+                              <div className="list-card__links">
+                                <a href="mailto:yds4@cornell.edu" target="_blank" rel="noopener noreferrer"><EmailIcon /></a>
+                                <a href="https://www.linkedin.com/in/yashisanghvi/" target="_blank" rel="noopener noreferrer"><LinkedInIcon /></a>
+                              </div>
                             </div>
                           </div>
                         </div>
