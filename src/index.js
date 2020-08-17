@@ -13,11 +13,13 @@ import HomePage from './components/home/HomePage.js';
 import ResultsPage from './components/results/ResultsPage.js';
 import AboutPage from './components/content/AboutPage.js';
 import PartnersPage from './components/content/PartnersPage.js';
+import TeamPage from './components/content/TeamPage.js';
 import PrivacyPage from './components/content/PrivacyPage.js';
 
 // Colors
 const colors = {
   colorRed: '#FA2B56',
+  colorPink: '#FF6F61',
   colorPurple: '#4046BB',
   colorPurpleDarker: '#202028',
   colorTeal: '#69C5AB',
@@ -139,6 +141,7 @@ ReactDOM.render(
         <Route path="/search" exact render={props => <ResultsPage {...props} />} />
         <Route path="/about" exact render={props => <AboutPage {...props} />} />
         <Route path="/partners" exact render={props => <PartnersPage {...props} />} />
+        <Route path="/team" exact render={props => <TeamPage {...props} />} />
         <Route
           path="/how-testing-works"
           exact
