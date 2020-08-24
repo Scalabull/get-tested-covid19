@@ -569,7 +569,7 @@ class TeamPage extends React.Component {
                             <div className="list-card">
                               <img
                                 alt="Jaclyn"
-                                src={require("assets/img/team/Jaclyn.png")}
+                                src={require("assets/img/team/Kasey.png")}
                                 className="list-card__avatar"
                               />
                               <h4 className="list-card__name">Kasey Alderete</h4>
