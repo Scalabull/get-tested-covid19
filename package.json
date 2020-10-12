@@ -41,11 +41,11 @@
         "not op_mini all"
     ],
     "dependencies": {
-        "aws-sdk": "^2.699.0",
+        "aws-sdk": "^2.753.0",
         "axios": "^0.19.2",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
-        "bootstrap": "4.3.1",
+        "bootstrap": "4.5.2",
         "bufferutil": "^4.0.1",
         "classnames": "^2.2.6",
         "compression": "^1.7.4",
@@ -69,10 +69,10 @@
         "morgan": "^1.10.0",
         "node-sass": "^4.14.1",
         "normalize.css": "^8.0.1",
-        "nouislider": "14.1.1",
+        "nouislider": "14.6.1",
         "passport-jwt": "^4.0.0",
         "path": "~0.12.7",
-        "pg": "^8.2.1",
+        "pg": "^8.3.3",
         "pg-hstore": "^2.3.3",
         "pm2": "^4.2.3",
         "polished": "^3.6.4",
@@ -94,7 +94,7 @@
         "sequelize-cli": "^5.5.1",
         "socket.io": "^2.3.0",
         "socket.io-mock": "^1.2.4",
-        "styled-components": "^5.1.1",
+        "styled-components": "^5.2.0",
         "utf-8-validate": "^5.0.2"
     },
     "devDependencies": {
