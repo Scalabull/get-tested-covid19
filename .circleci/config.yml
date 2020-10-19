@@ -98,7 +98,7 @@ jobs:
             - image: cimg/go:1.13
         steps:
             - checkout
-            - setup_remote_docker
+            - setup_remote_docker:
                   version: 19.03.13
             - run: |
                   TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
@@ -112,7 +112,7 @@ jobs:
             - image: cimg/go:1.13
         steps:
             - checkout
-            - setup_remote_docker
+            - setup_remote_docker:
                   version: 19.03.13
             - run: |
                   TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
@@ -126,7 +126,7 @@ jobs:
             - image: cimg/go:1.13
         steps:
             - checkout
-            - setup_remote_docker
+            - setup_remote_docker:
                   version: 19.03.13
             - run: |
                   TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
