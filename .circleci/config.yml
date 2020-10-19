@@ -99,6 +99,7 @@ jobs:
         steps:
             - checkout
             - setup_remote_docker
+                version: 19.03.13
             - run: |
                   TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
                   docker build -t gettestedcovid19/webserver:$TAG -f docker/Dockerfile.staging .
@@ -112,6 +113,7 @@ jobs:
         steps:
             - checkout
             - setup_remote_docker
+                version: 19.03.13
             - run: |
                   TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
                   docker build -t gettestedcovid19/webserver:$TAG -f docker/Dockerfile .
@@ -125,6 +127,7 @@ jobs:
         steps:
             - checkout
             - setup_remote_docker
+                version: 19.03.13
             - run: |
                   TAG=$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
                   docker build -t gettestedcovid19/api:$TAG -f docker/APIDockerfile .
