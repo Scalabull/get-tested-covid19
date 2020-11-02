@@ -11,6 +11,7 @@ source
 *.tfstate.backup
 *.tfvars
 *.tfvars.backup
+*.icloud
 connection.txt
 /src/data_pipeline/logs/*.json
 /src/data_pipeline/tmp_data/*
