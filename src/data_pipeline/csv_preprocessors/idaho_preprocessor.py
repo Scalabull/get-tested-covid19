@@ -36,7 +36,7 @@ def preprocess_csv(row_obj):
 
     street_address = row_obj['Street address']
     city = row_obj['Municipality']
-    state = 'ME'
+    state = 'ID'
     zip_code = row_obj['Zipcode']
 
     name = clean_text_field(row_obj['Name'])
