@@ -7,7 +7,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import reference_constants
 import csv_helpers
 import maine_preprocessor
-import idaho_preprocessor
 
 TARGET_PREPROCESSED_CSV_HEADER = reference_constants.TARGET_PREPROCESSED_CSV_HEADER
 
@@ -15,8 +14,7 @@ OUT_FILE_PATH = '../tmp_data/pp_out_lts.csv'
 
 def load_preprocessor(source):
     options = {
-        'maine': maine_preprocessor.preprocess_csv,
-        'idaho': idaho_preprocessor.preprocess_csv
+        'maine': maine_preprocessor.preprocess_csv
     }
 
     if source in options:
