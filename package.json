@@ -94,7 +94,7 @@
         "sequelize-cli": "^5.5.1",
         "socket.io": "^2.3.0",
         "socket.io-mock": "^1.2.4",
-        "styled-components": "5.1.1",
+        "styled-components": "5.2.1",
         "utf-8-validate": "^5.0.2"
     },
     "devDependencies": {
