@@ -54,7 +54,7 @@
         "dotenv": "^8.2.0",
         "env-cmd": "^10.1.0",
         "express": "^4.17.1",
-        "express-validator": "^6.5.0",
+        "express-validator": "^6.9.2",
         "fibers": "^4.0.3",
         "geo-distance-js": "~1.0.0",
         "google-maps-react": "~2.0.6",
