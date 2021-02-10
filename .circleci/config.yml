@@ -2,7 +2,7 @@ version: 2.1
 jobs:
     terraform:
         docker:
-            - image: zboldyga/terraform-aws:latest
+            - image: patrickcpierson/terraform-aws:0.13.5
         steps:
             - checkout
             - run:
@@ -13,7 +13,7 @@ jobs:
                   command: cd infrastructure; terraform plan
     terraform-staging-deploy:
         docker:
-            - image: zboldyga/terraform-aws:latest
+            - image: patrickcpierson/terraform-aws:0.13.5
         steps:
             - checkout
             - run:
@@ -24,7 +24,7 @@ jobs:
                   command: cd infrastructure; terraform apply -auto-approve
     terraform-prod-deploy:
         docker:
-            - image: zboldyga/terraform-aws:latest
+            - image: patrickcpierson/terraform-aws:0.13.5
         steps:
             - checkout
             - run:
@@ -35,7 +35,7 @@ jobs:
                   command: cd infrastructure; terraform apply -auto-approve
     terraform-dev-deploy:
         docker:
-            - image: zboldyga/terraform-aws:latest
+            - image: patrickcpierson/terraform-aws:0.13.5
         steps:
             - checkout
             - run:
@@ -46,7 +46,7 @@ jobs:
                   command: cd infrastructure; terraform apply -auto-approve
     terraform-dev-destroy:
         docker:
-            - image: zboldyga/terraform-aws:latest
+            - image: patrickcpierson/terraform-aws:0.13.5
         steps:
             - checkout
             - run:
@@ -137,7 +137,7 @@ jobs:
                   docker push gettestedcovid19/api:$CIRCLE_BRANCH
     update-service:
         docker:
-            - image: zboldyga/terraform-aws:latest
+            - image: patrickcpierson/terraform-aws:0.13.5
         steps:
             - checkout
             - run:
