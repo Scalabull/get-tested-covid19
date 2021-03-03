@@ -5354,13 +5354,13 @@ expect@^24.9.0:
     jest-message-util "^24.9.0"
     jest-regex-util "^24.9.0"
 
-express-validator@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.5.0.tgz#0cfb3a94f902b75c597372ac91c7dfb267c5c221"
-  integrity sha512-kXi99TuVeLWkxO0RtDOSj56T7YR0H5KZZyhtzoPSZ5TffBvrJpZPSp/frYcT/zVoLhH8NXDk+T0LCSeI6TbOGA==
+express-validator@^6.9.2:
+  version "6.9.2"
+  resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-6.9.2.tgz#4de977aa0bb32948240900fd7387f4948399ac64"
+  integrity sha512-Yqlsw2/uBobtBVkP+gnds8OMmVAEb3uTI4uXC93l0Ym5JGHgr8Vd4ws7oSo7GGYpWn5YCq4UePMEppKchURXrw==
   dependencies:
-    lodash "^4.17.15"
-    validator "^13.0.0"
+    lodash "^4.17.20"
+    validator "^13.5.2"
 
 express@^4.17.1:
   version "4.17.1"
@@ -8401,6 +8401,11 @@ lodash.uniq@^4.5.0:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
+lodash@^4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 log-driver@^1.2.7:
   version "1.2.7"
@@ -14016,10 +14021,10 @@ validator@^10.11.0:
   resolved "https://registry.yarnpkg.com/validator/-/validator-10.11.0.tgz#003108ea6e9a9874d31ccc9e5006856ccd76b228"
   integrity sha512-X/p3UZerAIsbBfN/IwahhYaBbY68EN/UQBWHtsbXGT5bfrH/p4NQzUCG1kF/rtKaNpnJ7jAu6NGTdSNtyNIXMw==
 
-validator@^13.0.0:
-  version "13.1.1"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-13.1.1.tgz#f8811368473d2173a9d8611572b58c5783f223bf"
-  integrity sha512-8GfPiwzzRoWTg7OV1zva1KvrSemuMkv07MA9TTl91hfhe+wKrsrgVN4H2QSFd/U/FhiU3iWPYVgvbsOGwhyFWw==
+validator@^13.5.2:
+  version "13.5.2"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.5.2.tgz#c97ae63ed4224999fb6f42c91eaca9567fe69a46"
+  integrity sha512-mD45p0rvHVBlY2Zuy3F3ESIe1h5X58GPfAtslBjY7EtTqGquZTj+VX/J4RnHWN8FKq0C9WRVt1oWAcytWRuYLQ==
 
 value-equal@^1.0.1:
   version "1.0.1"
