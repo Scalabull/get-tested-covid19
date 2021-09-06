@@ -222,7 +222,7 @@ module "db" {
   name                            = local.name
 
   engine                          = "aurora-postgresql"
-  engine_version                  = "11.6"
+  engine_version                  = "11.9"
 
   vpc_id                          = module.saas_vpc.vpc_id
   subnets                         = module.saas_vpc.private_subnets
