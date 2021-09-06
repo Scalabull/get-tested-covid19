@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
+import footerHero from '../../assets/img/hero/Email_illustration.png';
 
 const StyledHomeAbout = styled.div`
   border-top: 1px solid #eee;
@@ -75,9 +76,8 @@ class HomeAbout extends React.Component {
               <Link className="btn btn-outline-primary ml-2" to="/about">Learn more</Link>
             </div>
           </div>
-          <div className="home-about__donate">
-            <h2>Help us help our communities</h2>
-            <div dangerouslySetInnerHTML={{ __html: `<script src="https://donorbox.org/widget.js" paypalExpress="false"></script><iframe allowpaymentrequest="" frameborder="0" height="600px" name="donorbox" scrolling="no" seamless="seamless" src="https://donorbox.org/embed/gettestedcovid?default_interval=o&hide_donation_meter=true" style="max-width: 500px; min-width: 350px; max-height:none!important" width="100%"></iframe>`}} />
+          <div className="home-about__img">
+            <img src={footerHero} alt='Contact Get Tested COVID-19' />
           </div>
         </div>
       </StyledHomeAbout>
