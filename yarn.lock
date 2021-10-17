@@ -9223,10 +9223,10 @@ normalize.css@^8.0.1:
   resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-8.0.1.tgz#9b98a208738b9cc2634caacbc42d131c97487bf3"
   integrity sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==
 
-nouislider@^14.1.1:
-  version "14.1.1"
-  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-14.1.1.tgz#def812b2aaaa2ccf9e7a41dd0144a25dab5673e5"
-  integrity sha512-3/+Z/pTBoWoJf2YXSEWRmS27LW2XxOBmGEzkPyRzB/J6QvL+0mS3QwcQp0SmWhgO5CMzbSxPmb1lDDD4HP12bg==
+nouislider@^14.7.0:
+  version "14.7.0"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-14.7.0.tgz#a71db0587c92567b6da1df57d251d3696d942362"
+  integrity sha512-4RtQ1+LHJKesDCNJrXkQcwXAWCrC2aggdLYMstS/G5fEWL+fXZbUA9pwVNHFghMGuFGRATlDLNInRaPeRKzpFQ==
 
 now-and-later@^2.0.0:
   version "2.0.1"
