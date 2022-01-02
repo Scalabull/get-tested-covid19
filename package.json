@@ -41,7 +41,7 @@
         "not op_mini all"
     ],
     "dependencies": {
-        "aws-sdk": "^2.829.0",
+        "aws-sdk": "^2.995.0",
         "axios": "^0.21.1",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
